@@ -1,0 +1,33 @@
+DirectoryIndex index.php index.html
+
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+
+<Files .*>
+	<IfModule !mod_access_compat.c>
+        Require all denied
+    </IfModule>
+    <IfModule mod_access_compat.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+#RewriteBase /
+
+RewriteRule ^(?:cache|log)\b.* - [R=403,L]
+
+RewriteCond %{REQUEST_FILENAME} \.php$
+RewriteRule !index\.php.* - [R=403,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^assets/css/cache$ assets/css/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^assets/js/cache$ assets/js/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.php/$0 [L]
+</IfModule>

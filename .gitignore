@@ -1,0 +1,7 @@
+cache/
+log/
+uploads/
+.idea/
+config.php
+robots.txt
+.htaccess

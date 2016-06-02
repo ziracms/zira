@@ -1,0 +1,65 @@
+<?php
+/**
+ * Zira project
+ * mail.php
+ * (c)2015 http://dro1d.ru
+ */
+
+namespace Zira;
+
+use Zira\Phpmailer\Phpmailer;
+
+class Mail {
+    protected static $_mailer;
+    public static $_is_html = false;
+
+    public static function send($email, $subject, $body, $filename = null, $replyTo = null) {
+        self::$_mailer = new Phpmailer();
+
+        if (Config::get('use_smtp')) {
+            self::sendSMTP($email, $subject, $body, $filename, $replyTo);
+        } else {
+            self::sendMail($email, $subject, $body, $filename, $replyTo);
+        }
+
+        self::$_mailer = null;
+    }
+
+    protected static function sendSMTP($email, $subject, $body, $filename = null, $replyTo = null) {
+        self::$_mailer->isSMTP();
+        self::$_mailer->Host = Config::get('smtp_host');
+        self::$_mailer->SMTPAuth = true;
+        self::$_mailer->Username = Config::get('smtp_username');
+        self::$_mailer->Password = Config::get('smtp_password');
+        self::$_mailer->SMTPSecure = Config::get('smtp_secure');
+        self::$_mailer->Port = Config::get('smtp_port');
+
+        self::sendMail($email, $subject, $body, $filename, $replyTo);
+    }
+
+    protected static function sendMail($email, $subject, $body, $filename = null, $replyTo = null) {
+        self::$_mailer->CharSet = CHARSET;
+
+        self::$_mailer->From = Config::get('email_from');
+        self::$_mailer->FromName = Config::get('email_from_name');
+
+        if (!empty($replyTo)) {
+            self::$_mailer->addReplyTo($replyTo);
+        }
+
+        self::$_mailer->addAddress($email);
+
+        if (!empty($filename) && file_exists($filename)) {
+            self::$_mailer->addAttachment($filename);
+        }
+
+        self::$_mailer->isHTML(self::$_is_html);
+
+        self::$_mailer->Subject = $subject;
+        self::$_mailer->Body    = $body;
+
+        if(!self::$_mailer->send()) {
+            throw new \Exception(self::$_mailer->ErrorInfo);
+        }
+    }
+}

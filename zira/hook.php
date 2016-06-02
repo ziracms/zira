@@ -1,0 +1,26 @@
+<?php
+/**
+ * Zira project.
+ * hook.php
+ * (c)2016 http://dro1d.ru
+ */
+
+namespace Zira;
+
+class Hook {
+    protected static $_hooks = array();
+
+    public static function register($name, $callback) {
+        if (!array_key_exists($name, self::$_hooks)) self::$_hooks[$name] = array();
+        self::$_hooks[$name][]=$callback;
+    }
+
+    public static function run($name) {
+        $result = array();
+        if (!array_key_exists($name, self::$_hooks)) return $result;
+        foreach(self::$_hooks[$name] as $callback) {
+            $result []= call_user_func($callback);
+        }
+        return $result;
+    }
+}

@@ -1,0 +1,26 @@
+<?php
+return array(
+    'Social networks' => 'Социальные сети',
+    'Connect your website to social networks' => 'Подключите свой сайт к социальным сетям',
+    'Login with social networks' => 'Авторизация через социальные сети',
+    'Facebook App ID' => 'ID приложения в Facebook',
+    'Facebook App Secret' => 'Секретный код приложения в Facebook',
+    'Enable Facebook authentication' => 'Включить авторизацию через Facebook',
+    'Sorry, this user is disabled' => 'Извините, этот пользователь заблокирован',
+    'You have to grant access to your profile' => 'Вы должны предоставить доступ к вашему профилю',
+    'Vkontakte App ID' => 'ID приложения в Вконтакте',
+    'Vkontakte App Secret' => 'Секретный код приложения в Вконтакте',
+    'Enable Vkontakte authentication' => 'Включить авторизацию через Вконтакте',
+    'Login with: %s' => 'Войти с помощью: %s',
+    'Facebook Page URL' => 'URL страницы на Facebook',
+    'Facebook page widget' => 'Виджет страницы на Facebook',
+    'Facebook comments widget' => 'Виджет комментариев Facebook',
+    'Vkontakte Group ID' => 'ID группы Вконтакте',
+    'Vkontakte group widget' => 'Виджет группы Вконтакте',
+    'Vkontakte comments widget' => 'Виджет комментариев Вконтакте',
+    'Your new account' => 'Ваш новый аккаунт',
+    'Hello %s !' => 'Привет %s !',
+    'We created an account for you on %s.' => 'Мы создали для вас аккаунт на %s.',
+    'Your new password: %s' => 'Ваш новый пароль: %s',
+    'You recieved this message, because you logged in to %s first time, using your social network account.' => 'Вы получили это письмо, потому-что вы в первый раз авторизовались на %s, использовав свой аккаунт в социальной сети.'
+);

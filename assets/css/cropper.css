@@ -1,0 +1,40 @@
+.image-cropper {
+    position: relative;
+}
+.image-cropper img {
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+}
+.image-cropper .image-cropper-selector {
+    position: absolute;
+    border: 1px solid #2aabd2;
+    background-color: rgba(15, 194, 248, 0.4);
+    z-index: 10;
+}
+.image-cropper .image-cropper-selector .image-cropper-resizer {
+    position: absolute;
+    border: 1px solid #9acfea;
+    background-color: #2aabd2;
+    cursor: nwse-resize;
+}
+.image-cropper .image-cropper-preview {
+    position: absolute;
+    background-color: #cccccc;
+    overflow: hidden;
+}
+.image-cropper-preview-custom {
+    overflow: hidden;
+}
+.image-cropper .image-cropper-preview img,
+.image-cropper-preview-custom img {
+    position: absolute;
+    border: none;
+}
+body.image-cropper-resizing {
+    cursor: nwse-resize;
+}
