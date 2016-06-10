@@ -54,16 +54,22 @@ class Home extends Form
 
         $validator->registerString('home_title',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Page title')));
         $validator->registerNoTags('home_title',Locale::t('Invalid value "%s"',Locale::t('Page title')));
+        $validator->registerUtf8('home_title',Locale::t('Invalid value "%s"',Locale::t('Page title')));
         $validator->registerString('home_window_title',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerNoTags('home_window_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));
+        $validator->registerUtf8('home_window_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerString('home_keywords',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerNoTags('home_keywords',Locale::t('Invalid value "%s"',Locale::t('Keywords')));
+        $validator->registerUtf8('home_keywords',Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerString('home_description',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNoTags('home_description',Locale::t('Invalid value "%s"',Locale::t('Description')));
+        $validator->registerUtf8('home_description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNumber('home_records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit')));
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'home_layout', Locale::t('Invalid value "%s"',Locale::t('Layout')));
         $validator->registerCustom(array(get_class(), 'checkSorting'), 'home_categories_order', Locale::t('Invalid value "%s"',Locale::t('Category sorting')));
         $validator->registerString('home_record_name',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Link record')));
+        $validator->registerNoTags('home_record_name',Locale::t('Invalid value "%s"',Locale::t('Link record')));
+        $validator->registerUtf8('home_record_name',Locale::t('Invalid value "%s"',Locale::t('Link record')));
     }
 
     public static function checkLayout($layout) {

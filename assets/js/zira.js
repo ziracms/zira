@@ -222,7 +222,11 @@
                 'last_id': last_id
             }, zira_bind(this, function(response){
                 $(this).parent('.list-view-more-wrapper').replaceWith(response);
-                $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                if (navigator.userAgent.indexOf('MSIE')<0) {
+                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                } else {
+                    $('.container #content .xhr-list').removeClass('xhr-list');
+                }
             }),'html');
         });
     };
@@ -306,7 +310,11 @@
                 try {
                     zira_parse_content();
                 } catch(err) {}
-                $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                if (navigator.userAgent.indexOf('MSIE')<0) {
+                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                } else {
+                    $('.container #content .xhr-list').removeClass('xhr-list');
+                }
             }),'html');
         });
     };
@@ -336,7 +344,11 @@
                 'ajax': 1
             }, zira_bind(this, function(response){
                 $(this).parent('.search-results-view-more-wrapper').replaceWith(response);
-                $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                if (navigator.userAgent.indexOf('MSIE')<0) {
+                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                } else {
+                    $('.container #content .xhr-list').removeClass('xhr-list');
+                }
             }),'html');
         });
     };

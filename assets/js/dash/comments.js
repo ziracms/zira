@@ -47,7 +47,12 @@ var dash_comments_activate = function() {
 var dash_comments_edit = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
-        desk_multi_prompt(t('Comment'), this.bind(this, function(comment){ desk_window_request(this, url('dash/comments/edit'),{'comment':comment, 'item':selected[0].data}); })); $('#zira-multi-prompt-dialog textarea[name=modal-input]').val(selected[0].title);
+        desk_multi_prompt(t('Comment'), this.bind(this, function(comment){
+            desk_window_request(this, url('dash/comments/edit'),{'comment':comment, 'item':selected[0].data});
+        }));
+        var textarea = document.createElement('textarea');
+        textarea.innerHTML = selected[0].title;
+        $('#zira-multi-prompt-dialog textarea[name=modal-input]').val(textarea.value);
     }
 };
 

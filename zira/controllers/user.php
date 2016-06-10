@@ -653,7 +653,7 @@ class User extends Zira\Controller {
                         $message = new Zira\Models\Message();
                         $message->conversation_id = $conversation_id;
                         $message->user_id = Zira\User::getCurrent()->id;
-                        $message->content = $form->getValue('content');
+                        $message->content = Zira\Helper::utf8Entity(html_entity_decode($form->getValue('content')));
                         $message->creation_date = date('Y-m-d H:i:s');
                         $message->save();
                     }
@@ -709,7 +709,7 @@ class User extends Zira\Controller {
                         $message = new Zira\Models\Message();
                         $message->conversation_id = $conversation_id;
                         $message->user_id = Zira\User::getCurrent()->id;
-                        $message->content = $form->getValue('content');
+                        $message->content = Zira\Helper::utf8Entity(html_entity_decode($form->getValue('content')));
                         $message->creation_date = date('Y-m-d H:i:s');
                         $message->save();
 
@@ -802,7 +802,7 @@ class User extends Zira\Controller {
                     $message = new Zira\Models\Message();
                     $message->conversation_id = $conversation_id;
                     $message->user_id = Zira\User::getCurrent()->id;
-                    $message->content = $form->getValue('content');
+                    $message->content = Zira\Helper::utf8Entity(html_entity_decode($form->getValue('content')));
                     $message->creation_date = date('Y-m-d H:i:s');
                     $message->save();
 

@@ -55,17 +55,22 @@ class Settings extends Form
 
         $validator->registerString('oauth_fb_app_id',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Facebook App ID','oauth')));
         $validator->registerNoTags('oauth_fb_app_id',Locale::t('Invalid value "%s"',Locale::tm('Facebook App ID','oauth')));
+        $validator->registerUtf8('oauth_fb_app_id',Locale::t('Invalid value "%s"',Locale::tm('Facebook App ID','oauth')));
         $validator->registerString('oauth_fb_app_secret',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Facebook App Secret','oauth')));
         $validator->registerNoTags('oauth_fb_app_secret',Locale::t('Invalid value "%s"',Locale::tm('Facebook App Secret','oauth')));
+        $validator->registerUtf8('oauth_fb_app_secret',Locale::t('Invalid value "%s"',Locale::tm('Facebook App Secret','oauth')));
         $validator->registerString('oauth_fb_page_url',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Facebook Page URL','oauth')));
         $validator->registerNoTags('oauth_fb_page_url',Locale::t('Invalid value "%s"',Locale::tm('Facebook Page URL','oauth')));
+        $validator->registerUtf8('oauth_fb_page_url',Locale::t('Invalid value "%s"',Locale::tm('Facebook Page URL','oauth')));
 
         $validator->registerString('oauth_vk_app_id',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App ID','oauth')));
         $validator->registerNoTags('oauth_vk_app_id',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App ID','oauth')));
+        $validator->registerUtf8('oauth_vk_app_id',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App ID','oauth')));
         $validator->registerString('oauth_vk_app_secret',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App Secret','oauth')));
         $validator->registerNoTags('oauth_vk_app_secret',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App Secret','oauth')));
+        $validator->registerUtf8('oauth_vk_app_secret',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte App Secret','oauth')));
         $validator->registerString('oauth_vk_group_id',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Vkontakte Group ID','oauth')));
         $validator->registerNoTags('oauth_vk_group_id',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte Group ID','oauth')));
-
+        $validator->registerUtf8('oauth_vk_group_id',Locale::t('Invalid value "%s"',Locale::tm('Vkontakte Group ID','oauth')));
     }
 }

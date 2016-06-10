@@ -47,7 +47,10 @@ class Recordmeta extends Form
         $validator->registerString('meta_title', null, 255, false, Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerString('meta_keywords', null, 255, false, Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerNoTags('meta_title', Locale::t('Invalid value "%s"',Locale::t('Window title')));
+        $validator->registerUtf8('meta_title', Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerNoTags('meta_keywords', Locale::t('Invalid value "%s"',Locale::t('Keywords')));
+        $validator->registerUtf8('meta_keywords', Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerNoTags('meta_description', Locale::t('Invalid value "%s"',Locale::t('Description')));
+        $validator->registerUtf8('meta_description', Locale::t('Invalid value "%s"',Locale::t('Description')));
     }
 }

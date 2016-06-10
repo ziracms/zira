@@ -62,6 +62,7 @@ class Record extends Form
         $validator->registerCustom(array(get_class(), 'checkName'), array('name','category_id'), Locale::t('Invalid value "%s"',Locale::t('System name')));
         $validator->registerCustom(array(get_class(), 'checkExists'), array('id','name','category_id','language'), Locale::t('Record with such name already exists'));
         $validator->registerString('title', 0, 255, true, Locale::t('Invalid value "%s"',Locale::t('Title')));
+        $validator->registerUtf8('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
     }
 
     public static function checkLanguage($language) {

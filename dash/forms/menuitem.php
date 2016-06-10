@@ -59,10 +59,13 @@ class Menuitem extends Form
         $validator->registerCustom(array(get_class(), 'checkParent'), 'parent_id', Locale::t('An error occurred'));
         $validator->registerString('url', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('URL')));
         $validator->registerNoTags('url', Locale::t('Invalid value "%s"',Locale::t('URL')));
+        $validator->registerUtf8('url', Locale::t('Invalid value "%s"',Locale::t('URL')));
         $validator->registerString('title', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerNoTags('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
+        $validator->registerUtf8('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerString('class', null, 255, false, Locale::t('Invalid value "%s"',Locale::t('Class')));
         $validator->registerNoTags('class', Locale::t('Invalid value "%s"',Locale::t('Class')));
+        $validator->registerUtf8('class', Locale::t('Invalid value "%s"',Locale::t('Class')));
     }
 
     public static function checkLanguage($language) {

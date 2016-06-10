@@ -73,7 +73,7 @@ class Groups extends Model {
 
     public function createGroup($name) {
         $name = trim($name);
-        if (empty($name)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (empty($name) || Zira\Helper::utf8BadMatch($name)) return array('error' => Zira\Locale::t('An error occurred'));
         if (!Permission::check(Permission::TO_CREATE_USERS) || !Permission::check(Permission::TO_EDIT_USERS) || !Permission::check(Permission::TO_DELETE_USERS)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }

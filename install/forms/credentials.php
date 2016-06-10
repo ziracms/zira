@@ -47,14 +47,18 @@ class Credentials extends Form {
 
         $validator->registerString('site_name', null, 255, true, Locale::t('Please fill out form fields'));
         $validator->registerNoTags('site_name', Locale::t('Invalid character detected'));
+        $validator->registerUtf8('site_name', Locale::t('Invalid character detected'));
         $validator->registerString('site_slogan', null, 255, true, Locale::t('Please fill out form fields'));
         $validator->registerNoTags('site_slogan', Locale::t('Invalid character detected'));
+        $validator->registerUtf8('site_slogan', Locale::t('Invalid character detected'));
         $validator->registerEmail('email_from', true, Locale::t('Invalid email'));
         $validator->registerString('secret', 8, 255, true, Locale::t('Secret key is too short'));
         $validator->registerString('firstname', null, 255, true, Locale::t('Please fill out form fields'));
         $validator->registerNoTags('firstname', Locale::t('Invalid character detected'));
+        $validator->registerUtf8('firstname', Locale::t('Invalid character detected'));
         $validator->registerString('secondname', null, 255, true, Locale::t('Please fill out form fields'));
         $validator->registerNoTags('secondname', Locale::t('Invalid character detected'));
+        $validator->registerUtf8('secondname', Locale::t('Invalid character detected'));
         $validator->registerString('username', \Zira\User::LOGIN_MIN_CHARS, \Zira\User::LOGIN_MAX_CHARS, true, Locale::t('Invalid username'));
         $validator->registerRegexp('username', \Zira\User::REGEXP_LOGIN, Locale::t('Login must contain only letters and numbers'));
         $validator->registerString('password', \Zira\User::PASSWORD_MIN_CHARS, \Zira\User::PASSWORD_MAX_CHARS,true,Locale::t('Invalid password'));

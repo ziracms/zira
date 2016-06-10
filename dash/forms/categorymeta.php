@@ -50,5 +50,8 @@ class Categorymeta extends Form
         $validator->registerNoTags('meta_title', Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerNoTags('meta_keywords', Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerNoTags('meta_description', Locale::t('Invalid value "%s"',Locale::t('Description')));
+        $validator->registerUtf8('meta_title', Locale::t('Invalid value "%s"',Locale::t('Window title')));
+        $validator->registerUtf8('meta_keywords', Locale::t('Invalid value "%s"',Locale::t('Keywords')));
+        $validator->registerUtf8('meta_description', Locale::t('Invalid value "%s"',Locale::t('Description')));
     }
 }

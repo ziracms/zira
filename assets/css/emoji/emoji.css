@@ -1,0 +1,111 @@
+.emoji-buttons {
+    padding: 4px;
+    margin: 0px;
+    background-color: #fefefe;
+    background-image: linear-gradient(to bottom, #fefefe 0px, #eeeeee 100%);
+    background-repeat: repeat-x;
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+    border-radius: 4px 4px 0px 0px;
+    overflow: hidden;
+}
+.emoji-input {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.emoji-editable {
+    border: 1px solid #cccccc;
+    background: #FFFFFF;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: auto;
+    outline: none;
+}
+.emoji-button:link,
+.emoji-button:visited {
+    display: block;
+    float: left;
+    border-radius: 4px;
+    text-decoration: none;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+}
+.emoji-button:hover {
+    background: #e4e3f6;
+}
+.emoji-button img {
+    border: none;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+}
+.emoji-button.emoji-bold-button {
+    background-image: url(../../images/emoji/icons.png);
+    background-position: 0 0;
+}
+.emoji-button.emoji-quote-button {
+    background-image: url(../../images/emoji/icons.png);
+    background-position: -24px 0px;
+}
+.emoji-button.emoji-code-button {
+    background-image: url(../../images/emoji/icons.png);
+    background-position: -48px 0px;
+}
+.emoji-button.emoji-image-button {
+    background-image: url(../../images/emoji/icons.png);
+    background-position: -72px 0px;
+}
+.emoji-loader-wrapper {
+    text-align: center;
+    margin: 106px 0px;
+}
+.emoji-header {
+    width: 570px;
+    margin-bottom: 15px;
+}
+.emoji-header .emoji-type-link:link,
+.emoji-header .emoji-type-link:visited {
+    display: inline-block;
+    margin: 0px;
+    padding: 3px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.emoji-header .emoji-type-link:hover,
+.emoji-header .emoji-type-link.active {
+    background: #efefef;
+}
+.emoji-header .emoji-type {
+    border: none;
+    width: 22px;
+    height: 22px;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+.emoji-container {
+    height: 190px;
+    overflow-y: scroll;
+}
+.emoji-container .emoji-image-link:link,
+.emoji-container .emoji-image-link:visited {
+    display: inline-block;
+    margin: 0px 3px;
+    padding: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.emoji-container .emoji-image-link:hover {
+    background: #a9c1f6;
+}
+.emoji-container .emoji-image {
+    border: none;
+    width: 40px;
+    height: 40px;
+}

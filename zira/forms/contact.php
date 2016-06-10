@@ -49,9 +49,11 @@ class Contact extends Form {
         $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
         $validator->registerString('name', 2, 255, false, Locale::t('Invalid name'));
         $validator->registerNoTags('name', Locale::t('Invalid name'));
+        $validator->registerUtf8('name', Locale::t('Invalid name'));
         $validator->registerEmail('email', false, Locale::t('Invalid email'));
         $validator->registerText('message', self::MIN_CHARS, true, Locale::t('Message should contain at least %s characters', self::MIN_CHARS));
         $validator->registerString('message', null, self::MAX_CHARS, true, Locale::t('Sorry, your message is too big'));
         $validator->registerNoTags('message', Locale::t('Message contains bad character'));
+        $validator->registerUtf8('message', Locale::t('Message contains bad character'));
     }
 }

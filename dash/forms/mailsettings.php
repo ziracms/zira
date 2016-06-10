@@ -60,15 +60,27 @@ class Mailsettings extends Form
         $validator->registerEmail('email_from',true,Locale::t('Invalid value "%s"',Locale::t('Send from email')));
         $validator->registerString('email_from_name',null,255,true,Locale::t('Invalid value "%s"',Locale::t('Send from name')));
         $validator->registerNoTags('email_from_name',Locale::t('Invalid value "%s"',Locale::t('Send from name')));
+        $validator->registerUtf8('email_from_name',Locale::t('Invalid value "%s"',Locale::t('Send from name')));
         $validator->registerString('smtp_host',null,255,false,Locale::t('Invalid value "%s"',Locale::t('SMTP host')));
+        $validator->registerUtf8('smtp_host',Locale::t('Invalid value "%s"',Locale::t('SMTP host')));
         $validator->registerNumber('smtp_port',null,null,false,Locale::t('Invalid value "%s"',Locale::t('SMTP port')));
         $validator->registerString('smtp_secure',null,255,false,Locale::t('Invalid value "%s"',Locale::t('SMTP connection')));
+        $validator->registerUtf8('smtp_secure',Locale::t('Invalid value "%s"',Locale::t('SMTP connection')));
         $validator->registerString('smtp_username',null,255,false,Locale::t('Invalid value "%s"',Locale::t('SMTP username')));
+        $validator->registerUtf8('smtp_username',Locale::t('Invalid value "%s"',Locale::t('SMTP username')));
         $validator->registerString('smtp_password',null,255,false,Locale::t('Invalid value "%s"',Locale::t('SMTP password')));
+        $validator->registerUtf8('smtp_password',Locale::t('Invalid value "%s"',Locale::t('SMTP password')));
         $validator->registerString('user_email_confirmation_message',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Email confirmation message')));
+        $validator->registerUtf8('user_email_confirmation_message',Locale::t('Invalid value "%s"',Locale::t('Email confirmation message')));
         $validator->registerString('user_password_recovery_message',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Password recovery message')));
+        $validator->registerUtf8('user_password_recovery_message',Locale::t('Invalid value "%s"',Locale::t('Password recovery message')));
         $validator->registerString('user_new_password_message',null,255,false,Locale::t('Invalid value "%s"',Locale::t('New password message')));
+        $validator->registerUtf8('user_new_password_message',Locale::t('Invalid value "%s"',Locale::t('New password message')));
         $validator->registerString('comment_notification_message',null,255,false,Locale::t('Invalid value "%s"',Locale::t('New comment message')));
+        $validator->registerUtf8('comment_notification_message',Locale::t('Invalid value "%s"',Locale::t('New comment message')));
+        $validator->registerString('feedback_message',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Feedback message')));
+        $validator->registerUtf8('feedback_message',Locale::t('Invalid value "%s"',Locale::t('Feedback message')));
         $validator->registerString('new_message_notification',null,255,false,Locale::t('Invalid value "%s"',Locale::t('New message notification')));
+        $validator->registerUtf8('new_message_notification',Locale::t('Invalid value "%s"',Locale::t('New message notification')));
     }
 }

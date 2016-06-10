@@ -25,7 +25,7 @@ class Oauth {
         return self::$_instance;
     }
 
-    public static function bootstrap() {
+    public function bootstrap() {
         if (Zira\Config::get('oauth_fb_on') && Zira\Config::get('oauth_fb_app_id') && Zira\Config::get('oauth_fb_app_secret')) {
             Zira\Hook::register(Zira\Forms\User\Login::HOOK_NAME, array(get_class(), 'fb_login_form_hook'));
         }

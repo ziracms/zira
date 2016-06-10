@@ -51,7 +51,7 @@ class Recordimages extends Model {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
 
-        $image->description = strip_tags($description);
+        $image->description = Zira\Helper::utf8Clean(strip_tags($description));
         $image->save();
 
         Zira\Cache::clear();

@@ -36,7 +36,7 @@ class Conversation extends Form {
     protected function _render() {
         $html = $this->open();
         $html .= $this->input(Locale::t('Subject').'*','subject');
-        $html .= $this->textarea(Locale::t('Message').'*', 'content');
+        $html .= $this->textarea(Locale::t('Message').'*', 'content', array('class'=>'form-control user-rich-input'));
         $html .= $this->captchaLazy(Locale::t('Enter result').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
@@ -48,7 +48,9 @@ class Conversation extends Form {
         $validator->registerCaptchaLazy($this->_id, Locale::t('Wrong CAPTCHA result'));
         $validator->registerString('subject', null, 255, true, Locale::t('Please specify the subject of your message'));
         $validator->registerNoTags('subject', Locale::t('Subject contains bad character'));
+        $validator->registerUtf8('subject', Locale::t('Subject contains bad character'));
         $validator->registerText('content', \Zira\Models\Message::MIN_CHARS, true, Locale::t('Message should contain at least %s characters', \Zira\Models\Message::MIN_CHARS));
         $validator->registerNoTags('content', Locale::t('Message contains bad character'));
+        //$validator->registerUtf8('content', Locale::t('Message contains bad character'));
     }
 }

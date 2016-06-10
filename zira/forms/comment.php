@@ -56,7 +56,7 @@ class Comment extends Form {
             $html .= Helper::tag_close('div');
         }
 
-        $html .= $this->textarea(Locale::t('Message').'*','comment');
+        $html .= $this->textarea(Locale::t('Message').'*','comment', array('class'=>'form-control user-rich-input'));
         if (Config::get('comments_captcha',true)) {
             $html .= $this->captcha(Locale::t('Enter result').'*');
         } else {
@@ -77,8 +77,20 @@ class Comment extends Form {
         $validator->registerNumber('record_id', null, null, true, Locale::t('An error occurred'));
         $validator->registerString('sender_name', 2, 255, false, Locale::t('Invalid name'));
         $validator->registerNoTags('sender_name', Locale::t('Invalid name'));
-        $validator->registerText('comment', Config::get('comment_min_chars', 10), true, Locale::t('Message should contain at least %s characters', Config::get('comment_min_chars', 10)));
-        $validator->registerString('comment', null, self::MAX_CHARS, true, Locale::t('Sorry, your comment is too big'));
+        $validator->registerUtf8('sender_name', Locale::t('Invalid name'));
+        //$validator->registerText('comment', Config::get('comment_min_chars', 10), true, Locale::t('Message should contain at least %s characters', Config::get('comment_min_chars', 10)));
+        $validator->registerCustom(array(get_class(), 'checkCommentMinLength'), 'comment', Locale::t('Message should contain at least %s characters', Config::get('comment_min_chars', 10)));
+        //$validator->registerString('comment', null, self::MAX_CHARS, true, Locale::t('Sorry, your comment is too big'));
+        $validator->registerCustom(array(get_class(), 'checkCommentMaxLength'), 'comment', Locale::t('Sorry, your comment is too big'));
         $validator->registerNoTags('comment', Locale::t('Message contains bad character'));
+        //$validator->registerUtf8('comment', Locale::t('Message contains bad character'));
+    }
+
+    public static function checkCommentMinLength($comment) {
+        return (mb_strlen(html_entity_decode($comment), CHARSET)>=Config::get('comment_min_chars', 10));
+    }
+
+    public static function checkCommentMaxLength($comment) {
+        return (mb_strlen(html_entity_decode($comment), CHARSET)<=self::MAX_CHARS);
     }
 }

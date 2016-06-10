@@ -13,7 +13,6 @@
 <?php if (isset($title)): ?>
 <h1><?php echo Zira\Helper::html($title) ?></h1>
 <?php endif; ?>
-<?php if (isset($group)) echo '<div><span class="glyphicon glyphicon-user"></span>&nbsp;'.Zira\Helper::html($group).'</div>'; ?>
 <?php if (!empty($email)): ?>
 <div><span class="glyphicon glyphicon-envelope"></span>&nbsp;<?php echo Zira\Helper::html($email); ?><?php if (isset($verified) && !$verified) echo '&nbsp;(<a href="'.Zira\Helper::url('user/confirm').'">'.t('Verify').'</a>)' ?></div>
 <?php endif; ?>
@@ -59,6 +58,7 @@
 </div><!--/user-button-->
 <h2><span class="glyphicon glyphicon-list-alt"></span>&nbsp;<?php echo t('User information') ?></h2>
 <dl class="user-info">
+<?php if (isset($group)) echo '<dt><span class="glyphicon glyphicon-user"></span>&nbsp;'.t('Group').': </dt><dd>'.Zira\Helper::html($group).'</dd>'; ?>
 <?php if (isset($location)) echo '<dt><span class="glyphicon glyphicon-map-marker"></span>&nbsp;'.t('Location').': </dt><dd>'.Zira\Helper::html($location).'</dd>'; ?>
 <?php if (isset($dob)) echo '<dt><span class="glyphicon glyphicon-gift"></span>&nbsp;'.t('Date of birth').': </dt><dd>'.Zira\Helper::html($dob).'</dd>'; ?>
 <?php if (isset($date_created)) echo '<dt><span class="glyphicon glyphicon-calendar"></span>&nbsp;'.t('Sign-up date').': </dt><dd>'.Zira\Helper::html($date_created).'</dd>'; ?>

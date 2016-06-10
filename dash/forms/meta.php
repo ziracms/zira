@@ -54,18 +54,24 @@ class Meta extends Form
 
         $validator->registerString('site_name',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website title')));
         $validator->registerNoTags('site_name',Locale::t('Invalid value "%s"',Locale::t('Website title')));
+        $validator->registerUtf8('site_name',Locale::t('Invalid value "%s"',Locale::t('Website title')));
         $validator->registerString('site_slogan',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website slogan')));
         $validator->registerNoTags('site_slogan',Locale::t('Invalid value "%s"',Locale::t('Website slogan')));
+        $validator->registerUtf8('site_slogan',Locale::t('Invalid value "%s"',Locale::t('Website slogan')));
         $validator->registerString('site_logo',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website logo')));
         $validator->registerCustom(array(get_class(), 'checkLogo'), 'site_logo',Locale::t('Invalid value "%s"',Locale::t('Website logo')));
         $validator->registerNumber('records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit')));
         $validator->registerString('site_title',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerNoTags('site_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));
+        $validator->registerUtf8('site_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerString('site_keywords',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerNoTags('site_keywords',Locale::t('Invalid value "%s"',Locale::t('Keywords')));
+        $validator->registerUtf8('site_keywords',Locale::t('Invalid value "%s"',Locale::t('Keywords')));
         $validator->registerString('site_description',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNoTags('site_description',Locale::t('Invalid value "%s"',Locale::t('Description')));
+        $validator->registerUtf8('site_description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerString('site_copyright',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Copyright string')));
+        $validator->registerUtf8('site_copyright',Locale::t('Invalid value "%s"',Locale::t('Copyright string')));
         $validator->registerString('layout', 0, 0, true, Locale::t('Invalid value "%s"',Locale::t('Default layout')));
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'layout', Locale::t('Invalid value "%s"',Locale::t('Default layout')));
 

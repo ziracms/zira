@@ -14,7 +14,7 @@ class Translates extends Model {
         if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
-        if (empty($string) || empty($language)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (empty($string) || empty($language) || Zira\Helper::utf8BadMatch($string)) return array('error' => Zira\Locale::t('An error occurred'));
 
         $available_languages = $this->getWindow()->getAvailableLanguages();
         if (!array_key_exists($language, $available_languages)) return array('error' => Zira\Locale::t('An error occurred'));
@@ -43,7 +43,7 @@ class Translates extends Model {
         if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
-        if (empty($id) || empty($language)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (empty($id) || empty($language) || Zira\Helper::utf8BadMatch($translate)) return array('error' => Zira\Locale::t('An error occurred'));
 
         $available_languages = $this->getWindow()->getAvailableLanguages();
         if (!array_key_exists($language, $available_languages)) return array('error' => Zira\Locale::t('An error occurred'));

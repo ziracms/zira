@@ -9,12 +9,18 @@
 
     zira_parse_content = function() {
         zira_parse('.parse-content');
+        if (typeof(zira_parse_content.extra)!="undefined") {
+            for (var i=0; i<zira_parse_content.extra.length; i++) {
+                zira_parse_content.extra[i].call();
+            }
+        }
     };
 
     zira_parse = function(selector) {
         $(selector).each(function(){
             if ($(this).hasClass('parsed-content')) return true;
             var content = $(this).html();
+            var fs;
             var p1 = $(this).css('line-height');
             var p2 = $(this).css('font-size');
             if (p1) p1 = parseInt(p1);
@@ -55,7 +61,11 @@
             ']:(': '1f621'
         };
 
-        var emojiBase = zira_base+'assets/images/emoji';
+        var base = zira_base;
+        if (base.substr(-1) == '/') {
+            base = base.substr(0, base.length - 1);
+        }
+        var emojiBase = base+'/assets/images/smileys';
         var p, src;
         for (var i in smilies) {
             p = new RegExp('(^|\\s|>)('+preg_quote(i)+')($|\\s|<)','g');
@@ -71,8 +81,16 @@
     };
 
     zira_parse_urls = function(content) {
-        var p = new RegExp('(^|\\s|>)(http(?:s)?[:][\/][\/][^\\s,\\!\\(\\)\\[\\]"\'<]+?)([,\\.\\!\\(\\)\\[\\]])?($|\\s|<)','g');
-        content = content.replace(p, '$1<a class="external-url" href="$2" rel="nofollow" target="_blank">$2</a>$3$4');
+        var p = new RegExp('(^|\\s|>)(http(?:s)?[:][\/][\/][^\\s"\'<]+?)([,\\.\\!\\(\\)\\[\\]])?($|\\s|<(?!\/a))','g');
+        var m;
+        var i = 0;
+        while(m=p.exec(content)) {
+            if (i>999) break;
+            if (typeof(m)=="undefined" || typeof(m[0])=="undefined" || typeof(m[1])=="undefined" || typeof(m[2])=="undefined" || typeof(m[4])=="undefined") continue;
+            if (typeof(m[3])=="undefined") m[3] = '';
+            content = content.replace(m[0], m[1]+'<a class="external-url" href="'+m[2]+'" rel="nofollow" target="_blank">'+m[2]+'</a>'+m[3]+m[4]);
+            i++;
+        }
         return content;
     };
 
@@ -85,12 +103,15 @@
     zira_parse_code_tags = function(content) {
         var p = new RegExp('<code>(?:<br>)?([\\s\\S]+?)(?:<br>)?</code>','gi');
         var m;
+        var i=0;
         while (m=p.exec(content)) {
+            if (i>999) break;
             if (typeof(m[0])=="undefined" || typeof(m[1])=="undefined") continue;
             var tab = '&nbsp;&nbsp;&nbsp;&nbsp;';
             m[1] = m[1].replace(/[\x20]{4}/g, tab);
             m[1] = m[1].replace(/[\t]/g, tab);
             content = content.replace(m[0], '<code class="parsed-code-tag">'+m[1]+'</code>');
+            i++;
         }
         return content;
     };
@@ -98,28 +119,34 @@
     zira_parse_pre_tags = function(content) {
         var p = new RegExp('<pre>(?:<br>)?([\\s\\S]+?)(?:<br>)?</pre>','gi');
         var m;
+        var i=0;
         while (m=p.exec(content)) {
+            if (i>999) break;
             if (typeof(m[0])=="undefined" || typeof(m[1])=="undefined") continue;
             content = content.replace(m[0], '<pre class="highlight">'+m[1]+'</pre>');
             zira_parse.highlight = true;
+            i++;
         }
         return content;
     };
 
     zira_parse_images = function(content) {
-        var p = new RegExp('<img ([^>]*)alt="([^"]+)"([^>]*)>','gi');
+        var p = new RegExp('<img ([^>]*)alt=(?:["])?([^">]+)(?:["])?([\x20][^>]*)?>','gi');
         var m;
+        var i=0;
         while (m=p.exec(content)) {
+            if (i>999) break;
             if (typeof(m[0])=="undefined" ||
                 typeof(m[1])=="undefined" ||
                 typeof(m[2])=="undefined" ||
                 typeof(m[3])=="undefined"
             ) continue;
-            if (m[0].indexOf(' class="image"')<0 || m[0].indexOf(' class="image parsed-image"')>0) continue;
+            if ((m[0].indexOf(' class="image"')<0 && m[0].indexOf(' class=image')<0) || m[0].indexOf(' class="image parsed-image"')>0) continue;
             content = content.replace(m[0], '<div class="image-wrapper">'+
                                             '<img class="image parsed-image" '+m[1]+'alt="'+m[2]+'"'+m[3]+'>'+
                                             '<div class="image-description">'+m[2]+
                                             '</div></div>');
+            i++;
         }
         return content;
     };
@@ -147,7 +174,8 @@
 
     function supportsSVG () {
         return !!document.createElementNS &&
-                !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+                !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect &&
+                !navigator.userAgent.match(/(android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobi|palm)/i);
     }
 
     function preg_quote(str) {

@@ -78,7 +78,7 @@ class Comments extends Zira\Controller {
                     $path_offset = Zira\Models\Comment::getPathOffset($record->id, $parent);
                     $comment->path_offset = $path_offset+1;
                     $comment->sort_path = Zira\Models\Comment::getSortPath($path_offset, $parent);
-                    $comment->content = strip_tags($form->getValue('comment'));
+                    $comment->content = Zira\Helper::utf8Entity(html_entity_decode($form->getValue('comment')));
                     $comment->creation_date = date('Y-m-d H:i:s');
                     if (Zira\Permission::check(Zira\Permission::TO_MODERATE_COMMENTS) ||
                         !Zira\Config::get('comment_moderate', true)

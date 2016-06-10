@@ -32,6 +32,7 @@ class Validator {
     const TYPE_REGEXP = 'regexp';
     const TYPE_EXISTS = 'exists';
     const TYPE_NO_TAGS = 'no_tags';
+    const TYPE_UTF8 = 'utf8';
     const TYPE_CUSTOM = 'custom';
 
     public function setToken($token) {
@@ -101,8 +102,24 @@ class Validator {
     protected function validateNoTags(array $field) {
         $value = $this->getValue($field);
         if (empty($value)) return true;
-        if (strpos($value, '<')!==false || strpos($value, '>')!==false) return false;
-        return true;
+//        if (strpos($value, '<')!==false || strpos($value, '>')!==false) return false;
+//        return true;
+        return !preg_match('/[<][a-z\/][^>]*[>]/si', $value);
+    }
+
+    public function registerUtf8($field,$message) {
+        $this->_fields []= array(
+            'type' => self::TYPE_UTF8,
+            'token' => $this->_token,
+            'name' => $field,
+            'message' => $message
+        );
+    }
+
+    protected function validateUtf8(array $field) {
+        $value = $this->getValue($field);
+        if (empty($value)) return true;
+        return !Zira\Helper::utf8BadMatch($value);
     }
 
     public function registerNumber($field,$min_value,$max_value,$required,$message) {
@@ -436,6 +453,7 @@ class Validator {
     protected function validateField(array $field) {
         if ($field['type']==self::TYPE_STRING && !$this->validateString($field)) return false;
         if ($field['type']==self::TYPE_NO_TAGS && !$this->validateNoTags($field)) return false;
+        if ($field['type']==self::TYPE_UTF8 && !$this->validateUtf8($field)) return false;
         if ($field['type']==self::TYPE_NUMBER && !$this->validateNumber($field)) return false;
         if ($field['type']==self::TYPE_EMAIL && !$this->validateEmail($field)) return false;
         if ($field['type']==self::TYPE_DATE && !$this->validateDate($field)) return false;

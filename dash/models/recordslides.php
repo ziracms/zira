@@ -51,7 +51,7 @@ class Recordslides extends Model {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
 
-        $slide->description = strip_tags($description);
+        $slide->description = Zira\Helper::utf8Clean(strip_tags($description));
         $slide->save();
 
         Zira\Cache::clear();

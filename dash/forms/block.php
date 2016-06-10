@@ -51,6 +51,8 @@ class Block extends Form
     {
         $validator = $this->getValidator();
         $validator->registerString('name', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('Title')));
+        $validator->registerUtf8('name', Locale::t('Invalid value "%s"',Locale::t('Title')));
+        $validator->registerUtf8('content', Locale::t('Invalid value "%s"',Locale::t('Content')));
 
         $id = (int)$this->getValue('id');
         if (empty($id)) {

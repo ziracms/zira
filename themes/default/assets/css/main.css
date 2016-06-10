@@ -451,6 +451,7 @@ ul#language-switcher li a.active {
 .image {
     max-width:100%;
     height:auto;
+    width: auto\9; /** ie8 hack **/
     display: inline-block;
     vertical-align: top;
     margin: 0px 18px 18px 0px;
@@ -461,6 +462,7 @@ ul#language-switcher li a.active {
 .image-wrapper {
     max-width:100%;
     display: inline-block;
+    display: block\9; /** ie8 hack **/
     vertical-align: top;
     margin: 0px 18px 18px 0px;
     background: #DDE0E4;
@@ -791,6 +793,7 @@ article .rating .share-wrapper .share-btn {
 .comments .comments-item .comment-avatar {
     max-width: 50px;
     height: auto;
+    width: auto\9;  /** ie8 hack **/
     display: block;
     float: left;
     border-radius: 5px;

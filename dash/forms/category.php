@@ -52,6 +52,7 @@ class Category extends Form
         $validator->registerCustom(array(get_class(), 'checkName'), array('name','root'), Locale::t('Invalid value "%s"',Locale::t('System name')));
         $validator->registerCustom(array(get_class(), 'checkExists'), array('id','name','root'), Locale::t('Category with such name already exists'));
         $validator->registerString('title', 0, 255, true, Locale::t('Invalid value "%s"',Locale::t('Title')));
+        $validator->registerUtf8('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerString('layout', 0, 0, true, Locale::t('Invalid value "%s"',Locale::t('Layout')));
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'layout', Locale::t('Invalid value "%s"',Locale::t('Layout')));
     }

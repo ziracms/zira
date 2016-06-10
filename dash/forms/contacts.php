@@ -61,9 +61,11 @@ class Contacts extends Form
 
         $validator->registerString('contact_name',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Full name / Company')));
         $validator->registerNoTags('contact_name',Locale::t('Invalid value "%s"',Locale::t('Full name / Company')));
+        $validator->registerUtf8('contact_name',Locale::t('Invalid value "%s"',Locale::t('Full name / Company')));
 
         $validator->registerString('contact_address',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Address')));
         $validator->registerNoTags('contact_address',Locale::t('Invalid value "%s"',Locale::t('Address')));
+        $validator->registerUtf8('contact_address',Locale::t('Invalid value "%s"',Locale::t('Address')));
 
         $validator->registerEmail('feedback_email',false,Locale::t('Invalid value "%s"',Locale::t('Email')));
 
@@ -72,33 +74,43 @@ class Contacts extends Form
 
         $validator->registerString('contact_phone',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Phone')));
         $validator->registerNoTags('contact_phone',Locale::t('Invalid value "%s"',Locale::t('Phone')));
+        $validator->registerUtf8('contact_phone',Locale::t('Invalid value "%s"',Locale::t('Phone')));
 
         $validator->registerString('contact_info',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Information')));
         $validator->registerNoTags('contact_info',Locale::t('Invalid value "%s"',Locale::t('Information')));
+        $validator->registerUtf8('contact_info',Locale::t('Invalid value "%s"',Locale::t('Information')));
 
         $validator->registerString('contact_fb',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Facebook')));
         $validator->registerNoTags('contact_fb',Locale::t('Invalid value "%s"',Locale::t('Facebook')));
+        $validator->registerUtf8('contact_fb',Locale::t('Invalid value "%s"',Locale::t('Facebook')));
 
         $validator->registerString('contact_gp',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Google +')));
         $validator->registerNoTags('contact_gp',Locale::t('Invalid value "%s"',Locale::t('Google +')));
+        $validator->registerUtf8('contact_gp',Locale::t('Invalid value "%s"',Locale::t('Google +')));
 
         $validator->registerString('contact_tw',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Twitter')));
         $validator->registerNoTags('contact_tw',Locale::t('Invalid value "%s"',Locale::t('Twitter')));
+        $validator->registerUtf8('contact_tw',Locale::t('Invalid value "%s"',Locale::t('Twitter')));
 
         $validator->registerString('contact_vk',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Vkontakte')));
         $validator->registerNoTags('contact_vk',Locale::t('Invalid value "%s"',Locale::t('Vkontakte')));
+        $validator->registerUtf8('contact_vk',Locale::t('Invalid value "%s"',Locale::t('Vkontakte')));
 
         $validator->registerString('google_map_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Google Maps API key')));
         $validator->registerNoTags('google_map_key',Locale::t('Invalid value "%s"',Locale::t('Google Maps API key')));
+        $validator->registerUtf8('google_map_key',Locale::t('Invalid value "%s"',Locale::t('Google Maps API key')));
 
         $validator->registerString('yandex_map_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Yandex Maps API key')));
         $validator->registerNoTags('yandex_map_key',Locale::t('Invalid value "%s"',Locale::t('Yandex Maps API key')));
+        $validator->registerUtf8('yandex_map_key',Locale::t('Invalid value "%s"',Locale::t('Yandex Maps API key')));
 
         $validator->registerString('maps_latitude',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Latitude')));
         $validator->registerNoTags('maps_latitude',Locale::t('Invalid value "%s"',Locale::t('Latitude')));
+        $validator->registerUtf8('maps_latitude',Locale::t('Invalid value "%s"',Locale::t('Latitude')));
 
         $validator->registerString('maps_longitude',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Longitude')));
         $validator->registerNoTags('maps_longitude',Locale::t('Invalid value "%s"',Locale::t('Longitude')));
+        $validator->registerUtf8('maps_longitude',Locale::t('Invalid value "%s"',Locale::t('Longitude')));
 
         $picture = (string)$this->getValue('contact_image');
         if (!empty($picture)) {

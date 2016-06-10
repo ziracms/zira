@@ -54,7 +54,8 @@ class Recordtext extends Model {
             }
         }
 
-        $record->content = $content;
+        $record->description = Zira\Helper::utf8Clean($record->description);
+        $record->content = Zira\Helper::utf8Entity($content);
         $record->modified_date = date('Y-m-d H:i:s');
         $record->save();
 
@@ -113,7 +114,7 @@ class Recordtext extends Model {
             $draft->creation_date = date('Y-m-d H:i:s');
         }
 
-        $draft->content = $content;
+        $draft->content = Zira\Helper::utf8Entity($content);
         $draft->modified_date = date('Y-m-d H:i:s');
         $draft->published = Zira\Models\Draft::STATUS_NOT_PUBLISHED;
         $draft->save();

@@ -43,7 +43,9 @@ class Register extends Form {
         $validator->registerString('firstname',0,0,true,Locale::t('Please enter your first name'));
         $validator->registerString('secondname',0,0,true,Locale::t('Please enter your second name'));
         $validator->registerNoTags('firstname', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('firstname', Locale::t('Invalid character specified'));
         $validator->registerNoTags('secondname', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('secondname', Locale::t('Invalid character specified'));
         $validator->registerString('username',User::LOGIN_MIN_CHARS,User::LOGIN_MAX_CHARS,true,Locale::t('Invalid username'));
         $validator->registerEmail('email',true,Locale::t('Invalid email'));
         $validator->registerString('password',User::PASSWORD_MIN_CHARS,User::PASSWORD_MAX_CHARS,true,Locale::t('Invalid password'));

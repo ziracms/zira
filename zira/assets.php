@@ -54,6 +54,14 @@ class Assets {
         return self::$_js_assets;
     }
 
+    public static function registerCSSAsset($asset) {
+        self::$_css_assets [] = $asset;
+    }
+
+    public static function registerJSAsset($asset) {
+        self::$_js_assets []= $asset;
+    }
+
     public static function mergeCSS() {
         self::$_css_mtime = null;
         if (!is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR)) throw new \Exception('Cache dir is not writable');
@@ -66,7 +74,11 @@ class Assets {
             $path = ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR . $css_asset;
             if (!file_exists($path) || !is_readable($path)) throw new \Exception('Asset '.$css_asset.' not found');
             $data = '/** '.$css_asset.' **/'."\r\n\r\n";
-            $data .= file_get_contents($path);
+            $content = file_get_contents($path);
+            while(strpos($content, '../../')!==false) {
+                $content = str_replace('../../', '../', $content);
+            }
+            $data .= $content;
             $data .= "\r\n\r\n";
             fwrite($f, $data);
         }

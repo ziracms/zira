@@ -47,6 +47,8 @@ class Mailing extends Form
         $validator->registerNumber('offset',0,null,true,Locale::t('An error occurred'));
         $validator->registerString('subject', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('Subject')));
         $validator->registerNoTags('subject', Locale::t('Invalid value "%s"',Locale::t('Subject')));
+        $validator->registerUtf8('subject', Locale::t('Invalid value "%s"',Locale::t('Subject')));
         $validator->registerNoTags('message', Locale::t('Invalid value "%s"',Locale::t('Message')));
+        $validator->registerUtf8('message', Locale::t('Invalid value "%s"',Locale::t('Message')));
     }
 }

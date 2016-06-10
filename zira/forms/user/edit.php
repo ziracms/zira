@@ -48,10 +48,15 @@ class Edit extends Form {
         $validator->registerString('firstname',0,0,true,Locale::t('Please enter your first name'));
         $validator->registerString('secondname',0,0,true,Locale::t('Please enter your second name'));
         $validator->registerNoTags('firstname', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('firstname', Locale::t('Invalid character specified'));
         $validator->registerNoTags('secondname', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('secondname', Locale::t('Invalid character specified'));
         $validator->registerNoTags('country', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('country', Locale::t('Invalid character specified'));
         $validator->registerNoTags('city', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('city', Locale::t('Invalid character specified'));
         $validator->registerNoTags('street', Locale::t('Invalid character specified'));
+        $validator->registerUtf8('street', Locale::t('Invalid character specified'));
         $validator->registerPhone('phone', false, Locale::t('Phone should be specified in international format'));
         $validator->registerDate('dob', false, Locale::t('Invalid date format'));
         if (!User::isUserPasswordChecked()) {

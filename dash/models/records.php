@@ -118,7 +118,7 @@ class Records extends Model {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $category->description = strip_tags($description);
+        $category->description = Zira\Helper::utf8Clean(strip_tags($description));
         $category->save();
 
         Zira\Cache::clear();
@@ -143,7 +143,7 @@ class Records extends Model {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $record->description = strip_tags($description);
+        $record->description = Zira\Helper::utf8Clean(strip_tags($description));
         // keep draft
         //$record->modified_date = date('Y-m-d H:i:s');
         $record->save();

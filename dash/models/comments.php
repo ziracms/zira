@@ -103,7 +103,7 @@ class Comments extends Model {
         $content = str_replace("\r",'',$content);
         $content = str_replace("\n","\r\n",$content);
 
-        $comment->content = strip_tags($content);
+        $comment->content = Zira\Helper::utf8Entity($content);
         $comment->save();
 
         return array('message' => Zira\Locale::t('Successfully saved'), 'reload'=>$this->getJSClassName());

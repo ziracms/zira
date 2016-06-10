@@ -16,7 +16,7 @@ class User {
     const PASSWORD_MAX_CHARS = 255;
 
     const REGEXP_LOGIN = '/^[a-z0-9_]+$/i';
-    const REGEXP_PASSWORD = '/^[^\r\n\t]+$/';
+    const REGEXP_PASSWORD = '/^[^\r\n\t\x{10000}-\x{10FFFF}]+$/u';
 
     const GROUP_SUPERADMIN = 1;
     const GROUP_ADMIN = 2;
