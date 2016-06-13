@@ -150,3 +150,6 @@ img.user-photo-big {
     max-width: 100%;
     height: auto;
 }
+.progress-bar {
+    transition: none;
+}

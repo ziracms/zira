@@ -44,7 +44,7 @@
             $(this).parents('form').eq(0).bind('xhr-submit-error', zira_bind(this, emoji_submit_error));
             // creating contenteditable
             if (typeof(emoji_paste.contentEditable)!="undefined" && emoji_paste.contentEditable) {
-                $(this).after('<div class="emoji-editable" id="'+$(this).attr('id')+'-editable" contenteditable="true"></div>');
+                $(this).after('<div class="emoji-editable contenteditable" id="'+$(this).attr('id')+'-editable" contenteditable="true"></div>');
                 $(this).parent().children('.emoji-editable').css({
                     'height': $(this).outerHeight()
                 }).keyup(zira_bind(this, function(e){

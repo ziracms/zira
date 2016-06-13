@@ -109,3 +109,17 @@
     width: 40px;
     height: 40px;
 }
+.contenteditable q,
+.contenteditable code {
+    display: block;
+}
+.contenteditable q {
+    background: #e9e9ff;
+    border-left: 2px solid #b2b5fd;
+    padding-left: 4px;
+}
+.contenteditable code {
+    border-radius: 0;
+    border-left: 2px solid #b1566f;
+    padding-left: 4px;
+}
