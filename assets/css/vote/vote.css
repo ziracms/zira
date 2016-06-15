@@ -1,0 +1,32 @@
+.vote-options-wrapper p.subject,
+.vote-results-wrapper p.subject {
+    margin-bottom: 10px;
+}
+.vote-options-wrapper ul,
+.vote-results-wrapper ul {
+    margin: 0px 4px 10px;
+    padding: 0px;
+    list-style-type: none;
+}
+.vote-options-wrapper ul li {
+    margin-bottom: 4px;
+}
+.vote-options-wrapper ul label {
+    font-weight: normal;
+    margin-left: 7px;
+}
+.vote-results-line {
+    height: 7px;
+    background: #ADADAD;
+    border-radius: 3px;
+}
+ul.vote-results {
+    margin: 0px;
+}
+ul.vote-results li {
+    margin-bottom: 10px;
+}
+ul.vote-results li .vote-result {
+    color: #7B6D7E;
+    font-weight: bold;
+}

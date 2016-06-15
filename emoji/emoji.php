@@ -26,6 +26,7 @@ class Emoji {
     }
 
     public function bootstrap() {
+        Zira\View::addDefaultAssets();
         Zira\View::addStyle('emoji/emoji.css');
         Zira\View::addScript('emoji/emoji.js');
 
