@@ -2,6 +2,6 @@ cache/
 log/
 uploads/
 .idea/
-config.php
-robots.txt
-.htaccess
+/config.php
+/robots.txt
+/.htaccess
