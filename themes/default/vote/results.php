@@ -13,7 +13,7 @@
 <ul class="vote-results">
 <?php foreach($options as $option): ?>
 <li>
-<?php echo '<div>'.t(Zira\Helper::html($option->content)).' &mdash; <span class="vote-result">'.Zira\Helper::html($option->count).'</span></div>' ?>
+<?php echo '<div><span class="glyphicon glyphicon-check"></span>&nbsp;'.t(Zira\Helper::html($option->content)).' &mdash; <span class="vote-result">'.Zira\Helper::html($option->count).'</span></div>' ?>
 <div class="vote-results-line" style="width:<?php echo round(($option->count/$total)*100) ?>%"></div>
 </li>
 <?php endforeach; ?>
