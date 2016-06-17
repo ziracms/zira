@@ -15,7 +15,7 @@ class Record extends Orm {
     const STATUS_FRONT_PAGE = 1;
     const STATUS_NOT_FRONT_PAGE = 0;
 
-    const REGEXP_NAME = '/^[a-zа-я]+[a-zа-я0-9\._-]*$/u';
+    const REGEXP_NAME = '/^[a-zа-яё]+[a-zа-яё0-9\._-]*$/ui';
 
     public static $table = 'records';
     public static $pk = 'id';

@@ -49,9 +49,11 @@ class Index extends Zira\Controller {
 
             if ($co==0) {
                 foreach($options as $option_id) {
+//                    $option = new Vote\Models\Voteoption($option_id);
+//                    if (!$option->loaded()) continue;
                     $res = new Vote\Models\Voteresult();
                     $res->vote_id = $vote->id;
-                    $res->option_id = $option_id;
+                    $res->option_id = intval($option_id);
                     $res->user_id = $user_id;
                     $res->anonymous_id = $anonymous_id;
                     $res->creation_date = date('Y-m-d H:i:s');

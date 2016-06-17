@@ -13,7 +13,7 @@
             var t = $('.form-alert').eq(0).offset().top;
             if (t>100) {
                 t = t - 50;
-                $('html, body').animate({'scrollTop': t}, 1000);
+                $('html, body').animate({'scrollTop': t}, 500);
             }
         }
         /**

@@ -246,7 +246,13 @@ var desk_window_content = function(wnd) {
     var data = $(wnd.getContent()).find('form').eq(0).serializeArray();
     var content = {};
     for (var i=0; i<data.length; i++) {
-        content[data[i]['name']]=data[i]['value'];
+        if (data[i]['name'].substring(data[i]['name'].length-2)=='[]') {
+            var _n = data[i]['name'].substring(0, data[i]['name'].length-2);
+            if (typeof(content[_n])=="undefined") content[_n] = [];
+            content[_n].push(data[i]['value']);
+        } else {
+            content[data[i]['name']]=data[i]['value'];
+        }
     }
 
     return content;
@@ -586,6 +592,7 @@ var desk_post = function(url, data, onSuccess, onError, onFinish) {
             urldata += i+'='+encodeURIComponent(data[i]);
         }
     }
+
     xhr.send(urldata);
     return xhr;
 };
@@ -617,7 +624,9 @@ var desk_window_form_init = function(window) {
         var window_id = window.getId();
         $(window.content).find('form.dash-window-form .form-control').each(function(){
             var id = $(this).attr('id');
-            $(this).attr('id',id+'-'+window_id);
+            if (id.length>0) {
+                $(this).attr('id', id + '-' + window_id);
+            }
             var label = $(this).parents('.form-group').find('.control-label');
             if ($(label).length>0) {
                 var for_id = $(label).attr('for');

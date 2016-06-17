@@ -1,19 +1,19 @@
 <?php
 /**
  * Zira project.
- * vote.php
+ * eform.php
  * (c)2016 http://dro1d.ru
  */
 
-namespace Vote\Windows;
+namespace Eform\Windows;
 
 use Zira;
 use Dash;
 use Zira\Permission;
 
-class Vote extends Dash\Windows\Window {
-    protected static $_icon_class = 'glyphicon glyphicon-list-alt';
-    protected static $_title = 'Vote subject';
+class Eform extends Dash\Windows\Window {
+    protected static $_icon_class = 'glyphicon glyphicon-th-list';
+    protected static $_title = 'Email form';
 
     public $item;
 
@@ -35,21 +35,19 @@ class Vote extends Dash\Windows\Window {
 
     public function load() {
         if (!empty($this->item)) $this->item=intval($this->item);
-        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 
-        $form = new \Vote\Forms\Vote();
+        $form = new \Eform\Forms\Eform();
         if (!empty($this->item)) {
-            $vote = new \Vote\Models\Vote($this->item);
-            if (!$vote->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
-            $form->setValues($vote->toArray());
-            $this->setTitle(Zira\Locale::tm(self::$_title,'vote').' - '.$vote->subject);
+            $eform = new \Eform\Models\Eform($this->item);
+            if (!$eform->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+            $form->setValues($eform->toArray());
+            $this->setTitle(Zira\Locale::tm(self::$_title,'eform').' - '.$eform->name);
         } else {
-            $form->setValues(array(
-                'placeholder' => Zira\View::VAR_CONTENT_BOTTOM
-            ));
-            $this->setTitle(Zira\Locale::tm('New vote subject','vote'));
+            $form->setValues(array('active'=>1));
+            $this->setTitle(Zira\Locale::tm('New email form','eform'));
         }
 
         $this->setBodyContent($form);

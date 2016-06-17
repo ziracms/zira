@@ -31,7 +31,7 @@ class Vote {
         Zira\View::addStyle('vote/vote.css');
         Zira\View::addScript('vote/vote.js');
 
-        if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_OPTIONS)) {
+        if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-stats', Zira\Locale::tm('Votes', 'vote'), null, 'votesWindow()');
             Dash\Dash::getInstance()->registerModuleWindowClass('votesWindow', 'Vote\Windows\Votes', 'Vote\Models\Votes');
             Dash\Dash::getInstance()->registerModuleWindowClass('voteWindow', 'Vote\Windows\Vote', 'Vote\Models\Votes');

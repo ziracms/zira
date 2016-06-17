@@ -204,7 +204,8 @@ class Router {
             !empty(self::$request) &&
             self::$request!='cron' &&
             self::$request!='sitemap.xml' &&
-            self::$module!='dash'
+            self::$module!='dash' &&
+            self::$controller!='dash'
         ) {
             self::$language = Config::get('language');
             Response::redirect(self::$language.'/'.self::$request, true);

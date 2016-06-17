@@ -42,7 +42,7 @@ class Vote extends Form
             $placeholders = Zira\Models\Widget::getPlaceholders();
             $html .= $this->selectDropdown(Locale::t('Widget placeholder').'*','placeholder',$placeholders);
         }
-        $html .= $this->input(Locale::tm('Subject','vote'), 'subject');
+        $html .= $this->input(Locale::tm('Subject','vote').'*', 'subject');
         $html .= $this->checkbox(Locale::tm('Multiple selection','vote'), 'multiple', null, false);
         $html .= $this->hidden('id');
         $html .= $this->close();
@@ -52,7 +52,7 @@ class Vote extends Form
     protected function _validate() {
         $validator = $this->getValidator();
 
-        $validator->registerString('subject',null,255,false,Locale::t('Invalid value "%s"',Locale::tm('Subject','vote')));
+        $validator->registerString('subject',null,255,true,Locale::t('Invalid value "%s"',Locale::tm('Subject','vote')));
         $validator->registerNoTags('subject',Locale::t('Invalid value "%s"',Locale::tm('Subject','vote')));
         $validator->registerUtf8('subject',Locale::t('Invalid value "%s"',Locale::tm('Subject','vote')));
 

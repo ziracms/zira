@@ -49,8 +49,13 @@ class Mail {
 
         self::$_mailer->addAddress($email);
 
-        if (!empty($filename) && file_exists($filename)) {
+        if (!empty($filename) && !is_array($filename) && file_exists($filename)) {
             self::$_mailer->addAttachment($filename);
+        } else if (!empty($filename) && is_array($filename)) {
+            foreach($filename as $_filename) {
+                if (!file_exists($_filename)) continue;
+                self::$_mailer->addAttachment($_filename);
+            }
         }
 
         self::$_mailer->isHTML(self::$_is_html);

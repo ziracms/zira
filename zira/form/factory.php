@@ -70,6 +70,7 @@ class Factory {
     protected $_date_wrap_class = 'date';
 
     protected $_checkbox_inline_label = true;
+    protected $_checkbox_label_with_desc = false;
 
     public function __construct($id, $url=null, $method = Request::POST) {
         $this->_id = $id;
@@ -524,7 +525,7 @@ class Factory {
         if (!$attributes) $attributes = array();
         if ($checked) $attributes['checked'] = 'checked';
 
-        if ($this->_checkbox_inline_label) {
+        if ($this->_checkbox_inline_label && !$this->_checkbox_label_with_desc) {
             if (!isset($attributes['class'])) $attributes['class'] = $this->_input_class;
             if (!isset($attributes['style'])) $attributes['style'] = 'width:auto;height:auto;outline:none';
             $field = Form::checkbox($this->_token, $name, null, $attributes, ($fill ? $this->_fill : false));
@@ -533,12 +534,23 @@ class Factory {
             $html .= Helper::tag_close('label');
             $elems = $this->wrap($html,$this->_checkbox_wrap_class.' '.$this->_checkbox_inline_wrap_class);
             return $this->wrap($this->wrap($elems,$this->_input_offset_wrap_class));
-        } else {
+        } else if (!$this->_checkbox_label_with_desc) {
             $label = Form::label($label, $name, array('class'=>$this->_label_class));
             if (!isset($attributes['class'])) $attributes['class'] = $this->_input_class;
             if (!isset($attributes['style'])) $attributes['style'] = 'width:auto;outline:none';
             $field = Form::checkbox($this->_token, $name, null, $attributes, ($fill ? $this->_fill : false));
             return $this->wrap($label.$this->wrap($field,$this->_input_wrap_class));
+        } else {
+            $desc = isset($attributes['title']) ? $attributes['title'] : '';
+            $label = Form::label($label, $name, array('class'=>$this->_label_class));
+            if (!isset($attributes['class'])) $attributes['class'] = $this->_input_class;
+            if (!isset($attributes['style'])) $attributes['style'] = 'width:auto;height:auto;outline:none';
+            $field = Form::checkbox($this->_token, $name, null, $attributes, ($fill ? $this->_fill : false));
+            $html = Helper::tag_open('label', array('for' => $name, 'class'=>$this->_label_class, 'style'=>'width:auto;padding-top:3px'));
+            $html .= $field . $desc;
+            $html .= Helper::tag_close('label');
+            $elems = $this->wrap($html,$this->_checkbox_wrap_class.' '.$this->_checkbox_inline_wrap_class);
+            return $this->wrap($label.$this->wrap($elems,$this->_input_wrap_class));
         }
     }
 
@@ -553,6 +565,9 @@ class Factory {
         $html .= $field.$label;
         $html .= Helper::tag_close('label');
         $html .= Helper::tag_close('div');
+        if (isset($attributes['title'])) {
+            $html .= Helper::tag('p', $attributes['title'], array('class'=>$this->_help_class));
+        }
         return $this->wrap($this->wrap($html,$this->_input_offset_wrap_class));
     }
 
@@ -570,6 +585,9 @@ class Factory {
             $html .= $field.$title;
             $html .= Helper::tag_close('label');
             $elems .= $this->wrap($html,$this->_radio_wrap_class);
+        }
+        if (isset($attributes['title'])) {
+            $elems .= Helper::tag('p', $attributes['title'], array('class'=>$this->_help_class));
         }
         $label = Form::label($label, null, array('class'=>$this->_label_class));
         return $this->wrap($label.$this->wrap($elems,$this->_input_wrap_class));
@@ -593,6 +611,9 @@ class Factory {
             $elems .= $html;
         }
         $elems .= Helper::tag_close('div');
+        if (isset($attributes['title'])) {
+            $elems .= Helper::tag('p', $attributes['title'], array('class'=>$this->_help_class));
+        }
         $label = Form::label($label, null, array('class'=>$this->_label_class));
         return $this->wrap($label.$this->wrap($elems,$this->_input_wrap_class));
     }
@@ -679,7 +700,7 @@ class Factory {
         return $this->wrap($this->wrap($field,$this->_input_offset_wrap_class));
     }
 
-    public function captcha($label) {
+    public function captcha($label, $description = null) {
         $error_class = '';
         if ($this->isErrorField(CAPTCHA_NAME)) $error_class=' '.$this->_field_error_class;
         $label = Form::label($label, null, array('class'=>$this->_label_class));
@@ -691,6 +712,9 @@ class Factory {
             $this->_captcha_refresh_wrapper_class,
             Helper::tag('span',null,array('class'=>$this->_captcha_refresh_ico_class))
         );
+        if (isset($description)) {
+            $captcha .= Helper::tag('p', $description, array('class'=>$this->_help_class));
+        }
         return $this->wrap($label.$this->wrap($captcha,$this->_captcha_wrapper_class));
     }
 

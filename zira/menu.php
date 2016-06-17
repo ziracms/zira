@@ -87,6 +87,12 @@ class Menu {
                     }
                     self::$_secondary_parent_id = $item->id;
                 }
+                if (self::$_primary_active_url &&
+                    !self::$_secondary_parent_id &&
+                    $item->url == self::$_primary_active_url
+                ) {
+                    self::$_secondary_parent_id = $item->id;
+                }
             } else if ($item->menu_id == self::MENU_FOOTER && $item->active == Models\Menu::STATUS_ACTIVE) {
                 if ($item->parent_id > 0) {
                     if (!array_key_exists($item->parent_id, self::$_footer_dropdowns)) {
@@ -251,7 +257,7 @@ class Menu {
         foreach($categories as $category) {
             if ($category->name == $url) return true;
         }
-        return false;
+        return $url == Router::getRequest();
     }
 
     public static function getPrimaryMenuActiveURL() {
@@ -268,8 +274,26 @@ class Menu {
         return self::$_secondary_active_url;
     }
 
+    public static function setPrimaryMenuActiveURL($url) {
+        self::$_primary_active_url = $url;
+    }
+
+    public static function setFooterMenuActiveURL($url) {
+        self::$_footer_active_url = $url;
+    }
+
+    public static function setSecondaryMenuActiveURL($url) {
+        self::$_secondary_active_url = $url;
+    }
+
     public static function getSecondaryParentId() {
         if (!self::$_initialized) self::init();
         return self::$_secondary_parent_id;
+    }
+
+    public static function setActiveUrl($url) {
+        self::setPrimaryMenuActiveURL($url);
+        self::setFooterMenuActiveURL($url);
+        self::setSecondaryMenuActiveURL($url);
     }
 }

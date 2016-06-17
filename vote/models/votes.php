@@ -14,7 +14,7 @@ use Zira\Permission;
 
 class Votes extends Dash\Models\Model {
     public function save($data) {
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 
