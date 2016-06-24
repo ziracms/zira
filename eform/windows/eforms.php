@@ -12,7 +12,7 @@ use Zira;
 use Eform;
 use Zira\Permission;
 
-class Eforms extends Dash\WIndows\Window {
+class Eforms extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-send';
     protected static $_title = 'Email forms';
 
@@ -41,7 +41,7 @@ class Eforms extends Dash\WIndows\Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_eform_page, this);', 'edit', true, array('typo'=>'page'))
+            $this->createMenuDropdownItem(Zira\Locale::tm('Open page', 'eform'), 'glyphicon glyphicon-new-window', 'desk_call(dash_eform_page, this);', 'edit', true, array('typo'=>'page'))
         );
 
         $this->addDefaultContextMenuItem(
@@ -54,7 +54,7 @@ class Eforms extends Dash\WIndows\Window {
             $this->createContextMenuSeparator()
         );
         $this->addDefaultContextMenuItem(
-            $this->createContextMenuItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_eform_page, this);', 'edit', true, array('typo'=>'page'))
+            $this->createContextMenuItem(Zira\Locale::tm('Open page', 'eform'), 'glyphicon glyphicon-new-window', 'desk_call(dash_eform_page, this);', 'edit', true, array('typo'=>'page'))
         );
 
         $this->setSidebarContent('<div class="eform-infobar" style="white-space:nowrap;text-overflow: ellipsis;width:100%;overflow:hidden"></div>');

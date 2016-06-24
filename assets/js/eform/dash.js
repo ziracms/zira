@@ -1,13 +1,8 @@
 var dash_eform_select = function() {
     var selected = this.getSelectedContentItems();
-    if (selected && selected.length > 0) {
-        this.disableItemsByProperty('typo', 'page');
-        for (var i = 0; i < selected.length; i++) {
-            if (typeof(selected[i].inactive) != "undefined" && !selected[i].inactive) {
-                this.enableItemsByProperty('typo', 'page');
-                break;
-            }
-        }
+    this.disableItemsByProperty('typo', 'page');
+    if (selected && selected.length == 1 && typeof(selected[0].inactive) != "undefined" && !selected[0].inactive) {
+        this.enableItemsByProperty('typo', 'page');
     }
     if (selected && selected.length && selected.length==1 && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.eform-infobar').html().length==0)) {
         this.info_last_item = selected[0].data;

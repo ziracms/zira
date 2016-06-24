@@ -647,7 +647,9 @@ article .rating .share-wrapper .share-btn {
     overflow: hidden;
 }
 .list .list-item a.list-title:link,
-.list .list-item a.list-title:visited {
+.list .list-item a.list-title:visited,
+.list .list-item .list-title-wrapper a:link,
+.list .list-item .list-title-wrapper a:visited {
     font-size: 18px;
     margin: 0px 0px 5px;
     text-shadow: 1px 1px 0px #ffffff;
@@ -818,6 +820,10 @@ article .rating .share-wrapper .share-btn {
     border-left: 3px solid #C5D0D8;
     background-color: #FBFBFB;
     border-radius: 0px;
+}
+.parse-content q:before,
+.parse-content q:after {
+    content: '';
 }
 blockquote {
     color: #757D93;
@@ -1155,6 +1161,7 @@ a.scroll-top.visible:visited {
     display: inline-block;
     vertical-align: top;
     margin-right: 1%;
+    margin-right: 0\9; /** ie8 hack **/
 }
 .grid-category-wrapper .list .list-item:nth-child(2) {
     margin-right: 0px;

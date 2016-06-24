@@ -257,7 +257,7 @@ class Menu {
         foreach($categories as $category) {
             if ($category->name == $url) return true;
         }
-        return $url == Router::getRequest();
+        return $url == Router::getRequest() || mb_strpos(Router::getRequest(), $url . '/', null, CHARSET) === 0;
     }
 
     public static function getPrimaryMenuActiveURL() {

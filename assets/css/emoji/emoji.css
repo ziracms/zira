@@ -118,6 +118,10 @@
     border-left: 2px solid #b2b5fd;
     padding-left: 4px;
 }
+.contenteditable q:before,
+.contenteditable q:after {
+    content: '';
+}
 .contenteditable code {
     border-radius: 0;
     border-left: 2px solid #b1566f;

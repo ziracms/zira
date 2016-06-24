@@ -1,0 +1,157 @@
+.forum-messages-panel.messages-panel {
+
+}
+.forum-messages-panel.messages-panel nav {
+    background: linear-gradient(to bottom,#F6F6F6,#ECECEC);
+}
+.forum-message-wrapper .forum-avatar-wrapper {
+    display: block;
+    float: left;
+    margin-bottom: 10px;
+    vertical-align: top;
+    min-width: 150px;
+    background: #F2F2F2;
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #E9E9E9;
+}
+.forum-message-wrapper .forum-avatar-wrapper img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+.forum-message-wrapper .forum-avatar-wrapper .forum-group-super-admin {
+    color: #A2559C;
+}
+.forum-message-wrapper .forum-avatar-wrapper .forum-group-admin {
+    color: #447D7D;
+}
+.forum-message-wrapper .forum-message {
+    display: block;
+    vertical-align: top;
+    margin-left: 180px;
+}
+.forum-info {
+    background-image: linear-gradient(to bottom, #D7E7F8 0px, #D5E6F9 100%);
+    color: #205471;
+}
+.forum-label {
+    position: relative;
+    top: -2px;
+    padding: 5px 10px;
+    margin-right: 7px;
+}
+.forum-bottom-label {
+    top: 5px;
+    padding: 10px 20px;
+}
+.forum-user-info {
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 10px;
+}
+.forum-info-wrapper .link {
+    float: right;
+}
+.forum-info-wrapper .note {
+    float: right;
+    cursor: default;
+}
+.forum-list.list .list-item {
+    background-color: #fff;
+    border: 1px solid #F5F5F5;
+    box-shadow: 0px 0px 2px #efefef;
+    margin-bottom: 10px;
+}
+.forum-list.list .list-item.even,
+.forum-list.list .list-item.even-b,
+.forum-list.list .list-item.odd-b {
+    background-color: #fdfdfd;
+}
+.forum-list.list .list-item a.list-title:link,
+.forum-list.list .list-item a.list-title:visited,
+.forum-list.list .list-item .list-title-wrapper a:link,
+.forum-list.list .list-item .list-title-wrapper a:visited {
+    color: #41566B;
+}
+.forum-list.list .list-item a.list-title:hover {
+    text-decoration: none;
+    color: #4573A1;
+}
+.forum-list.list .list-item .list-title-wrapper {
+    background-color: #F8F8F8;
+}
+.forum-list.list .list-item.even .list-title-wrapper,
+.forum-list.list .list-item.even-b .list-title-wrapper,
+.forum-list.list .list-item.odd-b .list-title-wrapper {
+    background-color: #F0F0F0;
+}
+.forum-list.forum-top-list.list .list-item .list-title-wrapper {
+    background-color: #E4E6E9;
+}
+.forum-list.list .list-item .list-title-wrapper .forum-right-item {
+    float: right;
+    font-size: 16px;
+    margin-top: 3px;
+}
+.forum-list.list .list-item .list-content-wrapper {
+    padding-bottom: 10px;
+}
+.forum-list.list .list-item .list-info-wrapper {
+    background: #F8F8F8;
+    margin-top: 0px;
+    padding-top: 10px;
+    border-top: #fefefe;
+}
+.forum-list.forum-top-list.list .list-item .list-info-wrapper {
+    background-color: #EFEFF0;
+}
+.forum-list.list .list-item .list-info,
+.forum-list.list .list-item .list-info a:link,
+.forum-list.list .list-item .list-info a:visited {
+    color: #505559;
+    font-size: 14px;
+}
+.forum-page-header.page-header {
+    border: none;
+    padding-bottom: 0px;
+}
+.forum-page-header.page-header a:link,
+.forum-page-header.page-header a:visited {
+    color: #333;
+}
+.forum-page-header.page-header a:hover {
+    text-decoration: none;
+}
+.forum-btn.btn {
+    color: #333;
+}
+
+.forum-list.list .list-item .list-info-wrapper a.forum-like:link,
+.forum-list.list .list-item .list-info-wrapper a.forum-like:visited {
+    color: #1d7690;
+    text-decoration: none;
+    margin-right: 0px;
+}
+.forum-list.list .list-item .list-info-wrapper a.forum-like:hover,
+.forum-list.list .list-item .list-info-wrapper a.forum-like.active {
+    color: #114150;
+    text-decoration: none;
+}
+.forum-list.list .list-item .list-info-wrapper a.forum-dislike:link,
+.forum-list.list .list-item .list-info-wrapper a.forum-dislike:visited {
+    color: #a41748;
+    text-decoration: none;
+}
+.forum-list.list .list-item .list-info-wrapper a.forum-dislike:hover,
+.forum-list.list .list-item .list-info-wrapper a.forum-dislike.active {
+    color: #550e2a;
+    text-decoration: none;
+}
+.forum-list.list .list-item .list-info-wrapper .forum-rating-value .positive-rating {
+    color: green;
+}
+.forum-list.list .list-item .list-info-wrapper .forum-rating-value .negative-rating {
+    color: red;
+}

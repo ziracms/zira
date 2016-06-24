@@ -72,11 +72,11 @@
         }
 
         if (response.error) {
-            $(this).trigger('xhr-submit-error');
+            $(this).trigger('xhr-submit-error', response);
         } else {
-            $(this).trigger('xhr-submit-success');
+            $(this).trigger('xhr-submit-success', response);
         }
-        $(this).trigger('xhr-submit-end');
+        $(this).trigger('xhr-submit-end', response);
     }
 
     function xhrSendError(text,status) {

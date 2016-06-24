@@ -1,8 +1,8 @@
 <?php
 
 return array(
-    'Email forms' => 'Формы отправки почты',
-    'Add email forms to your website' => 'Добавьте почтовые формы в свой сайт',
+    'Email forms' => 'Почтовые формы',
+    'Accept email messages from your website' => 'Принимайте почтовые сообщения с вашего сайта',
     'Form fields' => 'Поля формы',
     'Email form' => 'Форма отправки почты',
     'New email form' => 'Новая форма отправки почты',

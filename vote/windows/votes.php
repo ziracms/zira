@@ -12,7 +12,7 @@ use Zira;
 use Vote;
 use Zira\Permission;
 
-class Votes extends Dash\WIndows\Window {
+class Votes extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-stats';
     protected static $_title = 'Votes';
 

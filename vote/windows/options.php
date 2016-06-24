@@ -11,7 +11,7 @@ use Dash;
 use Zira;
 use Zira\Permission;
 
-class Options extends Dash\WIndows\Window {
+class Options extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-th-list';
     protected static $_title = 'Vote options';
 

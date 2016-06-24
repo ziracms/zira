@@ -11,7 +11,7 @@ use Dash;
 use Zira;
 use Zira\Permission;
 
-class Eformfields extends Dash\WIndows\Window {
+class Eformfields extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-list';
     protected static $_title = 'Form fields';
 
