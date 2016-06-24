@@ -21,6 +21,7 @@ class Reply extends Form {
     }
 
     protected function _init() {
+        View::addParser();
         $this->setAjax(true);
         $this->setTitle(Locale::t('Reply'));
         $this->setDescription(Locale::t('Message should contain at least %s characters', Config::get('forum_min_chars', 10)));

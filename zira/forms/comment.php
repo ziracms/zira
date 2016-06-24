@@ -24,6 +24,7 @@ class Comment extends Form {
     }
 
     protected function _init() {
+        View::addParser();
         $this->setAjax(true);
         $this->setUrl('comment');
         $this->setTitle(Locale::t('Leave a comment'));

@@ -20,6 +20,7 @@ class Message extends Form {
     }
 
     protected function _init() {
+        View::addParser();
         $this->setAjax(true);
         $this->setTitle(Locale::t('Reply'));
         $this->setDescription(Locale::t('Message should contain at least %s characters', \Zira\Models\Message::MIN_CHARS));

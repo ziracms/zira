@@ -24,6 +24,7 @@ class Conversation extends Form {
     }
 
     protected function _init() {
+        View::addParser();
         $this->setAjax(true);
         $this->setTitle(Locale::t('New message'));
         $this->setDescription(Locale::t('Message to: %s', User::getProfileName($this->_recipient)));

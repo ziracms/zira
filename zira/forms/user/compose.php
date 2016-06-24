@@ -28,6 +28,7 @@ class Compose extends Form {
     }
 
     protected function _init() {
+        View::addParser();
         $this->setAjax(true);
         $this->setTitle(Locale::t('New message'));
         $this->setDescription(Locale::t('Please enter user login, full name or ID'));
