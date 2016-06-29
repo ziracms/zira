@@ -109,6 +109,9 @@
     width: 40px;
     height: 40px;
 }
+.contenteditable {
+    resize: vertical;
+}
 .contenteditable q,
 .contenteditable code {
     display: block;
@@ -126,4 +129,8 @@
     border-radius: 0;
     border-left: 2px solid #b1566f;
     padding-left: 4px;
+}
+.contenteditable img {
+    max-width: 100%;
+    height: auto;
 }

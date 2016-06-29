@@ -288,7 +288,15 @@
             var p = new RegExp('<img [^>]*src=(?:["\'])?([^"\'>]+)(?:["\'])?(?:[\x20][^>]*)?>','i');
             while (m=p.exec(val)) {
                 if (typeof(m[0])=="undefined" || typeof(m[1])=="undefined") continue;
-                val = val.replace(m[0], emoji_image(m[1]));
+                if (m[1].indexOf('data:')==0) {
+                    var title = '';
+                    if (m[0].indexOf(' title=')>0) {
+                        title = m[0].replace(/^<img [^>]*title=(?:["\'])?([^"\'>]+)(?:["\'])?(?:[\x20][^>]*)?>$/gi, '$1');
+                    }
+                    val = val.replace(m[0], ' ['+title+'] ');
+                } else {
+                    val = val.replace(m[0], emoji_image(m[1]));
+                }
             }
             val = val.replace(/[\u200c]/g,'');
             val = val.replace(/&nbsp;/gi,' ');

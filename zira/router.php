@@ -14,6 +14,7 @@ class Router {
     protected static $controller;
     protected static $action;
     protected static $param;
+    protected static $available_routes = array('zira', 'user');
 
     protected static $_map = array();
 
@@ -66,7 +67,7 @@ class Router {
     }
 
     public static function isRouteAvailable($route) {
-        if ($route == 'zira') return true;
+        if (in_array($route, self::$available_routes)) return true;
         if (self::isRouteExists($route)) return false;
         $parts = explode('/',$route);
         if (count($parts)==1) {
@@ -83,6 +84,10 @@ class Router {
         } catch(\Exception $e) {
             return true;
         }
+    }
+
+    public static function addAvailableRoute($route) {
+        self::$available_routes []= $route;
     }
 
     public static function dispatch() {

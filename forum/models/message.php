@@ -72,7 +72,12 @@ class Message extends Orm {
         $message->date_created = date('Y-m-d H:i:s');
         $message->date_modified = date('Y-m-d H:i:s');
         if ($status!==null) $message->status = $status;
-        $message->save();
+
+        try {
+            $message->save();
+        } catch(\Exception $err) {
+            return false;
+        }
 
         Topic::getCollection()
                 ->update(array(
@@ -125,6 +130,8 @@ class Message extends Orm {
                 $forum->save();
             }
         }
+
+        File::deleteFiles($message->id);
 
         return true;
     }

@@ -14,7 +14,7 @@ use Zira\Permission;
 
 class Messages extends Dash\Models\Model {
     public function save($data) {
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 
@@ -71,7 +71,7 @@ class Messages extends Dash\Models\Model {
 
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 

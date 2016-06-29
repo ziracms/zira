@@ -29,7 +29,7 @@ class User extends Zira\Controller {
         if (!$id) {
             $category = Zira\Category::current();
             if ($category && $category->name==Zira\Router::getController()) {
-                Zira\Page::category();
+                Zira\Content\Category::content();
             } else if (Zira\User::isAuthorized()) {
                 Zira\Response::redirect('user/profile');
             } else {

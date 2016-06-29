@@ -37,7 +37,7 @@ class Message extends Dash\Windows\Window {
         $topic_id = (int)Zira\Request::post('topic_id');
         if (!$topic_id) return array('error' => Zira\Locale::t('An error occurred'));
         if (!empty($this->item)) $this->item=intval($this->item);
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(\Forum\Forum::PERMISSION_MODERATE)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 

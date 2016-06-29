@@ -38,7 +38,7 @@ class Topic extends Dash\Windows\Window {
         $forum_id = (int)Zira\Request::post('forum_id');
         if (!$category_id || !$forum_id) return array('error' => Zira\Locale::t('An error occurred'));
         if (!empty($this->item)) $this->item=intval($this->item);
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(\Forum\Forum::PERMISSION_MODERATE)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 

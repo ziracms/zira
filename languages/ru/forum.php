@@ -43,5 +43,17 @@ return array(
     'Warning' => 'Предупреждение',
     'Edited by moderator' => 'Отредактировано модератором',
     '%s to reply' => '%s, чтобы ответить',
-    'Thread is sticky' => 'Тема закреплена'
+    'Thread is sticky' => 'Тема закреплена',
+    'Allow file uploads' => 'Разрешить загрузку файлов',
+    'File max. size' => 'Макс. размер файла',
+    'Allowed file extensions' => 'Разрешенные расширения файлов',
+    'Attach files' => 'Прикрепить файлы',
+    'Invalid file' => 'Недопустимый файл',
+    'File max. size: %s' => 'Макс. размер файла: %s',
+    'File "%s" not found' => 'Файл "%s" не найден',
+    'Attached files' => 'Прикреплённые файлы',
+    'Close thread' => 'Закрыть тему',
+    'Stick thread' => 'Закрепить тему',
+    'Moderate forum' => 'Модерирование форума',
+    'Discussed on forum' => 'Обсуждаемое на форуме'
 );

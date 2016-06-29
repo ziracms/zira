@@ -27,8 +27,10 @@ class System extends Model {
             if (!$installed) continue;
 
             foreach($tables as $table) {
+                $create_sql = $table->__toString();
+                if (empty($create_sql)) continue;
                 echo '-- Table '.$table->getName()."\r\n";
-                echo $table->__toString().";\r\n\r\n";
+                echo $create_sql.";\r\n\r\n";
                 echo $table->dump("\r\n")."\r\n";
                 echo "\r\n";
                 flush();

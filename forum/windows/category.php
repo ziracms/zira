@@ -35,7 +35,7 @@ class Category extends Dash\Windows\Window {
 
     public function load() {
         if (!empty($this->item)) $this->item=intval($this->item);
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(\Forum\Forum::PERMISSION_MODERATE)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 

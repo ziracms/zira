@@ -44,7 +44,7 @@ class Categories extends Dash\Windows\Window {
     }
 
     public function load() {
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
         }

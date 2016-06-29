@@ -14,6 +14,11 @@ class Category {
     protected static $_current;
     protected static $_param;
     protected static $_childs;
+    protected static $_add_breadcrumbs = true;
+
+    public static function setAddBreadcrumbs($add_breadcrumbs) {
+        self::$_add_breadcrumbs = (bool)$add_breadcrumbs;
+    }
 
     public static function load($request) {
         $request = trim($request,'/');
@@ -30,7 +35,9 @@ class Category {
 
         foreach($rows as $row) {
             self::$_chain []= $row;
-            Page::addBreadcrumb($row->name, Locale::t($row->title));
+            if (self::$_add_breadcrumbs) {
+                Page::addBreadcrumb($row->name, Locale::t($row->title));
+            }
             if ($row->name == $request) {
                 self::$_current = $row;
                 self::$_param = null;

@@ -37,7 +37,12 @@ class Permissions extends Form
         if ($permissions && count($permissions)>0) {
             foreach ($permissions as $permission) {
                 $this->setValue(\Dash\Models\Permissions::getFieldName($permission->name), $permission->allow);
-                $html .= $this->checkbox(Locale::t($permission->name), \Dash\Models\Permissions::getFieldName($permission->name), null, false);
+                if ($permission->module == 'zira') {
+                    $label = Locale::t($permission->name);
+                } else {
+                    $label = Locale::tm($permission->name, $permission->module);
+                }
+                $html .= $this->checkbox($label, \Dash\Models\Permissions::getFieldName($permission->name), null, false);
             }
         }
         $html .= $this->close();

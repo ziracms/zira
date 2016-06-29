@@ -80,7 +80,7 @@ class Topic extends Orm {
         return $statuses[$status];
     }
 
-    public static function createNewTopic($category_id, $forum_id, $title, $message, $forum_topic_co) {
+    public static function createNewTopic($category_id, $forum_id, $title, $message, $forum_topic_co, &$message_id = null) {
         if (!Zira\User::isAuthorized()) return false;
 
         $topic = new self();
@@ -92,7 +92,9 @@ class Topic extends Orm {
         $topic->date_modified = date('Y-m-d H:i:s');
         $topic->save();
 
-        if (!Message::createNewMessage($forum_id, $topic->id, $message, 1, $forum_topic_co)) return false;
+        if (!($new_message=Message::createNewMessage($forum_id, $topic->id, $message, 1, $forum_topic_co))) return false;
+
+        $message_id = $new_message->id;
 
         return $topic;
     }
@@ -117,6 +119,14 @@ class Topic extends Orm {
                 $user->posts -= $message->co;
                 if ($user->posts<0) $user->posts = 0;
                 $user->save();
+            }
+
+            // deleting files
+            $messages = Message::getCollection()
+                        ->where('topic_id','=',$topic->id)
+                        ->get();
+            foreach($messages as $message) {
+                File::deleteFiles($message->id);
             }
 
             Message::getCollection()

@@ -14,7 +14,7 @@ use Zira\Permission;
 
 class Topics extends Dash\Models\Model {
     public function save($data) {
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 
@@ -80,13 +80,43 @@ class Topics extends Dash\Models\Model {
 
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
         foreach($data as $topic_id) {
             Forum\Models\Topic::deleteTopic($topic_id);
         }
+
+        return array('reload' => $this->getJSClassName());
+    }
+
+    public function close($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $topic = new Forum\Models\Topic($id);
+        if (!$topic->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $topic->active = 0;
+        $topic->save();
+
+        return array('reload' => $this->getJSClassName());
+    }
+
+    public function stick($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $topic = new Forum\Models\Topic($id);
+        if (!$topic->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $topic->sticky = 1;
+        $topic->save();
 
         return array('reload' => $this->getJSClassName());
     }

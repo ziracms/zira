@@ -51,6 +51,15 @@ class Topics extends Dash\Windows\Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Close thread', 'forum'), 'glyphicon glyphicon-remove-sign', 'desk_call(dash_forum_topic_close, this);', 'edit', true, array('typo'=>'close'))
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Stick thread', 'forum'), 'glyphicon glyphicon-pushpin', 'desk_call(dash_forum_topic_stick, this);', 'edit', true, array('typo'=>'stick'))
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::tm('Topic messages', 'forum'), 'glyphicon glyphicon-comment', 'desk_call(dash_forum_messages, this);', 'edit', true, array('typo'=>'messages'))
         );
         $this->addDefaultMenuDropdownItem(
@@ -64,6 +73,15 @@ class Topics extends Dash\Windows\Window {
             $this->createContextMenuSeparator()
         );
         $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::tm('Close thread', 'forum'), 'glyphicon glyphicon-remove-sign', 'desk_call(dash_forum_topic_close, this);', 'edit', true, array('typo'=>'close'))
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::tm('Stick thread', 'forum'), 'glyphicon glyphicon-pushpin', 'desk_call(dash_forum_topic_stick, this);', 'edit', true, array('typo'=>'stick'))
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuSeparator()
+        );
+        $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::tm('Topic messages', 'forum'), 'glyphicon glyphicon-comment', 'desk_call(dash_forum_messages, this);', 'edit', true, array('typo'=>'messages'))
         );
         $this->addDefaultContextMenuItem(
@@ -72,6 +90,12 @@ class Topics extends Dash\Windows\Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::tm('Open thread page', 'forum'), 'glyphicon glyphicon-new-window', 'desk_call(dash_forum_page, this);', 'edit', true, array('typo'=>'page'))
         );
+
+        $this->setOnSelectJSCallback(
+            $this->createJSCallback('desk_call(dash_forum_topics_select, this);')
+        );
+
+        $this->addDefaultOnLoadScript('desk_call(dash_forum_topics_load, this);');
 
         $this->includeJS('forum/dash');
 
@@ -87,7 +111,7 @@ class Topics extends Dash\Windows\Window {
     public function load() {
         if (!empty($this->item)) $this->item=intval($this->item);
         else return array('error'=>Zira\Locale::t('An error occurred'));
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(\Forum\Forum::PERMISSION_MODERATE)) {
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
@@ -116,7 +140,7 @@ class Topics extends Dash\Windows\Window {
         foreach($threads as $thread) {
             $title = Zira\Helper::html($thread->title);
             $description = Zira\Helper::html($thread->description);
-            $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread)));
+            $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0));
         }
         $this->setBodyItems($items);
 

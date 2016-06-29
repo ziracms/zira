@@ -55,6 +55,9 @@ class Forums extends Dash\Windows\Window {
             $this->createMenuDropdownItem(Zira\Locale::tm('Forum threads', 'forum'), 'glyphicon glyphicon-comment', 'desk_call(dash_forum_threads, this);', 'edit', true, array('typo'=>'threads'))
         );
         $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Attached files', 'forum'), 'glyphicon glyphicon-folder-open', 'desk_call(dash_forum_files, this);', 'create', false, array('typo'=>'files'))
+        );
+        $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
@@ -94,6 +97,7 @@ class Forums extends Dash\Windows\Window {
         $this->addDefaultOnLoadScript('desk_call(dash_forum_forums_load, this);');
 
         $this->addVariables(array(
+            'dash_forum_blank_src' => Zira\Helper::imgUrl('blank.png'),
             'dash_forum_route' => Forum\Forum::ROUTE,
             'dash_forum_categories_wnd' => Dash\Dash::getInstance()->getWindowJSName(Categories::getClass()),
             'dash_forum_forum_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Forum::getClass()),
@@ -101,6 +105,7 @@ class Forums extends Dash\Windows\Window {
             'dash_forum_thread_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Topic::getClass()),
             'dash_forum_messages_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Messages::getClass()),
             'dash_forum_message_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Message::getClass()),
+            'dash_forum_files_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Files::getClass()),
             'dash_forum_settings_wnd' => Dash\Dash::getInstance()->getWindowJSName(Forum\Windows\Settings::getClass())
         ));
 
@@ -112,7 +117,7 @@ class Forums extends Dash\Windows\Window {
     }
 
     public function load() {
-        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
         }

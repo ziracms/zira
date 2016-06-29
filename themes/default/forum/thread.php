@@ -63,6 +63,35 @@
 <?php if ($item->status == Forum\Models\Message::STATUS_INFO) $micon = '<span class="glyphicon glyphicon-exclamation-sign"></span> '; ?>
 <?php if ($item->status == Forum\Models\Message::STATUS_WARNING) $micon = '<span class="glyphicon glyphicon-warning-sign"></span> '; ?>
 <p class="parse-content forum-message<?php echo $mclass ?>"><?php echo $micon ?><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
+<?php $images = Forum\Models\File::extractItemFiles($item, 'file_', 'images'); ?>
+<?php $files = Forum\Models\File::extractItemFiles($item, 'file_', 'files'); ?>
+<?php if (!empty($images) || !empty($files)): ?>
+<div class="forum-message-attaches">
+<div class="forum-message-attaches-title"><span class="glyphicon glyphicon-paperclip"></span> <?php echo tm('Attached files', 'forum') ?> (<?php echo count($images)+count($files); ?>) <span class="glyphicon glyphicon-chevron-down attach-arrow-down"></span></div>
+<div class="forum-message-attaches-content">
+<?php foreach($images as $filepath=>$filename): ?>
+<?php if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)): ?>
+<?php $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath); ?>
+<a class="forum-message-attach" data-lightbox="forum-message-<?php echo Zira\Helper::html($item->id) ?>" href="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>">
+<img src="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" alt="<?php echo Zira\Helper::html($filename) ?>" width="<?php echo Zira\Config::get('thumbs_width') ?>" />
+</a>
+<?php else: ?>
+<?php echo '<span class="forum-message-attach">'.tm('File "%s" not found', 'forum', $filename).'</span>'; ?>
+<?php endif; ?>
+<?php endforeach; ?>
+<?php foreach($files as $filepath=>$filename): ?>
+<?php if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)): ?>
+<?php $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath); ?>
+<a class="forum-message-attach" href="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>" download="<?php echo Zira\Helper::html($filename) ?>" target="_blank" rel="nofollow">
+<?php echo Zira\Helper::html($filename) ?>
+</a>
+<?php else: ?>
+<?php echo '<span class="forum-message-attach">'.tm('File "%s" not found', 'forum', $filename).'</span>'; ?>
+<?php endif; ?>
+<?php endforeach; ?>
+</div>
+</div>
+<?php endif; ?>
 </div>
 <div class="list-info-wrapper forum-info-wrapper">
 <a class="list-info link" href="<?php echo Zira\Helper::url($topic_url.($topic_page>1 ? '?page='.$topic_page : '').'#forum-message-'.$item->id) ?>" title="<?php echo tm('Link','forum') ?>"><span class="glyphicon glyphicon-new-window"></span></a>

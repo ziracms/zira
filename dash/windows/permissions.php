@@ -49,7 +49,7 @@ class Permissions extends Window {
         $this->setTitle(Zira\Locale::t('Permissions of group "%s"', Zira\Locale::t($group->name)));
 
         $permissions = Zira\Models\Permission::getCollection()
-                        ->select('name', 'allow')
+                        ->select('name', 'allow', 'module')
                         ->where('group_id','=',$this->item)
                         ->order_by('id', 'ASC')
                         ->get()

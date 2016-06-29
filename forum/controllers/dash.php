@@ -26,6 +26,11 @@ class Dash extends \Dash\Controller {
         return new Forum\Models\Forums($window);
     }
 
+    protected function getTopicsWindowModel() {
+        $window = new Forum\Windows\Topics();
+        return new Forum\Models\Topics($window);
+    }
+
     public function dragcategory() {
         if (Zira\Request::isPost()) {
             $categories = Zira\Request::post('categories');
@@ -40,6 +45,22 @@ class Dash extends \Dash\Controller {
             $forums = Zira\Request::post('forums');
             $orders = Zira\Request::post('orders');
             $response = $this->getForumsWindowModel()->drag($forums, $orders);
+            Zira\Page::render($response);
+        }
+    }
+
+    public function closethread() {
+        if (Zira\Request::isPost()) {
+            $topic = Zira\Request::post('item');
+            $response = $this->getTopicsWindowModel()->close($topic);
+            Zira\Page::render($response);
+        }
+    }
+
+    public function stickthread() {
+        if (Zira\Request::isPost()) {
+            $topic = Zira\Request::post('item');
+            $response = $this->getTopicsWindowModel()->stick($topic);
             Zira\Page::render($response);
         }
     }

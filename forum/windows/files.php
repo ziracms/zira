@@ -1,7 +1,7 @@
 <?php
 /**
  * Zira project.
- * messages.php
+ * files.php
  * (c)2016 http://dro1d.ru
  */
 
@@ -11,11 +11,9 @@ use Dash;
 use Zira;
 use Zira\Permission;
 
-class Messages extends Dash\Windows\Window {
-    protected static $_icon_class = 'glyphicon glyphicon-comment';
-    protected static $_title = 'Topic messages';
-
-    public $item;
+class Files extends Dash\Windows\Window {
+    protected static $_icon_class = 'glyphicon glyphicon-folder-open';
+    protected static $_title = 'Attached files';
 
     public $page = 0;
     public $pages = 0;
@@ -32,69 +30,64 @@ class Messages extends Dash\Windows\Window {
         $this->setBodyViewListVertical(true);
         $this->setSidebarEnabled(false);
 
-        $this->setOnCreateItemJSCallback(
-            $this->createJSCallback(
-                'desk_call(dash_forum_message_create, this);'
-            )
-        );
-        $this->setOnEditItemJSCallback(
-            $this->createJSCallback(
-                'desk_call(dash_forum_message_edit, this);'
-            )
-        );
-
         $this->setDeleteActionEnabled(true);
     }
 
     public function create() {
         $this->setData(array(
-            'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
             'order'=>$this->order,
         ));
     }
 
+    public static function extractFiles($row) {
+        $files = array();
+        for ($i=1; $i<=\Forum\Models\File::MAX_FILES_COUNT; $i++) {
+            $field = 'path'.$i;
+            if ($row->{$field}) {
+                $files[$i] = $row->{$field};
+            }
+        }
+        return $files;
+    }
+
     public function load() {
-        if (!empty($this->item)) $this->item=intval($this->item);
-        else return array('error'=>Zira\Locale::t('An error occurred'));
         if (!Permission::check(Permission::TO_CHANGE_OPTIONS) && !Permission::check(\Forum\Forum::PERMISSION_MODERATE)) {
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $topic = new \Forum\Models\Topic($this->item);
-        if (!$topic->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
-
-        $this->total = \Forum\Models\Message::getCollection()
+        $this->total = \Forum\Models\File::getCollection()
                                     ->count()
-                                    ->where('topic_id','=',$topic->id)
                                     ->get('co');
 
         $this->pages = ceil($this->total / $this->limit);
         if ($this->page > $this->pages) $this->page = $this->pages;
         if ($this->page < 1) $this->page = 1;
 
-        $messages = \Forum\Models\Message::getCollection()
-                                    ->select(\Forum\Models\Message::getFields())
+        $files = \Forum\Models\File::getCollection()
+                                    ->select(\Forum\Models\File::getFields())
                                     ->left_join(Zira\Models\User::getClass(), array('user_login'=>'username'))
-                                    ->where('topic_id','=',$topic->id)
                                     ->order_by('id', $this->order)
                                     ->limit($this->limit, ($this->page - 1) * $this->limit)
                                     ->get();
 
         $items = array();
-        foreach($messages as $message) {
-            $content = Zira\Helper::html($message->content);
-            $username = $message->user_login ? $message->user_login : Zira\Locale::tm('User deleted', 'forum');
-            $items[]=$this->createBodyFileItem($content, $username, $message->id, null, false, array('type'=>'txt'));
+        foreach($files as $file) {
+            $_files = self::extractFiles($file);
+            foreach($_files as $field_num=>$path) {
+                $p = strrpos($path, DIRECTORY_SEPARATOR);
+                if ($p!==false) $filename = substr($path, $p+1);
+                else $filename = $path;
+                $content = Zira\Helper::html($filename);
+                $username = $file->user_login ? $file->user_login : Zira\Locale::tm('User deleted', 'forum');
+                $items[] = $this->createBodyFileItem($content, $username, $file->id.'_'.$field_num, 'desk_call(dash_forum_file_show, this);', false, array('type' => 'txt', 'path'=>Zira\Helper::baseUrl(UPLOADS_DIR.'/'.str_replace(DIRECTORY_SEPARATOR, '/', $path))));
+            }
         }
         $this->setBodyItems($items);
 
-        $this->setTitle(Zira\Locale::t(self::$_title).' - '.$topic->title);
-
         $this->setData(array(
-            'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
             'order'=>$this->order

@@ -83,8 +83,9 @@ class Groups extends Model {
         $group->save();
 
         $permissions = Zira\Models\Permission::getCollection()
-                        ->select('name', 'allow')
+                        ->select('name', 'allow', 'module')
                         ->where('group_id','=',Zira\User::GROUP_USER)
+                        ->order_by('id')
                         ->get()
                         ;
 
@@ -93,7 +94,7 @@ class Groups extends Model {
             $permissionObj->name = $permission->name;
             $permissionObj->allow = $permission->allow;
             $permissionObj->group_id = $group->id;
-            $permissionObj->module = Zira\Models\Permission::CUSTOM_PERMISSIONS_GROUP;
+            $permissionObj->module = $permission->module;
             $permissionObj->save();
         }
 

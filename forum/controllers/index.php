@@ -11,6 +11,21 @@ use Zira;
 use Forum;
 
 class Index extends Zira\Controller {
+
+    public function _before() {
+        parent::_before();
+
+        $category = Zira\Category::current();
+        if ($category) {
+            $category_parts = explode('/',$category->name);
+            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule()) ||
+                (count($category_parts)==2 && $category_parts[0]==Zira\Router::getModule() && $category_parts[1]==Zira\Router::getAction())
+            ) {
+                Forum\Forum::category();
+            }
+        }
+    }
+
     public function index() {
         $categories = Forum\Models\Category::getCollection()
                                 ->order_by('sort_order', 'asc')
@@ -247,9 +262,23 @@ class Index extends Zira\Controller {
 
         $form = new Forum\Forms\Reply();
         if ($topic->active && Zira\Request::isPost() && $form->isValid()) {
-            if (!($message=Forum\Models\Message::createNewMessage($topic->forum_id, $topic->id, $form->getValue('message'), ++$topic->messages, $topic->forum_topics))) {
+            $content = $form->getValue('message');
+            // storing files
+            if (Zira\Config::get('forum_file_uploads')) {
+                $file_refs = array();
+                $files = Forum\Models\File::storeFiles($form->getValue('attaches'), $file_refs);
+                if (!empty($files)) {
+                    Forum\Models\File::parseContentFiles($file_refs, $content);
+                }
+            }
+            // creating new message
+            if (!($message=Forum\Models\Message::createNewMessage($topic->forum_id, $topic->id, $content, ++$topic->messages, $topic->forum_topics))) {
                 $form->setError(Zira\Locale::t('An error occurred'));
             } else {
+                // saving files
+                if (Zira\Config::get('forum_file_uploads') && !empty($files)) {
+                    Forum\Models\File::saveFiles($files, $message->id);
+                }
                 // redirect to last page
                 $total = Forum\Models\Message::getCollection()
                             ->count()
@@ -292,9 +321,16 @@ class Index extends Zira\Controller {
             if ($page<1) $page = 1;
         }
 
+        $file_fields = Forum\Models\File::getFields();
+        $_file_fields = array();
+        foreach($file_fields as $field) {
+            $_file_fields['file_'.$field] = $field;
+        }
+
         $rows = Forum\Models\Message::getCollection()
                             ->select(Forum\Models\Message::getFields())
                             ->left_join(Zira\Models\User::getClass(), array('user_group_id'=>'group_id', 'user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username', 'user_image'=>'image', 'user_posts'=>'posts'))
+                            ->left_join(Forum\Models\File::getClass(), $_file_fields)
                             ->where('topic_id','=',$topic->id)
                             ->order_by('id','asc')
                             ->limit($limit, ($page-1)*$limit)
@@ -322,6 +358,9 @@ class Index extends Zira\Controller {
             Zira\Page::setLayout(Zira\Config::get('forum_layout'));
         }
         Zira\Page::setView('forum/page');
+
+        Zira\View::addLightbox();
+        Zira\View::addParser();
 
         $pagination = new Zira\Pagination();
         $pagination->setLimit($limit);
@@ -382,9 +421,23 @@ class Index extends Zira\Controller {
 
         $form = new Forum\Forms\Compose();
         if (Zira\Request::isPost() && $form->isValid()) {
-            if (!($topic=Forum\Models\Topic::createNewTopic($forum->category_id, $forum->id, $form->getValue('title'), $form->getValue('message'), ++$forum->topics))) {
+            $message_id = 0;
+            $content = $form->getValue('message');
+            // storing files
+            if (Zira\Config::get('forum_file_uploads')) {
+                $file_refs = array();
+                $files = Forum\Models\File::storeFiles($form->getValue('attaches'), $file_refs);
+                if (!empty($files)) {
+                    Forum\Models\File::parseContentFiles($file_refs, $content);
+                }
+            }
+            if (!($topic=Forum\Models\Topic::createNewTopic($forum->category_id, $forum->id, $form->getValue('title'), $content, ++$forum->topics, $message_id))) {
                 $form->setError(Zira\Locale::t('An error occurred'));
             } else {
+                // saving files
+                if (Zira\Config::get('forum_file_uploads') && !empty($files)) {
+                    Forum\Models\File::saveFiles($files, $message_id);
+                }
                 if (!Zira\View::isAjax()) {
                     Zira\Response::redirect(Forum\Models\Topic::generateUrl($topic));
                 } else {

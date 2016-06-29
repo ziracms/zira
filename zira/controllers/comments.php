@@ -87,21 +87,25 @@ class Comments extends Zira\Controller {
                     } else {
                         $comment->published = Zira\Models\Comment::STATUS_NOT_PUBLISHED;
                     }
-                    $comment->save();
-                    if ($comment->published != Zira\Models\Comment::STATUS_PUBLISHED) {
-                        $form->setMessage(Zira\Locale::t('Thank you. Your message is awaiting moderation'));
-                    } else {
-                        $form->setMessage(Zira\Locale::t('Thank you. Your message was published'));
-                        $record->comments++;
-                        $record->save();
-                        if (Zira\User::isAuthorized()) {
-                            Zira\User::increaseCommentsCount();
-                        }
-                    }
                     try {
-                        Zira\Models\Comment::notify($record, $comment);
-                    } catch(\Exception $e) {
-                        Zira\Log::exception($e);
+                        $comment->save();
+                        if ($comment->published != Zira\Models\Comment::STATUS_PUBLISHED) {
+                            $form->setMessage(Zira\Locale::t('Thank you. Your message is awaiting moderation'));
+                        } else {
+                            $form->setMessage(Zira\Locale::t('Thank you. Your message was published'));
+                            $record->comments++;
+                            $record->save();
+                            if (Zira\User::isAuthorized()) {
+                                Zira\User::increaseCommentsCount();
+                            }
+                        }
+                        try {
+                            Zira\Models\Comment::notify($record, $comment);
+                        } catch (\Exception $e) {
+                            Zira\Log::exception($e);
+                        }
+                    } catch(\Exception $err) {
+                        $form->setError(Zira\Locale::t('An error occurred'));
                     }
                 }
             }

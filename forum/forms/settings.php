@@ -19,6 +19,8 @@ class Settings extends Form
     protected $_input_wrap_class = 'col-sm-8';
     protected $_input_offset_wrap_class = 'col-sm-offset-4 col-sm-8';
 
+    protected $_checkbox_inline_label = false;
+
     public function __construct()
     {
         parent::__construct($this->_id);
@@ -41,6 +43,9 @@ class Settings extends Form
         $html .= $this->input(Locale::tm('Meta description', 'forum'), 'forum_meta_description');
         $html .= $this->input(Locale::t('Records limit'), 'forum_limit');
         $html .= $this->input(Locale::tm('Message min. length', 'forum'), 'forum_min_chars');
+        $html .= $this->checkbox(Locale::tm('Allow file uploads', 'forum'), 'forum_file_uploads', null, false);
+        $html .= $this->input(Locale::tm('File max. size', 'forum').' (kB)', 'forum_file_max_size');
+        $html .= $this->input(Locale::tm('Allowed file extensions', 'forum'), 'forum_file_ext');
         $html .= $this->close();
         return $html;
     }
@@ -70,8 +75,9 @@ class Settings extends Form
         $validator->registerUtf8('forum_meta_description', Locale::t('Invalid value "%s"',Locale::tm('Meta description', 'forum')));
 
         $validator->registerNumber('forum_limit', 1, null, false, Locale::t('Invalid value "%s"',Locale::t('Records limit')));
-
         $validator->registerNumber('forum_min_chars', 1, null, false, Locale::t('Invalid value "%s"',Locale::tm('Message min. length', 'forum')));
+        $validator->registerNumber('forum_file_max_size', 1, null, false, Locale::t('Invalid value "%s"',Locale::tm('File max. size', 'forum')));
+        $validator->registerString('forum_file_ext', null, 255, false, Locale::t('Invalid value "%s"',Locale::tm('Allowed file extensions', 'forum')));
 
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'forum_layout', Locale::t('Invalid value "%s"',Locale::t('Layout')));
     }

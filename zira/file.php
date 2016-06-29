@@ -41,7 +41,7 @@ class File {
         return FILES_PREFIX . $name;
     }
 
-    public static function save(array $file, $dir = null) {
+    public static function save(array $file, $dir = null, &$refs = null) {
         if (empty($file) || empty($file['name']) || empty($file['tmp_name'])) return false;
 
         $files = array();
@@ -70,6 +70,7 @@ class File {
                 $prefix++;
             } while(file_exists($f));
 
+            $refs[$name] = $f;
             if (!copy($path, $f)) return false;
             $_files[$f] = $_f;
         }

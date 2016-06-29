@@ -57,6 +57,9 @@ select.form-control option {
 .modal-success {
     color: #073954;
 }
+.modal-body {
+    word-wrap: break-word;
+}
 .error-page {
     margin-top: 40px;
 }
@@ -152,4 +155,7 @@ img.user-photo-big {
 }
 .progress-bar {
     transition: none;
+}
+textarea {
+    resize: vertical;
 }
