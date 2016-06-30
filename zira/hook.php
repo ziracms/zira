@@ -15,11 +15,11 @@ class Hook {
         self::$_hooks[$name][]=$callback;
     }
 
-    public static function run($name) {
+    public static function run($name, $arg = null) {
         $result = array();
         if (!array_key_exists($name, self::$_hooks)) return $result;
         foreach(self::$_hooks[$name] as $callback) {
-            $result []= call_user_func($callback);
+            $result []= call_user_func($callback, $arg);
         }
         return $result;
     }

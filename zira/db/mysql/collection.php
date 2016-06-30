@@ -91,6 +91,16 @@ class Collection {
         return $this;
     }
 
+    public function countField($field, $alias = 'co') {
+        $this->_fields []= 'COUNT('.Db::escapeIdentifier($field).') as '.Db::escapeIdentifier($alias);
+        return $this;
+    }
+
+    public function countDistinctField($field, $alias = 'co') {
+        $this->_fields []= 'COUNT(DISTINCT '.Db::escapeIdentifier($field).') as '.Db::escapeIdentifier($alias);
+        return $this;
+    }
+
     public function max($field, $alias = 'mx') {
         $_alias = $this->_alias;
         if (is_array($field) && count($field)==2) {

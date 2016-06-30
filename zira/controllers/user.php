@@ -62,7 +62,8 @@ class User extends Zira\Controller {
             'date_logged' => Zira\User::getProfileLoginDate($user),
             'comments' => Zira\User::getProfileComments($user),
             'is_owner' => Zira\User::isSelf($user),
-            'verified' => Zira\User::isProfileVerified($user)
+            'verified' => Zira\User::isProfileVerified($user),
+            'user' => $user
         ),'zira/user/profile');
     }
 
@@ -619,7 +620,8 @@ class User extends Zira\Controller {
             'date_logged' => Zira\User::getProfileLoginDate(),
             'comments' => Zira\User::getProfileComments(),
             'is_owner' => true,
-            'verified' => Zira\User::isVerified()
+            'verified' => Zira\User::isVerified(),
+            'user' => Zira\User::getCurrent()
         ));
     }
 

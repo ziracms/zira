@@ -123,7 +123,7 @@ var dash_forum_categories_drag = function() {
             this.dragReplaced = true;
         }
     }));
-    $(this.content).bind('drop',this.bind(this,function(e){
+    $(this.element).bind('drop',this.bind(this,function(e){
         if (this.isDisabled()) return;
         var dragged = [];
         var orders = [];
@@ -202,7 +202,7 @@ var dash_forum_forums_drag = function() {
             this.dragReplaced = true;
         }
     }));
-    $(this.content).bind('drop',this.bind(this,function(e){
+    $(this.element).bind('drop',this.bind(this,function(e){
         if (this.isDisabled()) return;
         var dragged = [];
         var orders = [];

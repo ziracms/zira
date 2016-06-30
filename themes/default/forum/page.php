@@ -11,7 +11,7 @@
 </p>
 <?php endif; ?>
 <?php if (isset($content)): ?>
-<div class="article forum<?php if (!empty($class)) echo ' '.$class ?>">
+<div class="article forum">
 <?php echo $content; ?>
 </div>
 <?php endif; ?>

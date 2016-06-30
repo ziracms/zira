@@ -729,13 +729,16 @@ class User {
         );
         $extra_links = Hook::run(self::PROFILE_LINKS_HOOK);
         if (!empty($extra_links)) {
+            $links []= array(
+                'type' => 'separator'
+            );
             $links = array_merge($links, $extra_links);
         }
         return $links;
     }
 
-    public static function getProfileExtraInfo() {
-        return Hook::run(self::PROFILE_INFO_HOOK);
+    public static function getProfileExtraInfo($user) {
+        return Hook::run(self::PROFILE_INFO_HOOK, $user);
     }
 
     public static function increaseMessagesCount($user = null) {

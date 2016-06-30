@@ -32,6 +32,8 @@ class Discussion extends Widget {
                             ->limit($limit)
                             ->get();
 
+        if (!$rows) return;
+
         Zira\View::renderView(array(
             'items' => $rows
         ),'forum/widgets/discussion');

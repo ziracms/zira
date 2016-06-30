@@ -18,10 +18,10 @@ class Index extends Zira\Controller {
         $category = Zira\Category::current();
         if ($category) {
             $category_parts = explode('/',$category->name);
-            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule()) ||
+            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule() && Zira\Router::getAction()==DEFAULT_ACTION) ||
                 (count($category_parts)==2 && $category_parts[0]==Zira\Router::getModule() && $category_parts[1]==Zira\Router::getAction())
             ) {
-                Forum\Forum::category();
+                Zira\Content\Category::placeholderContent();
             }
         }
     }
@@ -525,5 +525,114 @@ class Index extends Zira\Controller {
         }
 
         Zira\Page::render(array('rating'=>$message->rating));
+    }
+
+    public function user($id) {
+        $id = intval($id);
+        if ($id>0) {
+            if (!Zira\Config::get(Zira\User::CONFIG_ALLOW_VIEW_PROFILE, true) &&
+                !Zira\User::isAuthorized()
+            ) {
+                Zira\Response::redirect('user/login' . '?redirect=forum/user/' . $id);
+                return;
+            }
+            $user = Zira\Models\User::findUser($id);
+            if (!$user || !$user->active) {
+                Zira\Response::notFound();
+                return;
+            }
+
+            $title = Zira\Locale::tm('Posted by: %s', 'forum', Zira\User::getProfileName($user));
+        } else {
+            if (!Zira\User::isAuthorized()) {
+                Zira\Response::redirect('user/login');
+                return;
+            }
+            $user = Zira\User::getCurrent();
+
+            $title = Zira\Locale::tm('My discussions', 'forum');
+        }
+
+        $topic_fields = Forum\Models\Topic::getFields();
+        $_topic_fields = array();
+        foreach($topic_fields as $field) {
+            if ($field == Forum\Models\Topic::getPk()) continue;
+            $_topic_fields['topic_'.$field] = $field;
+        }
+
+        $total = null;
+        $limit = Zira\Config::get('forum_limit') ? intval(Zira\Config::get('forum_limit')) : 10;
+        $page = (int)Zira\Request::get('page');
+
+        $total = Forum\Models\Message::getCollection()
+                            ->countDistinctField('topic_id')
+                            ->join(Forum\Models\Topic::getClass())
+                            ->where('creator_id','=',$user->id)
+                            ->get('co');
+
+        $pages = ceil($total / $limit);
+        if ($page>$pages) $page = $pages;
+        if ($page<1) $page = 1;
+
+        $file_fields = Forum\Models\File::getFields();
+        $_file_fields = array();
+        foreach($file_fields as $field) {
+            $_file_fields['file_'.$field] = $field;
+        }
+
+        $rows = Forum\Models\Message::getCollection()
+                            ->select('id')
+                            ->join(Forum\Models\Topic::getClass())
+                            ->where('creator_id','=',$user->id)
+                            ->group_by('topic_id')
+                            ->limit($limit, ($page-1)*$limit)
+                            ->get();
+
+        $ids = array();
+        foreach($rows as $row) {
+            $ids []= $row->id;
+        }
+
+        if (!empty($ids)) {
+            $rows = Forum\Models\Message::getCollection()
+                ->select(Forum\Models\Message::getFields())
+                ->left_join(Forum\Models\Topic::getClass(), $_topic_fields)
+                ->left_join(Zira\Models\User::getClass(), array('user_group_id' => 'group_id', 'user_firstname' => 'firstname', 'user_secondname' => 'secondname', 'user_username' => 'username', 'user_image' => 'image', 'user_posts' => 'posts'))
+                ->left_join(Forum\Models\File::getClass(), $_file_fields)
+                ->where('id', 'in', $ids)
+                ->get();
+        } else {
+            $rows = array();
+        }
+
+        Zira\Page::addTitle($title);
+
+        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+
+        if (Zira\Config::get('forum_layout')) {
+            Zira\Page::setLayout(Zira\Config::get('forum_layout'));
+        }
+        Zira\Page::setView('forum/page');
+
+        Zira\View::addLightbox();
+        Zira\View::addParser();
+
+        $pagination = new Zira\Pagination();
+        $pagination->setLimit($limit);
+        $pagination->setTotal($total);
+        $pagination->setPages($pages);
+        $pagination->setPage($page);
+
+        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
+                                                                'items'=>$rows,
+                                                                'user_groups' => Zira\Models\Group::getArray(true),
+                                                                'pagination' => $pagination
+                                                            ), 'forum/user');
+
+        Zira\Page::render(array(
+            Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
+            Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => '',
+            Zira\Page::VIEW_PLACEHOLDER_CONTENT => ''
+        ));
     }
 }

@@ -188,7 +188,7 @@ var dash_widgets_drag = function() {
             this.dragReplaced = true;
         }
     }));
-    $(this.content).bind('drop',this.bind(this,function(e){
+    $(this.element).bind('drop',this.bind(this,function(e){
         if (this.isDisabled()) return;
         var dragged = [];
         var orders = [];

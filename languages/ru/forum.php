@@ -55,5 +55,9 @@ return array(
     'Close thread' => 'Закрыть тему',
     'Stick thread' => 'Закрепить тему',
     'Moderate forum' => 'Модерирование форума',
-    'Discussed on forum' => 'Обсуждаемое на форуме'
+    'Discussed on forum' => 'Обсуждаемое на форуме',
+    'My discussions' => 'Мои обсуждения',
+    'Forum posts' => 'Сообщений на форуме',
+    'Posted by: %s' => 'Сообщения пользователя: %s',
+    'No posts found' => 'Сообщения не найдены'
 );

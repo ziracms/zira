@@ -64,7 +64,7 @@
 <?php if (isset($date_created)) echo '<dt><span class="glyphicon glyphicon-calendar"></span>&nbsp;'.t('Sign-up date').': </dt><dd>'.Zira\Helper::html($date_created).'</dd>'; ?>
 <?php if (isset($date_logged)) echo '<dt><span class="glyphicon glyphicon-log-in"></span>&nbsp;'.t('Last login date').': </dt><dd>'.Zira\Helper::html($date_logged).'</dd>'; ?>
 <?php if (isset($comments)) echo '<dt><span class="glyphicon glyphicon-comment"></span>&nbsp;'.t('Comments posted').': </dt><dd>'.Zira\Helper::html($comments).'</dd>'; ?>
-<?php foreach(Zira\User::getProfileExtraInfo() as $extra_info): ?>
+<?php foreach(Zira\User::getProfileExtraInfo($user) as $extra_info): ?>
 <?php $icon = !empty($extra_info['icon']) ? '<span class="'.Zira\Helper::html($extra_info['icon']).'"></span>' : ''; ?>
 <dt><?php echo $icon ?> <?php echo Zira\Helper::html($extra_info['title']) ?>: </dt><dd><?php echo Zira\Helper::html($extra_info['description']) ?></dd>
 <?php endforeach; ?>

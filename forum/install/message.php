@@ -33,7 +33,8 @@ class Message extends Table {
 
     public function getKeys() {
         return array(
-            'topic_id' => array('topic_id')
+            'topic_id' => array('topic_id'),
+            'user' => array('creator_id', 'topic_id')
         );
     }
 

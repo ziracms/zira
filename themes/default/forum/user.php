@@ -1,38 +1,9 @@
-<?php if (!empty($info)): ?>
-<div class="alert alert-info forum-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span> <?php echo Zira\Helper::nl2br(Zira\Helper::html($info)) ?></div>
-<?php endif; ?>
-<div class="messages-panel forum-messages-panel">
-<nav class="navbar navbar-default">
-<div class="container-fluid">
-<div class="navbar-header">
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#user-messages-panel" aria-expanded="false">
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-<span class="icon-bar"></span>
-</button>
-<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($forum_url)) ?>"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::html(t($forum_title)) ?></a>
-</div>
-<div class="collapse navbar-collapse" id="user-messages-panel">
-<?php if (isset($form) && !empty($topic_active)): ?>
-<button onclick="zira_scroll_to_forum_form()" class="btn btn-default navbar-btn navbar-right reply-btn"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Reply') ?></button>
-<?php endif; ?>
-<?php if (isset($form) && empty($topic_active)): ?>
-<button class="btn btn-default navbar-btn navbar-right disabled" title="<?php echo tm('Thread is closed','forum') ?>"><span class="glyphicon glyphicon-lock"></span></button>
-<?php endif; ?>
-</div>
-</div>
-</nav>
-</div>
-
 <?php if (!empty($items)): ?>
 <ul class="forum-list list">
 <?php $co = 0; ?>
 <?php foreach($items as $item): ?>
-<li id="forum-message-<?php echo Zira\Helper::html($item->id); ?>" class="list-item no-thumb <?php echo ($co%2==0 ? 'odd' : 'even') ?>">
+<li class="list-item no-thumb <?php echo ($co%2==0 ? 'odd' : 'even') ?>">
 <h3 class="list-title-wrapper">
-<?php if (isset($form) && !empty($topic_active)): ?>
-<a href="javascript:void(0)" class="forum-reply-inline forum-right-item"><span class="glyphicon glyphicon-pencil"></span> <?php echo tm('Reply', 'forum') ?></a>
-<?php endif; ?>
 <?php if ($item->user_username): ?>
 <?php echo Zira\User::generateUserProfileLink($item->creator_id, $item->user_firstname, $item->user_secondname, $item->user_username, 'author') ?>
 <?php else: ?>
@@ -94,7 +65,9 @@
 <?php endif; ?>
 </div>
 <div class="list-info-wrapper forum-info-wrapper">
-<a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url($topic_url.($topic_page>1 ? '?page='.$topic_page : '').'#forum-message-'.$item->id)) ?>" title="<?php echo tm('Link','forum') ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+<?php if ($item->topic_title): ?>
+<a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id))) ?>" title="<?php Zira\Helper::html($item->topic_title) ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+<?php endif; ?>
 <?php if ($item->modified_by): ?>
 <span class="list-info note" title="<?php echo tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>
 <?php endif; ?>
@@ -114,16 +87,7 @@
 <?php $co++; ?>
 <?php endforeach; ?>
 </ul>
-<?php if (isset($pagination)) echo $pagination ?>
+<?php if (isset($pagination)) echo $pagination; ?>
+<?php else: ?>
+<p><?php echo tm('No posts found', 'forum') ?></p>
 <?php endif; ?>
-<?php if (isset($form) && !empty($topic_active)) echo $form; ?>
-<?php if (empty($topic_active)) echo '<span class="label label-danger forum-label forum-bottom-label"><span class="glyphicon glyphicon-warning-sign"></span> '.tm('Thread is closed','forum').'</span>' ?>
-<?php if (!isset($form) && !empty($topic_active) && !Zira\User::isAuthorized()): ?>
-<?php echo tm('%s to reply', 'forum', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
-<?php endif; ?>
-<script type="text/javascript">
-zira_scroll_to_forum_form = function() {
-    var top = $('.container #content form#form-forum-message-form').parents('.form-panel').offset().top;
-    $('html, body').animate({'scrollTop':top},800);
-};
-</script>

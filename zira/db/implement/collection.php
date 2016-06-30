@@ -29,11 +29,25 @@ interface Collection {
     public function delete();
 
     /**
-     * COUNT() query
+     * COUNT(*) query
      * @param string $alias
      * @return Collection
      */
     public function count($alias = 'co');
+
+    /**
+     * COUNT(field) query
+     * @param string $alias
+     * @return Collection
+     */
+    public function countField($field, $alias = 'co');
+
+    /**
+     * COUNT(DISTINCT field) query
+     * @param string $alias
+     * @return Collection
+     */
+    public function countDistinctField($field, $alias = 'co');
 
     /**
      * MAX() query

@@ -99,6 +99,90 @@ class Category extends Zira\Page {
         }
     }
 
+    public static function placeholderContent($add_meta = false) {
+        if (!Zira\Category::current()) return;
+
+        // checking permission
+        if (Zira\Category::current()->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
+            return;
+        }
+
+        $record = Zira\Content\Category::record(Zira\Category::current());
+
+        // adding meta tags
+        if ($add_meta) {
+            $title = Zira\Category::current()->title;
+            if (Zira\Category::current()->meta_title) $meta_title = Zira\Category::current()->meta_title;
+            else $meta_title = Zira\Category::current()->title;
+            if (Zira\Category::current()->meta_keywords) $meta_keywords = Zira\Locale::t(Zira\Category::current()->meta_keywords);
+            else $meta_keywords = mb_strtolower(Zira\Locale::t(Zira\Category::current()->title), CHARSET);
+            if (Zira\Category::current()->meta_description) $meta_description = Zira\Category::current()->meta_description;
+            else if (Zira\Category::current()->description) $meta_description = Zira\Category::current()->description;
+            else $meta_description = Zira\Locale::t('Category: %s', Zira\Category::current()->title);
+            $thumb = null;
+
+
+            if ($record) {
+                $title = $record->title;
+                if ($record->meta_title) $meta_title = $record->meta_title;
+                else $meta_title = $record->title;
+                if ($record->meta_keywords) $meta_keywords = $record->meta_keywords;
+                if ($record->meta_description) $meta_description = $record->meta_description;
+                else $meta_description = $record->description;
+                if ($record->thumb) $thumb = $record->thumb;
+            }
+
+            static::addTitle(Zira\Locale::t($meta_title));
+            static::setKeywords($meta_keywords);
+            static::setDescription(Zira\Locale::t($meta_description));
+        }
+
+        $limit = Zira\Config::get('records_limit', 10);
+        if (Zira\Category::current()->records_list===null || Zira\Category::current()->records_list) {
+            $records = static::getRecords(Zira\Category::current(), false, $limit + 1, null, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds());
+        } else {
+            $records = array();
+        }
+
+        $comments_enabled = Zira\Category::current()->comments_enabled!==null ? Zira\Category::current()->comments_enabled : Zira\Config::get('comments_enabled', 1);
+        $rating_enabled = Zira\Category::current()->rating_enabled!==null ? Zira\Category::current()->rating_enabled : Zira\Config::get('rating_enabled', 0);
+        $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
+        $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
+
+        $data = array(
+                static::VIEW_PLACEHOLDER_CLASS => 'records',
+                static::VIEW_PLACEHOLDER_RECORDS => $records,
+                static::VIEW_PLACEHOLDER_SETTINGS => array(
+                    'limit' => $limit,
+                    'comments_enabled' => $comments_enabled,
+                    'rating_enabled' => $rating_enabled,
+                    'display_author' => $display_author,
+                    'display_date' => $display_date
+                )
+        );
+
+        if ($add_meta) {
+            $_data = array(
+                static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
+            );
+        } else {
+            $_data = array();
+        }
+
+        if ($record) {
+            $_data[static::VIEW_PLACEHOLDER_IMAGE] = $record->image;
+            $_data[static::VIEW_PLACEHOLDER_CONTENT] = $record->content;
+            $_data[static::VIEW_PLACEHOLDER_CLASS] = 'parse-content';
+            Zira\View::addParser();
+        } else {
+            $_data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t(Zira\Category::current()->description);
+        }
+
+        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'page');
+        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
+        Zira\View::preloadThemeLoader();
+    }
+
     public static function record($category) {
         $record = null;
         $record_name = $category->name;

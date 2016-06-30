@@ -8,7 +8,7 @@
 <?php foreach($items as $item): ?>
 <li class="list-item no-thumb <?php echo ($co%2==0 ? 'odd' : 'even') ?>">
 <h3 class="list-title-wrapper">
-<a class="list-title" href="<?php echo Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id)) ?>" title="<?php echo Zira\Helper::html($item->topic_title) ?>"><?php echo Zira\Helper::html($item->topic_title) ?></a>
+<a class="list-title" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id))) ?>" title="<?php echo Zira\Helper::html($item->topic_title) ?>"><?php echo Zira\Helper::html($item->topic_title) ?></a>
 </h3>
 <div class="list-content-wrapper forum-widget-content-wrapper">
 <p class="parse-content"><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
