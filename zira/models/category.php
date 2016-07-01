@@ -7,6 +7,7 @@
 
 namespace Zira\Models;
 
+use Zira\Config;
 use Zira\Locale;
 use Zira\Orm;
 use Zira\View;
@@ -63,5 +64,34 @@ class Category extends Orm {
         return self::getCollection()
                                 ->where('name', 'like', $category->name . '/%')
                                 ->get();
+    }
+
+    public static function getHomeCategories() {
+        $top_categories = self::getTopCategories();
+        try {
+            $home_categories_map = array();
+            foreach ($top_categories as $top_category) {
+                $top_category->sort_order = 999999;
+                $home_categories_map[$top_category->id] = $top_category;
+            }
+            $home_categories = Config::get('home_categories');
+            if (!$home_categories) return $top_categories;
+            $home_categories_parts = explode(',', $home_categories);
+            for ($i = 0; $i < count($home_categories_parts); $i++) {
+                $id = intval($home_categories_parts[$i]);
+                if (array_key_exists($id, $home_categories_map)) {
+                    $home_categories_map[$id]->sort_order = $i;
+                }
+            }
+            usort($top_categories, array(self::getClass(), 'sortHomeCategories'));
+        } catch(\Exception $e) {
+            // ignore
+        }
+        return $top_categories;
+    }
+
+    public static function sortHomeCategories($a, $b) {
+        if ($a->sort_order == $b->sort_order) return 0;
+        else return ($a->sort_order < $b->sort_order) ? -1 : 1;
     }
 }

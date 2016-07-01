@@ -126,5 +126,8 @@ return array(
     'Posts' => 'Сообщения',
     'Mailing' => 'Рассылка',
     'Authorization' => 'Авторизация',
-    'Site map' => 'Карта сайта'
+    'Site map' => 'Карта сайта',
+    'Reload' => 'Обновить',
+    'First page' => 'Первая страница',
+    "Last page" => 'Последняя страница'
 );

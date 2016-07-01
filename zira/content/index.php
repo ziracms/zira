@@ -163,12 +163,8 @@ class Index extends Zira\Page {
                 }
 
                 // top level category records
-                $order_by = 'id';
-                $sort = 'asc';
-                $order = Zira\Config::get('home_categories_order', 'asc');
-                if ($order == 'desc') $sort = 'desc';
-                else if ($order == 'name') $order_by = 'name';
-                $top_categories = Zira\Models\Category::getTopCategories($order_by, $sort);
+                $top_categories = Zira\Models\Category::getHomeCategories();
+
                 $includeChilds = Zira\Config::get('category_childs_list', true);
                 if ($includeChilds && CACHE_CATEGORIES_LIST) {
                     $all_categories = Zira\Category::getAllCategories();

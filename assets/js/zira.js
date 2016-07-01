@@ -46,6 +46,7 @@
          */
         if ($('.container #content .comments').length>0) {
             zira_init_comments();
+            zira_init_comments_reload();
         }
         /**
          * more comments
@@ -316,6 +317,55 @@
                     $('.container #content .xhr-list').removeClass('xhr-list');
                 }
             }),'html');
+        });
+    };
+
+    zira_init_comments_reload = function() {
+        $('.container #content .comments-reload').click(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            var url = $(this).data('url');
+            var record_id = $(this).data('record');
+            var page = $(this).data('page');
+
+            if (typeof(url)=="undefined" ||
+                typeof(record_id)=="undefined" ||
+                typeof(page)=="undefined"
+            ) {
+                return;
+            }
+
+            $(this).parents('.comments-wrapper').find('.comments-view-more-wrapper').remove();
+
+            if (navigator.userAgent.indexOf('MSIE')<0) {
+                $('.container #content .comments').slideUp();
+            }
+
+            $(this).attr('disabled','disabled');
+
+            window.setTimeout(zira_bind(this, function(){
+                $.post(url, {
+                    'record_id': record_id,
+                    'page': page,
+                    'reload': true
+                }, zira_bind(this, function(response){
+                    $(this).removeAttr('disabled');
+                    $('.comments').eq(0).replaceWith('<div class="comments-reload-place"></div>');
+                    $('.comments').remove();
+                    $(this).parents('.comments-wrapper').find('.comments-reload-place').replaceWith(response);
+                    zira_init_comments_rating();
+                    try {
+                        zira_parse_content();
+                    } catch(err) {}
+                    if (navigator.userAgent.indexOf('MSIE')<0) {
+                        $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                    } else {
+                        $('.container #content .xhr-list').removeClass('xhr-list');
+                    }
+                    $('body, html').animate({'scrollTop': $(this).parents('.comments-wrapper').offset().top}, 500);
+                }),'html');
+            }), 500);
         });
     };
 

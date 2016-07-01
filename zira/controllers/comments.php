@@ -18,8 +18,9 @@ class Comments extends Zira\Controller {
         if (Zira\Request::isPost()) {
             $record_id = (int)Zira\Request::post('record_id');
             $page = (int)Zira\Request::post('page');
+            $reload = (bool)Zira\Request::post('reload');
 
-            if (!$record_id || $page<=0) return;
+            if (!$record_id || $page<0 || ($page==0 && !$reload)) return;
 
             $preview = Zira\Page::allowPreview();
             $limit = Zira\Config::get('comments_limit', 10);

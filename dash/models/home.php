@@ -26,7 +26,6 @@ class Home extends Model {
                 'home_description' => 'string',
                 'home_records_limit' => 'int',
                 'home_records_enabled' => 'int',
-                'home_categories_order' => 'string',
                 'home_record_name' => 'string'
             );
 

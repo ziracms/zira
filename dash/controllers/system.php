@@ -134,4 +134,14 @@ class System extends Dash\Controller {
              Zira\Page::render($response);
          }
     }
+
+    public function homedrag() {
+        if (Zira\Request::isPost()) {
+            $items = Zira\Request::post('items');
+            $orders = Zira\Request::post('orders');
+            $model = new Dash\Models\Homecategories(new Dash\Windows\Homecategories());
+            $response = $model->drag($items, $orders);
+            Zira\Page::render($response);
+        }
+    }
 }

@@ -1,8 +1,13 @@
 <?php if (empty($ajax)): ?>
 <div class="comments-wrapper">
+<div class="btn-group comment-btn-group" role="group">
 <?php if (isset($form) && !empty($comments)): ?>
-<a href="javascript:void(0)" onclick="zira_scroll_to_comments_form()" class="btn btn-primary comment-btn"><?php echo t('Leave a comment') ?></a>
+<button onclick="zira_scroll_to_comments_form()" class="btn btn-primary comment-btn"><?php echo t('Leave a comment') ?></button>
 <?php endif; ?>
+<?php if (!empty($comments)): ?>
+<button class="btn btn-default comments-reload" type="button" title="<?php echo t('Reload') ?>" data-url="<?php echo Zira\Helper::url('comments') ?>" data-record="<?php echo intval($record_id) ?>" data-page="0"><span class="glyphicon glyphicon-refresh"></span></button>
+<?php endif; ?>
+</div>
 <?php if (isset($total)): ?>
 <h2 id="comments"><?php echo t('Comments') ?>(<?php echo $total ?>)</h2>
 <?php endif; ?>
@@ -58,7 +63,7 @@
 <?php echo $form; ?>
 </div>
 <?php endif; ?>
-<?php if (!isset($form) && Zira\Config::get('comments_allowed',true) && !Zira\Config::get('comment_anonymous',true) && !Zira\User::isAuthorized() && Zira\Page::getRecordUrl()!==null): ?>
+<?php if (!isset($form) && empty($ajax) && Zira\Config::get('comments_allowed',true) && !Zira\Config::get('comment_anonymous',true) && !Zira\User::isAuthorized() && Zira\Page::getRecordUrl()!==null): ?>
 <?php echo t('%s to leave a comment', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRecordUrl()).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
 <?php if (empty($ajax)): ?>

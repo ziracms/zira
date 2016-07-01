@@ -43,7 +43,6 @@ class Home extends Form
         $html .= $this->input(Locale::t('Description'), 'home_description', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Records limit'), 'home_records_limit');
         $html .= $this->checkbox(Locale::t('Display records'), 'home_records_enabled', null, false);
-        $html .= $this->radio(Locale::t('Category sorting'), 'home_categories_order', array('asc' => Locale::t('ascending'), 'desc' => Locale::t('descending'), 'name' => Locale::t('by name')), null, false);
         $html .= $this->input(Locale::t('Link record'), 'home_record_name', array('placeholder'=>Locale::t('Enter system name')));
         $html .= $this->close();
         return $html;
@@ -66,7 +65,6 @@ class Home extends Form
         $validator->registerUtf8('home_description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNumber('home_records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit')));
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'home_layout', Locale::t('Invalid value "%s"',Locale::t('Layout')));
-        $validator->registerCustom(array(get_class(), 'checkSorting'), 'home_categories_order', Locale::t('Invalid value "%s"',Locale::t('Category sorting')));
         $validator->registerString('home_record_name',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Link record')));
         $validator->registerNoTags('home_record_name',Locale::t('Invalid value "%s"',Locale::t('Link record')));
         $validator->registerUtf8('home_record_name',Locale::t('Invalid value "%s"',Locale::t('Link record')));
@@ -75,9 +73,5 @@ class Home extends Form
     public static function checkLayout($layout) {
         $layouts = Zira\View::getLayouts();
         return array_key_exists($layout, $layouts);
-    }
-
-    public static function checkSorting($order) {
-        return in_array($order, array('asc', 'desc', 'name'));
     }
 }

@@ -25,11 +25,19 @@ class Home extends Window {
     }
 
     public function create() {
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::t('Categories'), Zira\Locale::t('Category sorting'), 'glyphicon glyphicon-sort', 'desk_call(dash_home_categories_wnd, this);', 'create', false, true)
+        );
+
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
                 'desk_window_form_init(this);'
             )
         );
+
+        $this->addVariables(array(
+            'dash_home_categories_wnd' => \Dash\Dash::getInstance()->getWindowJSName(Homecategories::getClass())
+        ));
     }
 
     public function load() {

@@ -685,6 +685,7 @@ class Dash {
             $this->registerWindowClass('dashOptionsWindow', 'Dash\Windows\Options', 'Dash\Models\Options');
             $this->registerWindowClass('dashMetaWindow', 'Dash\Windows\Meta', 'Dash\Models\Meta');
             $this->registerWindowClass('dashHomeWindow', 'Dash\Windows\Home', 'Dash\Models\Home');
+            $this->registerWindowClass('dashHomeCategoriesWindow', 'Dash\Windows\Homecategories', 'Dash\Models\Homecategories');
             $this->registerWindowClass('dashRecordSettingsWindow', 'Dash\Windows\Recordsettings', 'Dash\Models\Recordsettings');
             $this->registerWindowClass('dashUserSettingsWindow', 'Dash\Windows\Usersettings', 'Dash\Models\Usersettings');
             $this->registerWindowClass('dashCommentSettingsWindow', 'Dash\Windows\Commentsettings', 'Dash\Models\Commentsettings');

@@ -183,7 +183,8 @@ class Pagination {
         }
         if ($page>1 && $page<=$total) {
             $html .= Helper::tag_open('li');
-            $html .= Helper::tag_open('a', array('href'=>$this->url($page-1)));
+            //$html .= Helper::tag_open('a', array('href'=>$this->url($page-1)));
+            $html .= Helper::tag_open('a', array('href'=>$this->url(1), 'title'=>Locale::t('First page')));
             $html .= Helper::tag_open('span');
             $html .= '&laquo;';
             $html .= Helper::tag_close('span');
@@ -208,7 +209,8 @@ class Pagination {
         }
         if ($page<$total) {
             $html .= Helper::tag_open('li');
-            $html .= Helper::tag_open('a', array('href'=>$this->url($page+1)));
+            //$html .= Helper::tag_open('a', array('href'=>$this->url($page+1)));
+            $html .= Helper::tag_open('a', array('href'=>$this->url($total), 'title'=>Locale::t('Last page')));
             $html .= Helper::tag_open('span');
             $html .= '&raquo;';
             $html .= Helper::tag_close('span');
