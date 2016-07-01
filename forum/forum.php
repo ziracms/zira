@@ -41,11 +41,6 @@ class Forum {
         Zira\Router::addAvailableRoute('forum/group');
         Zira\Router::addAvailableRoute('forum/threads');
         Zira\Router::addAvailableRoute('forum/thread');
-        Zira\Router::addAvailableRoute('forum/compose');
-
-        if (Zira\Request::uri() == Zira\Helper::url('forum') || strpos(Zira\Request::uri(), Zira\Helper::url('forum').'/')===0) {
-            Zira\Category::setAddBreadcrumbs(false);
-        }
     }
 
     public function bootstrap() {
@@ -72,6 +67,32 @@ class Forum {
             Zira\Hook::register(Zira\User::PROFILE_LINKS_HOOK, array(get_class(), 'profileLinks'));
         }
         Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfo'));
+
+        if (!Zira\Category::current() && Zira\Router::getRequest()!='forum' && strpos(Zira\Router::getRequest(), 'forum/')===0) {
+            if (CACHE_CATEGORIES_LIST) {
+                $categories = Zira\Category::getAllCategories();
+                foreach($categories as $category) {
+                    if ($category->name == 'forum') {
+                        Zira\Category::setCurrent($category);
+                        break;
+                    }
+                }
+            } else {
+                $category = Zira\Models\Category::getCollection()
+                                                    ->where('name','=','forum')
+                                                    ->get(0);
+                if ($category) {
+                    Zira\Category::setCurrent($category);
+                }
+            }
+        }
+
+        if (Zira\Category::current() &&
+            (Zira\Router::getRequest()=='forum' || strpos(Zira\Router::getRequest(), 'forum/')===0) &&
+            Zira\Category::current()->layout
+        ) {
+            Zira\Page::setLayout(Zira\Category::current()->layout);
+        }
     }
 
     public static function profileLinks() {

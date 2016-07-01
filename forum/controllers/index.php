@@ -36,11 +36,6 @@ class Index extends Zira\Controller {
     protected function _renderCategoryPage() {
         if ($this->_has_category) {
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT_BOTTOM, array(), 'forum/bottom');
-
-            $category = Zira\Category::current();
-            if ($category->layout) {
-                Zira\Page::setLayout($category->layout);
-            }
             Zira\Content\Category::content();
         }
     }
@@ -72,7 +67,7 @@ class Index extends Zira\Controller {
         Zira\Page::setKeywords($keywords);
         Zira\Page::setDescription($meta_description);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
 
         if (Zira\Config::get('forum_layout')) {
             Zira\Page::setLayout(Zira\Config::get('forum_layout'));
@@ -130,7 +125,8 @@ class Index extends Zira\Controller {
         Zira\Page::setKeywords($keywords);
         Zira\Page::setDescription($meta_description);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE . '/'. Zira\Router::getAction());
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($category), Zira\Locale::t($category->title));
 
         if ($category->layout) {
@@ -223,7 +219,8 @@ class Index extends Zira\Controller {
         Zira\Page::setKeywords($keywords);
         Zira\Page::setDescription($meta_description);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE . '/'. Zira\Router::getAction());
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($forum->category_id), Zira\Locale::t($forum->category_title));
 
         if ($forum->category_layout) {
@@ -388,7 +385,8 @@ class Index extends Zira\Controller {
         Zira\Page::setKeywords($keywords);
         Zira\Page::setDescription($meta_description);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE . '/'. Zira\Router::getAction());
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($topic->category_id), Zira\Locale::t($topic->category_title));
 
         if ($topic->category_layout) {
@@ -497,7 +495,7 @@ class Index extends Zira\Controller {
 
         Zira\Page::addTitle($meta_title);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($forum->category_id), Zira\Locale::t($forum->category_title));
 
         if ($forum->category_layout) {
@@ -652,7 +650,7 @@ class Index extends Zira\Controller {
 
         Zira\Page::addTitle($title);
 
-        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
 
         if (Zira\Config::get('forum_layout')) {
             Zira\Page::setLayout(Zira\Config::get('forum_layout'));

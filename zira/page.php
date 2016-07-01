@@ -99,6 +99,25 @@ class Page {
         self::$_breadcrumbs [] = array('link'=>$link, 'title'=>$title);
     }
 
+    public static function putBreadcrumb($link, $title) {
+        for ($i=0; $i<count(self::$_breadcrumbs); $i++) {
+            if (self::$_breadcrumbs[$i]['link'] == $link) {
+                self::$_breadcrumbs[$i] = array('link'=>$link, 'title'=>$title);
+                return;
+            }
+        }
+        self::$_breadcrumbs [] = array('link'=>$link, 'title'=>$title);
+    }
+
+    public static function removeBreadcrumb($link) {
+        for ($i=0; $i<count(self::$_breadcrumbs); $i++) {
+            if (self::$_breadcrumbs[$i]['link'] == $link) {
+                unset(self::$_breadcrumbs[$i]);
+                return;
+            }
+        }
+    }
+
     public static function breadcrumbs() {
         if (!View::renderBreadcrumbsEnabled()) return '';
         $added = array();
