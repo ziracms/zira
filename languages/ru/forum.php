@@ -59,5 +59,7 @@ return array(
     'My discussions' => 'Мои обсуждения',
     'Forum posts' => 'Сообщений на форуме',
     'Posted by: %s' => 'Сообщения пользователя: %s',
-    'No posts found' => 'Сообщения не найдены'
+    'No posts found' => 'Сообщения не найдены',
+    'Go to %s' => 'Перейти на %s',
+    'forum' => 'форум'
 );

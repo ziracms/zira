@@ -41,6 +41,7 @@ class Forum {
         Zira\Router::addAvailableRoute('forum/group');
         Zira\Router::addAvailableRoute('forum/threads');
         Zira\Router::addAvailableRoute('forum/thread');
+        Zira\Router::addAvailableRoute('forum/compose');
 
         if (Zira\Request::uri() == Zira\Helper::url('forum') || strpos(Zira\Request::uri(), Zira\Helper::url('forum').'/')===0) {
             Zira\Category::setAddBreadcrumbs(false);

@@ -31,7 +31,10 @@ class Records extends Model {
                 $category_empty = true;
 
                 $rows = Zira\Models\Category::getCollection()
+                    ->where('name', '=', $category->name)
+                    ->union()
                     ->where('name', 'like', $category->name . '/%')
+                    ->merge()
                     ->get();
 
                 foreach($rows as $row) {
@@ -46,6 +49,34 @@ class Records extends Model {
                 }
 
                 if ($category_empty) {
+                    Zira\Models\Widget::getCollection()
+                                ->where('name','=',Zira\Models\Category::WIDGET_CLASS)
+                                ->and_where('params','=', $category->id)
+                                ->delete()
+                                ->execute();
+
+                    Zira\Models\Widget::getCollection()
+                                ->where('category_id','=',$category->id)
+                                ->delete()
+                                ->execute();
+
+                    $subrows = Zira\Models\Category::getCollection()
+                                    ->where('name', 'like', $category->name . '/%')
+                                    ->get();
+
+                    foreach($subrows as $subcategory) {
+                        Zira\Models\Widget::getCollection()
+                                    ->where('name','=',Zira\Models\Category::WIDGET_CLASS)
+                                    ->and_where('params','=', $subcategory->id)
+                                    ->delete()
+                                    ->execute();
+
+                        Zira\Models\Widget::getCollection()
+                                    ->where('category_id','=',$subcategory->id)
+                                    ->delete()
+                                    ->execute();
+                    }
+
                     Zira\Models\Category::getCollection()
                         ->delete()
                         ->where('name', 'like', $category->name . '/%')

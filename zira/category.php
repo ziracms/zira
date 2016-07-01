@@ -162,6 +162,12 @@ class Category {
         if (empty($categories)) return array();
         $child_counts = array();
         foreach($categories as $category) {
+            $co = Models\Record::getCollection()
+                                ->count()
+                                ->where('category_id','=',$category->id)
+                                ->get('co');
+            if ($co==0) continue;
+
             if (!array_key_exists($category->parent_id, $child_counts)) {
                 $child_counts[$category->parent_id] = 0;
             }
