@@ -1,5 +1,5 @@
 <?php if (!empty($page_url)): ?>
-<div class="fb-page block"
+<div class="fb-page block noframe"
      data-href="<?php echo Zira\Helper::html($page_url) ?>"
      data-small-header="false"
      data-width="500"

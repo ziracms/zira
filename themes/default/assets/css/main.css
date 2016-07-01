@@ -880,16 +880,16 @@ pre {
     border: 1px solid #eee;
 }
 /** sidebar **/
-.sidebar.col-sm-4 {
+.sidebar.col-sm-4 > aside > div {
     background: #EFEFEF;
     background: rgba(239, 239, 239, 0.7);
     border-radius: 7px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    min-height: 43px;
+    padding: 15px;
 }
-.sidebar.col-sm-4 > aside > div:last-child {
-    margin-bottom: 0px !important;
+.sidebar.col-sm-4 > aside > div.noframe {
+    background: none;
+    border-radius: 0;
+    padding: 0;
 }
 .sidebar .page-header {
     margin: 0px;
@@ -946,9 +946,9 @@ pre {
 }
 /** secondary menu **/
 .sidebar.col-sm-4 #secondary-menu-wrapper {
-    margin-top: -15px;
-    margin-left: -15px;
-    margin-right: -15px;
+    background: none;
+    border-radius: 0;
+    padding: 0;
 }
 #secondary-menu-wrapper {
     margin-bottom: 20px;

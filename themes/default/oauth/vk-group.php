@@ -1,5 +1,5 @@
 <?php if (!empty($group_id)): ?>
-<div id="vk_groups" class="block"></div>
+<div id="vk_groups" class="block noframe"></div>
 <script type="text/javascript">
 if (typeof(vk_open_api_init_callbacks)=="undefined") {
     vk_open_api_init_callbacks = [];
