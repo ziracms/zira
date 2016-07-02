@@ -68,18 +68,18 @@ class Forum {
         }
         Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfo'));
 
-        if (!Zira\Category::current() && Zira\Router::getRequest()!='forum' && strpos(Zira\Router::getRequest(), 'forum/')===0) {
+        if (!Zira\Category::current() && Zira\Router::getRequest()!=self::ROUTE && Zira\Router::getModule() == self::ROUTE) {
             if (CACHE_CATEGORIES_LIST) {
                 $categories = Zira\Category::getAllCategories();
                 foreach($categories as $category) {
-                    if ($category->name == 'forum') {
+                    if ($category->name == self::ROUTE) {
                         Zira\Category::setCurrent($category);
                         break;
                     }
                 }
             } else {
                 $category = Zira\Models\Category::getCollection()
-                                                    ->where('name','=','forum')
+                                                    ->where('name','=',self::ROUTE)
                                                     ->get(0);
                 if ($category) {
                     Zira\Category::setCurrent($category);
@@ -88,7 +88,7 @@ class Forum {
         }
 
         if (Zira\Category::current() &&
-            (Zira\Router::getRequest()=='forum' || strpos(Zira\Router::getRequest(), 'forum/')===0) &&
+            Zira\Router::getModule() == self::ROUTE &&
             Zira\Category::current()->layout
         ) {
             Zira\Page::setLayout(Zira\Category::current()->layout);
@@ -97,7 +97,7 @@ class Forum {
 
     public static function profileLinks() {
         return array(
-                'url' => 'forum/user',
+                'url' => self::ROUTE.'/user',
                 'icon' => 'glyphicon glyphicon-comment',
                 'title' => Zira\Locale::tm('My discussions', 'forum')
             );

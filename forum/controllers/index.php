@@ -16,6 +16,8 @@ class Index extends Zira\Controller {
     public function _before() {
         parent::_before();
 
+        Zira\Page::setRedirectUrl(Forum\Forum::ROUTE);
+
         $category = Zira\Category::current();
         if ($category) {
             $category_parts = explode('/',$category->name);

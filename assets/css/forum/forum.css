@@ -218,3 +218,7 @@
     border-radius: 4px;
     box-shadow: inset 0px 0px 4px #DDD;
 }
+.forum-empty-message {
+    margin: 40px 0px;
+    font-style: italic;
+}

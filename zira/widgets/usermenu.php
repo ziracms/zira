@@ -61,7 +61,8 @@ class Usermenu extends Zira\Widget {
                 ), $items);
             }
         } else {
-            $redirect_url = Zira\Page::getRecordUrl();
+            $redirect_url = Zira\Page::getRedirectUrl();
+            if (!$redirect_url) $redirect_url = Zira\Page::getRecordUrl();
             if ($redirect_url && $redirect_url==Zira\Config::get('home_record_name')) $redirect_url = null;
             if (!$redirect_url && Zira\Category::current()) $redirect_url = Zira\Category::current()->name;
             $class='not-authorized';

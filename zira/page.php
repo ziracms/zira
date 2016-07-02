@@ -34,6 +34,7 @@ class Page {
     protected static $_breadcrumbs = array();
     protected static $_record_id = null;
     protected static $_record_url = null;
+    protected static $_redirect_url = null;
 
     public static function setView($view) {
         self::$_view = $view;
@@ -59,6 +60,14 @@ class Page {
         }
         if ($_title!==null) $title = $title . PAGE_TITLE_DELIMITER . $_title;
         View::setLayoutData(array(View::VAR_TITLE=>$title));
+    }
+
+    public static function setRedirectUrl($url) {
+        self::$_redirect_url = $url;
+    }
+
+    public static function getRedirectUrl() {
+        return self::$_redirect_url;
     }
 
     public static function setTitle($title) {

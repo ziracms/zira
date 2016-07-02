@@ -68,3 +68,7 @@
 </ul>
 <?php if (isset($pagination)) echo $pagination ?>
 <?php endif; ?>
+
+<?php if (empty($top_items) && empty($item)): ?>
+<p class="forum-empty-message"><?php echo tm('No one has posted anything yet.', 'forum') ?></p>
+<?php endif; ?>

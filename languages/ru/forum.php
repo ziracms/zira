@@ -61,5 +61,6 @@ return array(
     'Posted by: %s' => 'Сообщения пользователя: %s',
     'No posts found' => 'Сообщения не найдены',
     'Go to %s' => 'Перейти на %s',
-    'forum' => 'форум'
+    'forum' => 'форум',
+    'No one has posted anything yet.' => 'Никто еще ничего не писал.'
 );

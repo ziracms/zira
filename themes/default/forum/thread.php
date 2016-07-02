@@ -116,11 +116,15 @@
 </ul>
 <?php if (isset($pagination)) echo $pagination ?>
 <?php endif; ?>
+<?php if (empty($item)): ?>
+<p class="forum-empty-message"><?php echo tm('No one has posted anything yet.', 'forum') ?></p>
+<?php endif; ?>
 <?php if (isset($form) && !empty($topic_active)) echo $form; ?>
 <?php if (empty($topic_active)) echo '<span class="label label-danger forum-label forum-bottom-label"><span class="glyphicon glyphicon-warning-sign"></span> '.tm('Thread is closed','forum').'</span>' ?>
 <?php if (!isset($form) && !empty($topic_active) && !Zira\User::isAuthorized()): ?>
 <?php echo tm('%s to reply', 'forum', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
+
 <script type="text/javascript">
 zira_scroll_to_forum_form = function() {
     var top = $('.container #content form#form-forum-message-form').parents('.form-panel').offset().top;
