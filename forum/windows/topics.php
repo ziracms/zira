@@ -30,7 +30,7 @@ class Topics extends Dash\Windows\Window {
         $this->setViewSwitcherEnabled(false);
         $this->setSelectionLinksEnabled(true);
         $this->setBodyViewListVertical(true);
-        $this->setSidebarEnabled(false);
+        $this->setSidebarEnabled(true);
 
         $this->setOnCreateItemJSCallback(
             $this->createJSCallback(
@@ -47,6 +47,16 @@ class Topics extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Messages'), 'glyphicon glyphicon-comment', 'desk_call(dash_forum_messages, this);', 'edit', true, array('typo'=>'messages'))
+        );
+
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Activate', 'forum'), 'glyphicon glyphicon-ok', 'desk_call(dash_forum_topic_activate, this);', 'edit', true, array('typo'=>'activate'))
+        );
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownSeparator()
         );
@@ -73,6 +83,12 @@ class Topics extends Dash\Windows\Window {
             $this->createContextMenuSeparator()
         );
         $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::tm('Activate', 'forum'), 'glyphicon glyphicon-ok', 'desk_call(dash_forum_topic_activate, this);', 'edit', true, array('typo'=>'activate'))
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuSeparator()
+        );
+        $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::tm('Close thread', 'forum'), 'glyphicon glyphicon-remove-sign', 'desk_call(dash_forum_topic_close, this);', 'edit', true, array('typo'=>'close'))
         );
         $this->addDefaultContextMenuItem(
@@ -90,6 +106,8 @@ class Topics extends Dash\Windows\Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::tm('Open thread page', 'forum'), 'glyphicon glyphicon-new-window', 'desk_call(dash_forum_page, this);', 'edit', true, array('typo'=>'page'))
         );
+
+        $this->setSidebarContent('<div class="topics-infobar" style="white-space:nowrap;text-overflow: ellipsis;width:100%;overflow:hidden"></div>');
 
         $this->setOnSelectJSCallback(
             $this->createJSCallback('desk_call(dash_forum_topics_select, this);')
@@ -139,8 +157,9 @@ class Topics extends Dash\Windows\Window {
         $items = array();
         foreach($threads as $thread) {
             $title = Zira\Helper::html($thread->title);
+            if (!$thread->active) $title = '['.Zira\Locale::tm('Closed','forum').'] '.$title;
             $description = Zira\Helper::html($thread->description);
-            $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0));
+            $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0, 'published'=>$thread->published ? 1: 0));
         }
         $this->setBodyItems($items);
 

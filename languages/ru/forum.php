@@ -62,5 +62,13 @@ return array(
     'No posts found' => 'Сообщения не найдены',
     'Go to %s' => 'Перейти на %s',
     'forum' => 'форум',
-    'No one has posted anything yet.' => 'Никто еще ничего не писал.'
+    'No one has posted anything yet.' => 'Никто еще ничего не писал.',
+    'Closed' => 'Закрыта',
+    'New forum message' => 'Новое сообщение на форуме',
+    'Hello %s !' => 'Привет %s !',
+    'New forum message was posted' => 'Опубликовано новое сообщение на форуме',
+    'Thread: %s' => 'Тема: %s',
+    '%s forum messages was posted' => array('Опубликовано %s сообщение на форуме', 'Опубликовано %s сообщения на форуме', 'Опубликовано %s сообщений на форуме'),
+    'Topic starter' => 'Создатель темы',
+    'Creation date' => 'Дата создания'
 );

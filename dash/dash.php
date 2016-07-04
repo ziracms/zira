@@ -25,6 +25,8 @@ class Dash {
 
     const CONFIG_FRONTEND_PANEL_ENABLED = 'dash_panel_frontend';
 
+    const NOTIFICATION_HOOK = 'dash_notifications';
+
     private static $_instance;
     protected $_styles = array();
     protected $_scripts = array();

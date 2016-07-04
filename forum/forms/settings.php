@@ -43,6 +43,8 @@ class Settings extends Form
         $html .= $this->input(Locale::tm('Meta description', 'forum'), 'forum_meta_description');
         $html .= $this->input(Locale::t('Records limit'), 'forum_limit');
         $html .= $this->input(Locale::tm('Message min. length', 'forum'), 'forum_min_chars');
+        $html .= $this->checkbox(Locale::t('Moderation'), 'forum_moderate', null, false);
+        $html .= $this->input(Locale::t('Notification Email'), 'forum_notify_email');
         $html .= $this->checkbox(Locale::tm('Allow file uploads', 'forum'), 'forum_file_uploads', null, false);
         $html .= $this->input(Locale::tm('File max. size', 'forum').' (kB)', 'forum_file_max_size');
         $html .= $this->input(Locale::tm('Allowed file extensions', 'forum'), 'forum_file_ext');
@@ -76,6 +78,7 @@ class Settings extends Form
 
         $validator->registerNumber('forum_limit', 1, null, false, Locale::t('Invalid value "%s"',Locale::t('Records limit')));
         $validator->registerNumber('forum_min_chars', 1, null, false, Locale::t('Invalid value "%s"',Locale::tm('Message min. length', 'forum')));
+        $validator->registerEmail('forum_notify_email',false,Locale::t('Invalid value "%s"',Locale::t('Notification Email')));
         $validator->registerNumber('forum_file_max_size', 1, null, false, Locale::t('Invalid value "%s"',Locale::tm('File max. size', 'forum')));
         $validator->registerString('forum_file_ext', null, 255, false, Locale::t('Invalid value "%s"',Locale::tm('Allowed file extensions', 'forum')));
 

@@ -81,4 +81,52 @@ class Messages extends Dash\Models\Model {
 
         return array('reload' => $this->getJSClassName());
     }
+
+    public function activate($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $message = new Forum\Models\Message($id);
+        if (!$message->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $topic = new Forum\Models\Topic($message->topic_id);
+        if (!$topic->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $forum = new Forum\Models\Forum($topic->forum_id);
+        if (!$forum->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $user = new Zira\Models\User($message->creator_id);
+        if (!$user->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $message->published = Forum\Models\Message::STATUS_PUBLISHED;
+        $message->save();
+
+        if ($topic->published != Forum\Models\Topic::STATUS_PUBLISHED && $topic->creator_id = $message->creator_id) {
+            $topic->published = Forum\Models\Topic::STATUS_PUBLISHED;
+            $topic->save();
+        }
+
+        Topic::getCollection()
+                ->update(array(
+                    'date_modified' => date('Y-m-d H:i:s'),
+                    'last_user_id' => $user->id,
+                    'messages' => ++$topic->messages
+                ))->where('id','=',$topic->id)
+                ->execute();
+
+        Forum\Models\Forum::getCollection()
+                ->update(array(
+                    'date_modified' => date('Y-m-d H:i:s'),
+                    'last_user_id' => $user->id,
+                    'topics' => ++$forum->topics
+                ))->where('id','=',$forum->id)
+                ->execute();
+
+        $user->posts++;
+        $user->save();
+
+        return array('reload' => $this->getJSClassName());
+    }
 }

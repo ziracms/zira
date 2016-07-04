@@ -31,7 +31,9 @@ class Settings extends Dash\Models\Model {
                 'forum_min_chars' => 'int',
                 'forum_file_uploads' => 'int',
                 'forum_file_max_size' => 'int',
-                'forum_file_ext' => 'string'
+                'forum_file_ext' => 'string',
+                'forum_moderate' => 'int',
+                'forum_notify_email' => 'string'
             );
 
             $config_ids = array();

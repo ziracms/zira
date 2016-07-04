@@ -142,6 +142,7 @@ class Comment extends Orm {
     public static function notify($record, $comment) {
         $email = Config::get('comment_notify_email');
         if (empty($email)) return;
+        if (Zira\User::isAuthorized() && Zira\User::getCurrent()->email == $email) return;
 
         if ($record->category_id != Zira\Category::ROOT_CATEGORY_ID) {
             $category = new Zira\Models\Category($record->category_id);

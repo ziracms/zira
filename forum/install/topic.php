@@ -35,13 +35,15 @@ class Topic extends Table {
             'last_user_id' => Field::int(),
             'active' => Field::tinyint(true, true, 1),
             'status' => Field::tinyint(true, true, 0),
-            'sticky' => Field::tinyint(true, true, 0)
+            'sticky' => Field::tinyint(true, true, 0),
+            'published' => Field::tinyint(true, true, 0)
         );
     }
 
     public function getKeys() {
         return array(
-            'forum' => array('category_id','forum_id','sticky')
+            'forum' => array('category_id','forum_id','sticky','published'),
+            'search' => array('title','category_id','forum_id','published')
         );
     }
 

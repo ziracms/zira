@@ -19,7 +19,10 @@ class Hook {
         $result = array();
         if (!array_key_exists($name, self::$_hooks)) return $result;
         foreach(self::$_hooks[$name] as $callback) {
-            $result []= call_user_func($callback, $arg);
+            $_result = call_user_func($callback, $arg);
+            if ($_result) {
+                $result [] = $_result;
+            }
         }
         return $result;
     }

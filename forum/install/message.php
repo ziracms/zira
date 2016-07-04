@@ -27,13 +27,14 @@ class Message extends Table {
             'date_modified' => Field::datetime(true),
             'modified_by' => Field::int(),
             'rating' => Field::int(true, false, 0),
-            'status' => Field::tinyint(true, true, 0)
+            'status' => Field::tinyint(true, true, 0),
+            'published' => Field::tinyint(true, true, 0)
         );
     }
 
     public function getKeys() {
         return array(
-            'topic_id' => array('topic_id'),
+            'topic_id' => array('topic_id', 'published'),
             'user' => array('creator_id', 'topic_id')
         );
     }

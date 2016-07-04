@@ -343,6 +343,20 @@ var dash_forum_file_show = function() {
     }
 };
 
+var dash_forum_topic_activate = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('forum/dash/activatethread'), {'item': selected[0].data});
+    }
+};
+
+var dash_forum_message_activate = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('forum/dash/activatemessage'), {'item': selected[0].data});
+    }
+};
+
 var dash_forum_topic_close = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
@@ -361,17 +375,63 @@ var dash_forum_topics_select = function() {
     var selected = this.getSelectedContentItems();
     this.disableItemsByProperty('typo', 'close');
     this.disableItemsByProperty('typo', 'stick');
-    if (selected && selected.length == 1 && typeof(selected[0].inactive) != "undefined" && !selected[0].inactive) {
+    this.disableItemsByProperty('typo', 'activate');
+    this.disableItemsByProperty('typo', 'page');
+    if (selected && selected.length == 1 && typeof(selected[0].inactive) != "undefined" && !selected[0].inactive && typeof(selected[0].published) != "undefined" && selected[0].published) {
         this.enableItemsByProperty('typo', 'close');
     }
-    if (selected && selected.length == 1 && typeof(selected[0].sticky) != "undefined" && !selected[0].sticky) {
+    if (selected && selected.length == 1 && typeof(selected[0].sticky) != "undefined" && !selected[0].sticky && typeof(selected[0].published) != "undefined" && selected[0].published) {
         this.enableItemsByProperty('typo', 'stick');
+    }
+    if (selected && selected.length == 1 && typeof(selected[0].published) != "undefined" && !selected[0].published) {
+        this.enableItemsByProperty('typo', 'activate');
+    }
+    if (selected && selected.length == 1 && typeof(selected[0].published) != "undefined" && selected[0].published) {
+        this.enableItemsByProperty('typo', 'page');
+    }
+
+    if (selected && selected.length && selected.length==1 && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.topics-infobar').html().length==0)) {
+        this.info_last_item = selected[0].data;
+        $(this.element).find('.topics-infobar').html('');
+        try { window.clearTimeout(this.timer); } catch(err) {};
+        this.timer = window.setTimeout(this.bind(this,function(){
+            $(this.element).find('.topics-infobar').html('');
+            var selected = this.getSelectedContentItems();
+            if (!selected || !selected.length || selected.length!=1) return;
+            desk_post(url('forum/dash/topicinfo'),{'topic_id':selected[0].data, 'token':token()}, this.bind(this, function(response){
+                if (response && response.length>0) {
+                    $(this.element).find('.topics-infobar').append('<div style="cursor:default;padding:0px;margin:10px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
+                    $(this.element).find('.topics-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:10px 0px"></div>');
+                    for (var i=0; i<response.length; i++) {
+                        var title = response[i].replace(/^.+title="([^"]+?)".+$/, '$1');
+                        $(this.element).find('.topics-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+title+': '+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');
+                    }
+                }
+            }));
+        }),1000);
     }
 };
 
 var dash_forum_topics_load = function() {
+    $(this.element).find('.topics-infobar').html('');
     for (var i=0; i<this.options.bodyItems.length; i++) {
-        if (typeof(this.options.bodyItems[i].inactive)!="undefined" && this.options.bodyItems[i].inactive) {
+        if (typeof(this.options.bodyItems[i].published)!="undefined" && !this.options.bodyItems[i].published) {
+            $(this.options.bodyItems[i].element).addClass('inactive');
+        }
+    }
+};
+
+var dash_forum_messages_select = function() {
+    var selected = this.getSelectedContentItems();
+    this.disableItemsByProperty('typo', 'activate');
+    if (selected && selected.length == 1 && typeof(selected[0].published) != "undefined" && !selected[0].published) {
+        this.enableItemsByProperty('typo', 'activate');
+    }
+};
+
+var dash_forum_messages_load = function() {
+    for (var i=0; i<this.options.bodyItems.length; i++) {
+        if (typeof(this.options.bodyItems[i].published)!="undefined" && !this.options.bodyItems[i].published) {
             $(this.options.bodyItems[i].element).addClass('inactive');
         }
     }

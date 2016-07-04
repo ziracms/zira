@@ -20,6 +20,9 @@ class Message extends Orm {
     const STATUS_MESSAGE = 2;
     const STATUS_WARNING = 3;
 
+    const STATUS_PUBLISHED = 1;
+    const STATUS_NOT_PUBLISHED = 0;
+
     public static function getFields() {
         return array(
             'id',
@@ -30,7 +33,8 @@ class Message extends Orm {
             'date_modified',
             'modified_by',
             'rating',
-            'status'
+            'status',
+            'published'
         );
     }
 
@@ -73,11 +77,21 @@ class Message extends Orm {
         $message->date_modified = date('Y-m-d H:i:s');
         if ($status!==null) $message->status = $status;
 
+        if (Zira\Permission::check(\Forum\Forum::PERMISSION_MODERATE) ||
+            !Zira\Config::get('forum_moderate', false)
+        ) {
+            $message->published = self::STATUS_PUBLISHED;
+        } else {
+            $message->published = self::STATUS_NOT_PUBLISHED;
+        }
+
         try {
             $message->save();
         } catch(\Exception $err) {
             return false;
         }
+
+        if ($message->published != self::STATUS_PUBLISHED) return $message;
 
         Topic::getCollection()
                 ->update(array(
@@ -107,32 +121,77 @@ class Message extends Orm {
 
         $message->delete();
 
-        $user = new Zira\Models\User($message->creator_id);
-        if ($user->loaded()) {
-            $user->posts--;
-            $user->save();
-        }
-
-        $topic = new Topic($message->topic_id);
-        if ($topic->loaded()) {
-            if ($topic->last_user_id == $message->creator_id) {
-                $topic->last_user_id = null;
+        if ($message->published == self::STATUS_PUBLISHED) {
+            // decreasing user posts count
+            $user = new Zira\Models\User($message->creator_id);
+            if ($user->loaded()) {
+                $user->posts--;
+                $user->save();
             }
-            $topic->messages--;
-            if ($topic->messages<0) $topic->messages = 0;
-            $topic->save();
-        }
 
-        if ($topic->loaded()) {
-            $forum = new Forum($topic->forum_id);
-            if ($forum->loaded() && $forum->last_user_id == $message->creator_id) {
-                $forum->last_user_id = null;
-                $forum->save();
+            // decreasing topic's messages count
+            $topic = new Topic($message->topic_id);
+            if ($topic->loaded()) {
+                if ($topic->last_user_id == $message->creator_id) {
+                    $topic->last_user_id = null;
+                }
+                $topic->messages--;
+                if ($topic->messages < 0) $topic->messages = 0;
+                $topic->save();
+            }
+
+            // setting forum's last user id
+            if ($topic->loaded()) {
+                $forum = new Forum($topic->forum_id);
+                if ($forum->loaded() && $forum->last_user_id == $message->creator_id) {
+                    $forum->last_user_id = null;
+                    $forum->save();
+                }
             }
         }
 
+        // deleting files
         File::deleteFiles($message->id);
 
         return true;
+    }
+
+    public static function getDefaultNotifyMessage() {
+        $message = Zira\Locale::tm('Hello %s !', 'forum', Zira\Locale::t('moderator'))."\r\n\r\n";
+        $message .= Zira\Locale::tm('New forum message was posted', 'forum')."\r\n\r\n";
+        $message .= Zira\Locale::tm('Thread: %s', 'forum', '$thread')."\r\n";
+        $message .= Zira\Locale::t('Message').':'."\r\n";
+        $message .= '$message'."\r\n\r\n";
+        $message .= Zira\Locale::t('You recieved this message, because your Email address is specified as a notification Email on %s','$site');
+        return $message;
+    }
+
+    public static function notify($topic, $message) {
+        $email = Zira\Config::get('forum_notify_email');
+        if (empty($email)) return;
+        if (Zira\User::isAuthorized() && Zira\User::getCurrent()->email == $email) return;
+
+        //$url = \Forum\Models\Topic::generateUrl($topic);
+
+//        $_message = Zira\Config::get('forum_notification_message');
+//        if (!$_message || strlen(trim($_message))==0) {
+//            $_message = self::getDefaultNotifyMessage();
+//        } else {
+//            $_message = Zira\Locale::t($_message);
+//        }
+        $_message = self::getDefaultNotifyMessage();
+
+        $_message = str_replace('$thread', $topic->title, $_message);
+        $_message = str_replace('$message', $message->content, $_message);
+        $_message = str_replace('$site', Zira\Helper::url('/',true, true), $_message);
+
+        Zira\Mail::send($email, Zira\Locale::tm('New forum message','forum'), Zira\Helper::html($_message));
+    }
+
+    public static function getNewMessagesCount() {
+        return self::getCollection()
+                                ->count()
+                                ->where('published','=',self::STATUS_NOT_PUBLISHED)
+                                ->get('co');
     }
 }

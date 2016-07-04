@@ -12,6 +12,10 @@
         if ($(form).length==0) return;
         $(form).get(0).reset();
 
+        if ($(form).find('.forum-thumbs-wrapper').length>0) {
+            $(form).find('.forum-thumbs-wrapper').html('');
+        }
+
         if (typeof(response)!="undefined" &&
             typeof(response.redirect)!="undefined" &&
             response.redirect.indexOf('http')<0

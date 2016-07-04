@@ -64,11 +64,19 @@ class Forum {
         }
 
         if (Zira\User::isAuthorized()) {
-            Zira\Hook::register(Zira\User::PROFILE_LINKS_HOOK, array(get_class(), 'profileLinks'));
+            Zira\Hook::register(Zira\User::PROFILE_LINKS_HOOK, array(get_class(), 'profileLinksHook'));
+            if (Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD)) {
+                Zira\Hook::register(Dash\Dash::NOTIFICATION_HOOK, array(get_class(), 'newMessagesHook'));
+            }
         }
-        Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfo'));
+        Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfoHook'));
 
-        if (!Zira\Category::current() && Zira\Router::getRequest()!=self::ROUTE && Zira\Router::getModule() == self::ROUTE) {
+        if (!Zira\Category::current() &&
+            Zira\Router::getRequest()!=self::ROUTE &&
+            Zira\Router::getModule() == self::ROUTE &&
+            Zira\Router::getController() == DEFAULT_CONTROLLER &&
+            in_array(Zira\Router::getAction(), array(DEFAULT_ACTION, 'group', 'threads', 'thread', 'compose', 'user'))
+        ) {
             if (CACHE_CATEGORIES_LIST) {
                 $categories = Zira\Category::getAllCategories();
                 foreach($categories as $category) {
@@ -95,7 +103,7 @@ class Forum {
         }
     }
 
-    public static function profileLinks() {
+    public static function profileLinksHook() {
         return array(
                 'url' => self::ROUTE.'/user',
                 'icon' => 'glyphicon glyphicon-comment',
@@ -103,11 +111,20 @@ class Forum {
             );
     }
 
-    public static function profileInfo($user) {
+    public static function profileInfoHook($user) {
         return array(
                 'icon' => 'glyphicon glyphicon-pencil',
                 'title' => Zira\Locale::tm('Forum posts', 'forum'),
                 'description' => (int)$user->posts
+            );
+    }
+
+    public static function newMessagesHook() {
+        $messages = \Forum\Models\Message::getNewMessagesCount();
+        if ($messages == 0) return false;
+        return array(
+                'message'=>Zira\Locale::t('%s forum messages was posted', $messages),
+                'callback'=>Dash\Dash::getInstance()->getWindowJSName(\Forum\Windows\Forums::getClass())
             );
     }
 }

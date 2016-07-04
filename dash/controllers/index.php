@@ -226,6 +226,11 @@ class Index extends Dash\Controller {
             );
         }
 
+        $extra_notifications = Zira\Hook::run(Dash\Dash::NOTIFICATION_HOOK);
+        if (!empty($extra_notifications)) {
+            $response['notifications'] = array_merge($response['notifications'], $extra_notifications);
+        }
+
         Zira\Page::render($response);
     }
 }

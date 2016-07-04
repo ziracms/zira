@@ -153,6 +153,9 @@ img.user-photo-big {
     max-width: 100%;
     height: auto;
 }
+.parse-content .external-image {
+    margin-bottom: 10px;
+}
 .progress-bar {
     transition: none;
 }

@@ -47,12 +47,32 @@ class Messages extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Activate', 'forum'), 'glyphicon glyphicon-ok', 'desk_call(dash_forum_message_activate, this);', 'edit', true, array('typo'=>'activate'))
+        );
+
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuSeparator()
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::tm('Activate', 'forum'), 'glyphicon glyphicon-ok', 'desk_call(dash_forum_message_activate, this);', 'edit', true, array('typo'=>'activate'))
+        );
+
         $this->setData(array(
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
             'order'=>$this->order,
         ));
+
+        $this->setOnSelectJSCallback(
+            $this->createJSCallback('desk_call(dash_forum_messages_select, this);')
+        );
+
+        $this->addDefaultOnLoadScript('desk_call(dash_forum_messages_load, this);');
     }
 
     public function load() {
@@ -87,7 +107,7 @@ class Messages extends Dash\Windows\Window {
         foreach($messages as $message) {
             $content = Zira\Helper::html($message->content);
             $username = $message->user_login ? $message->user_login : Zira\Locale::tm('User deleted', 'forum');
-            $items[]=$this->createBodyFileItem($content, $username, $message->id, null, false, array('type'=>'txt'));
+            $items[]=$this->createBodyFileItem($content, $username, $message->id, null, false, array('type'=>'txt','published'=>$message->published ? 1 : 0));
         }
         $this->setBodyItems($items);
 

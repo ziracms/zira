@@ -185,6 +185,7 @@ class Index extends Zira\Controller {
                             ->where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',1)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
                             ->order_by('id','desc')
                             ->get();
 
@@ -193,6 +194,7 @@ class Index extends Zira\Controller {
                             ->where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',0)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
                             ->get('co');
 
         $limit = Zira\Config::get('forum_limit') ? intval(Zira\Config::get('forum_limit')) : 10;
@@ -207,6 +209,7 @@ class Index extends Zira\Controller {
                             ->where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',0)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
                             ->order_by('id','desc')
                             ->limit($limit, ($page-1)*$limit)
                             ->get();
@@ -283,7 +286,7 @@ class Index extends Zira\Controller {
                                 ->where('id','=',$topic_id)
                                 ->get(0);
 
-        if (!$topic || !$topic->forum_active) Zira\Response::notFound();
+        if (!$topic || !$topic->forum_active || $topic->published != Forum\Models\Topic::STATUS_PUBLISHED) Zira\Response::notFound();
 
         // checking permission
         if (($topic->forum_access_check || $topic->category_access_check) && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
@@ -317,28 +320,44 @@ class Index extends Zira\Controller {
                 if (Zira\Config::get('forum_file_uploads') && !empty($files)) {
                     Forum\Models\File::saveFiles($files, $message->id);
                 }
-                // redirect to last page
-                $total = Forum\Models\Message::getCollection()
-                            ->count()
-                            ->where('topic_id','=',$topic->id)
-                            ->get('co');
+                // sending notification message
+                try {
+                    Forum\Models\Message::notify($topic, $message);
+                } catch (\Exception $e) {
+                    Zira\Log::exception($e);
+                }
 
-                $pages = ceil($total / $limit);
-                if ($page>$pages) $page = $pages;
-                if ($page<1) $page = 1;
-
-                if (!Zira\View::isAjax() && $page<$pages) {
-                    Zira\Response::redirect(Forum\Models\Topic::generateUrl($topic) . '?page='.$pages);
-                    return;
-                } else if (Zira\View::isAjax()) {
-                    $hash = '#forum-message-'.$message->id;
-                    if ($pages>1) {
-                        $url = Forum\Models\Topic::generateUrl($topic) . '?page='.$pages.'&t='.time().$hash;
-                    } else {
-                        $url = Forum\Models\Topic::generateUrl($topic).'?t='.time().$hash;
+                if ($message->published != Forum\Models\Message::STATUS_PUBLISHED) {
+                    $form->setMessage(Zira\Locale::t('Thank you. Your message is awaiting moderation'));
+                    if (Zira\View::isAjax()) {
+                        Zira\Page::render(array('message' => $form->getMessage()));
+                        return;
                     }
-                    Zira\Page::render(array('redirect'=>Zira\Helper::url($url)));
-                    return;
+                } else {
+                    // redirect to last page
+                    $total = Forum\Models\Message::getCollection()
+                        ->count()
+                        ->where('topic_id', '=', $topic->id)
+                        ->and_where('published', '=', \Forum\Models\Message::STATUS_PUBLISHED)
+                        ->get('co');
+
+                    $pages = ceil($total / $limit);
+                    if ($page > $pages) $page = $pages;
+                    if ($page < 1) $page = 1;
+
+                    if (!Zira\View::isAjax() && $page < $pages) {
+                        Zira\Response::redirect(Forum\Models\Topic::generateUrl($topic) . '?page=' . $pages);
+                        return;
+                    } else if (Zira\View::isAjax()) {
+                        $hash = '#forum-message-' . $message->id;
+                        if ($pages > 1) {
+                            $url = Forum\Models\Topic::generateUrl($topic) . '?page=' . $pages . '&t=' . time() . $hash;
+                        } else {
+                            $url = Forum\Models\Topic::generateUrl($topic) . '?t=' . time() . $hash;
+                        }
+                        Zira\Page::render(array('redirect' => Zira\Helper::url($url)));
+                        return;
+                    }
                 }
             }
         }
@@ -352,6 +371,7 @@ class Index extends Zira\Controller {
             $total = Forum\Models\Message::getCollection()
                 ->count()
                 ->where('topic_id', '=', $topic->id)
+                ->and_where('published', '=', \Forum\Models\Message::STATUS_PUBLISHED)
                 ->get('co');
 
             $pages = ceil($total / $limit);
@@ -370,6 +390,7 @@ class Index extends Zira\Controller {
                             ->left_join(Zira\Models\User::getClass(), array('user_group_id'=>'group_id', 'user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username', 'user_image'=>'image', 'user_posts'=>'posts'))
                             ->left_join(Forum\Models\File::getClass(), $_file_fields)
                             ->where('topic_id','=',$topic->id)
+                            ->and_where('published', '=', \Forum\Models\Message::STATUS_PUBLISHED)
                             ->order_by('id','asc')
                             ->limit($limit, ($page-1)*$limit)
                             ->get();
@@ -466,7 +487,7 @@ class Index extends Zira\Controller {
 
         $form = new Forum\Forms\Compose();
         if (Zira\Request::isPost() && $form->isValid()) {
-            $message_id = 0;
+            $message = null;
             $content = $form->getValue('message');
             // storing files
             if (Zira\Config::get('forum_file_uploads')) {
@@ -476,24 +497,39 @@ class Index extends Zira\Controller {
                     Forum\Models\File::parseContentFiles($file_refs, $content);
                 }
             }
-            if (!($topic=Forum\Models\Topic::createNewTopic($forum->category_id, $forum->id, $form->getValue('title'), $content, ++$forum->topics, $message_id))) {
+            if (!($topic=Forum\Models\Topic::createNewTopic($forum->category_id, $forum->id, $form->getValue('title'), $content, ++$forum->topics, $message)) || !$message) {
                 $form->setError(Zira\Locale::t('An error occurred'));
             } else {
                 // saving files
                 if (Zira\Config::get('forum_file_uploads') && !empty($files)) {
-                    Forum\Models\File::saveFiles($files, $message_id);
+                    Forum\Models\File::saveFiles($files, $message->id);
                 }
-                if (!Zira\View::isAjax()) {
-                    Zira\Response::redirect(Forum\Models\Topic::generateUrl($topic));
+                // sending notification message
+                try {
+                    Forum\Models\Message::notify($topic, $message);
+                } catch (\Exception $e) {
+                    Zira\Log::exception($e);
+                }
+                if ($topic->published != Forum\Models\Topic::STATUS_PUBLISHED) {
+                    $form->setMessage(Zira\Locale::t('Thank you. Your message is awaiting moderation'));
+                    if (Zira\View::isAjax()) {
+                        Zira\Page::render(array('message' => $form->getMessage()));
+                        return;
+                    }
                 } else {
-                    Zira\Page::render(array('redirect'=>Zira\Helper::url(Forum\Models\Topic::generateUrl($topic))));
+                    if (!Zira\View::isAjax()) {
+                        Zira\Response::redirect(Forum\Models\Topic::generateUrl($topic));
+                    } else {
+                        Zira\Page::render(array('redirect' => Zira\Helper::url(Forum\Models\Topic::generateUrl($topic))));
+                    }
+                    return;
                 }
-                return;
             }
         }
 
         $title = Zira\Locale::tm('New thread', 'forum');
         $meta_title = $title .' - '.Zira\Locale::t($forum->title);
+        $description = $forum->description ? Zira\Locale::t($forum->description) : '';
 
         Zira\Page::addTitle($meta_title);
 
@@ -509,8 +545,8 @@ class Index extends Zira\Controller {
         Zira\Page::setView('forum/page');
 
         Zira\Page::render(array(
-            Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
-            Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => Zira\Locale::t($forum->title),
+            Zira\Page::VIEW_PLACEHOLDER_TITLE => $title .' - '.Zira\Locale::t($forum->title),
+            Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => $description,
             Zira\Page::VIEW_PLACEHOLDER_CONTENT => $form
         ));
     }
@@ -613,6 +649,7 @@ class Index extends Zira\Controller {
                             ->countDistinctField('topic_id')
                             ->join(Forum\Models\Topic::getClass())
                             ->where('creator_id','=',$user->id)
+                            ->and_where('published', '=', \Forum\Models\Message::STATUS_PUBLISHED)
                             ->get('co');
 
         $pages = ceil($total / $limit);
@@ -629,6 +666,7 @@ class Index extends Zira\Controller {
                             ->select('id')
                             ->join(Forum\Models\Topic::getClass())
                             ->where('creator_id','=',$user->id)
+                            ->and_where('published', '=', \Forum\Models\Message::STATUS_PUBLISHED)
                             ->group_by('topic_id')
                             ->limit($limit, ($page-1)*$limit)
                             ->get();

@@ -19,6 +19,9 @@ class Topic extends Orm {
     const STATUS_SOLVED = 1;
     const STATUS_DENIED = 2;
 
+    const STATUS_PUBLISHED = 1;
+    const STATUS_NOT_PUBLISHED = 0;
+
     public static function getFields() {
         return array(
             'id',
@@ -37,7 +40,8 @@ class Topic extends Orm {
             'last_user_id',
             'active',
             'status',
-            'sticky'
+            'sticky',
+            'published'
         );
     }
 
@@ -80,7 +84,7 @@ class Topic extends Orm {
         return $statuses[$status];
     }
 
-    public static function createNewTopic($category_id, $forum_id, $title, $message, $forum_topic_co, &$message_id = null) {
+    public static function createNewTopic($category_id, $forum_id, $title, $content, $forum_topic_co, &$message = null) {
         if (!Zira\User::isAuthorized()) return false;
 
         $topic = new self();
@@ -90,11 +94,22 @@ class Topic extends Orm {
         $topic->title = $title;
         $topic->date_created = date('Y-m-d H:i:s');
         $topic->date_modified = date('Y-m-d H:i:s');
-        $topic->save();
 
-        if (!($new_message=Message::createNewMessage($forum_id, $topic->id, $message, 1, $forum_topic_co))) return false;
+        if (Zira\Permission::check(\Forum\Forum::PERMISSION_MODERATE) ||
+            !Zira\Config::get('forum_moderate', false)
+        ) {
+            $topic->published = self::STATUS_PUBLISHED;
+        } else {
+            $topic->published = self::STATUS_NOT_PUBLISHED;
+        }
 
-        $message_id = $new_message->id;
+        try {
+            $topic->save();
+        } catch(\Exception $err) {
+            return false;
+        }
+
+        if (!($message=Message::createNewMessage($forum_id, $topic->id, $content, 1, $forum_topic_co))) return false;
 
         return $topic;
     }
@@ -105,45 +120,50 @@ class Topic extends Orm {
 
         $topic->delete();
 
+        // deleting files
         $messages = Message::getCollection()
-                        ->count()
-                        ->select('creator_id')
-                        ->where('topic_id','=',$topic->id)
-                        ->group_by('creator_id')
-                        ->get();
+                    ->where('topic_id','=',$topic->id)
+                    ->get();
+        foreach($messages as $message) {
+            File::deleteFiles($message->id);
+        }
 
-        if ($messages) {
-            foreach($messages as $message) {
-                $user = new Zira\Models\User($message->creator_id);
-                if (!$user->loaded()) continue;
-                $user->posts -= $message->co;
-                if ($user->posts<0) $user->posts = 0;
-                $user->save();
-            }
-
-            // deleting files
+        if ($topic->published == self::STATUS_PUBLISHED) {
+            // decreasing user posts count
             $messages = Message::getCollection()
-                        ->where('topic_id','=',$topic->id)
-                        ->get();
-            foreach($messages as $message) {
-                File::deleteFiles($message->id);
+                ->count()
+                ->select('creator_id')
+                ->where('topic_id', '=', $topic->id)
+                ->group_by('creator_id')
+                ->get();
+
+            if ($messages) {
+                foreach ($messages as $message) {
+                    $user = new Zira\Models\User($message->creator_id);
+                    if (!$user->loaded()) continue;
+                    $user->posts -= $message->co;
+                    if ($user->posts < 0) $user->posts = 0;
+                    $user->save();
+                }
             }
 
-            Message::getCollection()
+            // decreasing forum's topics count
+            $forum = new Forum($topic->forum_id);
+            if ($forum->loaded()) {
+                if ($forum->last_user_id == $topic->creator_id) {
+                    $forum->last_user_id = null;
+                }
+                $forum->topics--;
+                if ($forum->topics < 0) $forum->topics = 0;
+                $forum->save();
+            }
+        }
+
+        // deleting topic messages
+        Message::getCollection()
                         ->delete()
                         ->where('topic_id','=',$topic->id)
                         ->execute();
-        }
-
-        $forum = new Forum($topic->forum_id);
-        if ($forum->loaded()) {
-            if ($forum->last_user_id == $topic->creator_id) {
-                $forum->last_user_id = null;
-            }
-            $forum->topics--;
-            if ($forum->topics<0) $forum->topics = 0;
-            $forum->save();
-        }
 
         return true;
     }

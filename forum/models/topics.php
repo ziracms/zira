@@ -120,4 +120,81 @@ class Topics extends Dash\Models\Model {
 
         return array('reload' => $this->getJSClassName());
     }
+
+    public function activate($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $topic = new Forum\Models\Topic($id);
+        if (!$topic->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $forum = new Forum\Models\Forum($topic->forum_id);
+        if (!$forum->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $user = new Zira\Models\User($topic->creator_id);
+        if (!$user->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $topic->published = Forum\Models\Topic::STATUS_PUBLISHED;
+        $topic->save();
+
+        Forum\Models\Forum::getCollection()
+                ->update(array(
+                    'date_modified' => date('Y-m-d H:i:s'),
+                    'last_user_id' => $user->id,
+                    'topics' => ++$forum->topics
+                ))->where('id', '=', $forum->id)
+                ->execute();
+
+        $messages = Forum\Models\Message::getCollection()
+                                ->where('topic_id','=',$topic->id)
+                                ->get(null, true);
+
+        foreach($messages as $message) {
+            if ($message['published'] == Forum\Models\Message::STATUS_PUBLISHED) continue;
+            if ($message['creator_id'] != $user->id) continue;
+
+            $messageObj = new Forum\Models\Message();
+            $messageObj->loadFromArray($message);
+            $messageObj->published = Forum\Models\Message::STATUS_PUBLISHED;
+            $messageObj->save();
+
+            Topic::getCollection()
+                ->update(array(
+                    'date_modified' => date('Y-m-d H:i:s'),
+                    'last_user_id' => $user->id,
+                    'messages' => ++$topic->messages
+                ))->where('id', '=', $topic->id)
+                ->execute();
+
+            $user->posts++;
+            $user->save();
+        }
+
+        return array('reload' => $this->getJSClassName());
+    }
+
+    public function info($topic_id) {
+        if (empty($topic_id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array();
+        }
+        $topic = new Forum\Models\Topic($topic_id);
+        if (!$topic->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+        $forum = new Forum\Models\Forum($topic->forum_id);
+        if (!$forum->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+        $user = new Zira\Models\User($topic->creator_id);
+        if (!$user->loaded()) $user = null;
+
+        $info = array();
+
+        $info[]='<span class="glyphicon glyphicon-th-list" title="'.Zira\Locale::tm('Forum','forum').'"></span> '.Zira\Helper::html($forum->title);
+        if ($user) {
+            $info[] = '<span class="glyphicon glyphicon-user" title="' . Zira\Locale::tm('Topic starter','forum') . '"></span> ' . Zira\Helper::html($user->username);
+        }
+        $info[]='<span class="glyphicon glyphicon-calendar" title="'.Zira\Locale::tm('Creation date','forum').'"></span> '.date(Zira\Config::get('date_format'), strtotime($topic->date_created));
+
+        return $info;
+    }
 }

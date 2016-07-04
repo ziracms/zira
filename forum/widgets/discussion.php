@@ -26,8 +26,11 @@ class Discussion extends Widget {
 
         $rows = Forum\Models\Message::getCollection()
                             ->select(Forum\Models\Message::getFields())
-                            ->join(Forum\Models\Topic::getClass(), array('topic_id'=>'id','topic_title'=>'title'))
+                            ->join(Forum\Models\Topic::getClass(), array('topic_title'=>'title'))
                             ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
+                            ->where('published','=',Forum\Models\Message::STATUS_PUBLISHED)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED, Forum\Models\Topic::getAlias())
+                            ->group_by('topic_id')
                             ->order_by('id','desc')
                             ->limit($limit)
                             ->get();
