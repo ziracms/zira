@@ -42,14 +42,14 @@ a.active {
 }
 blockquote {
     background-color: #e5e4fe;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 18px 0px;
     padding: 10px;
 }
 pre {
     color: #BABABA;
     background: #2B2B2B none repeat scroll 0% 0%;
     padding: 10px;
-    margin: 0px 0px 10px 0px;
+    margin: 0px 0px 18px 0px;
 }
 code {
     padding: 0px;
