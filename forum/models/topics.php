@@ -31,27 +31,33 @@ class Topics extends Dash\Models\Model {
                     $forum_new = new \Forum\Models\Forum($form->getValue('forum_id'));
                     if (!$forum_new->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
 
-                    $forum_old->topics--;
-                    if ($forum_old->topics < 0) $forum_old->topics = 0;
-                    $forum_old->save();
+                    if ($thread->published == Forum\Models\Topic::STATUS_PUBLISHED) {
+                        $forum_old->topics--;
+                        if ($forum_old->topics < 0) $forum_old->topics = 0;
+                        $forum_old->save();
 
-                    $forum_new->topics++;
-                    $forum_new->save();
+                        $forum_new->topics++;
+                        $forum_new->save();
+                    }
 
+                    \Forum\Models\Search::clearTopicIndex($thread);
                     $thread->forum_id = (int)$form->getValue('forum_id');
                 }
             } else {
                 $forum = new \Forum\Models\Forum($form->getValue('forum_id'));
                 if (!$forum->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
 
-                $forum->topics++;
-                $forum->save();
-
                 $thread = new Forum\Models\Topic();
                 $thread->category_id = $forum->category_id;
                 $thread->forum_id = $forum->id;
                 $thread->creator_id = Zira\User::getCurrent()->id;
                 $thread->date_created = date('Y-m-d H:i:s');
+                $thread->published = Forum\Models\Topic::STATUS_NOT_PUBLISHED;
+
+                if ($thread->published == Forum\Models\Topic::STATUS_PUBLISHED) {
+                    $forum->topics++;
+                    $forum->save();
+                }
             }
 
             $thread->title = $form->getValue('title');
@@ -71,6 +77,10 @@ class Topics extends Dash\Models\Model {
             $thread->date_modified = date('Y-m-d H:i:s');
 
             $thread->save();
+
+            if ($thread->published == Forum\Models\Topic::STATUS_PUBLISHED) {
+                \Forum\Models\Search::indexTopic($thread);
+            }
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
@@ -171,6 +181,8 @@ class Topics extends Dash\Models\Model {
             $user->posts++;
             $user->save();
         }
+
+        \Forum\Models\Search::indexTopic($topic);
 
         return array('reload' => $this->getJSClassName());
     }

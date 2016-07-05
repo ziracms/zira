@@ -1,10 +1,23 @@
 (function($){
     $(document).ready(function(){
-        zira_init_forum_attach_icon();
-        zira_init_forum_attaches();
-        zira_init_forum_attacher();
-        zira_init_forum_rating();
-        zira_init_forum_reply();
+        if ($('#form-forum-message-form .forum-attach-input-icon .attach-icon').length>0) {
+            zira_init_forum_attach_icon();
+        }
+        if ($('.forum-message-attaches .forum-message-attaches-title').length>0) {
+            zira_init_forum_attaches();
+        }
+        if ($('.container #content form#form-forum-message-form input.forum-attaches').length>0) {
+            zira_init_forum_attacher();
+        }
+        if ($('.container #content .forum-list a.forum-rating').length>0) {
+            zira_init_forum_rating();
+        }
+        if ($('.container #content .forum-list a.forum-reply-inline').length>0) {
+            zira_init_forum_reply();
+        }
+        if ($('.container #content .forum-search-results-view-more-wrapper').length>0) {
+            zira_init_forum_search_more();
+        }
     });
 
     zira_forum_form_submit_success = function(response) {
@@ -176,6 +189,43 @@
 
             var top = $(form).parents('.form-panel').offset().top;
             $('html, body').animate({'scrollTop': top}, 500);
+        });
+    };
+
+    zira_init_forum_search_more = function() {
+        $('.container #content').on('click', '.forum-search-results-view-more', function(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            var url = $(this).data('url');
+            var text = $(this).data('text');
+            var offset = $(this).data('offset');
+            var forum_id = $(this).data('forum_id');
+
+            if (typeof(url)=="undefined" ||
+                typeof(text)=="undefined" ||
+                typeof(offset)=="undefined" ||
+                typeof(forum_id)=="undefined"
+            ) {
+                return;
+            }
+
+            $(this).attr('disabled','disabled');
+            $(this).parent('.forum-search-results-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span> '+t('Please wait')+'...</div>');
+
+            $.get(url, {
+                'text': text,
+                'offset': offset,
+                'forum_id': forum_id,
+                'ajax': 1
+            }, zira_bind(this, function(response){
+                $(this).parent('.forum-search-results-view-more-wrapper').replaceWith(response);
+                if (navigator.userAgent.indexOf('MSIE')<0) {
+                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                } else {
+                    $('.container #content .xhr-list').removeClass('xhr-list');
+                }
+            }),'html');
         });
     };
 

@@ -66,7 +66,7 @@
 </div>
 <div class="list-info-wrapper forum-info-wrapper">
 <?php if ($item->topic_title): ?>
-<a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id))) ?>" title="<?php Zira\Helper::html($item->topic_title) ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+<a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id))) ?>" title="<?php echo Zira\Helper::html($item->topic_title) ?>"><span class="glyphicon glyphicon-new-window"></span></a>
 <?php endif; ?>
 <?php if ($item->modified_by): ?>
 <span class="list-info note" title="<?php echo tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>

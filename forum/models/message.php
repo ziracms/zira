@@ -126,6 +126,7 @@ class Message extends Orm {
             $user = new Zira\Models\User($message->creator_id);
             if ($user->loaded()) {
                 $user->posts--;
+                if ($user->posts<0) $user->posts = 0;
                 $user->save();
             }
 

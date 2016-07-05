@@ -33,6 +33,7 @@ class Forum {
         Zira\Router::addRoute(self::ROUTE.'/compose','forum/index/compose');
         Zira\Router::addRoute(self::ROUTE.'/poll','forum/index/poll');
         Zira\Router::addRoute(self::ROUTE.'/user','forum/index/user');
+        Zira\Router::addRoute(self::ROUTE.'/search','forum/index/search');
 
         Zira\Assets::registerCSSAsset('forum/forum.css');
         Zira\Assets::registerJSAsset('forum/forum.js');
@@ -75,7 +76,7 @@ class Forum {
             Zira\Router::getRequest()!=self::ROUTE &&
             Zira\Router::getModule() == self::ROUTE &&
             Zira\Router::getController() == DEFAULT_CONTROLLER &&
-            in_array(Zira\Router::getAction(), array(DEFAULT_ACTION, 'group', 'threads', 'thread', 'compose', 'user'))
+            in_array(Zira\Router::getAction(), get_class_methods('\Forum\Controllers\Index'))
         ) {
             if (CACHE_CATEGORIES_LIST) {
                 $categories = Zira\Category::getAllCategories();

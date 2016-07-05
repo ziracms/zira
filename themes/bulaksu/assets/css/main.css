@@ -482,6 +482,9 @@ article .article p {
     line-height: 26px;
     font-size: 16px;
 }
+article .article ul {
+    margin: 0px 0px 22px 0px;
+}
 article .rating {
     color: #888888;
     overflow: hidden;

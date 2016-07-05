@@ -42,8 +42,7 @@ class Topic extends Table {
 
     public function getKeys() {
         return array(
-            'forum' => array('category_id','forum_id','sticky','published'),
-            'search' => array('title','category_id','forum_id','published')
+            'forum' => array('category_id','forum_id','sticky','published')
         );
     }
 

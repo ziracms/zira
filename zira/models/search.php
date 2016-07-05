@@ -92,7 +92,7 @@ class Search extends Orm {
             $query->select('record_id');
             $query->where('language','=',Locale::getLanguage());
             $query->and_where('keyword','like',$keyword.'%');
-            $query->limit($limit+$limit*$offset);
+            $query->limit($limit+$offset);
             $query->close_query();
             $added []= $keyword;
             if (count($added)>=5) break;
@@ -111,11 +111,21 @@ class Search extends Orm {
 
         if (empty($results)) return array();
 
-        return Record::getCollection()
-                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
-                        ->left_join(Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
-                        ->where('id','in',$results)
-                        ->get();
+//        return Record::getCollection()
+//                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+//                        ->left_join(Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
+//                        ->where('id','in',$results)
+//                        ->get();
+
+        $query = Record::getCollection();
+        foreach($results as $index=>$result) {
+            if ($index>0) $query->union();
+            $query->select('id', 'name', 'author_id', 'title', 'description', 'thumb', 'creation_date', 'rating', 'comments')
+                        ->left_join(Category::getClass(), array('category_name' => 'name', 'category_title' => 'title'))
+                        ->where('id', '=', $result);
+        }
+
+        return $query->get();
     }
 
     public static function getRecordsSorted($text, $limit = 5) {

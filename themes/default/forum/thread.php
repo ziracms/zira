@@ -10,7 +10,7 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($forum_url)) ?>"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::html(t($forum_title)) ?></a>
+<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($forum_url)) ?>"><span class="glyphicon glyphicon-link"></span> <?php echo Zira\Helper::html(t($forum_title)) ?></a>
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
 <?php if (isset($form) && !empty($topic_active)): ?>
@@ -96,7 +96,7 @@
 <div class="list-info-wrapper forum-info-wrapper">
 <a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url($topic_url.($topic_page>1 ? '?page='.$topic_page : '').'#forum-message-'.$item->id)) ?>" title="<?php echo tm('Link','forum') ?>"><span class="glyphicon glyphicon-new-window"></span></a>
 <?php if ($item->modified_by): ?>
-<span class="list-info note" title="<?php echo tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>
+<span class="list-info note" title="<?php echo $item->modified_by==$item->creator_id ? tm('Edited by user', 'forum') : tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>
 <?php endif; ?>
 <span class="list-info date"><span class="glyphicon glyphicon-time"></span> <?php echo date(Zira\Config::get('date_format'), strtotime($item->date_modified)) ?></span>
 <a href="javascript:void(0)" class="list-info forum-rating forum-like" data-value="1" data-type="forum_message" data-id="<?php echo intval($item->id) ?>" data-token="<?php echo Zira\User::getToken() ?>" data-url="<?php echo Zira\Helper::url('forum/poll') ?>">

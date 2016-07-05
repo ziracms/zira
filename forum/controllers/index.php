@@ -138,7 +138,13 @@ class Index extends Zira\Controller {
         }
         Zira\Page::setView('forum/page');
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array('items'=>$rows), 'forum/group');
+        $searchForm = new Forum\Forms\Search();
+        $searchForm->setValue('forum_id',0);
+
+        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
+                                                                    'items'=>$rows,
+                                                                    'searchForm'=>$searchForm
+                                                                ), 'forum/group');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -241,6 +247,9 @@ class Index extends Zira\Controller {
         $pagination->setPages($pages);
         $pagination->setPage($page);
 
+        $searchForm = new Forum\Forms\Search();
+        $searchForm->setValue('forum_id', $forum->id);
+
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                                                                 'top_items'=>$sticky,
                                                                 'items'=>$topics,
@@ -248,7 +257,8 @@ class Index extends Zira\Controller {
                                                                 'compose_url' => Forum\Forum::ROUTE.'/compose/'.$forum->id,
                                                                 'category_title' => $forum->category_title,
                                                                 'category_url' => Forum\Models\Category::generateUrl($forum->category_id),
-                                                                'info' => $forum->info
+                                                                'info' => $forum->info,
+                                                                'searchForm' => $searchForm
                                                             ), 'forum/threads');
 
         Zira\Page::render(array(
@@ -450,13 +460,7 @@ class Index extends Zira\Controller {
     }
 
     public function compose($forum_id) {
-        if (empty($forum_id)) {
-            if (!$this->_has_category) Zira\Response::notFound();
-            else $this->_renderCategoryPage();
-            return;
-        }
-
-        $this->_renderPlaceholderCategory();
+        if (empty($forum_id)) Zira\Response::notFound();
 
         if (!Zira\User::isAuthorized()) {
             Zira\Response::redirect('user/login?redirect='.Forum\Forum::ROUTE.'/compose/'.intval($forum_id), true);
@@ -717,5 +721,75 @@ class Index extends Zira\Controller {
             Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => '',
             Zira\Page::VIEW_PLACEHOLDER_CONTENT => ''
         ));
+    }
+
+    public function search() {
+        $offset = (int)Zira\Request::get('offset');
+        $is_ajax = (int)Zira\Request::get('ajax');
+        $forum_id = (int)Zira\Request::get('forum_id');
+
+        $limit = 10;
+        $form = new Forum\Forms\Search();
+        $form->setExtended(true);
+        $form->setValue('forum_id', $forum_id);
+
+        $forum = null;
+        $category_id = 0;
+        if ($forum_id>0) {
+            $forum = new Forum\Models\Forum($forum_id);
+            if ($forum->loaded()) {
+                $category_id = $forum->category_id;
+            } else {
+                $forum = null;
+            }
+        }
+
+        $data = array();
+        $found = false;
+        if ($form->getValue('text') && $offset>=0 && $form->isValid()) {
+            $topics = Forum\Models\Search::getTopics($form->getValue('text'), $limit + 1, $offset, $category_id, $forum_id);
+            if (!empty($topics)) {
+                $found = true;
+                $_data = array(
+                                'class' => 'search-list'.($is_ajax ? ' xhr-list' : ''),
+                                'items'=>$topics,
+                                'settings' => array(
+                                        'limit' => $limit,
+                                        'text' => $form->getValue('text'),
+                                        'offset' => $offset,
+                                        'forum_id' => $forum_id
+                                    )
+                            );
+
+                if (!$is_ajax) {
+                    Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'forum/search-results');
+                    Zira\View::preloadThemeLoader();
+                    $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = ($forum ? $forum->title.' - ' : '').Zira\Locale::tm('Search results','forum');
+                    $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
+                } else {
+                    Zira\View::renderView($_data, 'forum/search-results');
+                }
+            } else {
+                $form->setValue('text','');
+                $form->setError(Zira\Locale::t('Your search did not match any documents'));
+            }
+        } else {
+            $form->setValue('text','');
+        }
+
+        if (!$is_ajax) {
+            Zira\Page::addTitle(Zira\Locale::t('Search'));
+
+            Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+            Zira\Page::addBreadcrumb(Forum\Forum::ROUTE.'/search', Zira\Locale::t('Search'));
+
+            if (Zira\Config::get('forum_layout')) {
+                Zira\Page::setLayout(Zira\Config::get('forum_layout'));
+            }
+            Zira\Page::setView('forum/page');
+
+            Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT_TOP, array('form' => $form, 'found' => $found), 'forum/search');
+            Zira\Page::render($data);
+        }
     }
 }

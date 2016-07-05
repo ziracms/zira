@@ -111,6 +111,10 @@ class Topic extends Orm {
 
         if (!($message=Message::createNewMessage($forum_id, $topic->id, $content, 1, $forum_topic_co))) return false;
 
+        if ($topic->published == self::STATUS_PUBLISHED) {
+            \Forum\Models\Search::indexTopic($topic);
+        }
+
         return $topic;
     }
 
@@ -132,8 +136,9 @@ class Topic extends Orm {
             // decreasing user posts count
             $messages = Message::getCollection()
                 ->count()
-                ->select('creator_id')
+                ->select(array('creator_id'))
                 ->where('topic_id', '=', $topic->id)
+                ->and_where('published','=',\Forum\Models\Message::STATUS_PUBLISHED)
                 ->group_by('creator_id')
                 ->get();
 
@@ -164,6 +169,9 @@ class Topic extends Orm {
                         ->delete()
                         ->where('topic_id','=',$topic->id)
                         ->execute();
+
+        // removing from search
+        \Forum\Models\Search::clearTopicIndex($topic);
 
         return true;
     }

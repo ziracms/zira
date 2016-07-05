@@ -10,9 +10,10 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($category_url)) ?>"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::html(t($category_title)) ?></a>
+<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($category_url)) ?>" title="<?php echo Zira\Helper::html(t($category_title)) ?>"><span class="glyphicon glyphicon-link"></span></a>
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
+<?php if (isset($searchForm)) echo $searchForm; ?>
 <a href="<?php echo Zira\Helper::html(Zira\Helper::url($compose_url)) ?>" class="btn btn-default navbar-btn navbar-right forum-btn"><span class="glyphicon glyphicon-plus-sign"></span> <?php echo tm('New thread','forum') ?></a>
 </div>
 </div>

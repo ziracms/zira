@@ -24,6 +24,25 @@ class Forums extends Dash\Models\Model {
             if ($id) {
                 $forum = new Forum\Models\Forum($id);
                 if (!$forum->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+                if ($forum->category_id != $form->getValue('category_id')) {
+                    Forum\Models\Topic::getCollection()
+                                        ->update(array(
+                                                'category_id' => (int)$form->getValue('category_id')
+                                            )
+                                        )->where('category_id','=',$forum->category_id)
+                                        ->and_where('forum_id','=',$forum->id)
+                                        ->execute();
+
+                    Forum\Models\Search::getCollection()
+                                        ->update(array(
+                                                'category_id' => (int)$form->getValue('category_id')
+                                            )
+                                        )->where('category_id','=',$forum->category_id)
+                                        ->and_where('forum_id','=',$forum->id)
+                                        ->execute();
+
+                }
             } else {
                 $max_order = Forum\Models\Forum::getCollection()->max('sort_order')->get('mx');
 

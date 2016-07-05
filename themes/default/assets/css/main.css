@@ -505,6 +505,9 @@ ul#language-switcher li a.active {
 article .article p {
     line-height: 26px;
 }
+article .article ul {
+    margin: 0px 0px 24px 0px;
+}
 article .datetime {
     font-style: italic;
     color: #888888;

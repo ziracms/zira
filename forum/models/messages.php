@@ -106,6 +106,16 @@ class Messages extends Dash\Models\Model {
         if ($topic->published != Forum\Models\Topic::STATUS_PUBLISHED && $topic->creator_id = $message->creator_id) {
             $topic->published = Forum\Models\Topic::STATUS_PUBLISHED;
             $topic->save();
+
+            Forum\Models\Forum::getCollection()
+                ->update(array(
+                    'date_modified' => date('Y-m-d H:i:s'),
+                    'last_user_id' => $user->id,
+                    'topics' => ++$forum->topics
+                ))->where('id','=',$forum->id)
+                ->execute();
+
+            \Forum\Models\Search::indexTopic($topic);
         }
 
         Topic::getCollection()
@@ -114,14 +124,6 @@ class Messages extends Dash\Models\Model {
                     'last_user_id' => $user->id,
                     'messages' => ++$topic->messages
                 ))->where('id','=',$topic->id)
-                ->execute();
-
-        Forum\Models\Forum::getCollection()
-                ->update(array(
-                    'date_modified' => date('Y-m-d H:i:s'),
-                    'last_user_id' => $user->id,
-                    'topics' => ++$forum->topics
-                ))->where('id','=',$forum->id)
                 ->execute();
 
         $user->posts++;

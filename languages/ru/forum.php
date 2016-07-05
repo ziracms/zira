@@ -42,6 +42,7 @@ return array(
     'Message' => 'Сообщение',
     'Warning' => 'Предупреждение',
     'Edited by moderator' => 'Отредактировано модератором',
+    'Edited by user' => 'Отредактировано пользователем',
     '%s to reply' => '%s, чтобы ответить',
     'Thread is sticky' => 'Тема закреплена',
     'Allow file uploads' => 'Разрешить загрузку файлов',
@@ -70,5 +71,11 @@ return array(
     'Thread: %s' => 'Тема: %s',
     '%s forum messages was posted' => array('Опубликовано %s сообщение на форуме', 'Опубликовано %s сообщения на форуме', 'Опубликовано %s сообщений на форуме'),
     'Topic starter' => 'Создатель темы',
-    'Creation date' => 'Дата создания'
+    'Creation date' => 'Дата создания',
+    'Search forum' => 'Поиск по форуму',
+    'Enter search text' => 'Введите текст для поиска',
+    'Search results' => 'Результаты поиска',
+    'Your search did not match any documents' => 'По вашему запросу ничего не найдено',
+    'Invalid search text' => 'Некорректный поисковый текст',
+    'Search text contains bad character' => 'Поисковый текст содержит некорректный символ'
 );
