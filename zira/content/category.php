@@ -99,7 +99,7 @@ class Category extends Zira\Page {
         }
     }
 
-    public static function placeholderContent($add_meta = false) {
+    public static function placeholderContent($add_title = false, $add_description = false, $add_meta = false) {
         if (!Zira\Category::current()) return;
 
         // checking permission
@@ -161,7 +161,7 @@ class Category extends Zira\Page {
                 )
         );
 
-        if ($add_meta) {
+        if ($add_title) {
             $_data = array(
                 static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
             );
@@ -174,11 +174,14 @@ class Category extends Zira\Page {
             $_data[static::VIEW_PLACEHOLDER_CONTENT] = $record->content;
             $_data[static::VIEW_PLACEHOLDER_CLASS] = 'parse-content';
             Zira\View::addParser();
-        } else {
+        } else if ($add_description) {
             $_data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t(Zira\Category::current()->description);
         }
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'page');
+        if (!empty($_data)) {
+            Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'page');
+        }
+
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
         Zira\View::preloadThemeLoader();
     }

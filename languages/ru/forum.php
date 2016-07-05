@@ -77,5 +77,6 @@ return array(
     'Search results' => 'Результаты поиска',
     'Your search did not match any documents' => 'По вашему запросу ничего не найдено',
     'Invalid search text' => 'Некорректный поисковый текст',
-    'Search text contains bad character' => 'Поисковый текст содержит некорректный символ'
+    'Search text contains bad character' => 'Поисковый текст содержит некорректный символ',
+    'Forum: %s' => 'Форум: %s'
 );

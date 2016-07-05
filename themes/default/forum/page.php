@@ -1,4 +1,3 @@
-<main>
 <article>
 <?php if (!empty($title)): ?>
 <div class="page-header forum-page-title">
@@ -16,4 +15,3 @@
 </div>
 <?php endif; ?>
 </article>
-</main>

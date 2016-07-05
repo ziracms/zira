@@ -32,6 +32,9 @@ class Topics extends Dash\Models\Model {
                     if (!$forum_new->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
 
                     if ($thread->published == Forum\Models\Topic::STATUS_PUBLISHED) {
+                        if ($forum_old->last_user_id == $thread->creator_id) {
+                            $forum_old->last_user_id = null;
+                        }
                         $forum_old->topics--;
                         if ($forum_old->topics < 0) $forum_old->topics = 0;
                         $forum_old->save();

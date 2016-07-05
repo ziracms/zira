@@ -160,6 +160,7 @@ class Message extends Orm {
     public static function getDefaultNotifyMessage() {
         $message = Zira\Locale::tm('Hello %s !', 'forum', Zira\Locale::t('moderator'))."\r\n\r\n";
         $message .= Zira\Locale::tm('New forum message was posted', 'forum')."\r\n\r\n";
+        $message .= Zira\Locale::tm('Forum: %s', 'forum', '$forum')."\r\n";
         $message .= Zira\Locale::tm('Thread: %s', 'forum', '$thread')."\r\n";
         $message .= Zira\Locale::t('Message').':'."\r\n";
         $message .= '$message'."\r\n\r\n";
@@ -167,21 +168,18 @@ class Message extends Orm {
         return $message;
     }
 
-    public static function notify($topic, $message) {
+    public static function notify($topic, $message, $forum=null) {
         $email = Zira\Config::get('forum_notify_email');
         if (empty($email)) return;
         if (Zira\User::isAuthorized() && Zira\User::getCurrent()->email == $email) return;
 
-        //$url = \Forum\Models\Topic::generateUrl($topic);
+        $forum_title = '?';
+        if ($forum) $forum_title = $forum->title;
+        else if ($topic->forum_title) $forum_title = $topic->forum_title;
 
-//        $_message = Zira\Config::get('forum_notification_message');
-//        if (!$_message || strlen(trim($_message))==0) {
-//            $_message = self::getDefaultNotifyMessage();
-//        } else {
-//            $_message = Zira\Locale::t($_message);
-//        }
         $_message = self::getDefaultNotifyMessage();
 
+        $_message = str_replace('$forum', $forum_title, $_message);
         $_message = str_replace('$thread', $topic->title, $_message);
         $_message = str_replace('$message', $message->content, $_message);
         $_message = str_replace('$site', Zira\Helper::url('/',true, true), $_message);

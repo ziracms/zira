@@ -510,7 +510,7 @@ class Index extends Zira\Controller {
                 }
                 // sending notification message
                 try {
-                    Forum\Models\Message::notify($topic, $message);
+                    Forum\Models\Message::notify($topic, $message, $forum);
                 } catch (\Exception $e) {
                     Zira\Log::exception($e);
                 }
