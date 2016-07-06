@@ -147,6 +147,21 @@ class Topics extends Dash\Windows\Window {
         if ($this->page > $this->pages) $this->page = $this->pages;
         if ($this->page < 1) $this->page = 1;
 
+        $unpublished = array();
+        $rows = \Forum\Models\Message::getCollection()
+                                    ->count()
+                                    ->select('topic_id')
+                                    ->join(\Forum\Models\Topic::getClass())
+                                    ->where('category_id','=',$forum->category_id, \Forum\Models\Topic::getAlias())
+                                    ->and_where('forum_id','=',$forum->id, \Forum\Models\Topic::getAlias())
+                                    ->and_where('published','=',\Forum\Models\Message::STATUS_NOT_PUBLISHED)
+                                    ->group_by('topic_id')
+                                    ->get();
+
+        foreach($rows as $row) {
+            $unpublished[$row->topic_id] = $row->co;
+        }
+
         $threads = \Forum\Models\Topic::getCollection()
                                     ->where('category_id','=',$forum->category_id)
                                     ->and_where('forum_id','=',$forum->id)
@@ -158,6 +173,7 @@ class Topics extends Dash\Windows\Window {
         foreach($threads as $thread) {
             $title = Zira\Helper::html($thread->title);
             if (!$thread->active) $title = '['.Zira\Locale::tm('Closed','forum').'] '.$title;
+            if (array_key_exists($thread->id, $unpublished)) $title = $title.' ('.$unpublished[$thread->id].')';
             $description = Zira\Helper::html($thread->description);
             $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0, 'published'=>$thread->published ? 1: 0));
         }

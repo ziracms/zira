@@ -35,6 +35,8 @@ class Permissions extends Model {
                 $obj->save();
             }
 
+            Zira\Models\Option::raiseVersion();
+
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
             return array('error'=>$form->getError());

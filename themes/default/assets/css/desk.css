@@ -788,3 +788,14 @@ body.dashboard .dashboard-notification .dashboard-notification-close {
     cursor: pointer;
     font-size: 120%;
 }
+
+@media (min-width: 768px) {
+    #dashpanel-container .report {
+        display: none;
+    }
+}
+@media (min-width: 992px) {
+    #dashpanel-container .report {
+        display: block;
+    }
+}

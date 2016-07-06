@@ -162,6 +162,7 @@ class Records extends Window {
             'record_status_not_published_id' => Zira\Models\Record::STATUS_NOT_PUBLISHED,
             'record_status_front_page_id' => Zira\Models\Record::STATUS_FRONT_PAGE,
             'record_status_not_front_page_id' => Zira\Models\Record::STATUS_NOT_FRONT_PAGE,
+            'dash_records_wnd' => Dash::getInstance()->getWindowJSName(Records::getClass()),
             'dash_records_category_wnd' => Dash::getInstance()->getWindowJSName(Category::getClass()),
             'dash_records_record_wnd' => Dash::getInstance()->getWindowJSName(Record::getClass()),
             'dash_records_category_settings_wnd' => Dash::getInstance()->getWindowJSName(Categorysettings::getClass()),

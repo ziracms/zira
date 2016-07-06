@@ -146,6 +146,19 @@ class Forums extends Dash\Windows\Window {
 
         $this->setSidebarItems($this->getDefaultSidebar());
 
+        $unpublished = array();
+        $rows = Forum\Models\Message::getCollection()
+                                    ->count()
+                                    ->join(Forum\Models\Topic::getClass(), array('forum_id'=>'forum_id'))
+                                    ->where('category_id','=',$category_id, Forum\Models\Topic::getAlias())
+                                    ->and_where('published','=',Forum\Models\Message::STATUS_NOT_PUBLISHED)
+                                    ->group_by('forum_id')
+                                    ->get();
+
+        foreach($rows as $row) {
+            $unpublished[$row->forum_id] = $row->co;
+        }
+
         $forums = Forum\Models\Forum::getCollection()
                                     ->where('category_id','=',$category_id)
                                     ->order_by('sort_order', 'asc')
@@ -153,7 +166,9 @@ class Forums extends Dash\Windows\Window {
 
         $items = array();
         foreach($forums as $forum) {
-            $items[]=$this->createBodyItem($forum->title, $forum->description, Zira\Helper::imgUrl('drag.png'), $forum->id, null, false, array('sort_order'=>$forum->sort_order,'inactive'=>$forum->active ? 0 : 1, 'page'=>Forum\Models\Forum::generateUrl($forum)));
+            $title = $forum->title;
+            if (array_key_exists($forum->id, $unpublished)) $title = $title.' ('.$unpublished[$forum->id].')';
+            $items[]=$this->createBodyItem($title, $forum->description, Zira\Helper::imgUrl('drag.png'), $forum->id, null, false, array('sort_order'=>$forum->sort_order,'inactive'=>$forum->active ? 0 : 1, 'page'=>Forum\Models\Forum::generateUrl($forum)));
         }
         $this->setBodyItems($items);
 

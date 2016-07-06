@@ -76,7 +76,13 @@ class Index extends Zira\Controller {
         }
         Zira\Page::setView('forum/page');
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array('categories'=>$categories), 'forum/index');
+        $searchForm = new Forum\Forms\Search();
+        $searchForm->setAlignRight(true);
+
+        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
+                                                                    'categories'=>$categories,
+                                                                    'searchForm'=>$searchForm
+                                                                ), 'forum/index');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -139,7 +145,7 @@ class Index extends Zira\Controller {
         Zira\Page::setView('forum/page');
 
         $searchForm = new Forum\Forms\Search();
-        $searchForm->setValue('forum_id',0);
+        $searchForm->setAlignRight(true);
 
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                                                                     'items'=>$rows,
@@ -233,6 +239,7 @@ class Index extends Zira\Controller {
         Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
         Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE . '/'. Zira\Router::getAction());
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($forum->category_id), Zira\Locale::t($forum->category_title));
+        Zira\Page::addBreadcrumb(Forum\Models\Forum::generateUrl($forum->id), Zira\Locale::t($forum->title));
 
         if ($forum->category_layout) {
             Zira\Page::setLayout($forum->category_layout);
@@ -421,6 +428,7 @@ class Index extends Zira\Controller {
         Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
         Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE . '/'. Zira\Router::getAction());
         Zira\Page::addBreadcrumb(Forum\Models\Category::generateUrl($topic->category_id), Zira\Locale::t($topic->category_title));
+        Zira\Page::addBreadcrumb(Forum\Models\Forum::generateUrl($topic->forum_id), Zira\Locale::t($topic->forum_title));
 
         if ($topic->category_layout) {
             Zira\Page::setLayout($topic->category_layout);
@@ -438,6 +446,9 @@ class Index extends Zira\Controller {
         $pagination->setPages($pages);
         $pagination->setPage($page);
 
+        $searchForm = new Forum\Forms\Search();
+        $searchForm->setValue('forum_id', $topic->forum_id);
+
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                                                                 'items'=>$rows,
                                                                 'pagination' => $pagination,
@@ -448,7 +459,8 @@ class Index extends Zira\Controller {
                                                                 'form' => Zira\User::isAuthorized() ? $form : null,
                                                                 'topic_active' => $topic->active,
                                                                 'topic_url' => Forum\Models\Topic::generateUrl($topic),
-                                                                'topic_page' => $page
+                                                                'topic_page' => $page,
+                                                                'searchForm' => $searchForm
                                                             ), 'forum/thread');
 
         Zira\Page::render(array(
@@ -731,7 +743,6 @@ class Index extends Zira\Controller {
         $limit = 10;
         $form = new Forum\Forms\Search();
         $form->setExtended(true);
-        $form->setValue('forum_id', $forum_id);
 
         $forum = null;
         $category_id = 0;

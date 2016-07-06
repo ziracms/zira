@@ -67,6 +67,12 @@ if (!empty($panelItems)) {
         echo '</ul>'."\r\n";
     }
 
+    echo "\t" . '<ul class="nav navbar-nav navbar-right report">';
+    echo '<li>';
+    echo '<a href="'.Zira\Helper::html(Dash\Dash::getBugReportUrl()).'" target="_blank"><span class="glyphicon glyphicon-comment"></span> ' . Zira\Locale::t('Report a bug') . '</a>';
+    echo '</li>';
+    echo '</ul>'."\r\n";
+
     echo '</div>'."\r\n";
     echo '</nav>'."\r\n";
     echo '</div>';

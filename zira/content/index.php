@@ -59,11 +59,21 @@ class Index extends Zira\Page {
             static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
         );
 
+        $admin_icons = null;
+
         if ($record) {
             $data[static::VIEW_PLACEHOLDER_IMAGE] = $record->image;
             $data[static::VIEW_PLACEHOLDER_CONTENT] = $record->content;
             $data[static::VIEW_PLACEHOLDER_CLASS] = 'parse-content';
             Zira\View::addParser();
+
+            if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
+                $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+                $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file record', 'data-item'=>$record->id));
+                $admin_icons .= Zira\Helper::tag_close('div');
+            }
+
+            $data[static::VIEW_PLACEHOLDER_ADMIN_ICONS] = $admin_icons;
         } else {
             $data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t($meta_description);
         }

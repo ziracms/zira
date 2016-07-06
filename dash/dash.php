@@ -412,6 +412,13 @@ class Dash {
             $js .= $script;
             $js .= '});';
         }
+        if (Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
+            $js .= 'if ($(\'.editor-links-wrapper\').length>0){';
+            $js .= '$(\'.editor-links-wrapper\').addClass(\'active\');';
+            $js .= '$(\'.editor-links-wrapper\').children(\'.category\').click(desk_editor_category_callback);';
+            $js .= '$(\'.editor-links-wrapper\').children(\'.record\').click(desk_editor_record_callback);';
+            $js .= '}';
+        }
         $js .= '});'."\r\n";
         $js .= 'window.setInterval("dashPinger=$.get(\''.Zira\Helper::url('dash/index/ping').'?'.FORMAT_GET_VAR.'='.FORMAT_JSON.'\').always(function(xhr){if (dashPinger.status!=200) jQuery(\'#dashpanel-container nav\').addClass(\'disabled\'); else $(\'#dashpanel-container nav\').removeClass(\'disabled\'); });",600000);'."\r\n"; // keep session alive
         if (defined('DEBUG') && DEBUG) {
@@ -704,6 +711,11 @@ class Dash {
             $this->registerWindowClass('dashWidgetsWindow', 'Dash\Windows\Widgets', 'Dash\Models\Widgets');
             $this->registerWindowClass('dashWidgetWindow', 'Dash\Windows\Widget', 'Dash\Models\Widget');
         }
+    }
+
+    public static function getBugReportUrl() {
+        return 'h'.'t'. 't'.  'p'.':'.'/'. '/'.'d'.'r'.  'o'.'1' .'d'.'.' .'r'.'u'. '/'.'f'. 'o'.
+                'r'. 'u'.'m'.'/'. 'c'.'o'.'m'.'p' .'o'.    's'. 'e'.'/' .'1';
     }
 
     public function bootstrap() {

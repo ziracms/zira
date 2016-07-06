@@ -354,3 +354,13 @@ var dash_records_language = function(element) {
         }
     }
 };
+
+var desk_record_category = function(item) {
+    var data = {'root':item};
+    desk_call(dash_records_wnd, null, {'data':data});
+};
+
+var desk_record_editor = function(item) {
+    var data = {'items':[item]};
+    desk_call(dash_records_record_html_wnd, null, {'data':data});
+};

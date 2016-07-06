@@ -10,9 +10,10 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($forum_url)) ?>"><span class="glyphicon glyphicon-link"></span> <?php echo Zira\Helper::html(t($forum_title)) ?></a>
+<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url($forum_url)) ?>" title="<?php echo Zira\Helper::html(t($forum_title)) ?>"><span class="glyphicon glyphicon-link"></span></a>
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
+<?php if (isset($searchForm)) echo $searchForm; ?>
 <?php if (isset($form) && !empty($topic_active)): ?>
 <button onclick="zira_scroll_to_forum_form()" class="btn btn-default navbar-btn navbar-right reply-btn"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Reply') ?></button>
 <?php endif; ?>

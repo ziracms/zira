@@ -16,6 +16,7 @@ use Zira\View;
 class Search extends Form {
     protected $_id = 'forum-search-form';
     protected $_extended = false;
+    protected $_align_right = false;
 
     public function __construct() {
         $this->_is_token_unique = true;
@@ -24,6 +25,10 @@ class Search extends Form {
 
     public function setExtended($extended) {
         $this->_extended = $extended;
+    }
+
+    public function setAlignRight($align_right) {
+        $this->_align_right = $align_right;
     }
 
     protected function _init() {
@@ -77,10 +82,13 @@ class Search extends Form {
     }
 
     protected function _renderSimple() {
-        $html = $this->open(array('class'=>'search-simple-form navbar-form navbar-left','role'=>'search'));
+        $align_class = $this->_align_right ? 'navbar-right' : 'navbar-left';
+        $html = $this->open(array('class'=>'search-simple-form navbar-form '.$align_class,'role'=>'search'));
         $html .= Helper::tag_open('div',array('class'=>'form-group input-group'));
         $html .= $this->input(null,'text', array('class'=>$this->_input_class, 'placeholder'=>Locale::t('Search'),'autocomplete'=>'off'));
-        $html .= $this->hidden('forum_id');
+        if ($this->getValue('forum_id')) {
+            $html .= $this->hidden('forum_id');
+        }
         $html .= Helper::tag_open('span',array('class'=>'input-group-btn'));
         $html .= Helper::tag_open('button',array('type'=>'submit','class'=>'btn btn-default'));
         $html .= Helper::tag('span', null, array('class'=>'glyphicon glyphicon-search'));
@@ -98,7 +106,9 @@ class Search extends Form {
         $html .= Helper::tag('span', null, array('class'=>'glyphicon glyphicon-search'));
         $html .= Helper::tag_close('span');
         $html .= $this->input(null,'text', array('class'=>$this->_input_class));
-        $html .= $this->hidden('forum_id');
+        if ($this->getValue('forum_id')) {
+            $html .= $this->hidden('forum_id');
+        }
         $html .= Helper::tag_open('span',array('class'=>'input-group-btn'));
         $html .= Helper::tag_open('button',array('type'=>'submit','class'=>'btn btn-default'));
         $html .= Locale::t('Search');
@@ -112,8 +122,22 @@ class Search extends Form {
     protected function _validate() {
         $validator = $this->getValidator();
         $validator->setMethod(Request::GET);
+        $validator->registerCustom(array(get_class(), 'validateNumber'), 'forum_id', Locale::t('An error occurred'));
         $validator->registerCustom(array(get_class(), 'validateString'), 'text', Locale::tm('Invalid search text','forum'));
         $validator->registerCustom(array(get_class(), 'validateNoTags'), 'text', Locale::tm('Search text contains bad character','forum'));
+    }
+
+    public static function validateNumber($ignore) {
+        return self::_validateNumber('forum_id', 0, 255, false);
+    }
+
+    public static function _validateNumber($name, $min, $max, $requried) {
+        $value = Request::get($name);
+        if ($requried && $value===null) return false;
+        if ($value!==null && !is_numeric($value)) return false;
+        if ($value!==null && $min!==null && $value<$min) return false;
+        if ($value!==null && $max!==null && $value>$max) return false;
+        return true;
     }
 
     public static function validateString($ignore) {

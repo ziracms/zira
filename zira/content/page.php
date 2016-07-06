@@ -124,6 +124,15 @@ class Page extends Zira\Page {
 
         Zira\View::addParser();
 
+        $admin_icons = null;
+        if (!$preview && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
+            $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>Zira\Category::current() ? '/'.Zira\Category::current()->name : ''));
+            $admin_icons .= '&nbsp;';
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file record', 'data-item'=>$row->id));
+            $admin_icons .= Zira\Helper::tag_close('div');
+        }
+
         static::render(array(
             static::VIEW_PLACEHOLDER_TITLE => $row->title,
             static::VIEW_PLACEHOLDER_IMAGE => empty($slides) || !$slider_enabled ? $row->image : null,
@@ -132,7 +141,8 @@ class Page extends Zira\Page {
             static::VIEW_PLACEHOLDER_AUTHOR => $author,
             static::VIEW_PLACEHOLDER_RATING => $rating_enabled ? $row->rating : null,
             static::VIEW_PLACEHOLDER_URL => static::$_record_url,
-            static::VIEW_PLACEHOLDER_CLASS => 'parse-content'
+            static::VIEW_PLACEHOLDER_CLASS => 'parse-content',
+            static::VIEW_PLACEHOLDER_ADMIN_ICONS => $admin_icons
         ));
     }
 }

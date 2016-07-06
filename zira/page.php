@@ -28,6 +28,7 @@ class Page {
     const VIEW_PLACEHOLDER_SETTINGS = 'settings';
     const VIEW_PLACEHOLDER_CLASS = 'class';
     const VIEW_PLACEHOLDER_URL = 'url';
+    const VIEW_PLACEHOLDER_ADMIN_ICONS = 'admin_icons';
 
     protected static $_view = 'page';
     protected static $_layout = null;

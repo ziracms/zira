@@ -84,14 +84,33 @@ class Category extends Zira\Page {
                 static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
             );
 
+            $admin_icons = null;
+
             if ($record) {
                 $_data[static::VIEW_PLACEHOLDER_IMAGE] = $record->image;
                 $_data[static::VIEW_PLACEHOLDER_CONTENT] = $record->content;
                 $_data[static::VIEW_PLACEHOLDER_CLASS] = 'parse-content';
                 Zira\View::addParser();
+
+                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
+                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
+                    $admin_icons .= '&nbsp;';
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file record', 'data-item'=>$record->id));
+                    $admin_icons .= Zira\Helper::tag_close('div');
+                }
             } else {
                 $_data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t(Zira\Category::current()->description);
+
+                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
+                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
+                    $admin_icons .= Zira\Helper::tag_close('div');
+                }
             }
+
+            $_data[static::VIEW_PLACEHOLDER_ADMIN_ICONS] = $admin_icons;
+
             static::render($_data);
         } else {
             $data[static::VIEW_PLACEHOLDER_CLASS] .= ' xhr-list';
@@ -109,9 +128,12 @@ class Category extends Zira\Page {
 
         $record = Zira\Content\Category::record(Zira\Category::current());
 
+        if ($add_title) {
+            $title = Zira\Category::current()->title;
+        }
+
         // adding meta tags
         if ($add_meta) {
-            $title = Zira\Category::current()->title;
             if (Zira\Category::current()->meta_title) $meta_title = Zira\Category::current()->meta_title;
             else $meta_title = Zira\Category::current()->title;
             if (Zira\Category::current()->meta_keywords) $meta_keywords = Zira\Locale::t(Zira\Category::current()->meta_keywords);
@@ -121,9 +143,10 @@ class Category extends Zira\Page {
             else $meta_description = Zira\Locale::t('Category: %s', Zira\Category::current()->title);
             $thumb = null;
 
-
             if ($record) {
-                $title = $record->title;
+                if ($add_title) {
+                    $title = $record->title;
+                }
                 if ($record->meta_title) $meta_title = $record->meta_title;
                 else $meta_title = $record->title;
                 if ($record->meta_keywords) $meta_keywords = $record->meta_keywords;
@@ -176,6 +199,26 @@ class Category extends Zira\Page {
             Zira\View::addParser();
         } else if ($add_description) {
             $_data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t(Zira\Category::current()->description);
+        }
+
+        if ($add_title) {
+            $admin_icons = null;
+            if ($record) {
+                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
+                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
+                    $admin_icons .= '&nbsp;';
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file record', 'data-item'=>$record->id));
+                    $admin_icons .= Zira\Helper::tag_close('div');
+                }
+            } else {
+                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
+                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
+                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
+                    $admin_icons .= Zira\Helper::tag_close('div');
+                }
+            }
+            $_data[static::VIEW_PLACEHOLDER_ADMIN_ICONS] = $admin_icons;
         }
 
         if (!empty($_data)) {

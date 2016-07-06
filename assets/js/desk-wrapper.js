@@ -132,6 +132,16 @@ var desk_html_editor = function() {
     desk_error(t('An error occurred'));
 };
 
+// overwritten
+var desk_record_editor = function() {
+    desk_error(t('An error occurred'));
+};
+
+// overwritten
+var desk_record_category = function() {
+    desk_error(t('An error occurred'));
+};
+
 
 var desk_window_close = function(wnd) {
     wnd = desk_get_window(wnd);
@@ -691,4 +701,16 @@ var baseUrl = function(path) {
         path = path.substr(1);
     }
     return u + '/' + path;
+};
+
+var desk_editor_category_callback = function() {
+    var item = $(this).data('item');
+    if (typeof(item)=="undefined") return;
+    desk_record_category(item);
+};
+
+var desk_editor_record_callback = function() {
+    var item = $(this).data('item');
+    if (typeof(item)=="undefined") return;
+    desk_record_editor(item);
 };

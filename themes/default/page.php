@@ -5,7 +5,7 @@
 <?php endif; ?>
 <?php if (!empty($title)): ?>
 <div class="page-header">
-<h1><?php echo Zira\Helper::html($title) ?></h1>
+<h1><?php if (isset($admin_icons)) echo $admin_icons; ?><?php echo Zira\Helper::html($title) ?></h1>
 </div>
 <?php endif; ?>
 <?php if (!empty($description)): ?>
