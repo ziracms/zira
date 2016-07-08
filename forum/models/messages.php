@@ -131,4 +131,67 @@ class Messages extends Dash\Models\Model {
 
         return array('reload' => $this->getJSClassName());
     }
+
+    public function preview($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            return array('error' => Zira\Locale::t('Permission denied'));
+        }
+
+        $message = Forum\Models\Message::getCollection()
+                                    ->select(Forum\Models\Message::getFields())
+                                    ->join(Forum\Models\Topic::getClass(), array('topic_title'=>'title'))
+                                    ->where('id','=',$id)
+                                    ->get(0);
+
+        if (!$message) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $user = new Zira\Models\User($message->creator_id);
+        if ($user->loaded()) {
+            $username = Zira\User::getProfileName($user);
+        } else {
+            $username = Zira\Locale::tm('User deleted', 'forum');
+        }
+
+        $attaches = '';
+
+        $files = Forum\Models\File::getCollection()
+                                    ->where('message_id','=',$message->id)
+                                    ->get(0);
+
+        if ($files) {
+            $images = Forum\Models\File::extractItemFiles($files, '', 'images');
+            $files = Forum\Models\File::extractItemFiles($files, '', 'files');
+
+            if (!empty($images) || !empty($files)) {
+                foreach ($images as $filepath => $filename) {
+                    if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)) {
+                        $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath);
+                        $attaches .= '<a class="forum-message-attach" data-lightbox="forum-message-' . Zira\Helper::html($message->id) . '" href="' . Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) . '" title="' . Zira\Helper::html($filename) . '">';
+                        $attaches .= '<img src="' . Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) . '" alt="' . Zira\Helper::html($filename) . '" height="' . Zira\Config::get('thumbs_height') . '" style="margin: 5px" />';
+                        $attaches .= '</a>';
+                    } else {
+                        $attaches .= '<span class="forum-message-attach" style="margin: 5px">' . Zira\Locale::tm('File "%s" not found', 'forum', Zira\Helper::html($filename)) . '</span>';
+                    }
+                }
+                foreach ($files as $filepath => $filename) {
+                    if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)) {
+                        $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath);
+                        $attaches .= '<a class="forum-message-attach" href="' . Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) . '" title="' . Zira\Helper::html($filename) . '" download="' . Zira\Helper::html($filename) . '" target="_blank" rel="nofollow" style="margin: 5px">';
+                        $attaches .= Zira\Helper::html($filename);
+                        $attaches .= '</a>';
+                    } else {
+                        $attaches .= '<span class="forum-message-attach" style="margin: 5px">' . Zira\Locale::tm('File "%s" not found', 'forum', Zira\Helper::html($filename)) . '</span>';
+                    }
+                }
+            }
+        }
+
+        return array(
+            'user'=>$username,
+            'content'=>'<p class="parse-content">'.Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($message->content))).'</p>',
+            'attaches'=>$attaches,
+            'topic'=>Zira\Locale::tm('Forum thread','forum').': '.$message->topic_title
+        );
+    }
 }

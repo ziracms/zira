@@ -175,7 +175,7 @@ class Topics extends Dash\Windows\Window {
             if (!$thread->active) $title = '['.Zira\Locale::tm('Closed','forum').'] '.$title;
             if (array_key_exists($thread->id, $unpublished)) $title = $title.' ('.$unpublished[$thread->id].')';
             $description = Zira\Helper::html($thread->description);
-            $items[]=$this->createBodyFileItem($title, $description, $thread->id, null, false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0, 'published'=>$thread->published ? 1: 0));
+            $items[]=$this->createBodyFileItem($title, $description, $thread->id, 'desk_call(dash_forum_messages, this);', false, array('type'=>'txt', 'page'=>\Forum\Models\Topic::generateUrl($thread), 'inactive'=>$thread->active ? 0 : 1, 'sticky'=>$thread->sticky ? 1 : 0, 'published'=>$thread->published ? 1: 0));
         }
         $this->setBodyItems($items);
 

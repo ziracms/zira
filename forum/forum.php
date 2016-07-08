@@ -76,7 +76,8 @@ class Forum {
             Zira\Router::getRequest()!=self::ROUTE &&
             Zira\Router::getModule() == self::ROUTE &&
             Zira\Router::getController() == DEFAULT_CONTROLLER &&
-            in_array(Zira\Router::getAction(), get_class_methods('\Forum\Controllers\Index'))
+            in_array(Zira\Router::getAction(), get_class_methods('\Forum\Controllers\Index')) &&
+            (!Zira\Router::getParam() || is_numeric(Zira\Router::getParam()))
         ) {
             if (CACHE_CATEGORIES_LIST) {
                 $categories = Zira\Category::getAllCategories();

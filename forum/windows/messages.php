@@ -128,7 +128,7 @@ class Messages extends Dash\Windows\Window {
 
             $content = Zira\Helper::html($message->content);
             $username = $message->user_login ? $message->user_login : Zira\Locale::tm('User deleted', 'forum');
-            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.$username.$files_str, $message->id, null, false, array('type'=>'txt','published'=>$message->published ? 1 : 0));
+            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.$username.$files_str, $message->id, 'desk_call(dash_forum_message_preview, this);', false, array('type'=>'txt','published'=>$message->published ? 1 : 0));
         }
         $this->setBodyItems($items);
 

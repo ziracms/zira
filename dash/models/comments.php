@@ -138,6 +138,34 @@ class Comments extends Model {
         return $info;
     }
 
+    public function preview($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_MODERATE_COMMENTS)) {
+            return array('error' => Zira\Locale::t('Permission denied'));
+        }
+
+        $comment = Zira\Models\Comment::getCollection()
+                    ->select(Zira\Models\Comment::getFields())
+                    ->join(Zira\Models\Record::getClass(), array('record_title' => 'title'))
+                    ->where('id','=',$id)
+                    ->get(0);
+
+        if (!$comment) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $user = new Zira\Models\User($comment->author_id);
+        if ($user->loaded()) {
+            $username = Zira\User::getProfileName($user);
+        } else {
+            $username = Zira\Locale::tm('User deleted', 'forum');
+        }
+
+        return array(
+            'user'=>$username,
+            'content'=>'<p class="parse-content">'.Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($comment->content))).'</p>',
+            'record'=>Zira\Locale::t('Record').': '.$comment->record_title
+        );
+    }
+
     public function getNewCommentsCount() {
         return Zira\Models\Comment::getCollection()
                                 ->count()

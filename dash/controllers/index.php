@@ -26,9 +26,23 @@ class Index extends Dash\Controller {
         $script .= Zira\Helper::tag_close('script');
         Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
 
+        $records_co = Zira\Models\Record::getCollection()
+                                        ->count()
+                                        ->where('published','=',Zira\Models\Record::STATUS_PUBLISHED)
+                                        ->get('co');
+
+        $comments_co = Zira\Models\Comment::getCollection()
+                                        ->count()
+                                        ->where('published','=',Zira\Models\Comment::STATUS_PUBLISHED)
+                                        ->get('co');
+
         Zira\Page::addTitle(Zira\Locale::t('System dashboard'));
         Zira\Page::render(array(
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT => Zira\Helper::tag('div', Zira\Locale::t('Version: %s', Zira::VERSION), array('id'=>'dash-version'))
+            Zira\Page::VIEW_PLACEHOLDER_CONTENT => Zira\Helper::tag('div', Zira\Locale::t('Version: %s', Zira::VERSION), array('id'=>'dash-version')),
+            Zira\Page::VIEW_PLACEHOLDER_SETTINGS => array(
+                'records' => $records_co,
+                'comments' => $comments_co
+            )
         ));
     }
 

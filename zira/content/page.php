@@ -56,7 +56,7 @@ class Page extends Zira\Page {
 
         $home_page_name = Zira\Config::get('home_record_name');
         if ($home_page_name && $row->name == $home_page_name && $row->category_id == Zira\Category::ROOT_CATEGORY_ID) {
-            Zira\Response::redirect('/');
+            Zira\Response::redirect('/', true);
         }
 
         static::$_record_id = $row->id;

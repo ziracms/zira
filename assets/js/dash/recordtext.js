@@ -45,4 +45,24 @@ var dash_recordtext_load = function() {
             }));
         }));
     }
+    if (typeof(this.options.data.published)!="undefined" && this.options.data.published=='1') {
+        this.enableItemsByProperty('typo','page');
+    }
+};
+
+var dash_recordtext_preview = function() {
+    if (typeof(this.options.data.page)!="undefined") {
+        var language = '';
+        if (typeof(this.options.data.language)!="undefined" && this.options.data.language!==null) language = this.options.data.language + '/';
+        var data = {'url':[language+this.options.data.page]};
+        desk_call(dash_records_web_wnd, null, {'data':data});
+    }
+};
+
+var dash_recordtext_page = function() {
+    if (typeof(this.options.data.page)!="undefined") {
+        var language = '';
+        if (typeof(this.options.data.language)!="undefined" && this.options.data.language!==null) language = this.options.data.language + '/';
+        window.location.href=url(language+this.options.data.page);
+    }
 };

@@ -722,10 +722,14 @@ class Index extends Zira\Controller {
         $pagination->setPages($pages);
         $pagination->setPage($page);
 
+        $searchForm = new Forum\Forms\Search();
+        $searchForm->setAlignRight(true);
+
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                                                                 'items'=>$rows,
                                                                 'user_groups' => Zira\Models\Group::getArray(true),
-                                                                'pagination' => $pagination
+                                                                'pagination' => $pagination,
+                                                                'searchForm' => $searchForm
                                                             ), 'forum/user');
 
         Zira\Page::render(array(

@@ -93,4 +93,12 @@ class Dash extends \Dash\Controller {
             Zira\Page::render($response);
         }
     }
+
+    public function preview() {
+        if (Zira\Request::isPost()) {
+            $item = Zira\Request::post('item');
+            $response = $this->getMessagesWindowModel()->preview(intval($item));
+            Zira\Page::render($response);
+        }
+    }
 }

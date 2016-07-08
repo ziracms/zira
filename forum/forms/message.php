@@ -36,7 +36,7 @@ class Message extends Form
         $html = $this->open();
         $html .= $this->hidden('id');
         $html .= $this->hidden('topic_id');
-        $html .= $this->textarea(Locale::t('Message').'*', 'content');
+        $html .= $this->textarea(Locale::t('Message').'*', 'content', array('rows'=>8));
         $html .= $this->select(Locale::tm('Status','forum'), 'status', \Forum\Models\Message::getStatuses());
         $html .= $this->close();
         return $html;

@@ -146,7 +146,7 @@ var desk_record_category = function() {
 var desk_window_close = function(wnd) {
     wnd = desk_get_window(wnd);
     if (wnd instanceof DashWindow) {
-        wnd.getCloseButton().trigger('click');
+        wnd.getCloseButton().trigger('mousedown');
     }
 };
 

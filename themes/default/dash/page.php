@@ -4,6 +4,19 @@
         <div id="remote-clock-wrapper">
             <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
         </div>
+        <?php if (isset($settings)): ?>
+        <div id="dashboard_stats">
+            <h3><span class="glyphicon glyphicon-stats"></span> <?php echo t('Statistics').':'; ?></h3>
+            <ul>
+            <?php if (isset($settings['records'])): ?>
+            <li><?php echo t('Records: %s', $settings['records']) ?></li>
+            <?php endif; ?>
+            <?php if (isset($settings['comments'])): ?>
+            <li><?php echo t('Comments: %s', $settings['comments']) ?></li>
+            <?php endif; ?>
+            </ul>
+        </div>
+        <?php endif; ?>
     </div>
     <div id="memory-stick-wrapper">
         <textarea rows="10" cols="30" maxlength="255" name="memory-stick"><?php echo Zira\Helper::html(Zira\Config::get('memory_stick')) ?></textarea>
@@ -33,6 +46,14 @@
                     }
                 },'json');
             });
+
+            Desk.dock_open = Dock.show;
+            Desk.dock_close = Dock.hide;
+            Desk.dock_update = Dock.update;
+            Desk.dock_update_focus = Dock.updateFocus;
+            Desk.dock_position = Dock.position;
+            Dock.click = Desk.dock_click;
+            Dock.init();
         });
     })(jQuery);
 </script>

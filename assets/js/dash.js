@@ -245,5 +245,171 @@
             'left': ($(window).width() - $('.dashboard-notification').outerWidth()) / 2
             //'left': $(window).width() - $('.dashboard-notification').outerWidth() - $('#dashboard-sidebar').outerWidth() - 20
         });
-    }
+    };
+
+    Dock = {
+        'windows': {},
+        'windows_co': 0,
+        'fontSize': null,
+        'z': 999,
+        'init': function(){
+            $('body').mousemove(function(e){
+                if (Dock.windows_co>0 && e.pageX<2 && ($('#dashboard-dock').length == 0 || $('#dashboard-dock').css('display')=='none')) {
+                    Dock.show(false);
+                    Dock.updateFocus(false);
+                    Dock.position(false);
+                    for(var id in Dock.windows) {
+                        if (!(Dock.windows[id] instanceof DashWindow)) continue;
+                        if (Dock.windows[id].z>=Dock.z) {
+                            Dock.z = Dock.windows[id].z+1;
+                        }
+                    }
+                }
+            });
+        },
+        'show': function(update_position) {
+            if ($('#dashboard-dock').length==0) {
+                $('body').append('<div id="dashboard-dock"></div>');
+            }
+            if (typeof(update_position)=="undefined" || update_position) {
+                Dock.position();
+            }
+        },
+        'hide': function() {
+            $('#dashboard-dock').remove();
+        },
+        'update': function(check_focus, append) {
+            var has_focused = false;
+            if ($('#dashboard-dock').length==0) return;
+            $('#dashboard-dock').show();
+            $('#dashboard-dock').html('<a href="javascript:void(0)" class="dashboard-dock-item minimize-all" data-toggle="tooltip" data-placement="right" title="'+t('Minimize all')+'"><span class="glyphicon glyphicon-blackboard"></span>');
+            if (typeof(append)=="undefined" || append) {
+                Dock.windows = {};
+                Dock.windows_co = 0;
+                Dock.z = this.z;
+            }
+            var co = 0;
+            for(var id in this.windows) {
+                if (!(this.windows[id] instanceof DashWindow)) continue;
+                if (typeof(check_focus)=="undefined" || check_focus) {
+                    var focused = false;
+                    if (this.windows[id].isFocused() && !has_focused) {
+                        has_focused = true;
+                        focused = true;
+                    }
+                    Dock.add(this.windows[id], focused, co);
+                } else {
+                    Dock.add(this.windows[id], false, co);
+                }
+                if (typeof(append)=="undefined" || append) {
+                    Dock.windows[id]=this.windows[id];
+                    Dock.windows_co++;
+                }
+                co++;
+            }
+            $('#dashboard-dock a').mousedown(function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                if ($(this).hasClass('minimize-all')) {
+                    Dock.minimizeAll();
+                    return;
+                }
+                var wndID = $(this).attr('rel');
+                if (typeof(wndID)=="undefined" || !wndID) return;
+                Dock.click(desk_get_window(wndID));
+            });
+            $('#dashboard-dock a').tooltip();
+        },
+        'updateFocus': function(append) {
+            if ($('#dashboard-dock').length==0) return;
+            $('#dashboard-dock').show();
+            if ($('#dashboard-dock a').length==0) {
+                Dock.update(true, false);
+                return;
+            }
+            $('#dashboard-dock a.active').removeClass('active');
+            if (typeof(append)=="undefined" || append) {
+                Dock.z = this.z;
+            }
+            for(var id in this.windows) {
+                if (!(this.windows[id] instanceof DashWindow)) continue;
+                if (this.windows[id].isFocused()) {
+                    $('#dashboard-dock a[rel='+id+']').addClass('active');
+                    break;
+                }
+            }
+        },
+        'add': function(wnd,active,i) {
+            if (!(wnd instanceof DashWindow)) throw 'Argument is not a window';
+            var icon = wnd.options.icon_class;
+            var title = wnd.options.title;
+            i = i % 7;
+            var className = ' c'+i;
+            if (typeof(active) != "undefined" && active) className += ' active';
+            $('#dashboard-dock').append('<a href="javascript:void(0)" rel="'+wnd.getId()+'" class="dashboard-dock-item'+className+'" data-toggle="tooltip" data-placement="right" title="'+title+'"><span class="'+icon+'"></span>');
+        },
+        'position': function(check_maximized) {
+            if ($('#dashboard-dock').length==0) return;
+            if (typeof(check_maximized)=="undefined" || check_maximized) {
+                for (var id in this.windows) {
+                    if (!(this.windows[id] instanceof DashWindow)) continue;
+                    if (this.windows[id].isMaximized()) {
+                        $('#dashboard-dock').hide();
+                        return;
+                    }
+                }
+            }
+            $('#dashboard-dock').css('zIndex', this.z);
+
+            if (Dock.fontSize===null) {
+                var fontSize = $('#dashboard-dock a').css('fontSize');
+                if (typeof(fontSize)!="undefined") {
+                    Dock.fontSize = parseInt(fontSize);
+                }
+            }
+            if ($('#dashboard-dock a').length>0) {
+                Dock.calcPosition();
+            }
+
+        },
+        'calcPosition': function(r) {
+            if (typeof(r)=="undefined") r = 0;
+
+            if (r!=0) {
+                var fontSize = parseInt($('#dashboard-dock a').css('fontSize'));
+                fontSize -= r*2;
+                if (fontSize<=6 || fontSize>Dock.fontSize) {
+                    return;
+                }
+                $('#dashboard-dock a').css('fontSize',fontSize);
+            }
+
+            var min_top = 50;
+            var wh = $(window).height();
+            var dh = $('#dashboard-dock').outerHeight();
+            var top = (wh - dh) / 2;
+            if (top < min_top) top = min_top;
+
+            $('#dashboard-dock').css('top', top);
+
+            if (top + dh > wh-min_top) {
+                Dock.calcPosition(r+1);
+            } else if (top + dh < wh-2*min_top) {
+                Dock.calcPosition(r-1);
+            }
+        },
+        'click': function(wnd) {
+            // overwritten
+        },
+        'minimizeAll': function() {
+            if (Dock.windows_co>0) {
+                for(var id in this.windows) {
+                    if (!(this.windows[id] instanceof DashWindow)) continue;
+                    if (!this.windows[id].isMinimized()) {
+                        this.windows[id].getMinimizeButton().trigger('mousedown');
+                    }
+                }
+            }
+        }
+    };
 })(jQuery);

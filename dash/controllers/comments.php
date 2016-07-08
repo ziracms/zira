@@ -45,4 +45,12 @@ class Comments extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+
+    public function preview() {
+        if (Zira\Request::isPost()) {
+            $id = Zira\Request::post('item');
+            $response = $this->getWindowModel()->preview($id);
+            Zira\Page::render($response);
+        }
+    }
 }

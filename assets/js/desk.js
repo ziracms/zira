@@ -43,6 +43,7 @@ var Desk = {
     'formData': typeof(FormData)!="undefined" ? FormData : null,
     'formDataAppend': typeof(FormData)!="undefined" ? FormData.prototype.append : null,
     'parseJSON': $.parseJSON,
+    'dockUpdated': false,
     'initialize': function() {
         if (this.isFrame()) return;
         this.dashpanel = $('#'+this.dashpanel_id);
@@ -288,6 +289,7 @@ var Desk = {
                 if (this.windows[id].isMenuDropdownOpened()) {
                     this.windows[id].hideMenuDropdown();
                 }
+                this.windows[id].setHovered(false);
             }
             this.active = null;
             if (this.dragging) {
@@ -296,6 +298,7 @@ var Desk = {
             }
         }
         this.dragging = false;
+        this.doUpdateDock();
     },
     'onKeyDown': function(e) {
         if (!this.eventsEnabled) return;
@@ -316,7 +319,7 @@ var Desk = {
             if (active instanceof DashWindow) {
                 e.stopPropagation();
                 e.preventDefault();
-                $(active.getCloseButton()).trigger('click');
+                $(active.getCloseButton()).trigger('mousedown');
             }
         } else if (e.keyCode == 65 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+a
             var active = this.findFocusedWindow();
@@ -415,6 +418,7 @@ var Desk = {
             this.shifted_window = null;
             this.sorted_windows = null;
         }
+        this.doUpdateDock();
     },
     'onContextMenu': function(e) {
         if (!this.eventsEnabled) return;
@@ -463,6 +467,7 @@ var Desk = {
             this.active.showContextMenu(e.pageX, e.pageY);
         }
         this.active = null;
+        this.doUpdateDock();
     },
     'onDragStart': function(e) {
         if (!this.eventsEnabled) return;
@@ -577,18 +582,19 @@ var Desk = {
         if ($.inArray(id,this.classNames[className])<0) this.classNames[className].push(id);
         this.raiseZ(this.windows[id]);
         this.windows[id].focus();
-        $(this.windows[id].getCloseButton()).click(this.bind(this.windows[id],function(e){
+        $(this.windows[id].getCloseButton()).mousedown(this.bind(this.windows[id],function(e){
             e.stopPropagation();
             e.preventDefault();
             if (this.isMinimized()) return;
             this.destroy();
             Desk.active_windows_count--;
             Desk.windows[this.getId()] = null;
+            Desk.forceUpdateDock();
             if (Desk.active_windows_count<=0) {
                 Desk.deactivateOverlay();
             }
         }));
-        $(this.windows[id].getMinimizeButton()).click(this.bind(this.windows[id],function(e){
+        $(this.windows[id].getMinimizeButton()).mousedown(this.bind(this.windows[id],function(e){
             e.stopPropagation();
             e.preventDefault();
             if (this.isMinimized()) return;
@@ -605,18 +611,25 @@ var Desk = {
                 }
             }
             if (all_minimized) Desk.deactivateOverlay();
+            Desk.doUpdateDock();
         }));
-        $(this.windows[id].getMaximizeButton()).click(this.bind(this.windows[id],function(e){
+        $(this.windows[id].getMaximizeButton()).mousedown(this.bind(this.windows[id],function(e){
             e.stopPropagation();
             e.preventDefault();
             if (this.isMinimized()) return;
             this.maximize_unmaximize();
+            if (!this.isFocused()) {
+                Desk.focusWindow(this);
+            } else {
+                Desk.doUpdateDock();
+            }
         }));
         $(this.windows[id].getHeader()).dblclick(this.bind(this.windows[id],function(e){
             e.stopPropagation();
             e.preventDefault();
             if (this.isMinimized()) return;
             this.maximize_unmaximize();
+            Desk.doUpdateDock();
         }));
         if (this.touchesEnabled) {
             this.windows[id].setTouchesEnabled(true);
@@ -626,6 +639,15 @@ var Desk = {
         }
         this.windows[id].setMinimizedArray(this.minimized);
         this.windows[id].setKeysArr(this.keysArr);
+        this.windows[id].onFocusCallback = this.bind(this, this.forceUpdateDockFocus);
+        this.windows[id].onMaximizeCallback = this.setDockUpdated;
+        this.windows[id].onUnmaximizeCallback = this.setDockUpdated;
+        this.windows[id].onMinimizeCallback = this.setDockUpdated;
+        this.windows[id].onUnminimizeCallback = this.setDockUpdated;
+        this.windows[id].onResizeCallback = this.dock_position;
+        this.windows[id].onMenuItemCallback = this.bind(this, this.doUpdateDock);
+        this.windows[id].onLoadCallback = this.bind(this, this.forceUpdateDock);
+        this.forceUpdateDock();
         return this.windows[id];
     },
     'raiseZ': function(window) {
@@ -697,10 +719,7 @@ var Desk = {
         if (!(shifted_window instanceof DashWindow)) return;
         for(var id in this.windows) {
             if (!(this.windows[id] instanceof DashWindow)) continue;
-            if (this.windows[id].getId() == shifted_window.getId()) {
-                this.windows[id].focus();
-                if (this.windows[id].isMinimized()) this.windows[id].unminimize();
-            } else {
+            if (this.windows[id].getId() != shifted_window.getId()) {
                 if (this.windows[id].isFocused()) {
                     this.windows[id].blur(true);
                 } else {
@@ -711,18 +730,22 @@ var Desk = {
                 }
             }
         }
+        shifted_window.focus();
+        if (shifted_window.isMinimized()) shifted_window.unminimize();
         this.activateOverlay();
     },
     'activateOverlay': function() {
         if (!this.overlay_is_active) {
             this.overlay_is_active = true;
             $('body').append('<div class="'+this.dashpanel_overlay_class+'"></div>');
+            this.dock_open();
         }
     },
     'deactivateOverlay': function() {
         if (this.overlay_is_active) {
             this.overlay_is_active = false;
             $('.'+this.dashpanel_overlay_class).remove();
+            this.dock_close();
         }
     },
     'focusWindow' : function(wnd) {
@@ -738,8 +761,45 @@ var Desk = {
         this.activateOverlay();
         this.raiseZ(wnd);
         wnd.focus();
+        this.doUpdateDock();
     },
     'isFrame': function() {
         return (window!=window.top);
-    }
+    },
+    'setDockUpdated': function() {
+        Desk.dockUpdated = true;
+    },
+    'onDockUpdate': function() {
+        this.dock_update();
+        this.dock_position();
+    },
+    'doUpdateDock': function() {
+        if (this.dockUpdated) {
+            this.onDockUpdate();
+            this.dockUpdated = false;
+        }
+    },
+    'forceUpdateDock': function() {
+        this.onDockUpdate();
+        this.dockUpdated = false;
+    },
+    'forceUpdateDockFocus': function() {
+        this.dock_update_focus();
+        this.dock_position();
+        this.dockUpdated = false;
+    },
+    'dock_click': function(wnd) {
+        if (wnd instanceof DashWindow) {
+            if (wnd.isMinimized()) {
+                wnd.unminimize();
+            }
+            Desk.focusWindow(wnd);
+            Desk.doUpdateDock();
+        }
+    },
+    'dock_open': function() {},
+    'dock_close': function() {},
+    'dock_update': function() {},
+    'dock_update_focus': function() {},
+    'dock_position': function() {}
 };

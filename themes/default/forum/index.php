@@ -8,13 +8,14 @@
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
-<?php if (Zira\User::isAuthorized()): ?>
-<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE.'/user')) ?>" title="<?php echo tm('My discussions','forum') ?>"><span class="glyphicon glyphicon-comment"></span></a>
-<?php else: ?>
 <a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url('')) ?>" title="<?php echo t('Home') ?>"><span class="glyphicon glyphicon-home"></span></a>
-<?php endif; ?>
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
+<?php if (Zira\User::isAuthorized()): ?>
+<ul class="nav navbar-nav">
+<li><a href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE.'/user')) ?>"><span class="glyphicon glyphicon-comment"></span> <?php echo tm('My discussions','forum') ?></a></li>
+</ul>
+<?php endif; ?>
 <?php echo $searchForm; ?>
 </div>
 </div>

@@ -39,4 +39,7 @@ var dash_recordhtml_load = function() {
             }));
         }), 1000);
     }
+    if (typeof(this.options.data.published)!="undefined" && this.options.data.published=='1') {
+        this.enableItemsByProperty('typo','page');
+    }
 };

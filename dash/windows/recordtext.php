@@ -18,8 +18,24 @@ class Recordtext extends Editor {
 
     public $item;
 
+    public function init() {
+        parent::init();
+
+        $this->setSaveActionEnabled(true);
+    }
+
     public function create() {
         parent::create();
+
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('View page'), 'glyphicon glyphicon-eye-open', 'desk_call(dash_recordtext_preview, this);', 'create', false, array('typo'=>'preview'))
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_recordtext_page, this);', 'create', true, array('typo'=>'page'))
+        );
 
         $this->setOnCloseJSCallback(
             $this->createJSCallback(
@@ -40,7 +56,8 @@ class Recordtext extends Editor {
 
         $this->addVariables(array(
             'dash_record_draft_interval' => self::DRAFT_INTERVAL,
-            'dash_recordtext_records_wnd' => Dash::getInstance()->getWindowJSName(Records::getClass())
+            'dash_recordtext_records_wnd' => Dash::getInstance()->getWindowJSName(Records::getClass()),
+            'dash_records_web_wnd' => Dash::getInstance()->getWindowJSName(Web::getClass())
         ), true);
 
         $this->includeJS('dash/recordtext');
@@ -77,6 +94,12 @@ class Recordtext extends Editor {
 
         $this->setTitle(Zira\Locale::t(self::$_title).' - '.$record->title);
 
+        $root = '';
+        if ($record->category_id) {
+            $category = new Zira\Models\Category($record->category_id);
+            if ($category->loaded()) $root = $category->name;
+        }
+
         $draft = Zira\Models\Draft::getCollection()
                             ->where('record_id','=',$record->id)
                             ->and_where('author_id','=',Zira\User::getCurrent()->id)
@@ -92,7 +115,10 @@ class Recordtext extends Editor {
         $this->setData(array(
             'content' => null,
             'items' => array($this->item),
-            'draft' => $draftExists ? $draft->id : 0
+            'draft' => $draftExists ? $draft->id : 0,
+            'page'=>ltrim(trim($root,'/').'/'.$record->name,'/'),
+            'language'=>count(Zira\Config::get('languages')) > 1 ? $record->language : null,
+            'published'=>$record->published
         ));
     }
 }

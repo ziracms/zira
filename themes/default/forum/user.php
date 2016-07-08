@@ -1,3 +1,28 @@
+<?php if (isset($searchForm)): ?>
+<div class="messages-panel forum-messages-panel">
+<nav class="navbar navbar-default">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#user-messages-panel" aria-expanded="false">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE)) ?>" title="<?php echo tm('Forum','forum') ?>"><span class="glyphicon glyphicon-link"></span></a>
+</div>
+<div class="collapse navbar-collapse" id="user-messages-panel">
+<?php if (Zira\User::isAuthorized()): ?>
+<ul class="nav navbar-nav">
+<li class="active"><a href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE.'/user')) ?>"><span class="glyphicon glyphicon-comment"></span> <?php echo tm('My discussions','forum') ?></a></li>
+</ul>
+<?php endif; ?>
+<?php echo $searchForm; ?>
+</div>
+</div>
+</nav>
+</div>
+<?php endif; ?>
+
 <?php if (!empty($items)): ?>
 <ul class="forum-list list">
 <?php $co = 0; ?>

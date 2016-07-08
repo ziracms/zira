@@ -350,5 +350,7 @@ return array(
     'Version %s is available for download' => 'Версия %s доступна для скачивания',
     'File manager' => 'Файловый менеджер',
     'File or directory already exists' => 'Файл или директория уже существует',
-    'Display records list' => 'Показывать список записей'
+    'Display records list' => 'Показывать список записей',
+    'Statistics' => 'Статистика',
+    'Records: %s' => 'Записи: %s'
 );

@@ -436,3 +436,20 @@ var dash_forum_messages_load = function() {
         }
     }
 };
+
+var dash_forum_message_preview = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('forum/dash/preview'),{'item':selected[0].data}, this.bind(this, function(response){
+            if (!response || typeof(response.topic)=="undefined" || typeof(response.user)=="undefined" || typeof(response.content)=="undefined") return;
+            var attaches = '';
+            if (typeof(response.attaches)!="undefined" && response.attaches.length>0) {
+                attaches = '<div style="color:black;margin: 16px 0px;padding:16px 16px;background:#fff;box-shadow:inset 0px 0px 6px #ddd">'+response.attaches+'</div>';
+            }
+            desk_message(response.topic+'<div style="color:black;margin: 16px 0px;padding:16px 16px;background:#fff;box-shadow:inset 0px 0px 6px #ddd">'+response.content+'</div>'+attaches+t('Author')+': '+response.user);
+            try {
+                zira_parse_content();
+            } catch(e) {}
+        }));
+    }
+};

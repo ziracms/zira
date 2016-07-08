@@ -167,6 +167,7 @@ var DashWindow = function(id, className, options) {
     }
 
     this.clicked = false;
+    this.hovered = false;
     this.moving = false;
     this.window_resizing = false;
     this.sidebar_resizing = false;
@@ -190,6 +191,17 @@ var DashWindow = function(id, className, options) {
     } else {
         this.animateOpening();
     }
+
+    this.onFocusCallback = null;
+    this.onBlurCallback = null;
+    this.onMaximizeCallback = null;
+    this.onUnmaximizeCallback = null;
+    this.onMinimizeCallback = null;
+    this.onUnminimizeCallback = null;
+    this.onResizeCallback = null;
+    this.onDestroyCallback = null;
+    this.onMenuItemCallback = null;
+    this.onLoadCallback = null;
 };
 
 DashWindow.prototype.bind = function(object, method) {
@@ -208,6 +220,10 @@ DashWindow.prototype.getClass = function() {
 
 DashWindow.prototype.setClicked = function(clicked) {
     this.clicked = clicked;
+};
+
+DashWindow.prototype.setHovered = function(hovered) {
+    this.hovered = hovered;
 };
 
 DashWindow.prototype.setMoving = function(moving) {
@@ -266,6 +282,9 @@ DashWindow.prototype.focus = function() {
     this.focused = true;
     $(this.element).addClass(this.focused_window_class);
     if (this.focusedElement!==null) $(this.focusedElement).focus();
+    if (this.onFocusCallback !== null) {
+        this.onFocusCallback.call(this);
+    }
 };
 
 DashWindow.prototype.isFocused = function() {
@@ -281,6 +300,9 @@ DashWindow.prototype.blur = function(exec_callback) {
         if (this.options.bodyItems.length==0 && (this.options.bodyContent.length>0 || this.options.bodyFullContent.length>0)) {
             var focusedElement = $(this.content).find(':focus');
             if ($(focusedElement).length > 0) this.focusedElement = focusedElement;
+        }
+        if (this.onBlurCallback !== null) {
+            this.onBlurCallback.call(this);
         }
     }
 };
@@ -694,6 +716,9 @@ DashWindow.prototype.onWindowResize = function() {
         this.checkPositionEdge();
         this.onResize();
     }
+    if (this.onResizeCallback !== null) {
+        this.onResizeCallback.call(this);
+    }
 };
 
 DashWindow.prototype.onResize = function() {
@@ -712,6 +737,7 @@ DashWindow.prototype.onWindowScroll = function() {
 };
 
 DashWindow.prototype.isHovered = function(pageX, pageY) {
+    if (this.hovered) return true;
     var x = pageX - this.window_scroll_left;
     var y = pageY - this.window_scroll_top;
     return (x > this.options.left && x < this.options.right && y > this.options.top && y < this.options.bottom);
@@ -902,6 +928,10 @@ DashWindow.prototype.destroy = function() {
     } else {
         $(this.element).remove();
     }
+
+    if (this.onDestroyCallback !== null) {
+        this.onDestroyCallback.call(this);
+    }
 };
 
 DashWindow.prototype.animateClosing = function() {
@@ -985,6 +1015,10 @@ DashWindow.prototype.maximize = function(remember_position, disable_animation, c
             callback.call(this);
         }
     }
+
+    if (this.onMaximizeCallback !== null) {
+        this.onMaximizeCallback.call(this);
+    }
 };
 
 DashWindow.prototype.maximizeLeft = function(remember_position, disable_animation, callback) {
@@ -1053,6 +1087,10 @@ DashWindow.prototype.unmaximize = function(unmaximize_only) {
         this.animateUnmaximizing();
     } else {
         this.onResize();
+    }
+
+    if (this.onUnmaximizeCallback !== null) {
+        this.onUnmaximizeCallback.call(this);
     }
 };
 
@@ -1141,13 +1179,16 @@ DashWindow.prototype.minimize = function(remember_position, disable_animation) {
     } else {
         $(this.menu).hide();
         this.hideHeaderButtons();
-        $(this.getHeader()).unbind('click').bind('click',this.bind(this, function(e){
-            e.stopPropagation();
-            e.preventDefault();
+        $(this.getHeader()).unbind('mousedown').bind('mousedown',this.bind(this, function(e){
             this.unminimize();
+            this.hovered = true;
         }));
         if (this.toolbar!==null) $(this.toolbar).hide();
         this.onResize();
+    }
+
+    if (this.onMinimizeCallback !== null) {
+        this.onMinimizeCallback.call(this);
     }
 };
 
@@ -1173,10 +1214,9 @@ DashWindow.prototype.animateMinimizing = function() {
         }),
         'always': this.bind(this,function(){
             this.hideHeaderButtons();
-            $(this.getHeader()).unbind('click').bind('click',this.bind(this, function(e){
-                e.stopPropagation();
-                e.preventDefault();
+            $(this.getHeader()).unbind('mousedown').bind('mousedown',this.bind(this, function(e){
                 this.unminimize();
+                this.hovered = true;
             }));
             this.onResize();
             this.initialized = true;
@@ -1203,7 +1243,7 @@ DashWindow.prototype.unminimize = function(unminimize_only) {
 
     if (typeof(unminimize_only)!="undefined" && unminimize_only) return;
 
-    $(this.getHeader()).unbind('click');
+    $(this.getHeader()).unbind('mousedown');
 
     if (this.unminimize_maximize) {
         this.unminimize_maximize = false;
@@ -1224,6 +1264,10 @@ DashWindow.prototype.unminimize = function(unminimize_only) {
         this.showHeaderButtons();
         if (this.toolbar!==null) $(this.toolbar).show();
         this.onResize();
+    }
+
+    if (this.onUnminimizeCallback !== null) {
+        this.onUnminimizeCallback.call(this);
     }
 };
 
@@ -1441,7 +1485,7 @@ DashWindow.prototype.createMenu = function() {
                 'icon_class': 'glyphicon glyphicon-remove-sign',
                 'title': this.t('Close'),
                 'callback': function() {
-                    $(this.getCloseButton()).trigger('click');
+                    $(this.getCloseButton()).trigger('mousedown');
                 }
             }
         ]
@@ -1569,13 +1613,16 @@ DashWindow.prototype.bindMenuElementsCallbacks = function(elements) {
             if ($(this.element).parent('li').hasClass('disabled')) return;
             this.callback.call(this.window, this.element);
             this.window.hideMenuDropdown();
+            if (this.window.onMenuItemCallback !== null) {
+                this.window.onMenuItemCallback.call(this.window);
+            }
             e.stopPropagation();
             e.preventDefault();
         }));
-        $(element).click(function(e){
+        $(element).click(this.bind(this, function(e){
             e.stopPropagation();
             e.preventDefault();
-        });
+        }));
     }
 };
 
@@ -2905,6 +2952,9 @@ DashWindow.prototype.onLoadSuccess = function(response) {
 
     if (this.options.onLoad !== null) {
         this.options.onLoad.call(this);
+    }
+    if (this.onLoadCallback !== null) {
+        this.onLoadCallback.call(this);
     }
 };
 

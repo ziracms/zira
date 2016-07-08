@@ -33,7 +33,7 @@ class Response {
         if ($keep_params) {
             $params = '';
             foreach(Request::get() as $key=>$value) {
-                if ($key == Dash::GET_FRAME_PARAM) continue;
+                if ($key == Dash::GET_FRAME_PARAM && !Dash::isFrame()) continue;
                 if (!empty($params)) $params .= '&';
                 $params .= $key .'='. $value;
             }

@@ -698,6 +698,7 @@ body.dashboard #dashboard-sidebar {
 }
 body.dashboard #main-wrapper {
     min-width: 800px;
+    min-height: 500px;
     background: #efebf0;
     background: -moz-linear-gradient(top, #efebf0 0%, #dfd1f0 100%);
     background: -webkit-linear-gradient(top, #efebf0 0%,#dfd1f0 100%);
@@ -722,19 +723,26 @@ body.dashboard #dashboard-sidebar {
 }
 body.dashboard #remote-clock-wrapper {
     display: none;
-    position: absolute;
     width: 230px;
     height: 230px;
-    top: 25px;
-    right: 25px;
+    margin: 25px 0px 25px 25px;
 }
 body.dashboard #remote-clock-wrapper canvas {
     display: block;
     margin: 0px;
 }
+body.dashboard #dashboard_stats {
+    text-align: right;
+    padding: 25px 40px 25px 25px;
+}
+body.dashboard #dashboard_stats ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
 body.dashboard #dash-version {
     position: absolute;
-    right: 20px;
+    right: 40px;
     bottom: 20px;
     color: #240036;
     text-shadow: 1px 1px 0px #fff;
@@ -787,6 +795,65 @@ body.dashboard .dashboard-notification .dashboard-notification-close {
     color: #E4A691;
     cursor: pointer;
     font-size: 120%;
+}
+
+body.dashboard #dashboard-dock {
+    position: fixed;
+    top: 50px;
+    left: -2px;
+    padding: 14px 0px;
+    background: #0f0f0f;
+    background: rgba(26, 26, 29, 0.7);
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: inset -1px 0px 5px #997C98;
+    z-index: 998;
+}
+body.dashboard #dashboard-dock a:link,
+body.dashboard #dashboard-dock a:visited {
+    display: block;
+    font-size: 22px;
+    color: #fff;
+    margin: 5px;
+    padding: 4px 10px;
+    text-decoration: none;
+    transition: background .3s ease;
+}
+body.dashboard #dashboard-dock a.c0 {
+    color: #E9E5F9;
+}
+body.dashboard #dashboard-dock a.c1 {
+    color: #DDF8A9;
+}
+body.dashboard #dashboard-dock a.c2 {
+    color: #FBE482;
+}
+body.dashboard #dashboard-dock a.c3 {
+    color: #F3A3DC;
+}
+body.dashboard #dashboard-dock a.c4 {
+    color: #B9FFD2;
+}
+body.dashboard #dashboard-dock a.c5 {
+    color: #97EAFC;
+}
+body.dashboard #dashboard-dock a.c6 {
+    color: #FFBFD4;
+}
+body.dashboard #dashboard-dock a.minimize-all {
+    color: #B0C5F9;
+}
+body.dashboard #dashboard-dock a:hover {
+    color: #00b0e8;
+}
+body.dashboard #dashboard-dock a.active {
+    background: #696577;
+    border-radius: 5px;
+}
+body.dashboard .tooltip-inner {
+    white-space: nowrap;
+    max-width: 100%;
+    font-size: 14px;
+    padding: 10px 14px;
 }
 
 @media (min-width: 768px) {

@@ -196,7 +196,7 @@ var dash_console_load = function() {
         }
     }
     if (typeof(this.options.data.code)!="undefined" && this.options.data.code=='exit'){
-        this.getCloseButton().trigger('click');
+        this.getCloseButton().trigger('mousedown');
     } else {
         var cons = $(this.content).find('#dashboard-console');
         $(cons).scrollTop($(cons).get(0).scrollHeight);
