@@ -52,6 +52,7 @@
             Desk.dock_update = Dock.update;
             Desk.dock_update_focus = Dock.updateFocus;
             Desk.dock_position = Dock.position;
+            Desk.dock_reset = Dock.reset;
             Dock.click = Desk.dock_click;
             Dock.init();
         });

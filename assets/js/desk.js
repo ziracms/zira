@@ -592,6 +592,7 @@ var Desk = {
             Desk.forceUpdateDock();
             if (Desk.active_windows_count<=0) {
                 Desk.deactivateOverlay();
+                Desk.dock_reset();
             }
         }));
         $(this.windows[id].getMinimizeButton()).mousedown(this.bind(this.windows[id],function(e){
@@ -801,5 +802,6 @@ var Desk = {
     'dock_close': function() {},
     'dock_update': function() {},
     'dock_update_focus': function() {},
-    'dock_position': function() {}
+    'dock_position': function() {},
+    'dock_reset': function() {}
 };

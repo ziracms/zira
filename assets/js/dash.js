@@ -284,8 +284,7 @@
             $('#dashboard-dock').show();
             $('#dashboard-dock').html('<a href="javascript:void(0)" class="dashboard-dock-item minimize-all" data-toggle="tooltip" data-placement="right" title="'+t('Minimize all')+'"><span class="glyphicon glyphicon-blackboard"></span>');
             if (typeof(append)=="undefined" || append) {
-                Dock.windows = {};
-                Dock.windows_co = 0;
+                Dock.reset();
                 Dock.z = this.z;
             }
             var co = 0;
@@ -410,6 +409,10 @@
                     }
                 }
             }
+        },
+        'reset': function() {
+            Dock.windows = {};
+            Dock.windows_co = 0;
         }
     };
 })(jQuery);
