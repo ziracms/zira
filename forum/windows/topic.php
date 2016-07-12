@@ -15,6 +15,8 @@ class Topic extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-comment';
     protected static $_title = 'Forum thread';
 
+    protected $_help_url = 'zira/help/forum-topic';
+
     public $item;
 
     public function init() {

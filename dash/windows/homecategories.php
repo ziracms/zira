@@ -14,6 +14,8 @@ class Homecategories extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-sort';
     protected static $_title = 'Category sorting';
 
+    protected $_help_url = 'zira/help/home-categories';
+
     public function init() {
         $this->setIconClass(self::$_icon_class);
         $this->setTitle(Zira\Locale::t(self::$_title));

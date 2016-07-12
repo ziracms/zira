@@ -15,6 +15,8 @@ class Options extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-th-list';
     protected static $_title = 'Vote options';
 
+    protected $_help_url = 'zira/help/vote-options';
+
     public $item;
 
     public function init() {

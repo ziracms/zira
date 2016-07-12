@@ -15,6 +15,8 @@ class Files extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-folder-open';
     protected static $_title = 'Attached files';
 
+    protected $_help_url = 'zira/help/forum-files';
+
     public $page = 0;
     public $pages = 0;
     public $order = 'desc';

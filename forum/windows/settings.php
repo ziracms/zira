@@ -15,6 +15,8 @@ class Settings extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-cog';
     protected static $_title = 'Forum settings';
 
+    protected $_help_url = 'zira/help/forum-settings';
+
     public $item;
 
     public function init() {

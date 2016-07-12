@@ -15,6 +15,8 @@ class Vote extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-list-alt';
     protected static $_title = 'Vote subject';
 
+    protected $_help_url = 'zira/help/vote';
+
     public $item;
 
     public function init() {

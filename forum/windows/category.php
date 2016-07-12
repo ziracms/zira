@@ -15,6 +15,8 @@ class Category extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-folder-close';
     protected static $_title = 'Forum category';
 
+    protected $_help_url = 'zira/help/forum-category';
+
     public $item;
 
     public function init() {

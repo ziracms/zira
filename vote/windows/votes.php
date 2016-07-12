@@ -16,6 +16,7 @@ class Votes extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-stats';
     protected static $_title = 'Votes';
 
+    protected $_help_url = 'zira/help/votes';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

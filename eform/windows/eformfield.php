@@ -15,6 +15,8 @@ class Eformfield extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-list';
     protected static $_title = 'Form field';
 
+    protected $_help_url = 'zira/help/eform-field';
+
     public $item;
 
     public function init() {

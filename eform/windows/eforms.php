@@ -16,6 +16,7 @@ class Eforms extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-send';
     protected static $_title = 'Email forms';
 
+    protected $_help_url = 'zira/help/eforms';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

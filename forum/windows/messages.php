@@ -15,6 +15,8 @@ class Messages extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-comment';
     protected static $_title = 'Topic messages';
 
+    protected $_help_url = 'zira/help/forum-messages';
+
     public $item;
 
     public $page = 0;

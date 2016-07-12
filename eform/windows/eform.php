@@ -15,6 +15,8 @@ class Eform extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-th-list';
     protected static $_title = 'Email form';
 
+    protected $_help_url = 'zira/help/eform';
+
     public $item;
 
     public function init() {
