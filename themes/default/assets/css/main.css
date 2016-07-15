@@ -700,26 +700,29 @@ article .rating .share-wrapper .share-btn {
     text-shadow: 1px 1px 0px #ffffff;
 }
 .list .list-item .list-content-wrapper {
-    padding: 10px 14px 0px;
+    padding: 0px;
 }
 .list .list-item a.list-thumb:link,
 .list .list-item a.list-thumb:visited {
     display: block;
     text-decoration: none;
     float: left;
-    margin: 0px 10px 10px 0px;
-    border: 1px solid #EEEEEE;
-    background-color: #EBE6F0;
-    padding: 2px;
+    margin: 0px;
+    padding: 10px;
+    max-width: 100%;
 }
 .list .list-item a.list-thumb:hover {
-    box-shadow: 0px 0px 2px #eeeeee;
+    -webkit-filter: contrast(120%);
+    filter: contrast(120%);
 }
 .list .list-item a.list-thumb img {
     border: none;
     max-width: 100%;
     max-width: none\9; /** ie8 hack **/
     height: auto;
+}
+.list .list-item .list-content-wrapper p {
+    padding: 10px;
 }
 .list .list-item .list-info-wrapper {
     clear: left;
@@ -938,9 +941,16 @@ pre {
     /*float: none;*/
     /*display: inline-block;*/
     max-width: 50%;
+    margin: 0px 10px 10px 0px;
+    border: 1px solid #EEEEEE;
+    background-color: #EBE6F0;
+    padding: 2px;
 }
 .sidebar .list .list-item a.list-thumb img {
     width: 100%\9; /** ie8 hack **/
+}
+.sidebar .list .list-item .list-content-wrapper p {
+    padding: 0px;
 }
 .sidebar .list .list-item .list-info-wrapper {
     padding: 4px 0px;
@@ -1083,7 +1093,9 @@ pre {
 }
 .zira-search-preview-wnd .list .list-item a.list-thumb:link,
 .zira-search-preview-wnd .list .list-item a.list-thumb:visited {
-    margin-bottom: 6px;
+    margin: 0px 10px 6px 0px;
+    border: 1px solid #EEEEEE;
+    background-color: #EBE6F0;
     padding: 0px;
 }
 .zira-search-preview-wnd .list .list-item a.list-thumb img {
@@ -1094,6 +1106,7 @@ pre {
     padding: 6px 10px;
 }
 .zira-search-preview-wnd .list .list-item .list-content-wrapper p {
+    padding: 0px;
     max-height: 60px;
     overflow: hidden;
     font-size: 14px;
@@ -1346,13 +1359,13 @@ a.scroll-top.visible:visited {
 
 .contacts-wrapper {
     overflow: hidden;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 .contact-image {
     max-width: 50%;
     height: auto;
     float: left;
-    margin: 0px 20px 0px 0px;
+    margin: 0px 20px 20px 0px;
     border: 5px solid #CCCCCC;
     padding: 5px;
     border-radius: 3px;
@@ -1364,6 +1377,7 @@ a.scroll-top.visible:visited {
 }
 .contact-details {
     float: left;
+    margin-bottom: 20px;
 }
 .contact-address {
     margin: 0px;

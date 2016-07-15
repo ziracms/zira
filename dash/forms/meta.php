@@ -39,6 +39,7 @@ class Meta extends Form
         $html .= $this->input(Locale::t('Website slogan'), 'site_slogan', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Website logo'), 'site_logo', array('class'=>'form-control logo_option'));
         $html .= $this->input(Locale::t('Records limit'), 'records_limit');
+        $html .= $this->input(Locale::t('Records limit for widgets'), 'widget_records_limit');
         $html .= $this->checkbox(Locale::t('Show child category records'), 'category_childs_list', null, false);
         $html .= $this->input(Locale::t('Window title'), 'site_title', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Keywords'), 'site_keywords', array('placeholder'=>Locale::t('max. %s characters', 255)));
@@ -61,6 +62,7 @@ class Meta extends Form
         $validator->registerString('site_logo',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website logo')));
         $validator->registerCustom(array(get_class(), 'checkLogo'), 'site_logo',Locale::t('Invalid value "%s"',Locale::t('Website logo')));
         $validator->registerNumber('records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit')));
+        $validator->registerNumber('widget_records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit for widgets')));
         $validator->registerString('site_title',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerNoTags('site_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));
         $validator->registerUtf8('site_title',Locale::t('Invalid value "%s"',Locale::t('Window title')));

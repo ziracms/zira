@@ -352,5 +352,6 @@ return array(
     'File or directory already exists' => 'Файл или директория уже существует',
     'Display records list' => 'Показывать список записей',
     'Statistics' => 'Статистика',
-    'Records: %s' => 'Записи: %s'
+    'Records: %s' => 'Записи: %s',
+    'Records limit for widgets' => 'Лимит записей для виджетов'
 );

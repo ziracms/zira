@@ -43,6 +43,7 @@ class Meta extends Window {
 
         $form = new \Dash\Forms\Meta();
         if (!array_key_exists('records_limit', $configs)) $configs['records_limit'] = 10;
+        if (!array_key_exists('widget_records_limit', $configs)) $configs['widget_records_limit'] = 5;
         if (!array_key_exists('category_childs_list', $configs)) $configs['category_childs_list'] = true;
         $form->setValues($configs);
 

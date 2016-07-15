@@ -35,8 +35,8 @@ class Recordsettings extends Form
     protected function _render()
     {
         $html = $this->open();
-        $html .= $this->input(Locale::t('Thumbs width'), 'thumbs_width', array('placeholder'=>'50 - 300'));
-        $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>'50 - 300'));
+        $html .= $this->input(Locale::t('Thumbs width'), 'thumbs_width', array('placeholder'=>'50 - 500'));
+        $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>'50 - 500'));
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);
@@ -50,7 +50,7 @@ class Recordsettings extends Form
     protected function _validate() {
         $validator = $this->getValidator();
 
-        $validator->registerNumber('thumbs_width',50,300,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs width')));
-        $validator->registerNumber('thumbs_height',50,300,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs height')));
+        $validator->registerNumber('thumbs_width',50,500,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs width')));
+        $validator->registerNumber('thumbs_height',50,500,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs height')));
     }
 }

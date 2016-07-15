@@ -26,6 +26,7 @@ class Meta extends Model {
                 'site_logo_width' => 'int',
                 'site_logo_height' => 'int',
                 'records_limit' => 'int',
+                'widget_records_limit' => 'int',
                 'category_childs_list' => 'int',
                 'site_title' => 'string',
                 'site_keywords' => 'string',

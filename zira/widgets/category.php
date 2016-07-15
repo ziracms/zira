@@ -62,7 +62,7 @@ class Category extends Zira\Widget {
         $id = $this->getData();
         if (!is_numeric($id)) return;
 
-        $limit = Zira\Config::get('records_limit', 10);
+        $limit = Zira\Config::get('widget_records_limit', 5);
 
         $category = new Zira\Models\Category(intval($id));
         if (!$category->loaded()) return;

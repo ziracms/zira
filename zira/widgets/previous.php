@@ -25,7 +25,7 @@ class Previous extends Zira\Widget {
         $category = Zira\Category::current();
         if (!$category) return;
 
-        $limit = Zira\Config::get('records_limit', 10);
+        $limit = Zira\Config::get('widget_records_limit', 5);
 
         $comments_enabled = $category->comments_enabled !== null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1);
         $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);

@@ -29,7 +29,7 @@ class Rated extends Zira\Widget {
     }
 
     public static function getTopRatedRecordsList($limit = null, $last_id = null) {
-        if ($limit === null) $limit = Zira\Config::get('records_limit', 10);
+        if ($limit === null) $limit = Zira\Config::get('widget_records_limit', 5);
 
         $category_ids = array(Zira\Category::ROOT_CATEGORY_ID);
         $categories = Zira\Models\Category::getCollection()->get();
@@ -84,7 +84,7 @@ class Rated extends Zira\Widget {
     }
 
     protected function _render() {
-        $limit = Zira\Config::get('records_limit', 10);
+        $limit = Zira\Config::get('widget_records_limit', 5);
 
         $layout = Zira\Page::getLayout();
         if (!$layout) $layout = Zira\Config::get('layout');

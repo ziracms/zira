@@ -22,7 +22,7 @@ class Discussion extends Widget {
     }
 
     protected function _render() {
-        $limit = Zira\Config::get('records_limit', 10);
+        $limit = Zira\Config::get('widget_records_limit', 5);
 
         $rows = Forum\Models\Message::getCollection()
                             ->select(Forum\Models\Message::getFields())
