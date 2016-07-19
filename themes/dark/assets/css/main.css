@@ -823,7 +823,7 @@ article .rating .share-wrapper {
     background-repeat: no-repeat;
     margin-right: 4px;
     border-radius: 3px;
-    box-shadow: 0px 0px 2px #eeeeee;
+    box-shadow: 0px 0px 2px #282930;
     text-decoration: none;
 }
 .share-btn:hover,
@@ -1619,10 +1619,10 @@ a.scroll-top.visible:visited {
     height: auto;
     float: left;
     margin: 0px 20px 20px 0px;
-    border: 5px solid #CCCCCC;
+    border: 5px solid #3B3E48;
     padding: 5px;
     border-radius: 3px;
-    background-color: #FFFFFF;
+    background-color: #50535C;
 }
 .contact-name {
     margin: 0px 0px 20px;
