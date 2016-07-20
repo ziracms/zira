@@ -1240,7 +1240,7 @@ a.scroll-top.visible:visited {
     width: 49%;
     display: inline-block;
     vertical-align: top;
-    margin-right: 1%;
+    margin-right: 5px;
     margin-right: 0\9; /** ie8 hack **/
 }
 .grid-category-wrapper .list .list-item:nth-child(2) {
