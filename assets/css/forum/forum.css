@@ -31,6 +31,10 @@
     display: block;
     vertical-align: top;
     margin-left: 180px;
+    overflow: hidden;
+}
+.forum-message-wrapper .forum-message .alert {
+    margin: 10px;
 }
 .forum-info {
     background-image: linear-gradient(to bottom, #D7E7F8 0px, #D5E6F9 100%);
@@ -166,7 +170,7 @@
     background: #f2f2f2;
     border: 1px solid #e9e9e9;
     padding: 10px;
-    margin: 20px 0px 0px 180px;
+    margin: 20px 10px 0px 190px;
     overflow: hidden;
 }
 .forum-list.list .list-item .forum-message-attaches .forum-message-attaches-title {

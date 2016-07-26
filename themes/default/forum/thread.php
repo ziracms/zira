@@ -63,7 +63,9 @@
 <?php if ($item->status == Forum\Models\Message::STATUS_MESSAGE) $micon = '<span class="glyphicon glyphicon-info-sign"></span> '; ?>
 <?php if ($item->status == Forum\Models\Message::STATUS_INFO) $micon = '<span class="glyphicon glyphicon-exclamation-sign"></span> '; ?>
 <?php if ($item->status == Forum\Models\Message::STATUS_WARNING) $micon = '<span class="glyphicon glyphicon-warning-sign"></span> '; ?>
-<p class="parse-content forum-message<?php echo $mclass ?>"><?php echo $micon ?><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
+<div class="forum-message">
+<p class="parse-content<?php echo $mclass ?>"><?php echo $micon ?><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
+</div>
 <?php $images = Forum\Models\File::extractItemFiles($item, 'file_', 'images'); ?>
 <?php $files = Forum\Models\File::extractItemFiles($item, 'file_', 'files'); ?>
 <?php if (!empty($images) || !empty($files)): ?>
