@@ -6,7 +6,7 @@
 <link href="<?php echo Zira\Helper::url('rss', true, true) ?>" title="RSS" type="application/rss+xml" rel="alternate" />
 <?php layout_head() ?>
 </head>
-<body>
+<body class="home-layout">
 <?php layout_body_top() ?>
 <div id="main-container-wrapper"><div id="main-container">
 <header>

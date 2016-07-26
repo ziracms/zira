@@ -670,11 +670,11 @@ article .rating .share-wrapper .share-btn {
 }
 .list {
     list-style-type: none;
-    margin: 20px 0px;
+    margin: 14px 0px;
     padding: 0px;
 }
 .list .list-item {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     overflow: hidden;
     border: 1px solid #eeeeee;
     background-color: #FAFAFA;
@@ -1126,8 +1126,7 @@ footer {
     box-shadow: 0px 2px 2px #4a6072;
 }
 footer p {
-    line-height: 50px;
-    padding: 0px 15px;
+    padding: 15px;
     color: #ececec;
 }
 footer p a:link,
@@ -1240,8 +1239,16 @@ a.scroll-top.visible:visited {
     width: 49%;
     display: inline-block;
     vertical-align: top;
+    margin-bottom: 8px;
     margin-right: 5px;
     margin-right: 0\9; /** ie8 hack **/
+}
+.grid-category-wrapper .list .list-item.jsed {
+    position: relative;
+}
+.grid-category-wrapper .list .list-item.jsed .list-info-wrapper {
+    position: absolute;
+    bottom: 0px;
 }
 .grid-category-wrapper .list .list-item:nth-child(2) {
     margin-right: 0px;
@@ -1495,6 +1502,13 @@ a.scroll-top.visible:visited {
 }
 
 /** mobile **/
+@media (max-width: 1199px) {
+    .grid-category-wrapper .list .list-item {
+        margin-bottom: 5px;
+        margin-right: 2px;
+        margin-right: 0\9; /** ie8 hack **/
+    }
+}
 @media only screen and (max-width: 767px) {
     .user-profile h1 {
         clear: left;
@@ -1547,6 +1561,9 @@ a.scroll-top.visible:visited {
     }
     .search-simple-form .zira-loader {
         top: 19px;
+    }
+    .grid-category-wrapper .list .list-item {
+        margin-bottom: 14px;
     }
     a.scroll-top {
         display: none !important;

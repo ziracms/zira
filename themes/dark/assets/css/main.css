@@ -928,11 +928,11 @@ article .rating .share-wrapper .share-btn {
 }
 .list {
     list-style-type: none;
-    margin: 20px 0px;
+    margin: 14px 0px;
     padding: 0px;
 }
 .list .list-item {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     overflow: hidden;
     border: 1px solid #3F4048;
     background-color: #4F525C;
@@ -1148,6 +1148,10 @@ pre {
 /** sidebar **/
 .sidebar {
     text-shadow: none;
+    padding-top: 43px;
+}
+.home-layout .sidebar {
+    padding-top: 0px;
 }
 .sidebar a:link,
 .sidebar a:visited {
@@ -1382,8 +1386,7 @@ footer {
     background: #2C2F33;
 }
 footer p {
-    line-height: 50px;
-    padding: 0px 15px;
+    padding: 15px;
     color: #ececec;
 }
 footer p a:link,
@@ -1496,8 +1499,16 @@ a.scroll-top.visible:visited {
     width: 49%;
     display: inline-block;
     vertical-align: top;
+    margin-bottom: 8px;
     margin-right: 5px;
     margin-right: 0\9; /** ie8 hack **/
+}
+.grid-category-wrapper .list .list-item.jsed {
+    position: relative;
+}
+.grid-category-wrapper .list .list-item.jsed .list-info-wrapper {
+    position: absolute;
+    bottom: 0px;
 }
 .grid-category-wrapper .list .list-item:nth-child(2) {
     margin-right: 0px;
@@ -1858,6 +1869,13 @@ ul.vote-results li .vote-result {
     box-shadow: 0px 0px 4px #444554 inset;
 }
 /** mobile **/
+@media (max-width: 1199px) {
+    .grid-category-wrapper .list .list-item {
+        margin-bottom: 5px;
+        margin-right: 2px;
+        margin-right: 0\9; /** ie8 hack **/
+    }
+}
 @media only screen and (max-width: 767px) {
     .user-profile h1 {
         clear: left;
@@ -1923,6 +1941,9 @@ ul.vote-results li .vote-result {
     }
     .search-simple-form .zira-loader {
         top: 19px;
+    }
+    .grid-category-wrapper .list .list-item {
+        margin-bottom: 14px;
     }
     a.scroll-top {
         display: none !important;
