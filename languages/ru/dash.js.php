@@ -24,6 +24,7 @@ return array(
     'Edit' => 'Редактировать',
     'from' => 'из',
     'Maximum upload size:' => 'Максимальный размер загрузки:',
+    'Maximum files count per upload:' => 'Максимальное число файлов для загрузки:',
     'Sorry, but it seems that your browser is not supported.' => 'Извините, но похоже, ваш браузер не поддерживается.',
     'Author' => 'Автор',
     'Minimize all' => 'Свернуть всё'

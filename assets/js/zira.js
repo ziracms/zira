@@ -20,8 +20,13 @@
          * grid
          */
         if ($('.container #content .grid-category-wrapper').length>0) {
-            window.setTimeout(zira_init_grid, 100);
-            window.setTimeout(zira_init_grid, 1000);
+            zira_init_grid.timer = window.setInterval(zira_init_grid, 500);
+            $(window).load(function(){
+                try {
+                    window.clearInterval(zira_init_grid.timer);
+                } catch(err) {}
+                zira_init_grid();
+            });
             $(window).resize(zira_init_grid);
         }
         /**

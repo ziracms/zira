@@ -146,23 +146,27 @@ class Comments extends Model {
 
         $comment = Zira\Models\Comment::getCollection()
                     ->select(Zira\Models\Comment::getFields())
-                    ->join(Zira\Models\Record::getClass(), array('record_title' => 'title'))
+                    ->left_join(Zira\Models\Record::getClass(), array('record_id'=>'id', 'record_title' => 'title'))
                     ->where('id','=',$id)
                     ->get(0);
 
         if (!$comment) return array('error' => Zira\Locale::t('An error occurred'));
 
-        $user = new Zira\Models\User($comment->author_id);
-        if ($user->loaded()) {
-            $username = Zira\User::getProfileName($user);
+        if ($comment->author_id > 0) {
+            $user = new Zira\Models\User($comment->author_id);
+            if ($user->loaded()) {
+                $username = Zira\User::getProfileName($user);
+            } else {
+                $username = Zira\Locale::tm('User deleted', 'forum');
+            }
         } else {
-            $username = Zira\Locale::tm('User deleted', 'forum');
+            $username = $comment->sender_name ? $comment->sender_name.' ('.Zira\Locale::t('Guest').')' : Zira\Locale::t('Guest');
         }
 
         return array(
             'user'=>$username,
             'content'=>'<p class="parse-content">'.Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($comment->content))).'</p>',
-            'record'=>Zira\Locale::t('Record').': '.$comment->record_title
+            'record'=>$comment->record_id ? Zira\Locale::t('Record').': '.$comment->record_title : Zira\Locale::t('Record deleted')
         );
     }
 

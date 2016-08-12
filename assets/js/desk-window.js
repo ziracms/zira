@@ -2348,7 +2348,9 @@ DashWindow.prototype.bindBodyItemsCallbacks = function(elements) {
             if ($(this.element).hasClass('disabled')) return;
             if (!this.window.isTouchesEnabled()) {
                 if (e.button==0) {
-                    if (this.window.keys.ctrl_pressed) {
+                    if (this.window.keys.shift_pressed && this.window.selected.length>0) {
+                        this.window.selectBodyItemsRange(this.element);
+                    } else if (this.window.keys.ctrl_pressed) {
                         this.window.select_unselect_content_item(this.element);
                     } else {
                         this.window.unselectContentItems();
@@ -2436,6 +2438,41 @@ DashWindow.prototype.select_unselect_content_item = function(element) {
         this.selectContentItem(element);
     } else {
         this.unselectContentItem(element);
+    }
+};
+
+DashWindow.prototype.selectBodyItemsRange = function(element) {
+    var item = this.findBodyItemByProperty('id', element.attr('id'));
+    if (!item) return;
+    var s_item = null;
+    for (var i=0; i<this.options.bodyItems.length; i++) {
+        if (this.options.bodyItems[i] != item &&
+            $.inArray(this.options.bodyItems[i], this.selected) >= 0
+        ) {
+            s_item = this.options.bodyItems[i];
+            break;
+        }
+    }
+    if (s_item) {
+        var inRange = false;
+        this.unselectContentItems();
+        for (var i=0; i<this.options.bodyItems.length; i++) {
+            if (!inRange) {
+                if (this.options.bodyItems[i] == item ||
+                    this.options.bodyItems[i] == s_item
+                ) {
+                    inRange = true;
+                    this.selectContentItem(this.options.bodyItems[i].element);
+                }
+            } else {
+                this.selectContentItem(this.options.bodyItems[i].element);
+                if (this.options.bodyItems[i] == item ||
+                    this.options.bodyItems[i] == s_item
+                ) {
+                    break;
+                }
+            }
+        }
     }
 };
 
@@ -2618,6 +2655,11 @@ DashWindow.prototype.appendBodyContent = function(content) {
 DashWindow.prototype.appendBodyFullContent = function(content) {
     if (content.length==0) return;
     $(this.content).append('<div class="'+this.body_full_content_wrapper_class+'">'+content+'</div>');
+};
+
+DashWindow.prototype.setBodyFullContent = function(content) {
+    content = content.replace(/&([^;]+;)/g, '&amp;$1');
+    $(this.content).html('<div class="'+this.body_full_content_wrapper_class+'">'+content+'</div>');
 };
 
 DashWindow.prototype.clearBodyContent = function() {
@@ -2841,7 +2883,7 @@ DashWindow.prototype.onLoadSuccess = function(response) {
     }
     if (typeof(response.bodyFullContent)!="undefined") {
         this.options.bodyFullContent = response.bodyFullContent;
-        this.appendBodyFullContent(this.options.bodyFullContent);
+        this.setBodyFullContent(this.options.bodyFullContent);
     }
     $(this.content).removeClass(this.dashwindow_content_noselect_class);
     if (this.options.bodyItems.length>0 && this.options.bodyContent.length==0 && this.options.bodyFullContent.length==0) {

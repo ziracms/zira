@@ -1680,7 +1680,7 @@ a.scroll-top.visible:visited {
 .messages-panel .navbar-default .navbar-nav > .disabled > a,
 .messages-panel .navbar-default .navbar-nav > .disabled > a:focus,
 .messages-panel .navbar-default .navbar-nav > .disabled > a:hover {
-    color: #A4ACB7 !important;
+    color: #A4ACB7;
 }
 .messages-panel .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
     color: #DDD;

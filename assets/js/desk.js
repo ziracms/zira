@@ -141,6 +141,10 @@ var Desk = {
             if (this.touchesEnabled) return;
             this.onDragOver(e);
         }));
+        $(this.events_element).bind('dragleave', this.bind(this, function(e) {
+            if (this.touchesEnabled) return;
+            this.onDragLeave(e);
+        }));
         $(this.events_element).bind('drop',this.bind(this, function(e){
             if (this.touchesEnabled) return;
             this.onDrop(e);
@@ -490,6 +494,7 @@ var Desk = {
         this.draggedItem = null;
     },
     'onDragOver': function(e) {
+        if (!this.eventsEnabled) return;
         e.stopPropagation();
         e.preventDefault();
         if (typeof(e.pageX)=="undefined") e.pageX = e.originalEvent.pageX;
@@ -518,6 +523,7 @@ var Desk = {
                     this.windows[id].setClicked(true);
                 }
                 this.windows[id].blur(false);
+                this.windows[id].unhighlightWindow();
             }
         }
         if ((current_active instanceof DashWindow) && (!(this.active instanceof DashWindow) || current_active.getId()!=this.active.getId())) {
@@ -528,13 +534,22 @@ var Desk = {
             this.activateOverlay();
             this.raiseZ(this.active);
             this.active.focus();
+            this.active.highlightWindow();
         }
         this.active = null;
+    },
+    'onDragLeave': function(e) {
+        for(var id in this.windows) {
+            if (this.windows[id] instanceof DashWindow) {
+                this.windows[id].unhighlightWindow();
+            }
+        }
     },
     'onDrop': function(e) {
         if (!this.eventsEnabled) return;
         e.stopPropagation();
         e.preventDefault();
+        this.onDragLeave(e);
         var focused = this.findFocusedWindow();
         if ((focused instanceof DashWindow) && !focused.isDisabled() && !focused.isMinimized()) {
             if (this.draggedItem!==null) {

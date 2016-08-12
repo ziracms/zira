@@ -490,7 +490,7 @@ var desk_window_sorter_init = function(wnd) {
     }
 };
 
-var desk_upload = function (token, url, dir, files, callback, max_upload_size, className) {
+var desk_upload = function (token, url, dir, files, callback, max_upload_size, max_upload_files, className) {
     if (typeof(files)=="undefined" || !(files instanceof FileList)) return;
     if (typeof(desk_upload.inprogress)=="undefined") desk_upload.inprogress = false;
     if (desk_upload.inprogress) return;
@@ -541,6 +541,11 @@ var desk_upload = function (token, url, dir, files, callback, max_upload_size, c
     if (typeof(className)!="undefined") data.append('class', className);
     var co = 0;
     if (typeof(max_upload_size)=="undefined") max_upload_size = null;
+    if (typeof(max_upload_files)=="undefined") max_upload_files = 0;
+    if (max_upload_files>0 && files.length>max_upload_files) {
+        desk_error(t('Maximum files count per upload:')+' '+max_upload_files);
+        return;
+    }
     var total_size = 0;
     for (var i=0; i<files.length; i++) {
         if (files[i].size>0) {

@@ -353,5 +353,6 @@ return array(
     'Display records list' => 'Показывать список записей',
     'Statistics' => 'Статистика',
     'Records: %s' => 'Записи: %s',
-    'Records limit for widgets' => 'Лимит записей для виджетов'
+    'Records limit for widgets' => 'Лимит записей для виджетов',
+    'Record deleted' => 'Запись удалена'
 );

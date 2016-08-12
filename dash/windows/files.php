@@ -159,7 +159,8 @@ class Files extends Window {
         ));
 
         $this->setData(array(
-            'max_upload_size' => $this->get_max_upload_size()
+            'max_upload_size' => $this->get_max_upload_size(),
+            'max_upload_files' => $this->get_max_upload_files()
         ));
 
         $this->addStrings(array(
@@ -196,6 +197,10 @@ class Files extends Window {
         else if ($m=='k') $usize *= 1024;
 
         return min($psize, $usize);
+    }
+
+    public function get_max_upload_files() {
+        return (int)@ini_get('max_file_uploads');
     }
 
     public function get_image_size($abs_path) {

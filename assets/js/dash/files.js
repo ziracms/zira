@@ -11,16 +11,18 @@ var dash_files_load = function() {
 
 var dash_files_open = function() {
     if (typeof(this.options.data)!="undefined" && typeof(this.options.data.max_upload_size)!="undefined") this.max_upload_size=this.options.data.max_upload_size; else this.max_upload_size=null;
+    if (typeof(this.options.data)!="undefined" && typeof(this.options.data.max_upload_files)!="undefined") this.max_upload_files=this.options.data.max_upload_files; else this.max_upload_files=0;
     $(this.element).find('.dashwindow-upload-form input[type=file]').change(this.bind(this, function(){
         var root = this.options.data.root;
-        desk_upload(token(),url('dash/files/xhrupload'), root, $(this.element).find('.dashwindow-upload-form input[type=file]').get(0).files, null, this.max_upload_size, this.className);
+        desk_upload(token(),url('dash/files/xhrupload'), root, $(this.element).find('.dashwindow-upload-form input[type=file]').get(0).files, null, this.max_upload_size, this.max_upload_files, this.className);
     }));
     this.disableItemsByProperty('action','call');
 };
 
 var dash_files_drop = function(element) {
     if (element instanceof FileList) {
-        var root = this.options.data.root; desk_upload(token(),url('dash/files/xhrupload'), root, element, null, this.max_upload_size, this.className);
+        var root = this.options.data.root;
+        desk_upload(token(),url('dash/files/xhrupload'), root, element, null, this.max_upload_size, this.max_upload_files, this.className);
     } else if (typeof(element.parent)!="undefined" && element.parent=='files') {
         desk_window_request(this, url('dash/files/copy'),{'path':this.options.data.root, 'file':element.data});
     }

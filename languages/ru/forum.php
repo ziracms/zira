@@ -78,5 +78,6 @@ return array(
     'Your search did not match any documents' => 'По вашему запросу ничего не найдено',
     'Invalid search text' => 'Некорректный поисковый текст',
     'Search text contains bad character' => 'Поисковый текст содержит некорректный символ',
-    'Forum: %s' => 'Форум: %s'
+    'Forum: %s' => 'Форум: %s',
+    'Published %s messages' => array('Опубликовано %s сообщение', 'Опубликовано %s сообщения', 'Опубликовано %s сообщений')
 );

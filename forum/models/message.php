@@ -193,4 +193,11 @@ class Message extends Orm {
                                 ->where('published','=',self::STATUS_NOT_PUBLISHED)
                                 ->get('co');
     }
+
+    public static function getPublishedMessagesCount() {
+        return self::getCollection()
+                                ->count()
+                                ->where('published','=',self::STATUS_PUBLISHED)
+                                ->get('co');
+    }
 }
