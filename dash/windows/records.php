@@ -12,6 +12,8 @@ use Zira;
 use Zira\Permission;
 
 class Records extends Window {
+    const RECORDS_MENU_HOOK = 'dash_records_menu_hook';
+
     protected static $_icon_class = 'glyphicon glyphicon-book';
     protected static $_title = 'Records';
 
@@ -373,6 +375,14 @@ class Records extends Window {
             $this->createMenuDropdownItem(Zira\Locale::t('Slider'), 'glyphicon glyphicon-film', 'desk_call(dash_records_record_slider, this);', 'edit', true, array('typo'=>'slider')),
             $this->createMenuDropdownItem(Zira\Locale::t('Gallery'), 'glyphicon glyphicon-th', 'desk_call(dash_records_record_gallery, this);', 'edit', true, array('typo'=>'gallery'))
         );
+
+        $extra_items = \Zira\Hook::run(self::RECORDS_MENU_HOOK, $this);
+        if (!empty($extra_items)) {
+            $recordMenu [] = $this->createMenuDropdownSeparator();
+            foreach($extra_items as $extra) {
+                $recordMenu = array_merge($recordMenu, $extra);
+            }
+        }
 
         $menu = array(
             $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown()),

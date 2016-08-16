@@ -180,7 +180,8 @@ class Index extends Zira\Page {
                     $all_categories = Zira\Category::getAllCategories();
                 }
                 foreach ($top_categories as $category) {
-                    if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
+                    // categories are cached
+                    //if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
 
                     $comments_enabled = $category->comments_enabled !== null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1);
                     $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);
@@ -191,6 +192,8 @@ class Index extends Zira\Page {
                     if ($includeChilds && CACHE_CATEGORIES_LIST && isset($all_categories)) {
                         $childs = array();
                         foreach($all_categories as $_category) {
+                            // categories are cached
+                            //if ($_category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
                             if (mb_strpos($_category->name, $category->name . '/', null, CHARSET) === 0) {
                                 $childs []= $_category;
                             }

@@ -124,22 +124,25 @@
     };
 
     zira_init_grid = function() {
-        var items = $('.container #content .grid-category-wrapper .list .list-item');
-        if ($(items).length<2) return;
         $('.container #content .grid-category-wrapper .list .list-item').removeClass('jsed').css('height','auto');
-        var prev = null;
-        var co = 1;
-        $(items).each(function(){
-            if (co%2==0) {
-                if (prev && $(prev).offset().top == $(this).offset().top) {
-                    var h = Math.max($(prev).outerHeight(), $(this).outerHeight());
-                    $(prev).addClass('jsed').css('height',h);
-                    $(this).addClass('jsed').css('height',h);
+
+        $('.container #content .grid-category-wrapper .list').each(function(){
+            var items = $(this).children('.list-item');
+            if ($(items).length<2) return;
+            var prev = null;
+            var co = 1;
+            $(items).each(function(){
+                if (co%2==0) {
+                    if (prev && $(prev).offset().top == $(this).offset().top) {
+                        var h = Math.max($(prev).outerHeight(), $(this).outerHeight());
+                        $(prev).addClass('jsed').css('height',h);
+                        $(this).addClass('jsed').css('height',h);
+                    }
+                } else {
+                    prev = $(this);
                 }
-            } else {
-                prev = $(this);
-            }
-            co++;
+                co++;
+            });
         });
     };
 
