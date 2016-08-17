@@ -12,6 +12,7 @@ use Zira;
 class User extends Zira\Controller {
     public function _before() {
         parent::_before();
+        Zira\View::setRenderDbWidgets(false);
     }
 
     public function index($id) {

@@ -68,6 +68,7 @@ class View {
 
     protected static $_render_started = false;
     protected static $_render_widgets = true;
+    protected static $_render_db_widgets = true;
 
     protected static $_widgets = array();
     protected static $_db_widgets = array();
@@ -719,6 +720,10 @@ class View {
         self::$_render_widgets = (bool) $render_widgets;
     }
 
+    public static function setRenderDbWidgets($render_db_widgets) {
+        self::$_render_db_widgets = (bool) $render_db_widgets;
+    }
+
     public static function prepareWidgets() {
         self::$_widget_objects = array();
         $objects = array();
@@ -751,6 +756,9 @@ class View {
     public static function prepareDbWidgets($placeholder) {
         if (empty(self::$_db_widgets[$placeholder])) return;
         self::$_db_widget_objects = array();
+        if (!self::$_render_db_widgets) {
+            $defaultDbWidgets = Widgets::getDefaultDbWidgets();
+        }
         foreach(self::$_db_widgets[$placeholder] as $_widget) {
             try {
                 if ($_widget->filter && ((
@@ -762,6 +770,7 @@ class View {
                 ))) {
                     continue;
                 }
+                if (!self::$_render_db_widgets && !in_array($_widget->name, $defaultDbWidgets)) continue;
                 $widget = new $_widget->name;
                 if (!($widget instanceof Widget)) continue;
                 $widget->setData($_widget->params);

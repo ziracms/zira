@@ -10,16 +10,29 @@ namespace Zira;
 class Widgets {
     const CACHE_KEY = 'widgets';
 
+    public static function getDefaultDbWidgets() {
+        return array(
+            'logo' => '\Zira\Widgets\Logo',
+            'topmenu' => '\Zira\Widgets\Topmenu',
+            'childmenu' => '\Zira\Widgets\Childmenu',
+            'footermenu' => '\Zira\Widgets\Footermenu',
+            'languages' => '\Zira\Widgets\Languages',
+            'usermenu' => '\Zira\Widgets\Usermenu'
+        );
+    }
+
     public static function addDefaultDbWidgets() {
-        View::addWidget('\Zira\Widgets\Logo');
-        View::addWidget('\Zira\Widgets\Topmenu');
-        View::addWidget('\Zira\Widgets\Childmenu');
-        View::addWidget('\Zira\Widgets\Footermenu');
+        $defaultDbWidgets = self::getDefaultDbWidgets();
+
+        View::addWidget($defaultDbWidgets['logo']);
+        View::addWidget($defaultDbWidgets['topmenu']);
+        View::addWidget($defaultDbWidgets['childmenu']);
+        View::addWidget($defaultDbWidgets['footermenu']);
         if (count(Config::get('languages'))>1) {
-            View::addWidget('\Zira\Widgets\Languages');
+            View::addWidget($defaultDbWidgets['languages']);
         }
         if (Config::get('user_signup_allow') || User::isAuthorized()) {
-            View::addWidget('\Zira\Widgets\Usermenu');
+            View::addWidget($defaultDbWidgets['usermenu']);
         }
     }
 

@@ -66,6 +66,7 @@ body.dashboard-window-sidebar-resizing {
     min-height: 70px;
     background-color: #C1C5D1;
     border: 1px solid #99A5BA;
+    border: 1px solid rgb(124, 186, 217);
     box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), inset 0px 0px 3px #CCC9DB;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -84,8 +85,12 @@ body.dashboard-window-sidebar-resizing {
     */
 }
 .dashboard-window-focused {
-    background-color: #B9C3D5;
+    background-color: #BEBDDB;
+    background-color: rgba(181, 210, 216, 0.95);
     box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), 0px 0px 3px #CCC9DB inset;
+}
+.dashboard-window-maximized.dashboard-window-focused {
+    background-color: #D7D7E1;
 }
 .dashboard-window-disabled {
     background-color: #CAC3CF;
@@ -128,7 +133,7 @@ body.dashboard-window-sidebar-resizing {
     position: relative;
     width: 100%;
     height: 30px;
-    border-bottom: 1px solid #B6B7BD;
+    border-bottom: 1px solid #C7CDCE;
     overflow: hidden;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -141,8 +146,8 @@ body.dashboard-window-sidebar-resizing {
     position: relative;
     width: 100%;
     height: 24px;
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #B6B7BD;
+    border-top: 1px solid #F1F6F6;
+    border-bottom: 1px solid #C7CDCE;
     background-color: #E0E2ED;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -157,8 +162,9 @@ body.dashboard-window-sidebar-resizing {
     width: 180px;
     height: 230px;
     border-top: 1px solid #efefef;
-    border-bottom: 1px solid #B6B7BD;
+    border-bottom: 1px solid #C7CDCE;
     background-color: #D3D6E1;
+    background-color: rgba(211, 214, 225, 0.8);
     overflow: auto;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -167,8 +173,11 @@ body.dashboard-window-sidebar-resizing {
     -ms-user-select: none;
     user-select: none;
 }
+.dashboard-window-maximized .dashboard-window-sidebar {
+    background-color: #D3D6E1;
+}
 .dashboard-window-focused .dashboard-window-sidebar {
-    border-top: 1px solid #ffffff;
+    border-top: 1px solid #F1F6F6;
 }
 .dashboard-window .dashboard-window-content {
     position: relative;
@@ -176,13 +185,13 @@ body.dashboard-window-sidebar-resizing {
     height: 230px;
     margin-left: 180px;
     border-top: 1px solid #efefef;
-    border-bottom: 1px solid #B6B7BD;
+    border-bottom: 1px solid #C7CDCE;
     background-color: #ffffff;
     overflow: auto;
     transition: background-color 100ms linear;
 }
 .dashboard-window-focused .dashboard-window-content {
-    border-top: 1px solid #ffffff;
+    border-top: 1px solid #F1F6F6;
 }
 .dashboard-window-nosidebar .dashboard-window-content {
     margin-left: 0px;
@@ -212,7 +221,7 @@ body.dashboard-window-sidebar-resizing {
     user-select: none;
 }
 .dashboard-window-focused .dashboard-window-footer {
-    border-top: 1px solid #ffffff;
+    border-top: 1px solid #F1F6F6;
 }
 .dashboard-window .dashboard-window-header .dashboard-window-title {
     display: block;
@@ -318,7 +327,7 @@ body.dashboard-window-sidebar-resizing {
     background-image: url(../images/dash-window-buttons-slice.png);
     background-repeat: no-repeat;
     background-position: -32px 0px;
-    filter: hue-rotate(-120deg);
+    filter: contrast(120%);
 }
 .dashboard-window .dashboard-window-header a.dashboard-window-minimize-button:hover {
     background-position: -32px -16px;
@@ -377,8 +386,8 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-toolbar {
     height: 50px;
     position: relative;
-    border-top: 1px solid #ffffff;
-    border-bottom: 1px solid #B6B7BD;
+    border-top: 1px solid #F1F6F6;
+    border-bottom: 1px solid #C7CDCE;
     background-color: #eee;
     overflow: hidden;
     -webkit-touch-callout: none;
