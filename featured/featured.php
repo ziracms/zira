@@ -21,6 +21,10 @@ class Featured {
         return self::$_instance;
     }
 
+    public function beforeDispatch() {
+        Zira\Router::addRoute('featured', 'featured/index/index');
+    }
+
     public function bootstrap() {
         if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-star', Zira\Locale::tm('Featured records', 'featured'), null, 'featuredWindow()');
