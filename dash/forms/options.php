@@ -65,6 +65,10 @@ class Options extends Form
             $html .= $this->checkbox(Locale::t('Detect language'), 'detect_language', null, false);
         }
         $html .= $this->checkbox(Locale::t('Sticky top bar'), 'dash_panel_frontend', null, false);
+        $html .= $this->select(Locale::t('Window buttons position'), 'dashwindow_mode', array(
+            '0' => Locale::t('Left'),
+            '1' => Locale::t('Right')
+        ));
         $html .= $this->close();
         return $html;
     }

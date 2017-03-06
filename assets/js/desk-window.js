@@ -1,5 +1,6 @@
 var DashWindow = function(id, className, options) {
     this.window_class = 'dashboard-window';
+    this.window_classic_class = 'dashboard-window-classic';
     this.header_class = 'dashboard-window-header';
     this.footer_class = 'dashboard-window-footer';
     this.sidebar_class = 'dashboard-window-sidebar';
@@ -84,6 +85,7 @@ var DashWindow = function(id, className, options) {
         'maximized': false,
         'sidebar': true,
         'sidebar_width': null,
+        'sidebar_custom_width': null,
         'toolbar': true,
         'viewSwitcher': false,
         'bodyViewList': false,
@@ -114,7 +116,8 @@ var DashWindow = function(id, className, options) {
         'load': null,
         'data': null,
         'nocache': false,
-        'help_url': null
+        'help_url': null,
+        'classic_mode': false
     };
 
     if(typeof(options)!="undefined") {
@@ -142,6 +145,10 @@ var DashWindow = function(id, className, options) {
         if (this.options.resize_min_height>this.options.height) {
             this.options.resize_min_height=this.options.height;
         }
+    }
+    
+    if (this.options.classic_mode) {
+        this.window_class += ' ' + this.window_classic_class;
     }
 
     this.create();
@@ -458,6 +465,7 @@ DashWindow.prototype.create = function() {
         if (this.options.sidebar_resize_min_width>this.options.sidebar_width) {
             this.options.sidebar_resize_min_width=this.options.sidebar_width;
         }
+        this.options.sidebar_custom_width = this.options.sidebar_width;
         this.createSidebarResizer();
     }
     $(this.header).append('<div class="'+this.title_text_class+'"></div>');
@@ -863,6 +871,7 @@ DashWindow.prototype.resizeSidebar = function(dx, dy) {
     if (this.options.sidebar_width > this.options.width/2) {
         this.options.sidebar_width = this.options.width/2;
     }
+    this.options.sidebar_custom_width = this.options.sidebar_width;
     this.setSidebarWidth(this.options.sidebar_width);
     this.onResize();
 };
@@ -870,6 +879,9 @@ DashWindow.prototype.resizeSidebar = function(dx, dy) {
 DashWindow.prototype.checkSidebarWidth = function() {
     if (this.sidebar!==null && this.options.sidebar_width > this.options.width/2) {
         this.options.sidebar_width = this.options.width/2;
+        this.setSidebarWidth(this.options.sidebar_width);
+    } else if (this.sidebar!==null && this.options.sidebar_custom_width && this.options.sidebar_custom_width <= this.options.width/2 && this.options.sidebar_width < this.options.sidebar_custom_width) {
+        this.options.sidebar_width = this.options.sidebar_custom_width;
         this.setSidebarWidth(this.options.sidebar_width);
     }
 };
@@ -2163,7 +2175,7 @@ DashWindow.prototype.createSidebarItems = function(elements) {
         if ((typeof(elements[i].type)=="undefined" || elements[i].type!='separator') && typeof(elements[i].callback)!="undefined") {
             var title = elements[i].title.replace(/<.*?>/g, '');
             if (title.length > 0) title = title.replace(/^[\s]*(.*)[\s]*$/g, '$1');
-            items += '<a id="' + elements[i].id + '"' + disabled + ' href="javascript:void(0)" title="' + title + '"">' + icon + elements[i].title + '</a>';
+            items += '<a id="' + elements[i].id + '"' + disabled + ' href="javascript:void(0)" title="' + title + '">' + icon + elements[i].title + '</a>';
         } else if (typeof(elements[i].type)!="undefined" && elements[i].type=='separator') {
             items += '<span id="'+elements[i].id+'" class="devider">'+icon+elements[i].title+'</span>';
         } else {

@@ -354,5 +354,8 @@ return array(
     'Statistics' => 'Статистика',
     'Records: %s' => 'Записи: %s',
     'Records limit for widgets' => 'Лимит записей для виджетов',
-    'Record deleted' => 'Запись удалена'
+    'Record deleted' => 'Запись удалена',
+    'Window buttons position' => 'Позиция кнопок окна',
+    'Left' => 'Слева',
+    'Right' => 'Справа'
 );

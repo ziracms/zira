@@ -106,6 +106,17 @@ class Menu extends Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_menu_page, this);', 'edit', true, array('typo'=>'newtab'))
         );
+        
+        $this->addDefaultSidebarItem(
+            $this->createSidebarSeparator()
+        );
+        $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Secondary menu'), 'glyphicon glyphicon-expand', 'desk_call(dash_menu_secondary, this);', 'edit', false, array('typo'=>'secondary'))
+        );
+        $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Child items'), 'glyphicon glyphicon-collapse-down', 'desk_call(dash_menu_child, this);', 'edit', false, array('typo'=>'childitems'))
+        );
+        $this->setSidebarContent('<div class="menu-infobar" style="white-space:nowrap;text-overflow: ellipsis;width:100%;overflow:hidden"></div>');
 
         $this->setOnOpenJSCallback(
             $this->createJSCallback(

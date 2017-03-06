@@ -1868,6 +1868,14 @@ ul.vote-results li .vote-result {
     background: #646975;
     box-shadow: 0px 0px 4px #444554 inset;
 }
+
+.widget-search-wrapper {
+    margin-bottom: 20px;
+}
+.widget-search-wrapper .form-group {
+    margin: 0;
+}
+
 /** mobile **/
 @media (max-width: 1199px) {
     .grid-category-wrapper .list .list-item {

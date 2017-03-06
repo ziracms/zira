@@ -7,6 +7,13 @@ var dash_files_load = function() {
     } else {
         this.disableToolbarItem(item);
     }
+    
+    if (typeof this.parent_pages == "undefined") this.parent_pages = {};
+    
+    var r = new RegExp('[\\'+desk_ds+']', 'g');
+    var pi = this.options.data.root.replace(r,'_');
+    if(pi.length == 0) pi = '_';
+    this.parent_pages[pi] = this.options.data.page;
 };
 
 var dash_files_open = function() {
@@ -72,7 +79,14 @@ var dash_files_up = function() {
     var root = this.options.data.root.split(desk_ds).slice(0,-1);
     if (root.length>0) {
         this.options.data.root=root.join(desk_ds);
-        this.options.data.page=1;
+        var r = new RegExp('[\\'+desk_ds+']', 'g');
+        var pi = this.options.data.root.replace(r,'_');
+        if(pi.length == 0) pi = '_';
+        if (typeof this.parent_pages[pi] != "undefined") {
+            this.options.data.page=this.parent_pages[pi];
+        } else {
+            this.options.data.page=1;
+        }
         desk_window_reload(this);
     }
 };

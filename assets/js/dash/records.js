@@ -18,6 +18,11 @@ var dash_records_load = function() {
             $(search.element).val(this.options.data.search);
         }
     }
+    
+    if (typeof this.parent_pages == "undefined") this.parent_pages = {};
+    var pi = this.options.data.root.replace(/[\/]/g,'_');
+    if(pi.length == 0) pi = '_';
+    this.parent_pages[pi] = this.options.data.page;
 };
 
 var dash_records_select = function() {
@@ -85,8 +90,14 @@ var dash_records_up = function() {
     if (root.length>0) {
         this.options.data.root=root.join('/');
         this.options.data.search='';
+        var pi = this.options.data.root.replace(/[\/]/g,'_');
+        if(pi.length == 0) pi = '_';
+        if (typeof this.parent_pages[pi] != "undefined") {
+            this.options.data.page=this.parent_pages[pi];
+        } else {
+            this.options.data.page=1;
+        }
         desk_window_reload(this);
-        this.options.data.page=1;
     }
 };
 

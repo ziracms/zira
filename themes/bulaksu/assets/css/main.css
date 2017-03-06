@@ -1436,6 +1436,13 @@ a.scroll-top.visible:visited {
     color: #5FB1A8;
 }
 
+.widget-search-wrapper {
+    margin-bottom: 20px;
+}
+.widget-search-wrapper .form-group {
+    margin: 0;
+}
+
 /** mobile **/
 @media (max-width: 1199px) {
     .grid-category-wrapper .list .list-item {

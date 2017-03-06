@@ -285,6 +285,11 @@ body.dashboard-window-sidebar-resizing {
     background-repeat: no-repeat;
     background-position: -16px 0px;
 }
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:visited {
+    left: auto;
+    right: 7px;
+}
 .dashboard-window .dashboard-window-header a.dashboard-window-close-button:hover {
     background-position: -16px -16px;
 }
@@ -301,6 +306,11 @@ body.dashboard-window-sidebar-resizing {
     background-repeat: no-repeat;
     background-position: -48px 0px;
 }
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:visited {
+    left: auto;
+    right: 26px;
+}
 .dashboard-window .dashboard-window-header a.dashboard-window-maximize-button:hover {
     background-position: -48px -16px;
 }
@@ -316,6 +326,11 @@ body.dashboard-window-sidebar-resizing {
     background-image: url(../images/dash-window-buttons-slice.png);
     background-repeat: no-repeat;
     background-position: -32px 0px;
+}
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:visited {
+    left: auto;
+    right: 45px;
 }
 .dashboard-window .dashboard-window-header a.dashboard-window-minimize-button:hover {
     background-position: -32px -16px;

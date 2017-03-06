@@ -169,7 +169,7 @@ $init_js = Zira\Helper::tag_open('script',array('type'=>'text/javascript')).
             '}'.
             '$(\'body\').css(\'cursor\',\'default\');'.
             '$(\'#zira-install-pager\').show();'.
-            '$(\'body, html\').animate({scrollTop:0}, 600);'.
+            '$(\'body, html\').animate({scrollTop:$(\'#content\').offset().top}, 600);'.
             'zira_install_init();'.
             'if (response.script) {'.
             'eval(response.script);'.

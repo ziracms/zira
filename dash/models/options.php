@@ -30,7 +30,8 @@ class Options extends Model {
                 'gzip'=>'int',
                 'db_translates'=>'int',
                 'dash_panel_frontend' => 'int',
-                'db_widgets_enabled' => 'int'
+                'db_widgets_enabled' => 'int',
+                'dashwindow_mode' => 'int'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

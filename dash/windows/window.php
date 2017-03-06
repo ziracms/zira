@@ -10,6 +10,7 @@ namespace Dash\Windows;
 use Dash;
 use Zira\Helper;
 use Zira\Locale;
+use Zira\Config;
 
 abstract class Window {
     protected $_js_name;
@@ -81,7 +82,8 @@ abstract class Window {
             'data' => null,
             'nocache' => false,
             'singleInstance' => false,
-            'help_url' => null
+            'help_url' => null,
+            'classic_mode' => false
     );
 
     abstract public function init();
@@ -199,6 +201,9 @@ abstract class Window {
             );
             $this->addDefaultOnLoadScript('desk_window_sorter_init(this);');
         }
+        
+        $classic_mode = (bool)Config::get('dashwindow_mode');
+        $this->setOption('classic_mode', $classic_mode);
 
         $this->create();
 

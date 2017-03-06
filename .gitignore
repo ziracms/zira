@@ -1,7 +1,8 @@
-cache/
-log/
-uploads/
-.idea/
+/cache/
+/log/
+/uploads/
+/.idea/
 /config.php
 /robots.txt
 /.htaccess
+/nbproject/

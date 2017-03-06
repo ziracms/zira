@@ -573,18 +573,24 @@ class Dash {
         $this->addPanelWebsiteGroupItem('glyphicon glyphicon-home', Zira\Locale::t('Home'), Zira\Helper::url('/'));
         $this->addPanelWebsiteGroupSeparator();
         $this->addPanelWebsiteGroupItem('glyphicon glyphicon-th-large', Zira\Locale::t('System dashboard'), Zira\Helper::url('dash'));
-        if (Zira\Permission::check(Zira\Permission::TO_VIEW_IMAGES) || Zira\Permission::check(Zira\Permission::TO_VIEW_FILES)) {
-            $this->addPanelSystemGroupItem('glyphicon glyphicon-hdd', Zira\Locale::t('File Manager'), null, 'dashFilesWindow()');
-        }
-        if (Zira\Permission::check(Zira\Permission::TO_CREATE_USERS) || Zira\Permission::check(Zira\Permission::TO_EDIT_USERS)) {
-            $this->addPanelSystemGroupItem('glyphicon glyphicon-user', Zira\Locale::t('Users'), null, 'dashUsersWindow()');
-        }
         if (Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
             $this->addPanelSystemGroupItem('glyphicon glyphicon-book', Zira\Locale::t('Records'), null, 'dashRecordsWindow()');
+        }
+        if (Zira\Permission::check(Zira\Permission::TO_VIEW_IMAGES) || Zira\Permission::check(Zira\Permission::TO_VIEW_FILES)) {
+            $this->addPanelSystemGroupSeparator();
+            $this->addPanelSystemGroupItem('glyphicon glyphicon-hdd', Zira\Locale::t('File Manager'), null, 'dashFilesWindow()');
+        }
+        if (Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) || Zira\Permission::check(Zira\Permission::TO_VIEW_IMAGES) || Zira\Permission::check(Zira\Permission::TO_VIEW_FILES)) {
+            
         }
         if (Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             $this->addPanelSystemGroupItem('glyphicon glyphicon-link', Zira\Locale::t('Menu'), null, 'dashMenuWindow()');
             $this->addPanelSystemGroupItem('glyphicon glyphicon-th', Zira\Locale::t('Blocks'), null, 'dashBlocksWindow()');
+        }
+        
+        if (Zira\Permission::check(Zira\Permission::TO_CREATE_USERS) || Zira\Permission::check(Zira\Permission::TO_EDIT_USERS)) {
+            $this->addPanelSystemGroupSeparator();
+            $this->addPanelSystemGroupItem('glyphicon glyphicon-user', Zira\Locale::t('Users'), null, 'dashUsersWindow()');
         }
         if (Zira\Permission::check(Zira\Permission::TO_MODERATE_COMMENTS)) {
             $this->addPanelSystemGroupItem('glyphicon glyphicon-comment', Zira\Locale::t('Comments'), null, 'dashCommentsWindow()');

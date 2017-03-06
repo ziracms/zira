@@ -66,7 +66,7 @@ body.dashboard-window-sidebar-resizing {
     min-height: 70px;
     background-color: #C1C5D1;
     border: 1px solid #99A5BA;
-    border: 1px solid rgb(124, 186, 217);
+    border: 1px solid rgb(143, 155, 162);
     box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), inset 0px 0px 3px #CCC9DB;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -86,7 +86,7 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window-focused {
     background-color: #BEBDDB;
-    background-color: rgba(181, 210, 216, 0.95);
+    background-color: rgb(201, 204, 210);
     box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), 0px 0px 3px #CCC9DB inset;
 }
 .dashboard-window-maximized.dashboard-window-focused {
@@ -295,6 +295,11 @@ body.dashboard-window-sidebar-resizing {
     background-position: -16px 0px;
     filter: contrast(150%);
 }
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:visited {
+    left: auto;
+    right: 7px;
+}
 .dashboard-window .dashboard-window-header a.dashboard-window-close-button:hover {
     background-position: -16px -16px;
 }
@@ -312,6 +317,11 @@ body.dashboard-window-sidebar-resizing {
     background-position: -48px 0px;
     filter: contrast(150%);
 }
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:visited {
+    left: auto;
+    right: 26px;
+}
 .dashboard-window .dashboard-window-header a.dashboard-window-maximize-button:hover {
     background-position: -48px -16px;
 }
@@ -327,7 +337,12 @@ body.dashboard-window-sidebar-resizing {
     background-image: url(../images/dash-window-buttons-slice.png);
     background-repeat: no-repeat;
     background-position: -32px 0px;
-    filter: contrast(120%);
+    filter: contrast(150%);
+}
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:link,
+.dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:visited {
+    left: auto;
+    right: 45px;
 }
 .dashboard-window .dashboard-window-header a.dashboard-window-minimize-button:hover {
     background-position: -32px -16px;

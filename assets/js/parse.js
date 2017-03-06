@@ -142,7 +142,13 @@
                 typeof(m[3])=="undefined"
             ) continue;
             if ((m[0].indexOf(' class="image"')<0 && m[0].indexOf(' class=image')<0) || m[0].indexOf(' class="image parsed-image"')>0) continue;
-            content = content.replace(m[0], '<div class="image-wrapper">'+
+            var s = '';
+            var _p = new RegExp('style=(?:["])?([^">]+)(?:["])?', 'i');
+            var _m = _p.exec(m[0]);
+            if (_m && typeof(_m[0]) != "undefined" && typeof(_m[1]) != "undefined") {
+                s = ' ' + _m[0];
+            }
+            content = content.replace(m[0], '<div class="image-wrapper"'+s+'>'+
                                             '<img class="image parsed-image" '+m[1]+'alt="'+m[2]+'"'+m[3]+'>'+
                                             '<div class="image-description">'+m[2]+
                                             '</div></div>');
