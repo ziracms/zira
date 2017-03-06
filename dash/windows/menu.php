@@ -116,7 +116,6 @@ class Menu extends Window {
         $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Child items'), 'glyphicon glyphicon-collapse-down', 'desk_call(dash_menu_child, this);', 'edit', false, array('typo'=>'childitems'))
         );
-        $this->setSidebarContent('<div class="menu-infobar" style="white-space:nowrap;text-overflow: ellipsis;width:100%;overflow:hidden"></div>');
 
         $this->setOnOpenJSCallback(
             $this->createJSCallback(

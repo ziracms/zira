@@ -30,10 +30,10 @@ var dash_menu_load = function() {
             $(this.options.bodyItems[i].element).addClass('inactive');
         }
     }
-    $(this.element).find('.menu-infobar').html('');
     
     $(this.sidebar).find('.secondary-sidebar').parent('li').children('ul').remove();
     $(this.sidebar).find('.childitems-sidebar').parent('li').children('ul').remove(); 
+    this.info_last_item = 0;
 };
 
 var dash_menu_select = function() {
@@ -53,14 +53,12 @@ var dash_menu_select = function() {
         if (selected[0].url.indexOf('http')!=0) this.enableItemsByProperty('typo','preview');
     }
     
-    if (selected && selected.length && selected.length==1 && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.menu-infobar').html().length==0)) {
+    if (selected && selected.length && selected.length==1 && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data)) {
        $(this.sidebar).find('.secondary-sidebar').parent('li').children('ul').remove();
        $(this.sidebar).find('.childitems-sidebar').parent('li').children('ul').remove();     
        this.info_last_item = selected[0].data;
-       $(this.element).find('.menu-infobar').html('');
        try { window.clearTimeout(this.timer); } catch(err) {}
        this.timer = window.setTimeout(this.bind(this,function(){
-           $(this.element).find('.menu-infobar').html('');
            var selected = this.getSelectedContentItems();
            if (!selected || !selected.length || selected.length!=1) return;
            desk_post(url('dash/menu/info'),{'id':selected[0].data, 'language':this.options.data.language, 'token':token()}, this.bind(this, function(response){
@@ -115,7 +113,7 @@ var dash_menu_select = function() {
                     })(this));
                }
            }));
-       }),500);
+       }),1000);
    }
 };
 
