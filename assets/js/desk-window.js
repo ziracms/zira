@@ -36,6 +36,8 @@ var DashWindow = function(id, className, options) {
     this.dashwindow_content_icon_blank_class = 'dashwindow-content-icon-blank';
     this.dashwindow_content_list_class = 'dashwindow-content-list';
     this.dashwindow_content_grid_class = 'dashwindow-content-grid';
+    this.dashwindow_content_column_class = 'dashwindow-content-column';
+    this.dashwindow_content_column_row_class = 'dashwindow-content-column-row';
     this.disabled_window_class = 'dashboard-window-disabled';
     this.loading_window_class = 'dashboard-window-loading';
     this.loader_class = 'dashboard-window-loader';
@@ -189,16 +191,6 @@ var DashWindow = function(id, className, options) {
     this.focusedElement = null;
     this.keys = null;
 
-    if (this.options.maximized) {
-        this.initialized = true;
-        this.maximize(true, false, this.onInitialize);
-    } else if (!this.options.animate) {
-        this.initialized = true;
-        this.onInitialize();
-    } else {
-        this.animateOpening();
-    }
-
     this.onFocusCallback = null;
     this.onBlurCallback = null;
     this.onMaximizeCallback = null;
@@ -209,6 +201,16 @@ var DashWindow = function(id, className, options) {
     this.onDestroyCallback = null;
     this.onMenuItemCallback = null;
     this.onLoadCallback = null;
+    
+    if (this.options.maximized) {
+        this.initialized = true;
+        this.maximize(true, false, this.onInitialize);
+    } else if (!this.options.animate) {
+        this.initialized = true;
+        this.onInitialize();
+    } else {
+        this.animateOpening();
+    }
 };
 
 DashWindow.prototype.bind = function(object, method) {
@@ -2273,14 +2275,20 @@ DashWindow.prototype.createBodyItems = function(elements) {
             if (this.options.nocache) suffix = '?t='+(new Date().getTime());
             icon = '<img class="'+this.body_item_images_class+'" data-src="'+(elements[i].src+suffix)+'" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AEFEgQCRe67lgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAADUlEQVQI12NgYGBgAAAABQABXvMqOgAAAABJRU5ErkJggg==" /> ';
         }
+        if (typeof(elements[i].column)=="undefined") elements[i].column = '';
+        var column_data = elements[i].column;
+        var column = '';
+        if (column_data.length > 0) column = '<span class="' + this.dashwindow_content_column_class + '">' + column_data + '</span>';
         if (typeof(elements[i].disabled)=="undefined") elements[i].disabled = false;
         var disabled = '';
         if (elements[i].disabled) disabled = ' class="disabled"';
-        items += '<li class="'+(i%2==0 ? 'even' : 'odd')+'">';
+        var row_class = (i%2==0 ? 'even' : 'odd');
+        if (column.length > 0) row_class += ' ' + this.dashwindow_content_column_row_class;
+        items += '<li class="'+row_class+'">';
         if (typeof(elements[i].callback)!="undefined") {
-            items += '<a id="'+elements[i].id+'"'+disabled+' href="javascript:void(0)" title="'+title+'">'+icon+elements[i].title+'</a>';
+            items += '<a id="'+elements[i].id+'"'+disabled+' href="javascript:void(0)" title="'+title+'">'+column+icon+elements[i].title+'</a>';
         } else {
-            items += '<span id="'+elements[i].id+'"'+disabled+' title="'+title+'>'+icon+elements[i].title+'</span>';
+            items += '<span id="'+elements[i].id+'"'+disabled+' title="'+title+'>'+column+icon+elements[i].title+'</span>';
         }
         items += '</li>';
     }

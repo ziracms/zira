@@ -739,6 +739,7 @@ class Dash {
             Zira\View::addDatepicker();
             Zira\View::addTinyMCEAssets();
             Zira\View::addCropperAssets();
+            Zira\View::addCodeMirror();
 
             if (Zira\Locale::getLanguage() != Zira\Config::get('language')) {
                 $loaded_locale_strings = Zira\Locale::getStrings();

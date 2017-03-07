@@ -5,7 +5,7 @@
 <?php if (!empty($category['title'])): ?>
 <div class="page-header">
 <?php if (!empty($category['url'])): ?>
-<h2 class="home-category-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($category['url'])) ?>" title="<?php echo Zira\Helper::html($category['title']) ?>"><span class="glyphicon glyphicon-link"></span> <?php echo Zira\Helper::html($category['title']) ?></a></h2>
+<h2 class="home-category-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::url($category['url'])) ?>" title="<?php echo Zira\Helper::html($category['title']) ?>"><span class="glyphicon glyphicon-link"></span> <?php echo Zira\Helper::html($category['title']) ?></a></h2>
 <?php else: ?>
 <h2 class="home-category-title"><span class="glyphicon glyphicon-link"></span> <?php echo Zira\Helper::html($category['title']) ?></h2>
 <?php endif; ?>

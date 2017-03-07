@@ -31,7 +31,8 @@ class Options extends Model {
                 'db_translates'=>'int',
                 'dash_panel_frontend' => 'int',
                 'db_widgets_enabled' => 'int',
-                'dashwindow_mode' => 'int'
+                'dashwindow_mode' => 'int',
+                'dashwindow_maximized' => 'int'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

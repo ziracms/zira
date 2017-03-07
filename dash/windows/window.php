@@ -204,6 +204,9 @@ abstract class Window {
         
         $classic_mode = (bool)Config::get('dashwindow_mode');
         $this->setOption('classic_mode', $classic_mode);
+        
+        $maximized = (bool)Config::get('dashwindow_maximized');
+        $this->setMaximized($maximized);
 
         $this->create();
 
@@ -655,47 +658,51 @@ abstract class Window {
         );
     }
 
-    public function createBodyItem($title, $tooltip, $src, $data=null, $js=null, $disabled=false, array $extra = array()) {
+    public function createBodyItem($title, $tooltip, $src, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
         return array_merge(array(
             'title' => (string)$title,
             'tooltip' => (string)$tooltip,
             'src' => (string)$src,
             'callback' => $this->createJSCallback($js),
             'data' => $data,
-            'disabled' => (bool)$disabled
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
         ), $extra);
     }
 
-    public function createBodyFolderItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array()) {
+    public function createBodyFolderItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
         return array_merge(array(
             'type' => 'folder',
             'title' => (string)$title,
             'tooltip' => (string)$tooltip,
             'callback' => $this->createJSCallback($js),
             'data' => $data,
-            'disabled' => (bool)$disabled
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
         ), $extra);
     }
 
-    public function createBodyFileItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array()) {
+    public function createBodyFileItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
         return array_merge(array(
             'type' => 'file',
             'title' => (string)$title,
             'tooltip' => (string)$tooltip,
             'callback' => $this->createJSCallback($js),
             'data' => $data,
-            'disabled' => (bool)$disabled
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
         ), $extra);
     }
 
-    public function createBodyArchiveItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array()) {
+    public function createBodyArchiveItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
         return array_merge(array(
             'type' => 'archive',
             'title' => (string)$title,
             'tooltip' => (string)$tooltip,
             'callback' => $this->createJSCallback($js),
             'data' => $data,
-            'disabled' => (bool)$disabled
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
         ), $extra);
     }
 

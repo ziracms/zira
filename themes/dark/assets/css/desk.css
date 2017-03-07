@@ -603,6 +603,21 @@ body.dashboard-window-sidebar-resizing {
     float: left;
     margin-right: 10px;
 }
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li.dashwindow-content-column-row a:link,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li.dashwindow-content-column-row a:visited {
+    padding-right: 80px;
+}
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-grid .dashwindow-content-column {
+    display: none;
+}
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list .dashwindow-content-column {
+    display: block;
+    float: right;
+    width: 80px;
+    text-align: center;
+    margin-right: -80px;
+    color: #888;
+}
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-html {
     background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -277px;
 }

@@ -36,6 +36,8 @@ class Page {
     protected static $_record_id = null;
     protected static $_record_url = null;
     protected static $_redirect_url = null;
+    
+    protected static $_category_childs = array();
 
     public static function setView($view) {
         self::$_view = $view;
@@ -208,7 +210,10 @@ class Page {
     }
 
     public static function generateRecordUrl($category_name, $record_name) {
-        if (empty($category_name)) return self::encodeURL($record_name);
+        if (empty($category_name)) {
+            if ($record_name == Config::get('home_record_name')) return '';
+            return self::encodeURL($record_name);
+        }
         else return self::encodeURL($category_name) . '/' . self::encodeURL($record_name);
     }
 
@@ -254,7 +259,7 @@ class Page {
         }
     }
 
-    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null) {
+    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
         $category_ids = array($category->id);
@@ -266,17 +271,36 @@ class Page {
         }
 
         if ($includeChilds && count($category_ids)>1) {
-            $records = self::getCategoriesRecordsList($category_ids, $front_page, $limit, $last_id);
+            $records = self::getCategoriesRecordsList($category_ids, $front_page, $limit, $last_id, $page);
         } else {
-            $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id);
+            $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id, $page);
         }
 
         return $records;
     }
+    
+    public static function getRecordsCount($category, $front_page = false, $includeChilds = true, array $childs = null) {
+        $category_ids = array($category->id);
+        if ($includeChilds) {
+            if ($childs === null) $childs = Category::getChilds($category);
+            foreach ($childs as $child) {
+                $category_ids [] = $child->id;
+            }
+        }
+        
+        if ($includeChilds && count($category_ids)>1) {
+            return self::getCategoriesRecordsCount($category_ids, $front_page);
+        } else {
+            return self::getCategoryRecordsCount($category_ids[0], $front_page);
+        }
+    }
 
-    public static function getCategoryRecordsList($category_id, $front_page = false, $limit = null, $last_id = null) {
+    public static function getCategoryRecordsList($category_id, $front_page = false, $limit = null, $last_id = null, $page = 1) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
+        if ($page < 1) $page = 1;
+        $offset = $limit * ($page - 1);
+        
         $query = Record::getCollection()
                         ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
                         ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
@@ -293,14 +317,34 @@ class Page {
             $query->and_where('id', '<', $last_id);
         }
         $query->order_by('id', 'desc');
-        $query->limit($limit);
+        $query->limit($limit, $offset);
 
         return $query->get();
     }
+    
+    public static function getCategoryRecordsCount($category_id, $front_page = false) {
+        $query = Record::getCollection()
+                        ->count()
+                        ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
+                        ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
+                        ;
 
-    public static function getCategoriesRecordsList(array $category_ids, $front_page = false, $limit = null, $last_id = null) {
+        $query->where('category_id', '=', $category_id);
+        $query->and_where('language', '=', Locale::getLanguage());
+        $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+        if ($front_page) {
+            $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
+        }
+        
+        return $query->get('co');
+    }
+
+    public static function getCategoriesRecordsList(array $category_ids, $front_page = false, $limit = null, $last_id = null, $page = 1) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
+        if ($page < 1) $page = 1;
+        $offset = $limit * ($page - 1);
+        
         $query = Record::getCollection();
         foreach($category_ids as $index=>$category_id) {
             if ($index>0) {
@@ -318,12 +362,12 @@ class Page {
                 $query->and_where('id', '<', $last_id);
             }
             $query->order_by('id', 'desc');
-            $query->limit($limit);
+            $query->limit($limit * $page);
             $query->close_query();
         }
         $query->merge();
         $query->order_by('id', 'desc');
-        $query->limit($limit);
+        $query->limit($limit, $offset);
 
         $rows = $query->get();
 
@@ -344,6 +388,21 @@ class Page {
         $query->order_by('id', 'desc');
 
         return $query->get();
+    }
+    
+    public static function getCategoriesRecordsCount(array $category_ids, $front_page = false) {
+        $query = Record::getCollection();
+        $query->count();
+        $query->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'));
+        $query->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'));             
+        $query->where('category_id', 'in', $category_ids);
+        $query->and_where('language', '=', Locale::getLanguage());
+        $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+        if ($front_page) {
+            $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
+        }
+        
+        return $query->get('co');
     }
 
     public static function render(array $data = null) {

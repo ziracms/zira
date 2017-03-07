@@ -357,5 +357,7 @@ return array(
     'Record deleted' => 'Запись удалена',
     'Window buttons position' => 'Позиция кнопок окна',
     'Left' => 'Слева',
-    'Right' => 'Справа'
+    'Right' => 'Справа',
+    'Maximize windows' => 'Разворачивать окна',
+    'Enable paginator' => 'Включить пагинатор'
 );

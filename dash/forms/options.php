@@ -69,6 +69,7 @@ class Options extends Form
             '0' => Locale::t('Left'),
             '1' => Locale::t('Right')
         ));
+        $html .= $this->checkbox(Locale::t('Maximize windows'), 'dashwindow_maximized', null, false);
         $html .= $this->close();
         return $html;
     }

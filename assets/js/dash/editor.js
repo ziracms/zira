@@ -14,6 +14,18 @@ var dash_editor_text_load = function() {
     var val = $(this.content).find('textarea').eq(0).val();
     this.resetFooterContent();
     this.appendFooterContent(val.length);
+    
+    this.editor = zira_codemirror($(this.content).find('textarea'));
+};
+
+var dash_editor_text_update = function() {
+    if (typeof(this.editor)=="undefined") return;
+    this.editor.save();
+};
+
+var dash_editor_html_update = function() {
+    if (typeof(this.editor)=="undefined") return;
+    $(this.content).find('textarea[name=content]').val(this.editor.getContent());
 };
 
 var dash_editor_html_focus = function() {

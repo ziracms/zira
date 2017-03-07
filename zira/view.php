@@ -59,6 +59,8 @@ class View {
     protected static $_theme_loader_preloaded = false;
     protected static $_autocomplete_added = false;
     protected static $_parser_added = false;
+    protected static $_codemirror_assets_added = false;
+    protected static $_codemirror_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -334,6 +336,14 @@ class View {
         if (self::$_content_data === null || self::$_content_view === null) return;
         self::renderContent(self::$_content_data, self::$_content_view);
     }
+    
+    public static function getContentData() {
+        return self::$_content_data;
+    }
+    
+    public static function getContentView() {
+        return self::$_content_view;
+    }
 
     public static function setRenderLayout($render_layout) {
         self::$_render_layout = (bool) $render_layout;
@@ -341,6 +351,10 @@ class View {
 
     public static function setLayoutData(array $layout_data) {
         self::$_layout_data = array_merge(self::$_layout_data, $layout_data);
+    }
+    
+    public static function getLayoutDataArray() {
+        return self::$_layout_data;
     }
 
     public static function addLayoutContent($placeholder, $content) {
@@ -360,6 +374,11 @@ class View {
     public static function addPlaceholderView($placeholder,$data,$view) {
         if (!isset(self::$_placeholder_views[$placeholder])) self::$_placeholder_views[$placeholder] = array();
         self::$_placeholder_views[$placeholder][$view] = $data;
+    }
+    
+    public static function getPlaceholderViews($placeholder) {
+        if (!isset(self::$_placeholder_views[$placeholder])) return array();
+        return self::$_placeholder_views[$placeholder];
     }
 
     public static function includePlaceholderViews($placeholder) {
@@ -622,6 +641,34 @@ class View {
         //self::addHTML($script, self::VAR_BODY_BOTTOM);
         self::addBodyBottomScript($script);
         self::$_datepicker_added = true;
+    }
+    
+    public static function addCodeMirrorAssets() {
+        if (self::$_codemirror_assets_added) return;
+        self::addStyle('codemirror.css');
+//        self::addScript('codemirror/codemirror.js');
+//        self::addScript('codemirror/htmlmixed.js');
+//        self::addScript('codemirror/javascript.js');
+//        self::addScript('codemirror/css.js');
+//        self::addScript('codemirror/xml.js');
+//        self::addScript('codemirror/simplescrollbars.js');
+        $script = 'codemirror/index.php';
+        $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
+        self::addScript($script . '?t=' . $mtime);
+        self::$_codemirror_assets_added = true;
+    }
+
+    public static function addCodeMirror() {
+        if (self::$_codemirror_added) return;
+        self::addCodeMirrorAssets();
+        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
+        $script .= "zira_codemirror = function(element){";
+        $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: 'htmlmixed', inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple' });";
+        $script .= "};";
+        $script .= Helper::tag_close('script');
+        //self::addHTML($script, self::VAR_BODY_BOTTOM);
+        self::addBodyBottomScript($script);
+        self::$_codemirror_added = true;
     }
 
     public static function addAutoCompleter() {

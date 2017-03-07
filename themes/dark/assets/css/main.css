@@ -1875,6 +1875,13 @@ ul.vote-results li .vote-result {
 .widget-search-wrapper .form-group {
     margin: 0;
 }
+.sidebar .widget-search-wrapper .input-group-addon:first-child {
+    display: none;
+}
+.sidebar .widget-search-wrapper .input-group .form-control:not(:first-child):not(:last-child) {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
 
 /** mobile **/
 @media (max-width: 1199px) {

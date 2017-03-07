@@ -53,8 +53,24 @@ class Category extends Zira\Page {
         }
 
         $limit = Zira\Config::get('records_limit', 10);
+        $limit_plus = 1;
+        
+        $use_pagination = Zira\Config::get('enable_pagination') && !$is_ajax;
+        
+        $pages = 1;
+        if ($use_pagination) {
+            $records_count = static::getRecordsCount(Zira\Category::current(), false, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds());
+            $pages = ceil($records_count / $limit);
+        }
+        
+        $page = (int)Zira\Request::get('page');
+        if ($page > $pages) $page = $pages;
+        if ($page < 1) $page = 1;
+        
+        if ($use_pagination) $limit_plus = 0;
+        
         if (Zira\Category::current()->records_list===null || Zira\Category::current()->records_list) {
-            $records = static::getRecords(Zira\Category::current(), false, $limit + 1, $last_id, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds());
+            $records = static::getRecords(Zira\Category::current(), false, $limit + $limit_plus, $last_id, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds(), $page);
         } else {
             $records = array();
         }
@@ -64,6 +80,15 @@ class Category extends Zira\Page {
         $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
         $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
 
+        $pagination = null;
+        if ($use_pagination) {
+            $pagination = new Zira\Pagination();
+            $pagination->setLimit($limit);
+            $pagination->setPage($page);
+            $pagination->setPages($pages);
+            $pagination->setTotal($records_count);
+        }
+        
         $data = array(
                 static::VIEW_PLACEHOLDER_CLASS => 'records',
                 static::VIEW_PLACEHOLDER_RECORDS => $records,
@@ -73,7 +98,8 @@ class Category extends Zira\Page {
                     'rating_enabled' => $rating_enabled,
                     'display_author' => $display_author,
                     'display_date' => $display_date
-                )
+                ),
+                'pagination' => $pagination
         );
 
         if (!$is_ajax) {

@@ -41,6 +41,7 @@ class Meta extends Form
         $html .= $this->input(Locale::t('Records limit'), 'records_limit');
         $html .= $this->input(Locale::t('Records limit for widgets'), 'widget_records_limit');
         $html .= $this->checkbox(Locale::t('Show child category records'), 'category_childs_list', null, false);
+        $html .= $this->checkbox(Locale::t('Enable paginator'), 'enable_pagination', null, false);
         $html .= $this->input(Locale::t('Window title'), 'site_title', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Keywords'), 'site_keywords', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Description'), 'site_description', array('placeholder'=>Locale::t('max. %s characters', 255)));

@@ -36,7 +36,12 @@
 <?php if (isset($settings) && !empty($settings['limit']) && $co>=$settings['limit']) break; ?>
 <?php endforeach; ?>
 </ul>
-<?php if (isset($settings) && !empty($settings['limit']) && count($records)>$settings['limit']): ?>
+<?php if (isset($pagination)): ?>
+<div class="list-pagination-wrapper">
+<?php echo $pagination; ?>
+</div>
+<?php endif; ?>
+<?php if (isset($settings) && !empty($settings['limit']) && count($records)>$settings['limit'] && !isset($pagination)): ?>
 <div class="list-view-more-wrapper">
 <button class="btn btn-primary list-view-more" type="button" data-url="<?php echo Zira\Helper::url('records') ?>" data-category="<?php echo Zira\Category::current()->id ?>" data-last="<?php echo $record->id ?>"><?php echo t('View more') ?>&nbsp;&rsaquo;&rsaquo;</button>
 </div>
