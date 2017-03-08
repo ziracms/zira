@@ -41,7 +41,7 @@
 </div>
 </div>
 </div></div><!--/main-container-wrapper-->
-<?php layout_body_bottom() ?>
 <a href="javascript:void(0)" class="scroll-top" title="<?php echo t('Up') ?>"></a>
+<?php layout_body_bottom() ?>
 </body>
 </html>

@@ -36,8 +36,6 @@ class View {
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
-    protected static $_content_data;
-    protected static $_content_view;
 
     protected static $_theme;
     protected static $_render_layout = true;
@@ -280,29 +278,31 @@ class View {
 
     public static function renderLayout($data, $view_file, $layout_file) {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
+        layout_data($data, $view_file);
 
-        self::$_content_data = $data;
-        self::$_content_view = $view_file;
-
+        $js_scripts = '';
         if (self::$_render_js_strings) {
-            if (!isset(self::$_layout_data[self::VAR_HEAD_BOTTOM])) self::$_layout_data[self::VAR_HEAD_BOTTOM] = '';
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= Helper::tag_open('script', array('type'=>'text/javascript'));
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= 'var zira_strings = { ';
+            $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
+            $js_scripts .= 'zira_base = \''.Helper::baseUrl('').'\';';
+            $js_scripts .= Helper::tag_close('script')."\r\n";
+            
+            $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
+            $js_scripts .= 'var zira_strings = { ';
             $co = 0;
             foreach(self::$_js_strings as $string => $translate) {
-                if ($co>0) self::$_layout_data[self::VAR_HEAD_BOTTOM] .= ', ';
-                self::$_layout_data[self::VAR_HEAD_BOTTOM] .= "'".Helper::html($string)."': ".json_encode(Helper::html(Locale::t($translate)));
+                if ($co>0) $js_scripts .= ', ';
+                $js_scripts .= "'".Helper::html($string)."': ".json_encode(Helper::html(Locale::t($translate)));
                 $co++;
             }
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= ' };';
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= Helper::tag_close('script')."\r\n";
-
-            $body_bottom_scripts = self::getBodyBottomScripts();
-            if (!empty($body_bottom_scripts)) self::addHTML($body_bottom_scripts, self::VAR_BODY_BOTTOM);
-
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= Helper::tag_open('script', array('type'=>'text/javascript'));
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= 'zira_base = \''.Helper::baseUrl('').'\';';
-            self::$_layout_data[self::VAR_HEAD_BOTTOM] .= Helper::tag_close('script')."\r\n";
+            $js_scripts .= ' };';
+            $js_scripts .= Helper::tag_close('script')."\r\n";
+        }
+        
+        if (!INSERT_SCRIPTS_TO_BODY) {
+            self::addHTML($js_scripts, self::VAR_HEAD_BOTTOM);
+        } else {
+            $js_scripts = self::getLayoutData(self::VAR_SCRIPTS) . $js_scripts;
+            self::$_body_bottom_scripts = array_merge(array($js_scripts), self::$_body_bottom_scripts);
         }
 
         if (!isset(self::$_layout_data[self::VAR_CHARSET])) self::$_layout_data[self::VAR_CHARSET] = CHARSET;
@@ -332,17 +332,9 @@ class View {
         include($layout_file);
     }
 
-    public static function renderContentData() {
-        if (self::$_content_data === null || self::$_content_view === null) return;
-        self::renderContent(self::$_content_data, self::$_content_view);
-    }
-    
-    public static function getContentData() {
-        return self::$_content_data;
-    }
-    
-    public static function getContentView() {
-        return self::$_content_view;
+    public static function renderContentData($data, $view) {
+        if ($data === null || $view === null) return;
+        self::renderContent($data, $view);
     }
 
     public static function setRenderLayout($render_layout) {
@@ -506,8 +498,11 @@ class View {
     public static function addLightbox() {
         if (self::$_lightbox_added) return;
         self::addStyle('lightbox.css');
-        //self::addHTML(Helper::tag('script', null, array('src'=>Helper::jsUrl('lightbox.min.js'))), self::VAR_BODY_BOTTOM);
-        self::addBodyBottomScript(Helper::tag('script', null, array('src'=>Helper::jsUrl('lightbox.min.js'))));
+        $script = 'lightbox.min.js';
+        if (!Assets::isActive() || !Assets::isMergedJS($script)) {
+            //self::addHTML(Helper::tag('script', null, array('src'=>Helper::jsUrl($script))), self::VAR_BODY_BOTTOM);
+            self::addBodyBottomScript(Helper::tag('script', null, array('src'=>Helper::jsUrl($script))));
+        }
         self::$_lightbox_added = true;
     }
 
@@ -539,7 +534,8 @@ class View {
         $script .= '});';
         $script .= ' });';
         $script .= Helper::tag_close('script');
-        self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
     }
 
     public static function addCropperAssets() {
@@ -570,7 +566,8 @@ class View {
         $script .= '});';
         $script .= ' });';
         $script .= Helper::tag_close('script');
-        self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
     }
 
     public static function addTinyMCEAssets() {
@@ -603,7 +600,8 @@ class View {
                     '});';
         $script .= ' });';
         $script .= Helper::tag_close('script');
-        self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
     }
 
     public static function addDatepickerAssets() {
@@ -654,6 +652,9 @@ class View {
 //        self::addScript('codemirror/simplescrollbars.js');
         $script = 'codemirror/index.php';
         $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
+        if (Config::get('clean_url')) {
+            $script = 'codemirror.js';
+        }
         self::addScript($script . '?t=' . $mtime);
         self::$_codemirror_assets_added = true;
     }
@@ -693,6 +694,7 @@ class View {
     }
 
     public static function addThemeStyles() {
+        if (Assets::isActive()) return;
         $css = 'main.css';
         if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$css)) {
             self::addThemeStyle($css);
@@ -734,7 +736,8 @@ class View {
         $script .= 'loader.src = \''.Helper::imgUrl('loader.gif').'\';';
         $script .= ' });';
         $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        //View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
         self::$_loader_preloaded = true;
     }
 
@@ -746,7 +749,8 @@ class View {
         $script .= 'loader.src = \''.Helper::imgThemeUrl('zira-loader.gif').'\';';
         $script .= ' });';
         $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        //View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
         self::$_theme_loader_preloaded = true;
     }
 

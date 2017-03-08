@@ -1,4 +1,5 @@
 <div id="vk_comments" class="comments-wrapper"></div>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 if (typeof(vk_open_api_init_callbacks) == "undefined") {
     vk_open_api_init_callbacks = [];
@@ -10,3 +11,4 @@ vk_open_api_init_callbacks.push(function () {
     })(jQuery);
 });
 </script>
+<?php layout_js_end(); ?>

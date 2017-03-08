@@ -1,4 +1,5 @@
 <?php if (!empty($app_id) && !empty($app_secret)): ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
     // used with standart button
     function oauth_fb_login() {
@@ -31,4 +32,5 @@
         }
     }
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>

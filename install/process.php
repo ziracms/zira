@@ -96,8 +96,8 @@ if (!$error) {
     foreach($constants as $field) {
         if (!isset($data[$field])) continue;
         $const = strtoupper($field);
-        if ($field == 'db_file' && !empty($data[$field]) && substr($data[$field], 0, 3)=='../') {
-            $data[$field] = '../'.$data[$field];
+        if ($field == 'db_file' && !empty($data[$field]) && substr($data[$field], 0, 3) == '..' . DIRECTORY_SEPARATOR) {
+            $data[$field] = '..' . DIRECTORY_SEPARATOR . $data[$field];
         }
         if (!defined($const)) define($const, $data[$field]);
     }

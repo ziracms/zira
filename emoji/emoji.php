@@ -34,7 +34,8 @@ class Emoji {
         $js .= 'var emoji_url = \''.Zira\Helper::url('emoji/load/typo').'\'; ';
         $js .= 'var emoji_size = '.Models\Emoji::SIZE.';';
         $js .= Zira\Helper::tag_close('script');
-        Zira\View::addHTML($js, Zira\View::VAR_HEAD_BOTTOM);
+        //Zira\View::addHTML($js, Zira\View::VAR_HEAD_BOTTOM);
+        Zira\View::addBodyBottomScript($js);
 
         Zira\View::addJsStrings(array(
             'Select emoji' => Zira\Locale::tm('Select emoji', 'emoji'),

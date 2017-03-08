@@ -45,7 +45,7 @@ $form->setValues(Zira\Session::getArray());
 if (!Zira\Session::get('db_type')) $form->setValue('db_type', 'mysql');
 if (!Zira\Session::get('db_host')) $form->setValue('db_host', 'localhost');
 if (!Zira\Session::get('db_port')) $form->setValue('db_port', '3306');
-if (!Zira\Session::get('db_file')) $form->setValue('db_file', '../zira.db');
+if (!Zira\Session::get('db_file')) $form->setValue('db_file', '..' . DIRECTORY_SEPARATOR . 'zira.db');
 if (!Zira\Session::get('db_prefix')) $form->setValue('db_prefix', 'zira_');
 if (!Zira\Session::get('root_dir')) $form->setValue('root_dir', '.');
 if (!Zira\Session::get('base_url')) {

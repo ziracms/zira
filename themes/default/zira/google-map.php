@@ -4,6 +4,7 @@
 <?php if (((!empty($latitude)  && !empty($longitude)) || !empty($address)) && !empty($apiKey)): ?>
 <div id="google-map" style="width:100%; height: 400px"></div>
 <?php if (!empty($latitude) && !empty($longitude) && !empty($apiKey)): ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 function google_map_init() {
     var map = new google.maps.Map(document.getElementById('google-map'), {
@@ -17,8 +18,10 @@ function google_map_init() {
     });
 }
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>
 <?php if ((empty($latitude)  || empty($longitude)) && !empty($address) && !empty($apiKey)): ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 function google_map_init() {
     var geocoder = new google.maps.Geocoder();
@@ -39,6 +42,7 @@ function google_map_init() {
     });
 }
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?language=<?php echo Zira\Locale::getLanguage(); ?>&callback=google_map_init&key=<?php echo Zira\Helper::html($apiKey); ?>"></script>
 <?php endif; ?>

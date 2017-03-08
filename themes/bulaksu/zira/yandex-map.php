@@ -5,6 +5,7 @@
 <script async defer src="https://api-maps.yandex.ru/2.1/?lang=<?php echo Zira\Locale::getLanguage(); ?>&onload=yandex_map_init<?php if (!empty($apiKey)) echo '&apikey='.Zira\Helper::html($apiKey); ?>" type="text/javascript"></script>
 <div id="yandex-map" style="width:100%; height: 400px"></div>
 <?php if (!empty($latitude) && !empty($longitude)): ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 function yandex_map_init(){
     yandexMap = new ymaps.Map("yandex-map", {
@@ -21,8 +22,10 @@ function yandex_map_init(){
     //yandexMap.controls.add(new ymaps.control.ZoomControl()).add(new ymaps.control.ScaleLine()).add('typeSelector');
 }
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>
 <?php if ((empty($latitude)  || empty($longitude)) && !empty($address)): ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 function yandex_map_init(){
     var yandexMap,yandexPlacemark,yandexGeocoder;
@@ -49,5 +52,6 @@ function yandex_map_init(){
     );
 }
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>
 <?php endif; ?>

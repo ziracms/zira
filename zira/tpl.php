@@ -13,6 +13,19 @@ function tm($str, $module, $arg = null) {
     return Zira\Locale::tm($str, $module, $arg);
 }
 
+function layout_data($data = null, $view = null) {
+    static $var;
+    if ($data !== null) $var = $data;
+    if ($view !== null) layout_view ($view);
+    return $var;
+}
+
+function layout_view($view = null) {
+    static $var;
+    if ($view !== null) $var = $view;
+    return $var;
+}
+
 function breadcrumbs() {
     echo Zira\Page::breadcrumbs();
 }
@@ -24,7 +37,7 @@ function layout_head() {
         Zira\View::getLayoutData(Zira\View::VAR_TITLE) .
         Zira\View::getLayoutData(Zira\View::VAR_META) .
         Zira\View::getLayoutData(Zira\View::VAR_STYLES) .
-        Zira\View::getLayoutData(Zira\View::VAR_SCRIPTS) .
+        (!INSERT_SCRIPTS_TO_BODY ? Zira\View::getLayoutData(Zira\View::VAR_SCRIPTS) : '').
         Zira\View::getLayoutData(Zira\View::VAR_HEAD_BOTTOM)
     ;
     Zira\View::renderWidgets(Zira\View::VAR_HEAD_BOTTOM);
@@ -38,7 +51,8 @@ function layout_body_top() {
 }
 
 function layout_body_bottom() {
-    echo Zira\View::getLayoutData(Zira\View::VAR_BODY_BOTTOM);
+    echo  Zira\View::getBodyBottomScripts() . 
+          Zira\View::getLayoutData(Zira\View::VAR_BODY_BOTTOM);
     Zira\View::renderWidgets(Zira\View::VAR_BODY_BOTTOM);
     Zira\View::includePlaceholderViews(Zira\View::VAR_BODY_BOTTOM);
 }
@@ -81,7 +95,15 @@ function layout_footer() {
 
 function layout_content() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT);
-    Zira\View::renderContentData();
+    Zira\View::renderContentData(layout_data(), layout_view());
     Zira\View::renderWidgets(Zira\View::VAR_CONTENT);
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT);
+}
+
+function layout_js_begin() {
+    ob_start();
+}
+
+function layout_js_end() {
+    Zira\View::addBodyBottomScript(ob_get_clean());
 }

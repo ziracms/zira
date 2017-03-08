@@ -10,7 +10,7 @@
  */
 
 // Zira constants
-require('../../../const.php');
+require('..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'const.php');
 
 // Handle incoming request if it's a script call
 if (TinyMCE_Compressor::getParam("js")) {

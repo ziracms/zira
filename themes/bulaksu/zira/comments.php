@@ -68,10 +68,12 @@
 <?php endif; ?>
 <?php if (empty($ajax)): ?>
 </div>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 zira_scroll_to_comments_form = function() {
-var top = $('.container #content form#form-comment-form').parents('.form-panel').offset().top;
-$('html, body').animate({'scrollTop':top},800);
+var top = jQuery('.container #content form#form-comment-form').parents('.form-panel').offset().top;
+jQuery('html, body').animate({'scrollTop':top},800);
 };
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>

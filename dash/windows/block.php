@@ -28,9 +28,21 @@ class Block extends Window {
     public function create() {
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
-                'desk_window_form_init(this);'
+                'desk_call(dash_block_load, this);'
             )
         );
+        $this->setOnUpdateContentJSCallback(
+            $this->createJSCallback(
+               'desk_call(dash_block_update, this);'
+            )
+        );
+        $this->setOnResizeJSCallback(
+            $this->createJSCallback(
+                'desk_call(dash_block_resize, this);'
+            )
+        );
+        
+        $this->includeJS('dash/block');
     }
 
     public function load() {

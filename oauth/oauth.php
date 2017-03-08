@@ -71,7 +71,8 @@ class Oauth {
                 "\t".'fjs.parentNode.insertBefore(js, fjs);'."\r\n".
                 '}(document, \'script\', \'facebook-jssdk\'));'."\r\n";
         $js .= Zira\Helper::tag_close('script')."\r\n";
-        Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        //Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        Zira\View::addBodyBottomScript($js);
         self::$_facebook_js_sdk_added = true;
     }
 
@@ -138,7 +139,8 @@ class Oauth {
             "\t".'document.getElementById("vk_api_transport").appendChild(el);'."\r\n".
         '}, 0);'."\r\n";
         $js .= Zira\Helper::tag_close('script')."\r\n";
-        Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        //Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        Zira\View::addBodyBottomScript($js);
         self::$_vkontakte_js_open_api_added = true;
     }
 

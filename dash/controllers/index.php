@@ -24,7 +24,8 @@ class Index extends Dash\Controller {
         $script .= '},\'json\');';
         $script .= ' });';
         $script .= Zira\Helper::tag_close('script');
-        Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
+        //Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
+        Zira\View::addBodyBottomScript($script);
 
         $records_co = Zira\Models\Record::getCollection()
                                         ->count()

@@ -61,6 +61,7 @@ return array(
     'Administrator' => 'Администратор',
     'Invalid email' => 'Некорректный email',
     'Secret key is too short' => 'Секретный ключ слишком короткий',
+    'min. %s char' => array('мин. %s символ', 'мин. %s символа', 'мин. %s символов'),
     'min. %s chars' => 'мин. %s символов',
     'Console password is too short' => 'Пароль от консоли слишком короткий',
     'Configuration' => 'Конфигурация',

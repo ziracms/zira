@@ -40,6 +40,7 @@
 <p class="no-messages-message"><?php echo t('You have no messages'); ?></p>
 <?php endif; ?>
 <?php if (isset($pagination)) echo $pagination; ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 (function($) {
     zira_convesation_on_select = function () {
@@ -120,3 +121,4 @@
     });
 })(jQuery);
 </script>
+<?php layout_js_end(); ?>

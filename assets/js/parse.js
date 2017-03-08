@@ -159,7 +159,7 @@
 
     zira_parse_bind_lightbox = function() {
         $('.zira-lightbox, .parsed-image').each(function(){
-            if ($(this).width() < 300 || $(this).height() < 200 || $(this).hasClass('lightbox-image')) return true;
+            if ($(this).width() < 30 || $(this).height() < 20 || $(this).hasClass('lightbox-image')) return true;
             $(this).addClass('lightbox-image').click(zira_parse_lightbox);
         });
     };

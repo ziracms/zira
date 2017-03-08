@@ -127,10 +127,11 @@
 <?php if (!isset($form) && !empty($topic_active) && !Zira\User::isAuthorized()): ?>
 <?php echo tm('%s to reply', 'forum', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
-
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 zira_scroll_to_forum_form = function() {
-    var top = $('.container #content form#form-forum-message-form').parents('.form-panel').offset().top;
-    $('html, body').animate({'scrollTop':top},800);
+    var top = jQuery('.container #content form#form-forum-message-form').parents('.form-panel').offset().top;
+    jQuery('html, body').animate({'scrollTop':top},800);
 };
 </script>
+<?php layout_js_end(); ?>

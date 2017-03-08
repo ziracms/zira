@@ -28,15 +28,15 @@ class Credentials extends Form {
         $html .= $this->input(Locale::t('Website name').'*', 'site_name');
         $html .= $this->input(Locale::t('Website slogan').'*', 'site_slogan');
         $html .= $this->input(Locale::t('Contact Email').'*', 'email_from');
-        $html .= $this->input(Locale::t('Secret key').'*', 'secret', array('placeholder'=>Locale::t('min. %s chars',8),'title'=>Locale::t('enter random chars')));
+        $html .= $this->input(Locale::t('Secret key').'*', 'secret', array('placeholder'=>Locale::t('min. %s char',8),'title'=>Locale::t('enter random chars')));
         $html .= Helper::tag('div', null, array('style'=>'margin: 40px 0px'));
         $html .= Helper::tag_open('div', array('class'=>'form-group'));
         $html .= Helper::tag('label', Locale::t('Administrator').':', array('class'=>'col-sm-3 control-label'));
         $html .= Helper::tag_close('div');
         $html .= $this->input(Locale::t('First name').'*', 'firstname');
         $html .= $this->input(Locale::t('Last name').'*', 'secondname');
-        $html .= $this->input(Locale::t('Login').'*', 'username');
-        $html .= $this->input(Locale::t('Password').'*', 'password');
+        $html .= $this->input(Locale::t('Login').'*', 'username', array('placeholder'=>Locale::t('min. %s char', \Zira\User::LOGIN_MIN_CHARS)));
+        $html .= $this->input(Locale::t('Password').'*', 'password', array('placeholder'=>Locale::t('min. %s char', \Zira\User::PASSWORD_MIN_CHARS)));
         $html .= $this->input(Locale::t('Email').'*', 'email');
         $html .= $this->close();
         return $html;

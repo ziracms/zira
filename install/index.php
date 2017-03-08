@@ -196,9 +196,11 @@ $layout_file = ROOT_DIR . DIRECTORY_SEPARATOR .
             'install' . DIRECTORY_SEPARATOR .
             'layout.php';
 
+Zira\View::addBodyBottomScript($init_js);
+
 Zira\View::renderLayout(array(
     Zira\View::VAR_TITLE => Zira\Locale::t('Installation'),
-    Zira\View::VAR_CONTENT => $init_content . $init_js
+    Zira\View::VAR_CONTENT => $init_content
 ), $view_file, $layout_file);
 
 Zira\Session::close();

@@ -268,7 +268,7 @@ try {
                 'const DB_PASSWORD = \'' . DB_PASSWORD . '\';' . "\r\n";
         } else if (DB_TYPE == 'sqlite') {
             $db_file = DB_FILE;
-            if (substr($db_file, 0, 6)=='../../') {
+            if (substr($db_file, 0, 6) == '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) {
                 $db_file = substr($db_file, 3);
             }
             $config .= 'const DB_FILE = \'' . $db_file . '\';' . "\r\n";

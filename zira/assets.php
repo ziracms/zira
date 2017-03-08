@@ -30,6 +30,8 @@ class Assets {
         'bxslider.css',
         'zira.css'
     );
+    
+    protected static $_theme_css = 'main.css';
 
     protected static $_js_assets = array(
         'jquery.min.js',
@@ -37,13 +39,16 @@ class Assets {
         'moment.min.js',
         'bootstrap-datetimepicker.min.js',
         'cropper.js',
-        'lightbox.min.js',
         'bxslider.min.js',
         'md5.js',
         'parse.js',
         'upload.inc.js',
         'upload.js',
         'zira.js'
+    );
+    
+    protected static $_js_assets_if_in_body = array(
+        'lightbox.min.js'
     );
 
     public static function getCSSAssets() {
@@ -82,7 +87,25 @@ class Assets {
             $data .= "\r\n\r\n";
             fwrite($f, $data);
         }
+        
+        $theme_css = self::getThemeCSS();
+        fwrite($f, $theme_css);
+        
         fclose($f);
+    }
+    
+    public static function getThemeCSS() {
+        $path = ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR . self::$_theme_css;
+        if (!file_exists($path) || !is_readable($path)) return;
+        $data = '/** '.self::$_theme_css.' **/'."\r\n\r\n";
+        $content = file_get_contents($path);
+        while(strpos($content, '../')!==false) {
+            $content = str_replace('../', rtrim(BASE_URL,'/') . '/' .THEMES_DIR.'/'.View::getTheme().'/'.ASSETS_DIR.'/', $content);
+        }
+        $data .= $content;
+        $data .= "\r\n\r\n";
+        
+        return $data;
     }
 
     public static function mergeJS() {
@@ -215,6 +238,9 @@ class Assets {
 
     public static function init() {
         if (Request::isAjax()) return;
+        if (INSERT_SCRIPTS_TO_BODY) {
+            self::$_js_assets = array_merge(self::$_js_assets, self::$_js_assets_if_in_body);
+        }
         if (Config::get('caching') && self::isCachedAndNotExpired()) {
             self::setActive(true);
         } else if (Config::get('caching') && self::merge()) {

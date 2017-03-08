@@ -23,6 +23,17 @@ var dash_editor_text_update = function() {
     this.editor.save();
 };
 
+var dash_editor_text_resize = function() {
+    if (typeof(this.editor)=="undefined") return;
+    try {
+        window.clearTimeout(this.timer);
+    } catch(err) {}
+    this.timer = window.setTimeout(this.bind(this, function(){
+        this.editor.toTextArea();
+        this.editor = zira_codemirror($(this.content).find('textarea'));
+    }), 500);
+};
+
 var dash_editor_html_update = function() {
     if (typeof(this.editor)=="undefined") return;
     $(this.content).find('textarea[name=content]').val(this.editor.getContent());

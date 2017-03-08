@@ -479,7 +479,7 @@ class Factory {
         $script .= "zira_datepicker(jQuery('#".$name."'))";
         $script .= "});";
         $script .= Helper::tag_close('script');
-        Zira\View::addHTML($script, Zira\View::VAR_BODY_BOTTOM);
+        Zira\View::addBodyBottomScript ($script);
     }
 
     public function parseDatepickerDate($value) {

@@ -25,6 +25,7 @@
     <?php if (isset($content)) echo $content; ?>
 </div>
 </div>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
     (function($) {
         $(document).ready(function(){
@@ -58,3 +59,4 @@
         });
     })(jQuery);
 </script>
+<?php layout_js_end(); ?>

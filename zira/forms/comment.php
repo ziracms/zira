@@ -32,7 +32,8 @@ class Comment extends Form {
         $script = Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(){ zira_reset_comments_form(true); }); });';
         $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_BODY_BOTTOM);
+        //View::addHTML($script, View::VAR_BODY_BOTTOM);
+        View::addBodyBottomScript($script);
     }
 
     protected function _render() {

@@ -35,7 +35,8 @@ class Reply extends Form {
         $script .= '});';
         $script .= '});';
         $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_BODY_BOTTOM);
+        //View::addHTML($script, View::VAR_BODY_BOTTOM);
+        View::addBodyBottomScript($script);
     }
 
     protected function _render() {

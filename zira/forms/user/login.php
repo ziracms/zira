@@ -33,7 +33,8 @@ class Login extends Form {
         $script = Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').find(\'input[type=text]\').focus(); });';
         $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        //View::addHTML($script, View::VAR_HEAD_BOTTOM);
+        View::addBodyBottomScript($script);
     }
 
     protected function _render() {

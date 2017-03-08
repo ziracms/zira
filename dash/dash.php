@@ -489,7 +489,8 @@ class Dash {
         $js .= '});';
         $js .= '})(jQuery);';
         $js .= Zira\Helper::tag_close('script');
-        Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        //Zira\View::addHTML($js, Zira\View::VAR_BODY_BOTTOM);
+        Zira\View::addBodyBottomScript($js);
     }
 
     public static function forbidden() {

@@ -7,7 +7,7 @@
 
 error_reporting(0);
 
-require('../../const.php');
+require('..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .'const.php');
 
 const ASSETS_ROOT = 'cache';
 const ASSETS_CACHE_FILE = '.css.cache';

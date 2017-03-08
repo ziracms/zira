@@ -16,6 +16,8 @@ use Zira\View;
 class Search extends Form {
     protected $_id = 'search-form';
     protected $_extended = false;
+    
+    protected static $_initialized = false;
 
     public function __construct() {
         $this->_is_token_unique = true;
@@ -30,11 +32,13 @@ class Search extends Form {
         $this->setUrl('search');
         $this->setMethod(Request::GET);
         $this->setRenderPanel(false);
-        if (!$this->_extended) {
-        $script = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ zira_init_search(jQuery(\'#'.$this->getId().'\')); });';
-        $script .= Helper::tag_close('script');
-        View::addHTML($script, View::VAR_BODY_BOTTOM);
+        if (!$this->_extended && !self::$_initialized) {
+            $script = Helper::tag_open('script', array('type'=>'text/javascript'));
+            $script .= 'jQuery(document).ready(function(){ zira_init_search(jQuery(\'#'.$this->getId().'\')); });';
+            $script .= Helper::tag_close('script');
+            //View::addHTML($script, View::VAR_BODY_BOTTOM);
+            View::addBodyBottomScript($script);
+            self::$_initialized = true;
         }
     }
 

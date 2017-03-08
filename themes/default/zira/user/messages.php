@@ -62,10 +62,12 @@
 <?php endif; ?>
 <?php if (isset($pagination)) echo $pagination; ?>
 <?php if (isset($form) && !empty($users) && count($users)>0) echo $form; ?>
+<?php layout_js_begin(); ?>
 <script type="text/javascript">
 zira_scroll_to_message_form = function() {
-    var top = $('.container #content form#form-user-message-form').offset().top;
-    $('html, body').animate({'scrollTop':top},800);
+    var top = jQuery('.container #content form#form-user-message-form').offset().top;
+    jQuery('html, body').animate({'scrollTop':top},800);
 };
 </script>
+<?php layout_js_end(); ?>
 <?php endif; ?>

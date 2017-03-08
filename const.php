@@ -55,3 +55,4 @@ const ENABLE_CONFIG_DATABASE = true;
 const CACHE_CATEGORIES_LIST = true;
 const CACHE_WIDGETS_LIST = true;
 const FORCE_GZIP_ASSETS = true;
+const INSERT_SCRIPTS_TO_BODY = true;

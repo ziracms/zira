@@ -410,7 +410,7 @@ dt {
     border-bottom-right-radius: 6px;
 }
 .bootstrap-datetimepicker-widget {
-    color: #333;
+    color: #65b0ff;
 }
 /** user profile **/
 .user-profile-photo {
@@ -701,7 +701,6 @@ header #top-menu-wrapper nav .btn-default {
 .image-wrapper {
     max-width:100%;
     display: inline-block;
-    display: block\9; /** ie8 hack **/
     vertical-align: top;
     margin: 0px 24px 24px 0px;
     background: #6F839E none repeat scroll 0% 0%;

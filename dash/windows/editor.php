@@ -71,6 +71,11 @@ abstract class Editor extends Window {
                'desk_call(dash_editor_text_update, this);'
             )
         );
+        $this->setOnResizeJSCallback(
+            $this->createJSCallback(
+                'desk_call(dash_editor_text_resize, this);'
+            )
+        );
     }
 
     public function createHtmlEditor() {
