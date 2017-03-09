@@ -133,4 +133,55 @@ class Menu extends Model {
 
         return array('reload'=>$this->getJSClassName());
     }
+    
+    public function info($id, $language) {
+        $item = new Zira\Models\Menu($id);
+        if (!$item->loaded()) return;
+
+        $parent = $item->id;
+        $menu = $item->menu_id;
+
+        $query = Zira\Models\Menu::getCollection();
+
+        if (empty($language) || !in_array($language, Zira\Config::get('languages'))) {
+            $query->where('parent_id', '=', $parent);
+        } else {
+            $query->open_query();
+            $query->where('parent_id', '=', $parent);
+            $query->and_where('language','is',null);
+            $query->close_query();
+            $query->union();
+            $query->open_query();
+            $query->where('parent_id', '=', $parent);
+            $query->and_where('language','=',$language);
+            $query->close_query();
+            $query->merge();
+        }
+        $query->order_by('sort_order', 'asc');
+
+        $rows = $query->get();
+
+        $secondory_items = array();
+        $child_items = array();
+        foreach($rows as $row) {
+            if ($menu == Zira\Menu::MENU_PRIMARY && $row->menu_id == Zira\Menu::MENU_SECONDARY) {
+                $secondory_items []= array(
+                    'id' => $row->id,
+                    'menu_id' => $row->menu_id,
+                    'title' => $row->title
+                );
+            } else {
+                $child_items []= array(
+                    'id' => $row->id,
+                    'menu_id' => $row->menu_id,
+                    'title' => $row->title
+                );
+            }
+        }
+
+        return array(
+            'secondary' => $secondory_items,
+            'child' => $child_items
+        );
+    }
 }
