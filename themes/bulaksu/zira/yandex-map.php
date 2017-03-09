@@ -2,7 +2,6 @@
 <?php $latitude = Zira\Config::get('maps_latitude'); ?>
 <?php $longitude = Zira\Config::get('maps_longitude'); ?>
 <?php if ((!empty($latitude)  && !empty($longitude)) || !empty($address)): ?>
-<script async defer src="https://api-maps.yandex.ru/2.1/?lang=<?php echo Zira\Locale::getLanguage(); ?>&onload=yandex_map_init<?php if (!empty($apiKey)) echo '&apikey='.Zira\Helper::html($apiKey); ?>" type="text/javascript"></script>
 <div id="yandex-map" style="width:100%; height: 400px"></div>
 <?php if (!empty($latitude) && !empty($longitude)): ?>
 <?php layout_js_begin(); ?>
@@ -54,4 +53,7 @@ function yandex_map_init(){
 </script>
 <?php layout_js_end(); ?>
 <?php endif; ?>
+<?php layout_js_begin(); ?>
+<script async defer src="https://api-maps.yandex.ru/2.1/?lang=<?php echo Zira\Locale::getLanguage(); ?>&onload=yandex_map_init<?php if (!empty($apiKey)) echo '&apikey='.Zira\Helper::html($apiKey); ?>" type="text/javascript"></script>
+<?php layout_js_end(); ?>
 <?php endif; ?>

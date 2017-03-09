@@ -147,6 +147,8 @@
             var _m = _p.exec(m[0]);
             if (_m && typeof(_m[0]) != "undefined" && typeof(_m[1]) != "undefined") {
                 s = ' ' + _m[0];
+                m[1] = m[1].replace(_m[0], ' ');
+                m[3] = m[3].replace(_m[0], ' ');
             }
             content = content.replace(m[0], '<div class="image-wrapper"'+s+'>'+
                                             '<img class="image parsed-image" '+m[1]+'alt="'+m[2]+'"'+m[3]+'>'+

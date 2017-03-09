@@ -44,5 +44,7 @@ function google_map_init() {
 </script>
 <?php layout_js_end(); ?>
 <?php endif; ?>
+<?php layout_js_begin(); ?>
 <script async defer src="https://maps.googleapis.com/maps/api/js?language=<?php echo Zira\Locale::getLanguage(); ?>&callback=google_map_init&key=<?php echo Zira\Helper::html($apiKey); ?>"></script>
+<?php layout_js_end(); ?>
 <?php endif; ?>
