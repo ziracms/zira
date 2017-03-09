@@ -412,6 +412,19 @@ dt {
 .bootstrap-datetimepicker-widget {
     color: #65b0ff;
 }
+.bootstrap-datetimepicker-widget.dropdown-menu.top::before {
+    border-top: 7px solid #505562;
+}
+.bootstrap-datetimepicker-widget.dropdown-menu.top::after {
+    border-top: 6px solid #505562;
+}
+.bootstrap-datetimepicker-widget table td.day:hover,
+.bootstrap-datetimepicker-widget table td.hour:hover,
+.bootstrap-datetimepicker-widget table td.minute:hover,
+.bootstrap-datetimepicker-widget table td.second:hover {
+    background: #65b0ff;
+    color: #fff;
+}
 /** user profile **/
 .user-profile-photo {
     float: left;

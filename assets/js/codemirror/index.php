@@ -26,6 +26,9 @@ foreach ($files as $file) {
     $output .=  '// ' . $file . "\r\n\r\n" . file_get_contents($file) . "\r\n\r\n";
 }
 
+$etag = isset($_GET['t']) ? intval($_GET['t']) : 0;
+$gzip = intval(substr($etag,0,1))>1;
+
 header_remove('X-Powered-By');
 header_remove('Pragma');
 header_remove('Set-Cookie');
@@ -39,7 +42,7 @@ if (isset($_SERVER['HTTP_ACCEPT_ENCODING']) && preg_match( '/\b(x-gzip|gzip)\b/'
     $accept_encoding = $match[1];
 }
 if (empty($accept_encoding) && defined('FORCE_GZIP_ASSETS') && FORCE_GZIP_ASSETS) $accept_encoding = 'gzip';
-if (function_exists('gzencode') && !@ini_get('zlib.output_compression') && !empty($accept_encoding)) {
+if ($gzip && function_exists('gzencode') && !@ini_get('zlib.output_compression') && !empty($accept_encoding)) {
     header("Vary: Accept-Encoding");
     header("Content-Encoding: " . $accept_encoding);
 

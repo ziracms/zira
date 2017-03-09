@@ -33,6 +33,10 @@ class View {
     const VAR_SIDEBAR_RIGHT = 'sidebar_right';
     const VAR_HEADER = 'header';
     const VAR_FOOTER = 'footer';
+    
+    public static $data = array();
+    public static $view = null;
+    public static $layout = null;
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
@@ -217,7 +221,11 @@ class View {
                             $layout . '.php';
             }
 
-            self::renderLayout($data, $view_file, $layout_file);
+            self::$data = $data;
+            self::$view = $view_file;
+            self::$layout = $layout_file;
+            
+            self::renderLayout();
 
             if (defined('DEBUG') && DEBUG && defined('START_TIME')) {
                 echo "\r\n".'<!--Memory usage: '.(memory_get_usage(true)/1024).' kB-->';
@@ -276,10 +284,9 @@ class View {
         echo "\r\n";
     }
 
-    public static function renderLayout($data, $view_file, $layout_file) {
+    public static function renderLayout() {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
-        layout_data($data, $view_file);
-
+        
         $js_scripts = '';
         if (self::$_render_js_strings) {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
@@ -329,12 +336,8 @@ class View {
         self::addCR();
         self::$_render_started = true;
 
-        include($layout_file);
-    }
-
-    public static function renderContentData($data, $view) {
-        if ($data === null || $view === null) return;
-        self::renderContent($data, $view);
+        $theme_file = ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . self::getTheme() . DIRECTORY_SEPARATOR . 'theme.php';
+        include($theme_file);
     }
 
     public static function setRenderLayout($render_layout) {
@@ -345,7 +348,7 @@ class View {
         self::$_layout_data = array_merge(self::$_layout_data, $layout_data);
     }
     
-    public static function getLayoutDataArray() {
+    public static function &getLayoutDataArray() {
         return self::$_layout_data;
     }
 
@@ -371,6 +374,10 @@ class View {
     public static function getPlaceholderViews($placeholder) {
         if (!isset(self::$_placeholder_views[$placeholder])) return array();
         return self::$_placeholder_views[$placeholder];
+    }
+    
+    public static function &getPlaceholderViewsArray() {
+        return self::$_placeholder_views;
     }
 
     public static function includePlaceholderViews($placeholder) {
@@ -644,27 +651,41 @@ class View {
     public static function addCodeMirrorAssets() {
         if (self::$_codemirror_assets_added) return;
         self::addStyle('codemirror.css');
-//        self::addScript('codemirror/codemirror.js');
-//        self::addScript('codemirror/htmlmixed.js');
-//        self::addScript('codemirror/javascript.js');
-//        self::addScript('codemirror/css.js');
-//        self::addScript('codemirror/xml.js');
-//        self::addScript('codemirror/simplescrollbars.js');
-        $script = 'codemirror/index.php';
-        $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
-        if (Config::get('clean_url')) {
-            $script = 'codemirror.js';
-        }
-        self::addScript($script . '?t=' . $mtime);
+//        $script = 'codemirror/index.php';
+//        $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
+//        if (Config::get('clean_url')) {
+//            $script = 'cm';
+//        }
+//        self::addScript($script . '?t=' . (intval(Assets::isGzipEnabled())+1).$mtime);
         self::$_codemirror_assets_added = true;
     }
 
     public static function addCodeMirror() {
         if (self::$_codemirror_added) return;
         self::addCodeMirrorAssets();
+        $script = 'codemirror/index.php';
+        $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
+        if (Config::get('clean_url')) {
+            $script = 'cm';
+        }
+        $script_url = $script . '?t=' . (intval(Assets::isGzipEnabled())+1).$mtime;
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
-        $script .= "zira_codemirror = function(element){";
+        $script .= "zira_codemirror_init = function(element){";
         $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: 'htmlmixed', inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple' });";
+        $script .= "};";
+        $script .= "zira_codemirror = function(element){";
+        $script .= "var cm = {};";
+        $script .= "if (typeof CodeMirror == 'undefined') {";
+        $script .= "var script = document.createElement('script');";
+        $script .= "script.onload = function() {";
+        $script .= "cm.editor = zira_codemirror_init(element);";
+        $script .= "};";
+        $script .= "script.src = '".Helper::jsUrl($script_url)."';";
+        $script .= "document.body.appendChild(script);";
+        $script .= "} else {";
+        $script .= "cm.editor = zira_codemirror_init(element);";
+        $script .= "}";
+        $script .= "return cm;";
         $script .= "};";
         $script .= Helper::tag_close('script');
         //self::addHTML($script, self::VAR_BODY_BOTTOM);
@@ -765,6 +786,14 @@ class View {
 
     public static function setWidgets(array $widgets) {
         self::$_widgets=$widgets;
+    }
+    
+    public static function &getWidgetsArray() {
+        return self::$_widgets;
+    }
+    
+    public static function &getDbWidgetsArray() {
+        return self::$_db_widgets;
     }
 
     public static function setRenderWidgets($render_widgets) {

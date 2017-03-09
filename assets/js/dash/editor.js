@@ -15,22 +15,22 @@ var dash_editor_text_load = function() {
     this.resetFooterContent();
     this.appendFooterContent(val.length);
     
-    this.editor = zira_codemirror($(this.content).find('textarea'));
+    this.cm = zira_codemirror($(this.content).find('textarea'));
 };
 
 var dash_editor_text_update = function() {
-    if (typeof(this.editor)=="undefined") return;
-    this.editor.save();
+    if (typeof(this.cm)=="undefined") return;
+    this.cm.editor.save();
 };
 
 var dash_editor_text_resize = function() {
-    if (typeof(this.editor)=="undefined") return;
+    if (typeof(this.cm)=="undefined") return;
     try {
         window.clearTimeout(this.timer);
     } catch(err) {}
     this.timer = window.setTimeout(this.bind(this, function(){
-        this.editor.toTextArea();
-        this.editor = zira_codemirror($(this.content).find('textarea'));
+        this.cm.editor.toTextArea();
+        this.cm = zira_codemirror($(this.content).find('textarea'));
     }), 500);
 };
 

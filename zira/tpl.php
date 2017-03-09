@@ -13,17 +13,12 @@ function tm($str, $module, $arg = null) {
     return Zira\Locale::tm($str, $module, $arg);
 }
 
-function layout_data($data = null, $view = null) {
-    static $var;
-    if ($data !== null) $var = $data;
-    if ($view !== null) layout_view ($view);
-    return $var;
+function layout_js_begin() {
+    ob_start();
 }
 
-function layout_view($view = null) {
-    static $var;
-    if ($view !== null) $var = $view;
-    return $var;
+function layout_js_end() {
+    Zira\View::addBodyBottomScript(ob_get_clean());
 }
 
 function breadcrumbs() {
@@ -95,15 +90,7 @@ function layout_footer() {
 
 function layout_content() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT);
-    Zira\View::renderContentData(layout_data(), layout_view());
+    Zira\View::renderContent(Zira\View::$data, Zira\View::$view);
     Zira\View::renderWidgets(Zira\View::VAR_CONTENT);
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT);
-}
-
-function layout_js_begin() {
-    ob_start();
-}
-
-function layout_js_end() {
-    Zira\View::addBodyBottomScript(ob_get_clean());
 }
