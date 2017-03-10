@@ -73,7 +73,7 @@ Zira\View::setTheme(DEFAULT_THEME);
 Zira\View::setRenderJsStrings(false);
 Zira\View::setRenderBreadcrumbs(false);
 Zira\View::addDefaultAssets();
-Zira\View::addThemeAssets();
+//Zira\View::addThemeAssets();
 Zira\View::addWidget('\Zira\Widgets\Logo');
 
 Zira\Config::set('language', $language);

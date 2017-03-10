@@ -32,4 +32,4 @@
  * unset($widgets['sidebar_right']);
  */
 
-include(Zira\View::$layout);
+return true;

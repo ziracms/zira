@@ -2,7 +2,7 @@
 <div class="comments-wrapper">
 <div class="btn-group comment-btn-group" role="group">
 <?php if (isset($form) && !empty($comments)): ?>
-<button onclick="zira_scroll_to_comments_form()" class="btn btn-primary comment-btn"><?php echo t('Leave a comment') ?></button>
+<button class="btn btn-primary comment-btn scroll-down" data-target="#comment"><?php echo t('Leave a comment') ?></button>
 <?php endif; ?>
 <?php if (!empty($comments)): ?>
 <button class="btn btn-default comments-reload" type="button" title="<?php echo t('Reload') ?>" data-url="<?php echo Zira\Helper::url('comments') ?>" data-record="<?php echo intval($record_id) ?>" data-page="0"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -68,12 +68,4 @@
 <?php endif; ?>
 <?php if (empty($ajax)): ?>
 </div>
-<?php layout_js_begin(); ?>
-<script type="text/javascript">
-zira_scroll_to_comments_form = function() {
-var top = jQuery('.container #content form#form-comment-form').parents('.form-panel').offset().top;
-jQuery('html, body').animate({'scrollTop':top},800);
-};
-</script>
-<?php layout_js_end(); ?>
 <?php endif; ?>

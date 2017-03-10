@@ -86,6 +86,12 @@
             zira_init_scroll_to_top();
         }
         /**
+         * Scroll to element
+         */
+        if ($('.scroll-down').length>0) {
+            zira_init_scroll_down();
+        }
+        /**
          * Dropdowns
          */
         $('body').on('mouseover', 'nav ul li a, .dropdown ul li a', function(){
@@ -620,6 +626,16 @@
             }
         });
     };
+    
+    zira_init_scroll_down = function() {
+        $('.scroll-down').click(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var selector = $(this).data('target');
+            if (typeof selector == "undefined") return;
+            zira_scroll(selector);
+        });
+    };
 
     /**
      * modal
@@ -639,7 +655,7 @@
         zira_modal_create('zira-multi-prompt-dialog', 'zira-prompt-modal', '', zira_modal_multi_input(), zira_modal_cancel_btn()+zira_modal_ok_btn());
     }
 
-    function zira_modal_create(id, className, title, content, buttons) {
+    zira_modal_create = function(id, className, title, content, buttons) {
         if (className.length>0) className += ' ';
         var html = '<div class="'+className+'zira-modal modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-labelledby="'+id+'-label">';
             html += '<div class="modal-dialog" role="document">';
@@ -659,35 +675,35 @@
             html += '</div>';
 
         $('body').append(html);
-    }
+    };
 
-    function zira_modal_close_btn() {
+    zira_modal_close_btn = function() {
         return '<button type="button" class="btn btn-default modal-focus" data-dismiss="modal">'+t('Close')+'</button>';
-    }
+    };
 
-    function zira_modal_no_btn() {
+    zira_modal_no_btn = function() {
         return '<button type="button" class="btn btn-default" data-dismiss="modal">'+t('No')+'</button>';
-    }
+    };
 
-    function zira_modal_yes_btn() {
+    zira_modal_yes_btn = function() {
         return '<button type="button" class="btn btn-primary modal-focus">'+t('Yes')+'</button>';
-    }
+    };
 
-    function zira_modal_cancel_btn() {
+    zira_modal_cancel_btn = function() {
         return '<button type="button" class="btn btn-default" data-dismiss="modal">'+t('Cancel')+'</button>'
-    }
+    };
 
-    function zira_modal_ok_btn() {
+    zira_modal_ok_btn = function() {
         return '<button type="button" class="btn btn-primary">'+t('OK')+'</button>';
-    }
+    };
 
-    function zira_modal_input() {
+    zira_modal_input = function() {
         return '<input type="text" name="modal-input" class="form-control modal-focus" />';
-    }
+    };
 
-    function zira_modal_multi_input() {
+    zira_modal_multi_input = function() {
         return '<textarea class="form-control modal-focus" name="modal-input"></textarea>';
-    }
+    };
 
     zira_modal = function(title, content, callback, is_static, id) {
         if ($('.modal-backdrop').length>0) $('.modal-backdrop').remove();
@@ -824,6 +840,11 @@
             if (zira_multi_prompt.ok && typeof(ok_callback)!="undefined") ok_callback.call(null,val);
             else if (!zira_multi_prompt.ok && typeof(cancel_callback)!="undefined") cancel_callback.call();
         }, false, id);
+    };
+    
+    zira_scroll = function(element) {
+        var top = $(element).offset().top;
+        jQuery('html, body').animate({'scrollTop':top},800);
     };
 
     zira_bind = function(object, method) {

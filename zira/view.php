@@ -337,7 +337,15 @@ class View {
         self::$_render_started = true;
 
         $theme_file = ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . self::getTheme() . DIRECTORY_SEPARATOR . 'theme.php';
-        include($theme_file);
+        $render = include($theme_file);
+        if ($render) {
+            self::finishLayout();
+        }
+    }
+    
+    public static function finishLayout() {
+        self::addThemeAssets();
+        include(self::$layout);
     }
 
     public static function setRenderLayout($render_layout) {

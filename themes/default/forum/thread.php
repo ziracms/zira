@@ -15,7 +15,7 @@
 <div class="collapse navbar-collapse" id="user-messages-panel">
 <?php if (isset($searchForm)) echo $searchForm; ?>
 <?php if (isset($form) && !empty($topic_active)): ?>
-<button onclick="zira_scroll_to_forum_form()" class="btn btn-default navbar-btn navbar-right reply-btn"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Reply') ?></button>
+<button class="btn btn-default navbar-btn navbar-right reply-btn scroll-down" data-target=".form-panel"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Reply') ?></button>
 <?php endif; ?>
 <?php if (isset($form) && empty($topic_active)): ?>
 <button class="btn btn-default navbar-btn navbar-right disabled" title="<?php echo tm('Thread is closed','forum') ?>"><span class="glyphicon glyphicon-lock"></span></button>
@@ -127,11 +127,3 @@
 <?php if (!isset($form) && !empty($topic_active) && !Zira\User::isAuthorized()): ?>
 <?php echo tm('%s to reply', 'forum', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
-<?php layout_js_begin(); ?>
-<script type="text/javascript">
-zira_scroll_to_forum_form = function() {
-    var top = jQuery('.container #content form#form-forum-message-form').parents('.form-panel').offset().top;
-    jQuery('html, body').animate({'scrollTop':top},800);
-};
-</script>
-<?php layout_js_end(); ?>

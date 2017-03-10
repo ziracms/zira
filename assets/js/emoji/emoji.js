@@ -74,6 +74,8 @@
                 $(this).parent().children('.emoji-buttons').find('.emoji-button').tooltip();
             }
         });
+        
+        zira_modal_create('emoji-modal-dialog', '', '', '', zira_modal_close_btn());
     });
 
     /**
@@ -180,17 +182,17 @@
             $(this).parent().children('.emoji-editable').get(0).focus();
             emoji_open_smileys_wnd.selection_range = saveEditableSelection();
         }
-        $('#zira-modal-dialog').bind('shown.bs.modal', function(e) {
+        $('#emoji-modal-dialog').bind('shown.bs.modal', function(e) {
             // keep focus
             e.stopImmediatePropagation();
-            $('#zira-modal-dialog').unbind('shown.bs.modal');
+            $('#emoji-modal-dialog').unbind('shown.bs.modal');
             emoji_load('smileys');
         });
         zira_modal(t('Select emoji'), '<div class="emoji-loader-wrapper"><span class="zira-loader"></span></div>', function(){
             if (typeof(callback)!="undefined" && typeof(emoji_load.smile)!="undefined" && emoji_load.smile) {
                 callback.call(null, emoji_load.smile);
             }
-        }, true, 'zira-modal-dialog');
+        }, true, 'emoji-modal-dialog');
     }
 
     /**
@@ -201,14 +203,14 @@
         $.post(emoji_url,{
                 'typo': typo
             }, function(response) {
-                $('#zira-modal-dialog').find('.emoji-loader-wrapper').replaceWith(response);
-                $('#zira-modal-dialog').find('.emoji-type-link').click(function(){
-                    $('#zira-modal-dialog').find('.emoji-modal-wrapper').replaceWith('<div class="emoji-loader-wrapper"><span class="zira-loader"></span></div>');
+                $('#emoji-modal-dialog').find('.emoji-loader-wrapper').replaceWith(response);
+                $('#emoji-modal-dialog').find('.emoji-type-link').click(function(){
+                    $('#emoji-modal-dialog').find('.emoji-modal-wrapper').replaceWith('<div class="emoji-loader-wrapper"><span class="zira-loader"></span></div>');
                     emoji_load($(this).attr('rel'));
                 });
-                $('#zira-modal-dialog').find('.emoji-image-link').click(function(){
+                $('#emoji-modal-dialog').find('.emoji-image-link').click(function(){
                     emoji_load.smile = {'char': emoji_char($(this).attr('rel')), 'image': $(this).html()};
-                    $('#zira-modal-dialog').modal('hide');
+                    $('#emoji-modal-dialog').modal('hide');
                 });
             },
             'html'

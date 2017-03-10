@@ -28,7 +28,7 @@
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
 <?php if (isset($form) && !empty($users) && count($users)>0): ?>
-<button onclick="zira_scroll_to_message_form()" class="btn btn-default navbar-btn navbar-right reply-btn"><span class="glyphicon glyphicon-share-alt"></span> <?php echo t('Reply') ?></button>
+<button class="btn btn-default navbar-btn navbar-right reply-btn scroll-down" data-target=".form-panel"><span class="glyphicon glyphicon-share-alt"></span> <?php echo t('Reply') ?></button>
 <?php endif; ?>
 </div>
 </div>
@@ -62,12 +62,4 @@
 <?php endif; ?>
 <?php if (isset($pagination)) echo $pagination; ?>
 <?php if (isset($form) && !empty($users) && count($users)>0) echo $form; ?>
-<?php layout_js_begin(); ?>
-<script type="text/javascript">
-zira_scroll_to_message_form = function() {
-    var top = jQuery('.container #content form#form-user-message-form').offset().top;
-    jQuery('html, body').animate({'scrollTop':top},800);
-};
-</script>
-<?php layout_js_end(); ?>
 <?php endif; ?>

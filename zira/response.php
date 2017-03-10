@@ -52,7 +52,7 @@ class Response {
         http_response_code(self::$status);
         if (View::isInitialized()) {
             View::addDefaultAssets();
-            View::addThemeAssets();
+            //View::addThemeAssets();
             if (Config::get('site_window_title') && Config::get('site_title')) {
                 $suffix = PAGE_TITLE_DELIMITER . Locale::t(Config::get('site_title'));
             } else {
@@ -71,7 +71,7 @@ class Response {
         http_response_code(self::$status);
         if (View::isInitialized()) {
             View::addDefaultAssets();
-            View::addThemeAssets();
+            //View::addThemeAssets();
             if (Config::get('site_window_title') && Config::get('site_title')) {
                 $suffix = PAGE_TITLE_DELIMITER . Locale::t(Config::get('site_title'));
             } else {
@@ -91,7 +91,7 @@ class Response {
         if (View::isInitialized()) {
             if (defined('DEBUG') && DEBUG && !View::isRenderStarted()) {
                 View::addDefaultAssets();
-                View::addThemeAssets();
+                //View::addThemeAssets();
                 if (Config::get('site_window_title') && Config::get('site_title')) {
                     $suffix = PAGE_TITLE_DELIMITER . Locale::t(Config::get('site_title'));
                 } else {

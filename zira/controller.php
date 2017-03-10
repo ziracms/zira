@@ -10,7 +10,7 @@ namespace Zira;
 abstract class Controller {
     public function _before() {
         View::addDefaultAssets();
-        View::addThemeAssets();
+        //View::addThemeAssets();
     }
 
     public function _after() {

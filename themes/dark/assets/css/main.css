@@ -322,6 +322,11 @@ dt {
 .jumbotron {
     background-color: #5D636E;
 }
+a.label-info:link,
+a.label-info:visited {
+    color: #373B6C;
+    padding-top: .3em;
+}
 .modal-dialog {
     color: #333333;
 }
@@ -940,6 +945,16 @@ article .rating .share-wrapper .share-btn {
 .bx-wrapper .bx-caption {
     background: rgb(60, 65, 69) !important;
     background: rgba(60, 65, 69, 0.8) !important;
+}
+#emoji-modal-dialog .modal-content {
+    background-color: #51545d;
+    color: #fff;
+}
+#emoji-modal-dialog .modal-header {
+    border-bottom: 1px solid #48444e;
+}
+#emoji-modal-dialog .modal-footer {
+    border-top: 1px solid #48444e;
 }
 .list {
     list-style-type: none;
