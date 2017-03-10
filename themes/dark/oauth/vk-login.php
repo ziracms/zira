@@ -1,5 +1,4 @@
 <?php if (!empty($app_id) && !empty($app_secret)): ?>
-<?php layout_js_begin(); ?>
 <script type="text/javascript">
 function oauth_vk_login() {
     var url = '<?php echo \Oauth\Oauth::getVkontakteAuthUrl(); ?>';
@@ -27,5 +26,4 @@ function oauth_vk_redirect(code) {
     window.location.href=url;
 }
 </script>
-<?php layout_js_end(); ?>
 <?php endif; ?>
