@@ -27,7 +27,7 @@ header_remove('Pragma');
 header_remove('Set-Cookie');
 header("Content-Type: text/javascript; charset=utf-8");
 header('Cache-Control: public');
-header("Expires: ".date('r',time()+3600*24));
+header("Expires: ".date('r',time()+3600*24*30));
 
 if (!empty($etag)) header('ETag: '.$etag);
 if (empty($etag) || !isset($_SERVER['HTTP_IF_NONE_MATCH']) || $etag!=$_SERVER['HTTP_IF_NONE_MATCH']) {
