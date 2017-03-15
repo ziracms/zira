@@ -11,6 +11,8 @@ class Request {
     const POST = 'POST';
     const GET = 'GET';
     const FILES = 'FILES';
+    
+    protected static $_mobile;
 
     public static function post($var=null, $default = null) {
         if (!$var) return $_POST;
@@ -113,5 +115,10 @@ class Request {
     public static function isInstallRequestUri() {
         $uri = '/' . trim($_SERVER['REQUEST_URI'],'/');
         return $uri == rtrim(self::detectBaseUrl() ,'/') . '/install';
+    }
+    
+    public static function isMobile() {
+        if (self::$_mobile === null) self::$_mobile = new Vendor\Mobile();
+        return self::$_mobile->isMobile();
     }
 }
