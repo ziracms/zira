@@ -103,6 +103,11 @@ class Image {
         $src_y = $src_height * $top_percent / 100;
         $src_width = $dst_width;
         $src_height = $dst_height;
+        
+        $dst_width = round($dst_width);
+        $dst_height = round($dst_height);
+        $src_x = round($src_x);
+        $src_y = round($src_y);
 
         $dst_image=imagecreatetruecolor($dst_width,$dst_height);
         if (!$dst_image) return false;

@@ -36,6 +36,7 @@ var dash_records_select = function() {
     this.disableItemsByProperty('typo','widget');
     this.disableItemsByProperty('typo','slider');
     this.disableItemsByProperty('typo','gallery');
+    this.disableItemsByProperty('typo','rethumb');
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo == 'record') {
         this.enableItemsByProperty('typo','editor');
         this.enableItemsByProperty('typo','preview');
@@ -56,6 +57,14 @@ var dash_records_select = function() {
     } else if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo == 'category') {
         this.enableItemsByProperty('typo','settings');
         this.enableItemsByProperty('typo','widget');
+    }
+    if (selected && selected.length) {
+        for (var i=0; i<selected.length; i++) {
+            if (selected[i].typo == 'record') {
+                this.enableItemsByProperty('typo','rethumb');
+                break;
+            }
+        }
     }
     if (selected && selected.length && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record' && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.record-infobar').html().length==0)) {
         this.info_last_item = selected[0].data;
@@ -129,8 +138,8 @@ var dash_records_delete = function() {
             data.items.push(selected[i].data);
             data.types.push(selected[i].typo);
         }
+        desk_window_request(this, url('dash/index/delete'), data);
     }
-    desk_window_request(this, url('dash/index/delete'), data);
 };
 
 var dash_records_copy = function() {
@@ -270,6 +279,20 @@ var dash_records_record_image = function() {
             if (typeof(element.parent)=="undefined" || element.parent!='files') return;
             desk_window_request(this, url('dash/records/image'),{'image':element.data, 'item':selected[0].data});
         }));
+    }
+};
+
+var dash_records_record_image_update = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length>0) {
+        var data = {'items':[]};
+        for (var i=0; i<selected.length; i++) {
+            if (typeof(selected[i].data)=="undefined" || typeof(selected[i].typo)=="undefined" || selected[i].typo!='record') continue;
+            data.items.push(selected[i].data);
+        }
+        if (data.items.length>0) {
+            desk_window_request(this, url('dash/records/rethumb'), data);
+        }
     }
 };
 

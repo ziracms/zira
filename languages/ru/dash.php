@@ -363,5 +363,7 @@ return array(
     'Image quality' => 'Качество изображений',
     'Quality' => 'Качество',
     'Watermark margin' => 'Отступ водяного знака',
-    'Optimization / Caching' => 'Оптимизация / Кэширование'
+    'Optimization / Caching' => 'Оптимизация / Кэширование',
+    'Update picture' => 'Обновить изображение',
+    'Updated %s thumbs' => array('Обновлено %s изображение', 'Обновлено %s изображения', 'Обновлено %s изображений')
 );

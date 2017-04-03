@@ -220,6 +220,47 @@ class Records extends Model {
 
         return array('reload' => $this->getJSClassName(),'message' => Zira\Locale::t('Successfully saved'));
     }
+    
+    public function updateRecordImages($ids) {
+        if (empty($ids) || !is_array($ids)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_EDIT_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $co = 0;
+        foreach($ids as $id) {
+            $record = new Zira\Models\Record($id);
+            if (!$record->loaded()) {
+                return array('error' => Zira\Locale::t('An error occurred'));
+            }
+
+            if (!$record->thumb) continue;
+            
+            $old_thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $record->thumb);
+
+            if ($record->image) {
+                $thumb = Zira\Page::createRecordThumb(ROOT_DIR . DIRECTORY_SEPARATOR . $record->image, $record->category_id, $record->id);
+            } else if (preg_match('/<img[\x20][^>]*?src[\x20]*[=][\x20]*(?:\'|")([^\'"]+)/',$record->content, $m)) {
+                if (strpos($m[1], BASE_URL) === 0) $m[1] = substr($m[1], strlen(BASE_URL));
+                $path = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $m[1]);
+                $thumb = Zira\Page::createRecordThumb($path, $record->category_id, $record->id);
+            } else {
+                continue;
+            }
+            
+            if (empty($thumb)) continue;
+
+            if (file_exists($old_thumb)) @unlink($old_thumb);
+            
+            $record->thumb = $thumb;
+            $record->save();
+            
+            $co++;
+        }
+
+        Zira\Cache::clear();
+
+        return array('reload' => $this->getJSClassName(),'message' => Zira\Locale::t('Updated %s thumbs', $co));
+    }
 
     public function copyRecord($root, $id) {
         if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));

@@ -60,6 +60,14 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function rethumb() {
+        if (Zira\Request::isPost()) {
+            $ids = Zira\Request::post('items');
+            $response = $this->getWindowModel()->updateRecordImages($ids);
+            Zira\Page::render($response);
+        }
+    }
 
     public function copy() {
         if (Zira\Request::isPost()) {

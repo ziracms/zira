@@ -366,6 +366,7 @@ class Records extends Window {
             $this->createMenuDropdownItem(Zira\Locale::t('Edit description'), 'glyphicon glyphicon-font', 'desk_call(dash_records_desc, this);', 'edit', true, array('typo'=>'description')),
             $this->createMenuDropdownItem(Zira\Locale::t('SEO tags'), 'glyphicon glyphicon-search', 'desk_call(dash_records_seo, this);', 'edit', true, array('typo'=>'seo')),
             $this->createMenuDropdownItem(Zira\Locale::t('Attach picture'), 'glyphicon glyphicon-picture', 'desk_call(dash_records_record_image, this);', 'edit', true, array('typo'=>'editor')),
+            $this->createMenuDropdownItem(Zira\Locale::t('Update picture'), 'glyphicon glyphicon-refresh', 'desk_call(dash_records_record_image_update, this);', 'delete', true, array('typo'=>'rethumb')),
             $this->createMenuDropdownSeparator(),
             $this->createMenuDropdownItem(Zira\Locale::t('View page'), 'glyphicon glyphicon-eye-open', 'desk_call(dash_records_record_view, this);', 'edit', true, array('typo'=>'preview')),
             $this->createMenuDropdownItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_records_record_page, this);', 'edit', true, array('typo'=>'record')),
