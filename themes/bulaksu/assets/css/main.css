@@ -41,6 +41,7 @@ body {
     /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
     font-family: Roboto,Arial,sans-serif;
     font-size: 14px;
+    background-color: #f0f1f6;
 }
 h1 {
     font-size: 28px;
@@ -81,11 +82,11 @@ a.btn-primary {
     color: #FFF;
 }
 #main-container-wrapper {
-	background: #ffffff url(../images/gradient.jpg) repeat-x 0 0;
+    background: url(../images/gradient.jpg) repeat-x 0 0;
     height: 100%;
 }
 #main-container {
-	background: url(../images/bg.jpg) no-repeat 50% 0%;
+    background: url(../images/bg.jpg) no-repeat 50% 0%;
     min-height: 100%;
 }
 /** bootstrap **/
