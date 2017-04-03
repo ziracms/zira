@@ -257,7 +257,10 @@ class Image {
 
         if (!self::_imagecreate($watermark_path, $watermark_image, $watermark_type, $size)) return false;
 
-        self::prepareImageBackground($src_image, $src_image, $type);
+        if ($type == self::EXT_PNG || $type == self::EXT_GIF) {
+            self::prepareImageBackground($src_image, $src_image, $type);
+            if ($type == self::EXT_GIF) self::prepareImageBackground($watermark_image, $watermark_image, $watermark_type);
+        }
         
         $watermark_width=$size[0];
         $watermark_height=$size[1];
