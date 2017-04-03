@@ -285,20 +285,22 @@ class Files extends Window {
         $bodyItems = array();
         foreach($files as $file) {
             if (!is_readable($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file)) continue;
-            $mtime = date(Zira\Config::get('date_format'), filemtime($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file));
+            $fsize = filesize($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file);
+            $fsize = number_format($fsize / 1024, 2). ' kB';
             if (is_dir($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file)) {
+                $mtime = date(Zira\Config::get('date_format'), filemtime($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file));
                 $bodyItems[]=$this->createBodyFolderItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'folder', 'parent'=>'files'), $mtime);
             } else if (($size=$this->get_image_size($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file))!=false) {
-                $bodyItems[]=$this->createBodyItem($file, $file, Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR, '/', $this->get_image_thumb($root . DIRECTORY_SEPARATOR . $file))), $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'image', 'parent'=>'files', 'image_width'=>$size[0], 'image_height'=>$size[1], 'image_url'=>Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR,'/',$root) . '/' . $file)), $mtime);
+                $bodyItems[]=$this->createBodyItem($file, $file, Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR, '/', $this->get_image_thumb($root . DIRECTORY_SEPARATOR . $file))), $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'image', 'parent'=>'files', 'image_width'=>$size[0], 'image_height'=>$size[1], 'image_url'=>Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR,'/',$root) . '/' . $file)), $fsize);
             } else if (Permission::check(Permission::TO_VIEW_FILES)) {
                 if ($this->is_archive($file)) {
-                    $bodyItems[]=$this->createBodyArchiveItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'archive', 'parent'=>'files'), $mtime);
+                    $bodyItems[]=$this->createBodyArchiveItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'archive', 'parent'=>'files'), $fsize);
                 } else if ($this->is_txt($file)) {
-                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'txt', 'parent'=>'files'), $mtime);
+                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'txt', 'parent'=>'files'), $fsize);
                 } else if ($this->is_html($file)) {
-                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'html', 'parent'=>'files'), $mtime);
+                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'html', 'parent'=>'files'), $fsize);
                 } else {
-                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files'), $mtime);
+                    $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files'), $fsize);
                 }
             }
         }

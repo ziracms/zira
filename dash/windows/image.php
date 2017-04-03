@@ -79,6 +79,18 @@ class Image extends Window {
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Add watermark'), 'glyphicon glyphicon-registration-mark', 'desk_call(dash_image_watermark, this);', 'watermark', true)
         );
+        // image qty menu
+        $jpeg_quality = Zira\Image::QUALITY_JPEG;
+        $qtyMenu = array();
+        for ($i=50; $i<=$jpeg_quality; $i+=5) {
+            $qtyMenu []= $this->createMenuDropdownItem($i.'%', 'glyphicon glyphicon-unchecked', 'desk_call(dash_image_change_quality, this, element);', 'quality', true, array('qty' => $i));
+        }
+        $menu = array(
+            $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown()),
+            $this->createMenuItem(Zira\Locale::t('Quality'), $qtyMenu)
+        );
+        $this->setMenuItems($menu);
+        
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Save'), 'glyphicon glyphicon-floppy-disk', 'desk_window_save(this);', 'save', true)
         );
@@ -151,6 +163,10 @@ class Image extends Window {
             'dash_image_files_wnd' => Dash::getInstance()->getWindowJSName(Files::getClass()),
             'dash_image_wnd' => $this->getJSClassName()
         ));
+        
+        $this->addVariables(array(
+            'dash_image_jpeg_quality' => $jpeg_quality
+        ), true);
 
         $this->includeJS('dash/image');
     }

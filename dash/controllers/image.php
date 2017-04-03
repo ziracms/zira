@@ -91,6 +91,16 @@ class Image extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function quality() {
+        if (Zira\Request::isPost()) {
+            $file = Zira\Request::post('file');
+            $qty = Zira\Request::post('quality');
+
+            $response = $this->getWindowModel()->changeQuality($file, $qty);
+            Zira\Page::render($response);
+        }
+    }
 
     public function save() {
         if (Zira\Request::isPost()) {

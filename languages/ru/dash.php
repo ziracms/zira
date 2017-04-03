@@ -360,5 +360,6 @@ return array(
     'Right' => 'Справа',
     'Maximize windows' => 'Разворачивать окна',
     'Enable paginator' => 'Включить пагинатор',
-    'Image quality' => 'Качество изображений'
+    'Image quality' => 'Качество изображений',
+    'Quality' => 'Качество'
 );

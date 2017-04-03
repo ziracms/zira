@@ -21,12 +21,22 @@ var dash_image_open = function() {
             this.enableItemsByProperty('action','crop');
             this.enableItemsByProperty('action','save');
             this.enableItemsByProperty('action','watermark');
+            var ext = null;
+            var prs = this.options.data.file.split('.');
+            if (prs.length) ext = (prs[prs.length-1]).toLowerCase();
+            if (ext == 'jpg' || ext == 'jpeg') {
+                this.enableItemsByProperty('action','quality');
+            }
+            this.image_ext = ext;
             this.updateTitle(this.options.data.file);
             this.resetFooterContent();
-            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+            var image_size = '';
+            if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         });
         var regexp = new RegExp('\\'+desk_ds, 'g');
         this.options.data.image.src=baseUrl(this.options.data.file.replace(regexp,'/'))+'?t='+(new Date().getTime());
+        this.jpeg_quality = dash_image_jpeg_quality;
     }));
 };
 
@@ -105,7 +115,9 @@ var dash_image_change_width = function() {
             $(this.options.data.image).css({'width':response.width,'height':response.height});
             if (response.src) $(this.options.data.image).attr('src',response.src);
             this.resetFooterContent();
-            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+            var image_size = '';
+            if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         }), function(){
             desk_error(t('An error occurred'));
         });
@@ -130,7 +142,9 @@ var dash_image_change_height = function() {
             $(this.options.data.image).css({'width':response.width,'height':response.height});
             if (response.src) $(this.options.data.image).attr('src',response.src);
             this.resetFooterContent();
-            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+            var image_size = '';
+            if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         }), function(){
             desk_error(t('An error occurred'));
         });
@@ -155,7 +169,9 @@ var dash_image_crop_width = function() {
             $(this.options.data.image).css({'width':response.width,'height':response.height});
             if (response.src) $(this.options.data.image).attr('src',response.src);
             this.resetFooterContent();
-            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+            var image_size = '';
+            if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         }), function(){
             desk_error(t('An error occurred'));
         });
@@ -180,7 +196,9 @@ var dash_image_crop_height = function() {
             $(this.options.data.image).css({'width':response.width,'height':response.height});
             if (response.src) $(this.options.data.image).attr('src',response.src);
             this.resetFooterContent();
-            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+            var image_size = '';
+            if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+            this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         }), function(){
             desk_error(t('An error occurred'));
         });
@@ -202,7 +220,18 @@ var dash_image_reload = function() {
         $(this.options.data.image).css({'width':response.width,'height':response.height});
         $(this.options.data.image).attr('src',response.src);
         this.resetFooterContent();
-        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+        var image_size = '';
+        if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
+        if (typeof this.image_ext != "undefined" && (this.image_ext == 'jpg' || this.image_ext == 'jpeg')) {
+            this.jpeg_quality = dash_image_jpeg_quality;
+            var menu = this.findMenuItemByProperty('qty', this.jpeg_quality);
+            if (menu) {
+                $(menu.element).parents('ul').find('.glyphicon-check').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                //$(menu.element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $(menu.element).parents('ul').find('li').removeClass('disabled');
+            }
+        }
     }));
 };
 
@@ -264,7 +293,9 @@ var dash_image_cut = function() {
         $(this.options.data.image).css({'width':response.width,'height':response.height});
         $(this.options.data.image).attr('src',response.src);
         this.resetFooterContent();
-        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+        var image_size = '';
+        if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
     }));
 };
 
@@ -287,8 +318,35 @@ var dash_image_watermark = function() {
         $(this.options.data.image).css({'width':response.width,'height':response.height});
         $(this.options.data.image).attr('src',response.src);
         this.resetFooterContent();
-        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px');
+        var image_size = '';
+        if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
     }));
+};
+
+var dash_image_change_quality = function(element) {
+    var id = $(element).attr('id');
+    var item = this.findMenuItemByProperty('id',id);
+    if (item && typeof(item.qty)!="undefined") {
+        $(element).parents('ul').find('.glyphicon-check').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+        $(element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+        for (var i=item.qty+5; i<=100; i+=5) {
+            var _item = this.findMenuItemByProperty('qty', i);
+            if (_item) $(_item.element).parent('li').addClass('disabled');
+        }
+        this.jpeg_quality = item.qty;
+        desk_window_request(this, url('dash/image/quality'), {'file': this.options.data.file, 'quality': this.jpeg_quality}, this.bind(this, function(response){
+        if (!response || !response.width || !response.height || !response.src) return;
+        this.options.data.image_width=response.width;
+        this.options.data.image_height=response.height;
+        $(this.options.data.image).css({'width':response.width,'height':response.height});
+        $(this.options.data.image).attr('src',response.src);
+        this.resetFooterContent();
+        var image_size = '';
+        if (typeof response.size != "undefined") image_size = ' - '+(response.size / 1024).toFixed(2) + ' kB';
+        this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
+    }));
+    }
 };
 
 var desk_image_editor = function(file) {

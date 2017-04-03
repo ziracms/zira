@@ -73,8 +73,7 @@ class Image {
         $dst_image=imagecreatetruecolor($dst_width,$dst_height);
         if (!$dst_image) return false;
 
-        $bg_color=imagecolorallocate($dst_image, 255, 255, 255);
-        imagefill($dst_image, 0, 0, $bg_color);
+        self::prepareImageBackground($src_image, $dst_image, $type);
 
         if (!imagecopyresampled($dst_image, $src_image, 0, 0, $src_x, $src_y, $dst_width, $dst_height, $src_width, $src_height)) return false;
 
@@ -108,8 +107,7 @@ class Image {
         $dst_image=imagecreatetruecolor($dst_width,$dst_height);
         if (!$dst_image) return false;
 
-        $bg_color=imagecolorallocate($dst_image, 255, 255, 255);
-        imagefill($dst_image, 0, 0, $bg_color);
+        self::prepareImageBackground($src_image, $dst_image, $type);
 
         if (!imagecopyresampled($dst_image, $src_image, 0, 0, $src_x, $src_y, $dst_width, $dst_height, $src_width, $src_height)) return false;
 
@@ -140,8 +138,7 @@ class Image {
         $dst_image=imagecreatetruecolor($dst_width,$dst_height);
         if (!$dst_image) return false;
 
-        $bg_color=imagecolorallocate($dst_image, 255, 255, 255);
-        imagefill($dst_image, 0, 0, $bg_color);
+        self::prepareImageBackground($src_image, $dst_image, $type);
 
         if (!imagecopyresampled($dst_image, $src_image, 0, 0, $src_x, $src_y, $dst_width, $dst_height, $src_width, $src_height)) return false;
 
@@ -149,6 +146,23 @@ class Image {
 
         imagedestroy($src_image);
         imagedestroy($dst_image);
+
+        return $result;
+    }
+    
+    public static function alter($src_path, $dst_path, $qty = null, $dst_type = null) {
+        $type = false;
+        $src_image=null;
+        $size = false;
+
+        if (!self::_imagecreate($src_path, $src_image, $type, $size)) return false;
+        if ($dst_type !== null) $type=$dst_type;
+
+        self::prepareImageBackground($src_image, $src_image, $type);
+        
+        $result = self::_imagesave($src_image, $dst_path, $type, $qty);
+
+        imagedestroy($src_image);
 
         return $result;
     }
@@ -261,4 +275,21 @@ class Image {
 
         return $result;
     }
+    
+    protected static function prepareImageBackground($src_image, $dst_image, $type)
+    {
+        if ($type == self::EXT_PNG || $type == self::EXT_GIF) {
+            $transparencyIndex = imagecolortransparent($src_image);
+            $transparencyColor = array('red' => 255, 'green' => 255, 'blue' => 255);
+            if ($transparencyIndex >= 0) {
+                $transparencyColor = imagecolorsforindex($src_image, $transparencyIndex);   
+            }
+            $transparencyIndex = imagecolorallocate($dst_image, $transparencyColor['red'], $transparencyColor['green'], $transparencyColor['blue']);
+            imagefill($dst_image, 0, 0, $transparencyIndex);
+            imagecolortransparent($dst_image, $transparencyIndex);
+        } else {
+            $bg_color=imagecolorallocate($dst_image, 255, 255, 255);
+            imagefill($dst_image, 0, 0, $bg_color);
+        }
+    } 
 }

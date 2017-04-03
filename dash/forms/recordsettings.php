@@ -34,12 +34,14 @@ class Recordsettings extends Form
 
     protected function _render()
     {
+        $q_arr = array();
+        for ($i=50; $i<=Zira\Image::QUALITY_JPEG; $i+=5) {
+            $q_arr[(string)$i] = $i.'%';
+        }
         $html = $this->open();
         $html .= $this->input(Locale::t('Thumbs width'), 'thumbs_width', array('placeholder'=>'50 - 500'));
         $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>'50 - 500'));
-        $html .= $this->select(Locale::t('Image quality'), 'jpeg_quality', array(
-           '50' => '50%', '55' => '55%', '60' => '60%', '65' => '65%', '70' => '70%', '75' => '75%', '80' => '80%', '85' => '85%', '90' => '90%', '95' => '95%', '100' => '100%'
-        ));
+        $html .= $this->select(Locale::t('Image quality'), 'jpeg_quality', $q_arr);
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);

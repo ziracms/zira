@@ -64,7 +64,8 @@ class Image extends Model {
         return array(
             'width'=> $size[0],
             'height' => $size[1],
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($path)
         );
     }
 
@@ -118,7 +119,8 @@ class Image extends Model {
         return array(
             'width' => $width,
             'height' => $height,
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 
@@ -155,7 +157,8 @@ class Image extends Model {
         return array(
             'width' => $width,
             'height' => $height,
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 
@@ -194,7 +197,8 @@ class Image extends Model {
         return array(
             'width' => $width,
             'height' => $height,
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 
@@ -233,7 +237,8 @@ class Image extends Model {
         return array(
             'width' => $width,
             'height' => $height,
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 
@@ -270,7 +275,47 @@ class Image extends Model {
         return array(
             'width' => $_size[0],
             'height' => $_size[1],
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
+        );
+    }
+    
+    public function changeQuality($file, $qty) {
+        if (!Permission::check(Permission::TO_UPLOAD_IMAGES)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $file = trim($file, DIRECTORY_SEPARATOR);
+        if (empty($file) || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0) {
+            return array('error'=>Zira\Locale::t('An error occurred'));
+        }
+        $qty = intval($qty);
+        if ($qty<=0) {
+            return array('error'=>Zira\Locale::t('An error occurred'));
+        }
+        $path = ROOT_DIR . DIRECTORY_SEPARATOR . $file;
+        if (!file_exists($path) || !is_readable($path)) {
+            return array('error'=>Zira\Locale::t('An error occurred'));
+        }
+        $size = getimagesize($path);
+        if (!$size) return array('error'=>Zira\Locale::t('An error occurred'));
+
+        $tmp_file = $this->get_tmp_file($file);
+        if (!file_exists($tmp_file))  return array('error'=>Zira\Locale::t('An error occurred'));
+
+        $_size = getimagesize($tmp_file);
+        if (!$_size) return array('error'=>Zira\Locale::t('An error occurred'));
+
+        $width = $_size[0];
+        $height = $_size[1];
+
+        if (!Zira\Image::alter($tmp_file, $tmp_file, $qty)) return array('error'=>Zira\Locale::t('An error occurred'));
+        $src = Zira\Helper::baseUrl($this->get_tmp_url($file));
+
+        return array(
+            'width' => $width,
+            'height' => $height,
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 
@@ -382,7 +427,8 @@ class Image extends Model {
         return array(
             'width' => $_size[0],
             'height' => $_size[1],
-            'src' => $src
+            'src' => $src,
+            'size' => filesize($tmp_file)
         );
     }
 }
