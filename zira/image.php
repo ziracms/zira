@@ -39,10 +39,12 @@ class Image {
         return true;
     }
 
-    protected static function _imagesave($dst_image, $dst_path, $type) {
+    protected static function _imagesave($dst_image, $dst_path, $type, $qty = null) {
         $result = false;
-        if ($type == self::EXT_JPEG) $result = imagejpeg($dst_image, $dst_path, self::QUALITY_JPEG);
-        else if ($type == self::EXT_PNG) $result = imagepng($dst_image, $dst_path, self::QUALITY_PNG);
+        if ($type == self::EXT_JPEG) {
+            if ($qty === null) $qty = self::QUALITY_JPEG;
+            $result = imagejpeg($dst_image, $dst_path, $qty);
+        } else if ($type == self::EXT_PNG) $result = imagepng($dst_image, $dst_path, self::QUALITY_PNG);
         else if ($type == self::EXT_GIF) $result = imagegif($dst_image, $dst_path);
         return $result;
     }
@@ -185,7 +187,7 @@ class Image {
 
         if (!imagecopyresampled($dst_image, $src_image, 0, 0, $src_x, $src_y, $dst_width, $dst_height, $src_width, $src_height)) return false;
 
-        $result = self::_imagesave($dst_image, $dst_path, $type);
+        $result = self::_imagesave($dst_image, $dst_path, $type, Config::get('jpeg_quality'));
 
         imagedestroy($src_image);
         imagedestroy($dst_image);

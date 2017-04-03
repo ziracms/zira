@@ -44,6 +44,7 @@ class Recordsettings extends Window {
         if (!array_key_exists('rating_enabled', $configs)) $configs['rating_enabled'] = 0;
         if (!array_key_exists('display_author', $configs)) $configs['display_author'] = 0;
         if (!array_key_exists('display_date', $configs)) $configs['display_date'] = 0;
+        if (!array_key_exists('jpeg_quality', $configs)) $configs['jpeg_quality'] = Zira\Image::QUALITY_JPEG;
 
         $form = new \Dash\Forms\Recordsettings();
         $form->setValues($configs);

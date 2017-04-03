@@ -26,7 +26,8 @@ class Recordsettings extends Model {
                 'comments_enabled'=>'int',
                 'rating_enabled'=>'int',
                 'display_author'=>'int',
-                'display_date'=>'int'
+                'display_date'=>'int',
+                'jpeg_quality'=>'int'
             );
 
             $config_ids = array();

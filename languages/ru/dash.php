@@ -359,5 +359,6 @@ return array(
     'Left' => 'Слева',
     'Right' => 'Справа',
     'Maximize windows' => 'Разворачивать окна',
-    'Enable paginator' => 'Включить пагинатор'
+    'Enable paginator' => 'Включить пагинатор',
+    'Image quality' => 'Качество изображений'
 );
