@@ -361,5 +361,7 @@ return array(
     'Maximize windows' => 'Разворачивать окна',
     'Enable paginator' => 'Включить пагинатор',
     'Image quality' => 'Качество изображений',
-    'Quality' => 'Качество'
+    'Quality' => 'Качество',
+    'Watermark margin' => 'Отступ водяного знака',
+    'Optimization / Caching' => 'Оптимизация / Кэширование'
 );

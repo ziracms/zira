@@ -32,7 +32,8 @@ class Options extends Model {
                 'dash_panel_frontend' => 'int',
                 'db_widgets_enabled' => 'int',
                 'dashwindow_mode' => 'int',
-                'dashwindow_maximized' => 'int'
+                'dashwindow_maximized' => 'int',
+                'watermark_margin' => 'int'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

@@ -52,10 +52,11 @@ class Options extends Form
         $html = $this->open();
         $html .= $this->select(Locale::t('Timezone'), 'timezone', $timezones);
         $html .= $this->input(Locale::t('Watermark'), 'watermark', array('class'=>'form-control watermark_option'));
+        $html .= $this->input(Locale::t('Watermark margin'), 'watermark_margin', array('class'=>'form-control'));
         $html .= $this->checkbox(Locale::t('Enable watermark'), 'watermark_enabled', null, false);
         $html .= $this->input(Locale::t('PHP date format'), 'date_format', array('placeholder'=>'d.m.Y'));
         $html .= $this->input(Locale::t('JS date format'), 'datepicker_date_format', array('placeholder'=>'DD.MM.YYYY'));
-        $html .= $this->checkbox(Locale::t('Caching'), 'caching', $caching_attr, false);
+        $html .= $this->checkbox(Locale::t('Optimization / Caching'), 'caching', $caching_attr, false);
         $html .= $this->input(Locale::t('Cache lifetime (sec.)'), 'cache_lifetime');
         $html .= $this->checkbox(Locale::t('Clean URLs'), 'clean_url', array('class'=>'form-control clean_url_option'), false);
         $html .= $this->checkbox(Locale::t('GZIP compression'), 'gzip', $gzip_attr, false);

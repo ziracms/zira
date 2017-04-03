@@ -233,7 +233,10 @@ class Image {
         return $files;
     }
 
-    public static function watermark($src_path, $margin = 10) {
+    public static function watermark($src_path, $margin = null) {
+        if ($margin === null) {
+            $margin = Config::get('watermark_margin', 10);
+        }
         $watermark_path = Config::get('watermark');
         if (empty($watermark_path)) return false;
         else $watermark_path = ROOT_DIR . DIRECTORY_SEPARATOR . $watermark_path;
@@ -254,6 +257,8 @@ class Image {
 
         if (!self::_imagecreate($watermark_path, $watermark_image, $watermark_type, $size)) return false;
 
+        self::prepareImageBackground($src_image, $src_image, $type);
+        
         $watermark_width=$size[0];
         $watermark_height=$size[1];
 
