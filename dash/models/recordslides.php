@@ -16,14 +16,14 @@ class Recordslides extends Model {
         if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
+        
+        $record = new Zira\Models\Record($id);
+        if (!$record->loaded()) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
 
         foreach ($images as $image) {
             if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $image)) {
-                return array('error' => Zira\Locale::t('An error occurred'));
-            }
-
-            $record = new Zira\Models\Record($id);
-            if (!$record->loaded()) {
                 return array('error' => Zira\Locale::t('An error occurred'));
             }
 
@@ -34,8 +34,11 @@ class Recordslides extends Model {
             $slideObj->record_id = $record->id;
             $slideObj->thumb = $thumb;
             $slideObj->image = str_replace(DIRECTORY_SEPARATOR, '/', $image);
+            //$slideObj->description = Zira\Helper::utf8Clean(strip_tags($record->title));
             $slideObj->save();
         }
+        
+        Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
     }

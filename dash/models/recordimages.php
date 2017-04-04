@@ -16,14 +16,14 @@ class Recordimages extends Model {
         if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
+        
+        $record = new Zira\Models\Record($id);
+        if (!$record->loaded()) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
 
         foreach ($images as $image) {
             if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $image)) {
-                return array('error' => Zira\Locale::t('An error occurred'));
-            }
-
-            $record = new Zira\Models\Record($id);
-            if (!$record->loaded()) {
                 return array('error' => Zira\Locale::t('An error occurred'));
             }
 
@@ -34,8 +34,11 @@ class Recordimages extends Model {
             $imageObj->record_id = $record->id;
             $imageObj->thumb = $thumb;
             $imageObj->image = str_replace(DIRECTORY_SEPARATOR, '/', $image);
+            $imageObj->description = Zira\Helper::utf8Clean(strip_tags($record->title));
             $imageObj->save();
         }
+        
+        Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
     }
