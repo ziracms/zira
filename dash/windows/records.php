@@ -319,7 +319,7 @@ class Records extends Window {
         }
 
         foreach($rows as $row) {
-            $mtime = date(Zira\Config::get('date_format'), strtotime($row->modified_date));
+            $mtime = date(Zira\Config::get('date_format'), strtotime($row->creation_date));
             if ($row->thumb) {
                 $items[]=$this->createBodyItem($row->name, $row->title, Zira\Helper::baseUrl($row->thumb), $row->id, 'desk_call(dash_records_record_html, this);', false, array('type'=>'html','parent'=>'record','typo'=>'record','activated'=>$row->published,'front_page'=>$row->front_page,'page'=>ltrim(trim($root,'/').'/'.$row->name,'/'),'description'=>$row->description,'language'=>count(Zira\Config::get('languages')) > 1 ? $row->language : null), $mtime);
             } else {

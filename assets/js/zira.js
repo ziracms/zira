@@ -842,6 +842,75 @@
         }, false, id);
     };
     
+    zira_calendar = function(selector, start_dow, callback) {
+        if (typeof start_dow == "undefined") start_dow = 0;
+        // month is zero based
+        function create_calendar_table(month, year) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var dowNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            var cmonth = (new Date(year, month, 1)).getMonth();
+            var cyear = (new Date(year, month, 1)).getFullYear();
+            var days = (new Date(year, month+1, 0)).getDate();
+            var dow = (new Date(year, month, 1)).getDay();
+            var prev_days = (new Date(year, month, 0)).getDate();
+            var last_dow = (new Date(year, month, days)).getDay();
+            var now = new Date();
+            var html = '<div class="zira-calendar-wrapper">';
+            html += '<div class="zira-calendar-selector">';
+            html += '<a href="javascript:void(0)" class="zira-calendar-month-switcher zira-calendar-prev-month" data-month="'+(cmonth-1)+'" data-year="'+cyear+'"><span class="glyphicon glyphicon-chevron-left"></span></a>';
+            html += '<a href="javascript:void(0)" class="zira-calendar-month-switcher zira-calendar-next-month" data-month="'+(cmonth+1)+'" data-year="'+cyear+'"><span class="glyphicon glyphicon-chevron-right"></span></a>';
+            html += '<span class="zira-calendar-month">'+t(monthNames[cmonth])+', '+cyear+'</span>';
+            html += '</div>';
+            html += '<div class="zira-calendar-dows-wrapper">';
+            html += '<ul class="zira-calendar-dows">';
+            for (var i=start_dow; i<7+start_dow; i++) {
+                html += '<li class="zira-calendar-dow">'+t(dowNames[i%7])+'</li>';
+            }
+            html += '</ul>';
+            html += '</div>';
+            html += '<div class="zira-calendar-days-wrapper">';
+            html += '<ul class="zira-calendar-days">';
+            for (var i=prev_days-((dow-start_dow)+7)%7+1; i<=prev_days; i++) {
+                html += '<li class="prev-days"><a href="javascript:void(0)" class="zira-calendar-day" data-day="'+i+'" data-month="'+(cmonth-1)+'" data-year="'+cyear+'">'+i+'</a></li>';
+            }
+            var cl;
+            for (var i=1; i<=days; i++) {
+                if (cyear == now.getFullYear() && cmonth == now.getMonth() && i==now.getDate()) cl = ' today';
+                else cl = '';
+                html += '<li class="this-days'+cl+'"><a href="javascript:void(0)" class="zira-calendar-day" data-day="'+i+'" data-month="'+(cmonth)+'" data-year="'+cyear+'">'+i+'</a></li>';
+            }
+            for (var i=1; i<=(6-(last_dow-start_dow))%7; i++) {
+                html += '<li class="next-days"><a href="javascript:void(0)" class="zira-calendar-day" data-day="'+i+'" data-month="'+(cmonth+1)+'" data-year="'+cyear+'">'+i+'</a></li>';
+            }
+            html += '</ul>';
+            html += '</div>';
+            html += '</div>';
+            $(this).html(html);
+        }
+        
+        $(selector).each(function(index) {
+            var now = new Date();
+            var id = (selector+'-'+(index+1)).replace(/[.#]/g, '');
+            $(this).replaceWith('<div id="'+id+'" class="'+$(this).attr('class')+'"></div>');
+            create_calendar_table.call($('#'+id), now.getMonth(), now.getFullYear());
+        });
+        $(selector).on('click', '.zira-calendar-month-switcher', function(){
+            var wrapper = $(this).parents('.zira-calendar-wrapper').parent();
+            var month = $(this).data('month');
+            var year = $(this).data('year');
+            create_calendar_table.call(wrapper, month, year);
+        });
+        if (typeof callback != "undefined") {
+            $(selector).on('click', '.zira-calendar-day', function(){
+                var day = $(this).data('day');
+                var month = $(this).data('month');
+                var year = $(this).data('year');
+                var date = new Date(year, month, day);
+                callback.call(null, date);
+            });
+        }
+    };
+    
     zira_scroll = function(element) {
         var top = $(element).offset().top;
         jQuery('html, body').animate({'scrollTop':top},800);

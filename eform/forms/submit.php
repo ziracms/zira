@@ -51,6 +51,14 @@ class Submit extends Form
         if ($this->_has_file) {
             $this->setMultipart(true);
         }
+        
+        $name_prefix = $this->getNamePrefix();
+        foreach($this->_fields as $field) {
+            $name = $name_prefix.$field->id;
+            if ($field->field_type == 'datepicker') {
+                $this->initDatepicker($name);
+            }
+        }
     }
 
     public function getNamePrefix() {
@@ -70,7 +78,6 @@ class Submit extends Form
             } else if ($field->field_type == 'file') {
                 $html .= $this->fileButton($label, $name, array('title'=>$field->description));
             } else if ($field->field_type == 'datepicker') {
-                $this->initDatepicker($name);
                 $html .= $this->datepicker($label, $name, array('title'=>$field->description));
             } else if ($field->field_type == 'checkbox') {
                 $html .= $this->checkbox($label, $name, array('title'=>$field->description));

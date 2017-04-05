@@ -130,5 +130,6 @@ return array(
     'Reload' => 'Обновить',
     'First page' => 'Первая страница',
     'Last page' => 'Последняя страница',
-    'Report a bug' => 'Сообщить об ошибке'
+    'Report a bug' => 'Сообщить об ошибке',
+    'Calendar' => 'Календарь'
 );

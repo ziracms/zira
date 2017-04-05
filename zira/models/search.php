@@ -55,7 +55,7 @@ class Search extends Orm {
             }
         }
 
-        $text = $record->title . ' ' . $record->meta_title . ' ' . $keywords_str;
+        $text = $record->title . ' ' . $record->meta_title . ' ' . $keywords_str . ' ' . date('Y-m-d', strtotime($record->creation_date));
         $text = trim($text);
         if (empty($text)) return;
         $text = mb_strtolower($text, CHARSET);

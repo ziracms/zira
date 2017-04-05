@@ -1,0 +1,1 @@
+<span class="widget-category-wrapper calendar-widget-wrapper"></span>
