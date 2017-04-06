@@ -184,6 +184,7 @@ textarea {
 .sidebar.col-sm-2 .zira-calendar-wrapper .zira-calendar-dows-wrapper,
 .sidebar.col-sm-2 .zira-calendar-wrapper .zira-calendar-days-wrapper {
     padding: 0px;
+    font-size: 90%;
 }
 .zira-calendar-wrapper .zira-calendar-dows,
 .zira-calendar-wrapper .zira-calendar-days {

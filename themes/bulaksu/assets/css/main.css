@@ -555,6 +555,12 @@ article .rating a span.glyphicon {
     vertical-align: middle;
     margin-right: 5px;
 }
+.share-btn-wrapper {
+    margin-bottom: 20px;
+}
+article .rating .share-btn-wrapper {
+    margin-bottom: 0px;
+}
 article .rating .share-wrapper {
     position: relative;
     z-index: 1;
@@ -1485,6 +1491,44 @@ a.scroll-top.visible:visited {
 .sidebar .widget-search-wrapper .input-group .form-control:not(:first-child):not(:last-child) {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+}
+
+.sidebar.col-sm-4 .calendar-widget-wrapper {
+    background: #dde0e4;
+    padding: 4px;
+    border-radius: 6px;
+}
+.zira-calendar-wrapper .zira-calendar-selector {
+    background: #ececec;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    margin-bottom: 0;
+}
+.zira-calendar-wrapper .zira-calendar-dows-wrapper {
+    background: #f6f6f6;
+    border-left: 1px solid #f0eded;
+    border-right: 1px solid #f0eded;
+}
+.zira-calendar-wrapper .zira-calendar-days-wrapper {
+    padding: 2px 0px;
+}
+.zira-calendar-wrapper .zira-calendar-days-wrapper {
+    border: 1px solid #f0eded;
+    background: #f3f3f3;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.zira-calendar-wrapper .zira-calendar-days li:hover {
+    background: #ececec;
+    border-radius: 30px;
+}
+.zira-calendar-wrapper .zira-calendar-days li a {
+    display: block;
+    color: #434153;
+}
+.zira-calendar-wrapper .zira-calendar-days li a:hover {
+    text-decoration: none;
 }
 
 /** mobile **/
