@@ -1552,7 +1552,7 @@ a.scroll-top.visible:visited {
     border-bottom-left-radius: 4px;
 }
 
-.sidebar.col-sm-4 .calendar-widget-wrapper {
+.sidebar.col-sm-4 div.calendar-widget-wrapper {
     background: #dde0e4;
     padding: 4px;
 }

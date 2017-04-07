@@ -1951,7 +1951,7 @@ ul.vote-results li .vote-result {
     border-bottom-left-radius: 4px;
 }
 
-.sidebar.col-sm-4 .calendar-widget-wrapper {
+.sidebar.col-sm-4 div.calendar-widget-wrapper {
     background: #6d717d;
     padding: 4px;
 }
