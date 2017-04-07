@@ -1567,6 +1567,7 @@ a.scroll-top.visible:visited {
     background: #f6f6f6;
     border-left: 1px solid #f0eded;
     border-right: 1px solid #f0eded;
+    padding: 0;
 }
 .zira-calendar-wrapper .zira-calendar-days-wrapper {
     padding: 2px 0px;

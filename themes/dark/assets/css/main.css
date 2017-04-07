@@ -1966,6 +1966,7 @@ ul.vote-results li .vote-result {
     background: #41444e;
     border-left: 1px solid #51545d;
     border-right: 1px solid #51545d;
+    padding: 0;
 }
 .zira-calendar-wrapper .zira-calendar-days-wrapper {
     padding: 2px 0px;
