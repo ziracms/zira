@@ -255,25 +255,25 @@ try {
         $info = '/**'."\r\n".
                 ' * Defined during installation on '.date('Y-m-d')."\r\n".
                 ' */'."\r\n";
-        $config = 'const ROOT_DIR = \''.$data['root_dir'].'\';'."\r\n".
-                    'const BASE_URL = \''.$data['base_url'].'\';'."\r\n".
-                    'const SECRET = \''.$data['secret'].'\';'."\r\n".
-                    'const DB_TYPE = \''.DB_TYPE.'\';'."\r\n";
+        $config = 'const ROOT_DIR = \''.addslashes($data['root_dir']).'\';'."\r\n".
+                    'const BASE_URL = \''.addslashes($data['base_url']).'\';'."\r\n".
+                    'const SECRET = \''.addslashes($data['secret']).'\';'."\r\n".
+                    'const DB_TYPE = \''.addslashes(DB_TYPE).'\';'."\r\n";
         if (DB_TYPE == 'mysql') {
             $config .=
-                'const DB_HOST = \'' . DB_HOST . '\';' . "\r\n" .
-                'const DB_PORT = ' . DB_PORT . ';' . "\r\n" .
-                'const DB_NAME = \'' . DB_NAME . '\';' . "\r\n" .
-                'const DB_USERNAME = \'' . DB_USERNAME . '\';' . "\r\n" .
-                'const DB_PASSWORD = \'' . DB_PASSWORD . '\';' . "\r\n";
+                'const DB_HOST = \'' . addslashes(DB_HOST) . '\';' . "\r\n" .
+                'const DB_PORT = ' . addslashes(DB_PORT) . ';' . "\r\n" .
+                'const DB_NAME = \'' . addslashes(DB_NAME) . '\';' . "\r\n" .
+                'const DB_USERNAME = \'' . addslashes(DB_USERNAME) . '\';' . "\r\n" .
+                'const DB_PASSWORD = \'' . addslashes(DB_PASSWORD) . '\';' . "\r\n";
         } else if (DB_TYPE == 'sqlite') {
             $db_file = DB_FILE;
             if (substr($db_file, 0, 6) == '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) {
                 $db_file = substr($db_file, 3);
             }
-            $config .= 'const DB_FILE = \'' . $db_file . '\';' . "\r\n";
+            $config .= 'const DB_FILE = \'' . addslashes($db_file) . '\';' . "\r\n";
         }
-        $config .= 'const DB_PREFIX = \''.DB_PREFIX.'\';'."\r\n".
+        $config .= 'const DB_PREFIX = \''.addslashes(DB_PREFIX).'\';'."\r\n".
                     'const CONSOLE_PASSWORD = \''.(CONSOLE_PASSWORD ? md5(rawurlencode(CONSOLE_PASSWORD)) : '').'\';'."\r\n";
 
         if (!isset($data['clean_url']) ||
@@ -306,7 +306,7 @@ try {
             } else if (is_bool($value)) {
                 $default_strs []= "\t'".$key."' => ".($value ? 'true' : 'false');
             } else if (is_string($value)) {
-                $default_strs []= "\t'".$key."' => '".$value."'";
+                $default_strs []= "\t'".$key."' => '".addslashes($value)."'";
             } else if (is_array($value)) {
                 $_value = 'array(';
                 if (!empty($value)) {
