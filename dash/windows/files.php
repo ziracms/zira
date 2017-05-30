@@ -187,11 +187,13 @@ class Files extends Window {
         $usize = trim((string)@ini_get('upload_max_filesize'));
 
         $m = strtolower(substr($psize, -1));
+        $psize = intval($psize);
         if ($m=='g') $psize *= 1073741824;
         else if ($m=='m') $psize *= 1048576;
         else if ($m=='k') $psize *= 1024;
 
         $m = strtolower(substr($usize, -1));
+        $usize = intval($usize);
         if ($m=='g') $usize *= 1073741824;
         else if ($m=='m') $usize *= 1048576;
         else if ($m=='k') $usize *= 1024;
