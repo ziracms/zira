@@ -98,8 +98,8 @@ var dash_editor_html_load = function() {
     this.contentModified = false;
     tinymce.init({
         selector:'#'+$(this.content).find('.editable').attr('id') ,
-        plugins: 'paste, advlist, link, image, media, table, hr, pagebreak, code, contextmenu',
-        toolbar: ['desk_save | undo redo | table | bullist numlist | desk_file_selector  image media link | outdent indent | hr pagebreak | code', 'styleselect | bold italic underline removeformat |  aligncenter alignleft alignright alignjustify '],
+        plugins: 'paste, advlist, link, image, media, table, hr, pagebreak, code, contextmenu, textcolor',
+        toolbar: ['desk_save | undo redo | table | bullist numlist | desk_file_selector  image media link | outdent indent | hr pagebreak | code', 'styleselect | bold italic underline forecolor removeformat |  aligncenter alignleft alignright alignjustify '],
         menubar: false,
         language: dash_editor_language,
         paste_word_valid_elements: 'b,strong,i,em,h1,h2,h3,h4,h5,h6,p,ul,ol,li,hr,br,table,tr,td',
