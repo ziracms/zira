@@ -32,7 +32,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^assets/js/cm$ assets/js/codemirror/index.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php/$0 [L]
+#RewriteRule .* index.php/$0 [L]
+RewriteRule .* index.php [PT,QSA,L]
 </IfModule>
 
 <IfModule mod_expires.c>
