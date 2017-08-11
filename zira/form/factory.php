@@ -363,7 +363,7 @@ class Factory {
             $prefix .= Helper::tag_close('div');
             $prefix .= Helper::tag_close('div');
         }
-        return $prefix.Form::close();
+        return Form::close().$prefix;
     }
 
     public function wrap($element, $class = null) {

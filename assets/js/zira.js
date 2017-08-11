@@ -294,7 +294,7 @@
             $('.container #content form#form-comment-form .comment-reply-preview').html(html);
 
             try {
-                zira_scroll_to_comments_form();
+                zira_scroll('#comments-form');
             } catch(err) {}
         });
         zira_init_comments_rating();

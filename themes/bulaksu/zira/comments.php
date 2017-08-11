@@ -2,7 +2,7 @@
 <div class="comments-wrapper">
 <div class="btn-group comment-btn-group" role="group">
 <?php if (isset($form) && !empty($comments)): ?>
-<button class="btn btn-primary comment-btn scroll-down" data-target="#comment"><?php echo t('Leave a comment') ?></button>
+<button class="btn btn-primary comment-btn scroll-down" data-target="#comments-form"><?php echo t('Leave a comment') ?></button>
 <?php endif; ?>
 <?php if (!empty($comments)): ?>
 <button class="btn btn-default comments-reload" type="button" title="<?php echo t('Reload') ?>" data-url="<?php echo Zira\Helper::url('comments') ?>" data-record="<?php echo intval($record_id) ?>" data-page="0"><span class="glyphicon glyphicon-refresh"></span></button>
@@ -59,7 +59,7 @@
 <?php endif; ?>
 <?php endif; ?>
 <?php if (isset($form)): ?>
-<div id="comment" class="comment-form-wrapper">
+<div id="comments-form" class="comment-form-wrapper">
 <?php echo $form; ?>
 </div>
 <?php endif; ?>

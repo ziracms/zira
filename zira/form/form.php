@@ -212,7 +212,7 @@ class Form {
 
     public static function captcha($token,$image_wrapper_class='captcha_image',$input_wrapper_class='captcha_input',$input_class='captcha',$refresh_wrapper_class='captcha_refresh',$refresh_value = 'Reload') {
         $html = Helper::tag_open('div',array('class'=>$image_wrapper_class));
-        $html .= Helper::tag_short('img',array('src'=>Helper::url('captcha').'?token='.$token.'&t='.time(),'width'=>CAPTCHA_WIDTH,'height'=>CAPTCHA_HEIGHT,'id'=>$token.'-'.CAPTCHA_NAME.'-image'));
+        $html .= Helper::tag_short('img',array('src'=>Helper::url('captcha').'?token='.$token.'&t='.time(),'width'=>CAPTCHA_WIDTH,'height'=>CAPTCHA_HEIGHT,'id'=>$token.'-'.CAPTCHA_NAME.'-image','alt'=>Zira\Locale::t('CAPTCHA')));
         $html .= Helper::tag_close('div');
 
         $html .= Helper::tag_open('div',array('class'=>$input_wrapper_class));
