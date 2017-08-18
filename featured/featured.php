@@ -27,9 +27,10 @@ class Featured {
 
     public function bootstrap() {
         if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
-            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-star', Zira\Locale::tm('Featured records', 'featured'), null, 'featuredWindow()');
+            Dash\Dash::loadDashLanguage();
+            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-star', Zira\Locale::tm('Featured records', 'featured', null, Dash\Dash::getDashLanguage()), null, 'featuredWindow()');
             Dash\Dash::getInstance()->registerModuleWindowClass('featuredWindow', 'Featured\Windows\Featured', 'Featured\Models\Dash');
-
+            Dash\Dash::unloadDashLanguage();
             Zira\Hook::register(Dash\Windows\Records::RECORDS_MENU_HOOK, array(get_class(), 'dashRecordsMenuHook'));
         }
     }

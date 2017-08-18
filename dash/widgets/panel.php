@@ -21,11 +21,13 @@ class Panel extends Zira\Widget {
 
     protected function _render() {
         //if (!Zira\View::isViewExists('dash/panel')) return;
+        Dash::loadDashLanguage();
         Dash::getInstance()->addPanelDefaultGroups();
         $panel = Dash::getInstance()->getPanelItems();
         Zira\View::renderView(array(
             'panelItems'=>$panel,
             'userMenu'=>Zira\Router::getModule()=='dash'
         ), 'dash/panel');
+        Dash::unloadDashLanguage();
     }
 }

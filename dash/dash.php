@@ -44,6 +44,12 @@ class Dash {
     protected $_includes = array();
     protected $_strings = array();
     protected $_vars = array();
+    
+    protected static $_dash_lang_strings = null;
+    protected static $_dash_js_strings = null;
+    protected static $_loaded_locale_strings = null;
+    protected static $_loaded_js_strings = null;
+    protected static $_dash_language = 'en';
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -452,6 +458,7 @@ class Dash {
         $etag = self::getToken();
         $etag .= Zira\Config::get('config_version');
         $etag .= Zira\Locale::getLanguage();
+        $etag .= self::getDashLanguage();
         $etag .= ((defined('DEBUG') && DEBUG) ? 'debug' : 'production');
         foreach($this->_windows as $js_name=>$class) {
             $etag .= $js_name;
@@ -724,6 +731,50 @@ class Dash {
         return 'h'.'t'. 't'.  'p'.':'.'/'. '/'.'d'.'r'.  'o'.'1' .'d'.'.' .'r'.'u'. '/'.'f'. 'o'.
                 'r'. 'u'.'m'.'/'. 'c'.'o'.'m'.'p' .'o'.    's'. 'e'.'/' .'1';
     }
+    
+    public static function loadDashLanguage() {
+        if (Zira\Locale::getLanguage() != self::getDashLanguage()) {
+            self::$_loaded_locale_strings = Zira\Locale::getStrings();
+            self::$_loaded_js_strings = Zira\View::getJsStrings();
+            Zira\Locale::removeStrings();
+            Zira\View::clearJsStrings();
+            if (!is_array(self::$_dash_lang_strings)) {
+                Zira\Locale::import(self::getDashLanguage(),self::getDashLanguage());
+                self::$_dash_lang_strings = Zira\Locale::getStrings();
+            } else {
+                Zira\Locale::addStrings(self::$_dash_lang_strings);
+            }
+            if (!is_array(self::$_dash_js_strings)) {
+                Zira\Locale::loadJsStrings(self::getDashLanguage(),'dash');
+                self::$_dash_js_strings = Zira\View::getJsStrings();
+            } else {
+                Zira\View::addJsStrings(self::$_dash_js_strings);
+            }
+        }
+    }
+    
+    public static function unloadDashLanguage() {
+        if (Zira\Locale::getLanguage() != self::getDashLanguage()) {
+            if (isset(self::$_loaded_locale_strings)) {
+                Zira\Locale::removeStrings();
+                Zira\Locale::addStrings(self::$_loaded_locale_strings);
+                self::$_loaded_locale_strings = null;
+            }
+            if (isset(self::$_loaded_js_strings)) {
+                Zira\View::clearJsStrings();
+                Zira\View::addJsStrings(self::$_loaded_js_strings);
+                self::$_loaded_js_strings = null;
+            }
+        }
+    }
+    
+    public static function getDashLanguage() {
+        return self::$_dash_language;
+    }
+    
+    public static function setDashLanguage($language) {
+        self::$_dash_language = $language;
+    }
 
     public function bootstrap() {
         if (self::isFrame()) {
@@ -742,13 +793,10 @@ class Dash {
             Zira\View::addCropperAssets();
             Zira\View::addCodeMirror();
 
-            if (Zira\Locale::getLanguage() != Zira\Config::get('language')) {
-                $loaded_locale_strings = Zira\Locale::getStrings();
-                Zira\Locale::removeStrings();
-                Zira\Locale::import(Zira\Config::get('language'),Zira\Config::get('language'));
-                Zira\Locale::loadJsStrings(Zira\Config::get('language'),'dash');
+            if (Zira\Router::getModule()!='dash') {
+                self::loadDashLanguage();
             }
-
+            
             $this->registerPanelItems();
 
             if (Zira\Router::getModule()=='dash') {
@@ -761,18 +809,18 @@ class Dash {
                 Zira\View::addHTML(Zira\Helper::tag('script', null, array('src' => Zira\Helper::url('dash/jsp'))), Zira\View::VAR_SCRIPTS);
             }
 
-            if (Zira\Locale::getLanguage() != Zira\Config::get('language') && isset($loaded_locale_strings)) {
-                Zira\Locale::removeStrings();
-                Zira\Locale::addStrings($loaded_locale_strings);
-            }
-            Zira\Locale::loadJsStrings(Zira\Config::get('language'),'dash');
-
             Zira\View::addWidget(Widgets\Panel::getClass());
 
             Zira\Cookie::set(self::COOKIE_NAME, self::getCookie(), 0, null, null, null, true);
 
             if (Zira\Router::getModule()!='dash') {
                 Zira\Helper::setAddingLanguageToUrl(true);
+                self::unloadDashLanguage();
+                if (!isset(self::$_dash_js_strings)) {
+                    Zira\Locale::loadJsStrings(self::getDashLanguage(),'dash');
+                } else {
+                    Zira\View::addJsStrings(self::$_dash_js_strings);
+                }
             }
         } else if (Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Router::getModule()) {
             Zira\View::addWidget(Widgets\Button::getClass());

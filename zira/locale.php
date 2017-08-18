@@ -193,10 +193,11 @@ class Locale {
         }
     }
 
-    public static function tm($str, $module, $arg = null) {
+    public static function tm($str, $module, $arg = null, $language = null) {
         if (array_key_exists($str, self::$_strings)) return self::t($str, $arg);
         else if (!self::isLoaded(null,$module)) {
-            self::load(null, $module);
+            //self::load($language, $module);
+            self::import($language, $module);
             return self::t($str, $arg);
         } else {
             return self::t($str, $arg);
@@ -205,6 +206,10 @@ class Locale {
 
     public static function getLanguage() {
         return self::$language;
+    }
+    
+    public static function setLanguage($language) {
+        self::$language = $language;
     }
 
     public static function getStrings() {

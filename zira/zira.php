@@ -33,10 +33,15 @@ class Zira {
         self::beforeDispatch();
         Router::dispatch();
 
-        Locale::init();
-        if (!Router::getLanguage() || !Locale::load(Router::getLanguage())) {
-            $language = Config::get('language') ? Config::get('language') : DEFAULT_LANGUAGE;
-            Locale::load($language);
+        Dash::setDashLanguage(Config::get('dash_language', Config::get('language')));
+        if (Router::getModule()!='dash') {
+            Locale::init();
+            if (!Router::getLanguage() || !Locale::load(Router::getLanguage())) {
+                $language = Config::get('language') ? Config::get('language') : DEFAULT_LANGUAGE;
+                Locale::load($language);
+            }
+        } else {
+            Locale::load(Dash::getDashLanguage());
         }
         Locale::load(null,Router::getModule());
         if (Locale::getLanguage() && Config::get('db_translates')) {

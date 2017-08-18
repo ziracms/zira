@@ -34,8 +34,10 @@ class Oauth {
         }
 
         if (ENABLE_CONFIG_DATABASE && \Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_OPTIONS)) {
-            \Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-log-in', Zira\Locale::tm('Social networks', 'oauth'), null, 'oauthSettingsWindow()');
+            \Dash\Dash::loadDashLanguage();
+            \Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-log-in', Zira\Locale::tm('Social networks', 'oauth', null, \Dash\Dash::getDashLanguage()), null, 'oauthSettingsWindow()');
             \Dash\Dash::getInstance()->registerModuleWindowClass('oauthSettingsWindow', 'Oauth\Windows\Settings', 'Oauth\Models\Settings');
+            \Dash\Dash::unloadDashLanguage();
         }
     }
 

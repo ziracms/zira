@@ -30,11 +30,13 @@ class Eform {
 
     public function bootstrap() {
         if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_OPTIONS)) {
-            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-send', Zira\Locale::tm('Email forms', 'eform'), null, 'eformsWindow()');
+            Dash\Dash::loadDashLanguage();
+            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-send', Zira\Locale::tm('Email forms', 'eform', null, Dash\Dash::getDashLanguage()), null, 'eformsWindow()');
             Dash\Dash::getInstance()->registerModuleWindowClass('eformsWindow', 'Eform\Windows\Eforms', 'Eform\Models\Eforms');
             Dash\Dash::getInstance()->registerModuleWindowClass('eformWindow', 'Eform\Windows\Eform', 'Eform\Models\Eforms');
             Dash\Dash::getInstance()->registerModuleWindowClass('eformFieldsWindow', 'Eform\Windows\Eformfields', 'Eform\Models\Eformfields');
             Dash\Dash::getInstance()->registerModuleWindowClass('eformFieldWindow', 'Eform\Windows\Eformfield', 'Eform\Models\Eformfields');
+            Dash\Dash::unloadDashLanguage();
         }
     }
 }

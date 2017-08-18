@@ -111,6 +111,14 @@ class View {
     public static function addJsStrings(array $strings) {
         self::$_js_strings = array_merge(self::$_js_strings, $strings);
     }
+    
+    public static function getJsStrings() {
+        return self::$_js_strings;
+    }
+    
+    public static function clearJsStrings() {
+        self::$_js_strings = array();
+    }
 
     public static function addMeta(array $attributes) {
         $html = '<meta ';
