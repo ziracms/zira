@@ -146,6 +146,7 @@ return array(
     'Check user browser' => 'Проверять браузер',
     'Invalid value "%s"' => 'Некорректное значение "%s"',
     'Make default' => 'Сделать по-умолчанию',
+    'Use for dash panel' => 'Использовать для админ-панели',
     'Translates' => 'Переводы',
     'Custom translates' => 'Пользовательские переводы',
     'String already exists' => 'Строка уже существует',

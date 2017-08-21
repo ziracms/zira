@@ -21,6 +21,10 @@ var dash_languages_select = function() {
         if (typeof(selected[0].activated)!="undefined" && selected[0].activated && typeof(selected[0].is_default)!="undefined" && !selected[0].is_default) {
             this.enableItemsByProperty('typo','default');
         }
+        this.disableItemsByProperty('typo','panel_default');
+        if (typeof(selected[0].is_panel_default)!="undefined" && !selected[0].is_panel_default) {
+            this.enableItemsByProperty('typo','panel_default');
+        }
         this.disableItemsByProperty('typo','up');
         this.disableItemsByProperty('typo','down');
         if (typeof(selected[0].activated)!="undefined" && selected[0].activated) {
@@ -48,6 +52,13 @@ var dash_languages_default = function() {
     var selected = desk_window_selected(this);
     if (selected && typeof(selected.items)!="undefined" && selected.items.length==1) {
         desk_window_request(this, url('dash/languages/setdefault'),{'language':selected.items[0]});
+    }
+};
+
+var dash_languages_panel_default = function() {
+    var selected = desk_window_selected(this);
+    if (selected && typeof(selected.items)!="undefined" && selected.items.length==1) {
+        desk_window_request(this, url('dash/languages/setpaneldefault'),{'language':selected.items[0]});
     }
 };
 

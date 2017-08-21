@@ -49,6 +49,14 @@ class Languages extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function setpaneldefault() {
+        if (Zira\Request::isPost()) {
+            $language = Zira\Request::post('language');
+            $response = $this->getWindowModel()->setPanelDefault($language);
+            Zira\Page::render($response);
+        }
+    }
 
     public function up() {
         if (Zira\Request::isPost()) {

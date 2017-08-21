@@ -44,6 +44,7 @@ class Languages extends Window {
             $this->createContextMenuItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok-circle', 'desk_call(dash_languages_activate, this);', 'edit', true, array('typo'=>'activate')),
             $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Make default'), 'glyphicon glyphicon-flag', 'desk_call(dash_languages_default, this);', 'edit', true, array('typo'=>'default')),
+            $this->createContextMenuItem(Zira\Locale::t('Use for dash panel'), 'glyphicon glyphicon-wrench', 'desk_call(dash_languages_panel_default, this);', 'edit', true, array('typo'=>'panel_default')),
             $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Up'), 'glyphicon glyphicon-triangle-top', 'desk_call(dash_languages_up, this);', 'edit', true, array('typo'=>'up')),
             $this->createContextMenuItem(Zira\Locale::t('Down'), 'glyphicon glyphicon-triangle-bottom', 'desk_call(dash_languages_down, this);', 'edit', true, array('typo'=>'down')),
@@ -109,17 +110,18 @@ class Languages extends Window {
         $available_languages = $this->getAvailableLanguages();
         $active_languages = $this->getActiveLanguages();
         $default_language = Zira\Config::get('language');
+        $dash_language = Zira\Config::get('dash_language');
 
         $items = array();
         foreach ($active_languages as $language_key) {
             if (!array_key_exists($language_key, $available_languages)) continue;
             $language_name = $available_languages[$language_key];
             if ($language_key==$default_language) $language_name.=' *';
-            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language)));
+            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language),'is_panel_default'=>($language_key==$dash_language)));
         }
         foreach ($available_languages as $language_key=>$language_name) {
             if (in_array($language_key, $active_languages)) continue;
-            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language)));
+            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language),'is_panel_default'=>($language_key==$dash_language)));
         }
 
         $this->setBodyItems($items);

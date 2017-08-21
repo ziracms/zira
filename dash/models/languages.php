@@ -114,6 +114,35 @@ class Languages extends Model {
 
         return array('reload'=>$this->getJSClassName());
     }
+    
+    public function setPanelDefault($language) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+            return array('error' => Zira\Locale::t('Permission denied'));
+        }
+
+        $available_languages = $this->getWindow()->getAvailableLanguages();
+
+        if (!array_key_exists($language, $available_languages)) return array('error' => Zira\Locale::t('An error occurred'));
+        $option = Zira\Models\Option::getCollection()
+                                            ->select('id')
+                                            ->where('name','=','dash_language')
+                                            ->get(0);
+
+        if (!$option) {
+            $optionObj = new Zira\Models\Option();
+        } else {
+            $optionObj = new Zira\Models\Option($option->id);
+        }
+
+        $optionObj->name = 'dash_language';
+        $optionObj->value = $language;
+        $optionObj->module = 'zira';
+        $optionObj->save();
+
+        Zira\Models\Option::raiseVersion();
+
+        return array('reload'=>$this->getJSClassName());
+    }
 
     public function pickUp($language) {
         if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
