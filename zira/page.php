@@ -132,6 +132,7 @@ class Page {
 
     public static function breadcrumbs() {
         if (!View::renderBreadcrumbsEnabled()) return '';
+        if (!Router::getRequest() && Router::getModule()==DEFAULT_MODULE && Router::getController()==DEFAULT_CONTROLLER && Router::getAction()==DEFAULT_ACTION) return '';
         $added = array();
         $html = Helper::tag_open('ol',array('class'=>self::BREADCRUMBS_CLASS));
         foreach(self::$_breadcrumbs as $breadcrumb) {

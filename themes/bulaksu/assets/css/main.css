@@ -101,6 +101,9 @@ a.btn-primary {
 .page-header {
     border-bottom: 1px solid #DBDCEA;
 }
+.home-page .page-header {
+    margin-top: 0px;
+}
 .navbar-default {
     background-image: -webkit-linear-gradient(top, #fff 0, #F0EDF5 100%);
     background-image: -o-linear-gradient(top, #fff 0, #F0EDF5 100%);

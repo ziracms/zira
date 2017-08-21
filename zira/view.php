@@ -37,6 +37,7 @@ class View {
     public static $data = array();
     public static $view = null;
     public static $layout = null;
+    public static $body_class = '';
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
@@ -294,6 +295,18 @@ class View {
 
     public static function renderLayout() {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
+        
+        if (Router::getModule()!=DEFAULT_MODULE) {
+            self::$body_class = Router::getModule().'-page';
+        } else if (Router::getRequest() && Page::getRecordId()) {
+            self::$body_class = 'record-page';
+        } else if (Category::current()) {
+            self::$body_class = 'category-page';
+        } else if (!Router::getRequest() && Router::getModule()==DEFAULT_MODULE && Router::getController()==DEFAULT_CONTROLLER && Router::getAction()==DEFAULT_ACTION) {
+            self::$body_class = 'home-page';
+        } else {
+            self::$body_class = 'zira-page';
+        }
         
         $js_scripts = '';
         if (self::$_render_js_strings) {
