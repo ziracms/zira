@@ -7,7 +7,7 @@
 
 namespace Zira\Db\Sqlite;
 
-class Collection {
+class Collection implements \Zira\Db\Implement\Collection {
     protected $_class;
     protected $_table;
     protected $_pk;

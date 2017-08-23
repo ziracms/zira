@@ -13,7 +13,8 @@ class Loader {
         'field',
         'table',
         'orm',
-        'collection'
+        'collection',
+        'alter'
     );
 
     public static function initialize() {

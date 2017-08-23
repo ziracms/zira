@@ -17,6 +17,7 @@ class Permission {
     const TO_DELETE_USERS = 'Delete users';
     const TO_UPLOAD_FILES = 'Upload files';
     const TO_DELETE_FILES = 'Delete files';
+    const TO_DOWNLOAD_FILES = 'Download files';
     const TO_VIEW_FILES = 'View files list';
     const TO_UPLOAD_IMAGES = 'Upload images';
     const TO_DELETE_IMAGES = 'Delete images';
@@ -41,6 +42,7 @@ class Permission {
             self::TO_DELETE_USERS,
             self::TO_UPLOAD_FILES,
             self::TO_DELETE_FILES,
+            self::TO_DOWNLOAD_FILES,
             self::TO_VIEW_FILES,
             self::TO_UPLOAD_IMAGES,
             self::TO_DELETE_IMAGES,

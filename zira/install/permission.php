@@ -39,7 +39,7 @@ class Permission extends Table {
         );
     }
 
-    protected function getDefaultSuperAdminPermissions() {
+    public static function getDefaultSuperAdminPermissions() {
         return array(
             \Zira\Permission::TO_ACCESS_DASHBOARD => 1,
             \Zira\Permission::TO_EXECUTE_TASKS => 1,
@@ -50,6 +50,7 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 1,
             \Zira\Permission::TO_UPLOAD_FILES => 1,
             \Zira\Permission::TO_DELETE_FILES => 1,
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 1,
             \Zira\Permission::TO_UPLOAD_IMAGES => 1,
             \Zira\Permission::TO_DELETE_IMAGES => 1,
@@ -63,7 +64,7 @@ class Permission extends Table {
         );
     }
 
-    protected function getDefaultAdminPermissions() {
+    public static function getDefaultAdminPermissions() {
         return array(
             \Zira\Permission::TO_ACCESS_DASHBOARD => 1,
             \Zira\Permission::TO_EXECUTE_TASKS => 0,
@@ -74,6 +75,7 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 0,
             \Zira\Permission::TO_UPLOAD_FILES => 0,
             \Zira\Permission::TO_DELETE_FILES => 0,
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 1,
             \Zira\Permission::TO_UPLOAD_IMAGES => 1,
             \Zira\Permission::TO_DELETE_IMAGES => 1,
@@ -87,7 +89,7 @@ class Permission extends Table {
         );
     }
 
-    protected function getDefaultUserPermissions() {
+    public static function getDefaultUserPermissions() {
         return array(
             \Zira\Permission::TO_ACCESS_DASHBOARD => 0,
             \Zira\Permission::TO_EXECUTE_TASKS => 0,
@@ -98,6 +100,7 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 0,
             \Zira\Permission::TO_UPLOAD_FILES => 0,
             \Zira\Permission::TO_DELETE_FILES => 0,
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 0,
             \Zira\Permission::TO_UPLOAD_IMAGES => 0,
             \Zira\Permission::TO_DELETE_IMAGES => 0,

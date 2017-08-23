@@ -99,6 +99,7 @@ return array(
     'Delete users' => 'Удалять пользователей',
     'Upload files' => 'Загружать файлы',
     'Delete files' => 'Удалять файлы',
+    'Download files' => 'Скачивать файлы',
     'View files list' => 'Просматривать список файлов',
     'Upload images' => 'Загружать изображения',
     'Delete images' => 'Удалять изображения',

@@ -7,7 +7,7 @@
 
 namespace Zira\Db\Sqlite;
 
-abstract class Field {
+abstract class Field implements \Zira\Db\Implement\Field {
     const FIELD_TYPE_TINYINT = 'INTEGER';
     const FIELD_TYPE_TINYINT_NOT_NULL = 'INTEGER NOT NULL';
     const FIELD_TYPE_INT = 'INTEGER';

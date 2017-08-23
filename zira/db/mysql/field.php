@@ -7,7 +7,7 @@
 
 namespace Zira\Db\Mysql;
 
-abstract class Field {
+abstract class Field implements \Zira\Db\Implement\Field {
     const FIELD_TYPE_TINYINT = 'TINYINT(4)';
     const FIELD_TYPE_TINYINT_NOT_NULL = 'TINYINT(4) NOT NULL';
     const FIELD_TYPE_TINYINT_UNSIGNED = 'TINYINT(3) UNSIGNED';

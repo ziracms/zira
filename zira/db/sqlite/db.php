@@ -9,7 +9,7 @@ namespace Zira\Db\Sqlite;
 
 use PDO;
 
-class Db {
+class Db implements \Zira\Db\Implement\Db {
     protected static $_db;
     protected static $_total = 0;
 

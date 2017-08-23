@@ -83,10 +83,10 @@ abstract class Table implements \Zira\Db\Implement\Table {
     public function __toString() {
         $sql = $this->_getCreateTableSQL().';';
         foreach((array)$this->getKeys() as $name=>$keys) {
-            $sql .= "\r\n". $this->_getCreateIndexSQL($name, $keys);
+            $sql .= "\r\n". $this->_getCreateIndexSQL($name, $keys).';';
         }
         foreach((array)$this->getUnique() as $name=>$keys) {
-            $sql .= "\r\n". $this->_getCreateIndexSQL($name, $keys, true);
+            $sql .= "\r\n". $this->_getCreateIndexSQL($name, $keys, true).';';
         }
         return $sql;
     }
