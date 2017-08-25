@@ -90,6 +90,11 @@ class Helper {
     public static function imgThemeUrl($url) {
         return rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . View::getTheme() . '/' . ASSETS_DIR . '/' . IMAGES_DIR . '/' .$url;
     }
+    
+    public static function fileUrl($path) {
+        if (is_numeric($path)) return self::url('file/'.$path);
+        else return self::baseUrl($path);
+    }
 
     public static function tag_short($name, array $attributes = null) {
         if (!$attributes) $attributes = array();

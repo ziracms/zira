@@ -29,4 +29,11 @@ class Commentlike extends Orm {
     public static function getReferences() {
         return array();
     }
+    
+    public static function removeCommentLikes($comment_id) {
+        self::getCollection()
+                ->delete()
+                ->where('comment_id', '=', $comment_id)
+                ->execute();
+    }
 }

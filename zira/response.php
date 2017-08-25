@@ -59,6 +59,7 @@ class Response {
                 $suffix = '';
             }
             View::setLayoutData(array(View::VAR_TITLE=>Locale::t('Page not found').$suffix));
+            View::setRenderDbWidgets(false);
             View::render(array('code'=>self::$status,'message'=>Locale::t('Page not found')), 'error', View::LAYOUT_NO_SIDEBARS);
         } else {
             echo Locale::t('Page not found');
@@ -78,6 +79,7 @@ class Response {
                 $suffix = '';
             }
             View::setLayoutData(array(View::VAR_TITLE=>Locale::t('Access denied').$suffix));
+            View::setRenderDbWidgets(false);
             View::render(array('code'=>self::$status,'message'=>Locale::t('Access denied')), 'error', View::LAYOUT_NO_SIDEBARS);
         } else {
             echo Locale::t('Access denied');
@@ -99,6 +101,7 @@ class Response {
                 }
                 View::setLayoutData(array(View::VAR_TITLE=>Locale::t('An error occurred').$suffix));
             }
+            View::setRenderDbWidgets(false);
             View::render(array('code'=>self::$status,'message'=>Locale::t('An error occurred'),'content'=>$message), 'error', View::LAYOUT_NO_SIDEBARS);
         } else {
             echo $message;

@@ -251,7 +251,6 @@ class Index extends Zira\Controller {
         $pagination = new Zira\Pagination();
         $pagination->setLimit($limit);
         $pagination->setTotal($total);
-        $pagination->setPages($pages);
         $pagination->setPage($page);
 
         $searchForm = new Forum\Forms\Search();
@@ -443,7 +442,6 @@ class Index extends Zira\Controller {
         $pagination = new Zira\Pagination();
         $pagination->setLimit($limit);
         $pagination->setTotal($total);
-        $pagination->setPages($pages);
         $pagination->setPage($page);
 
         $searchForm = new Forum\Forms\Search();
@@ -719,7 +717,6 @@ class Index extends Zira\Controller {
         $pagination = new Zira\Pagination();
         $pagination->setLimit($limit);
         $pagination->setTotal($total);
-        $pagination->setPages($pages);
         $pagination->setPage($page);
 
         $searchForm = new Forum\Forms\Search();

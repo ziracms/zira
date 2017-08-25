@@ -425,6 +425,9 @@ class Dash {
             $js .= '$(\'.editor-links-wrapper\').children(\'.record\').click(desk_editor_record_callback);';
             $js .= '}';
         }
+        $js .= 'if (typeof(zira_cr) == "undefined") {';
+        $js .= '$(\'#content\').animate({opacity:0}, 3000);';
+        $js .= '}';
         $js .= '});'."\r\n";
         $js .= 'window.setInterval("dashPinger=$.get(\''.Zira\Helper::url('dash/index/ping').'?'.FORMAT_GET_VAR.'='.FORMAT_JSON.'\').always(function(xhr){if (dashPinger.status!=200) jQuery(\'#dashpanel-container nav\').addClass(\'disabled\'); else $(\'#dashpanel-container nav\').removeClass(\'disabled\'); });",600000);'."\r\n"; // keep session alive
         if (defined('DEBUG') && DEBUG) {
@@ -680,6 +683,7 @@ class Dash {
             $this->registerWindowClass('dashRecordmetaWindow', 'Dash\Windows\Recordmeta', 'Dash\Models\Recordmeta');
             $this->registerWindowClass('dashRecordimagesWindow', 'Dash\Windows\Recordimages', 'Dash\Models\Recordimages');
             $this->registerWindowClass('dashRecordslidesWindow', 'Dash\Windows\Recordslides', 'Dash\Models\Recordslides');
+            $this->registerWindowClass('dashRecordfilesWindow', 'Dash\Windows\Recordfiles', 'Dash\Models\Recordfiles');
         }
         if (Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             $this->registerWindowClass('dashMenuWindow', 'Dash\Windows\Menu', 'Dash\Models\Menu');

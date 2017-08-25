@@ -83,4 +83,47 @@ class Index extends Zira\Controller {
             Zira\Page::VIEW_PLACEHOLDER_CONTENT => ''
         ));
     }
+    
+    /** 
+     * File download action
+     */
+    public function file($id) {
+        $id = intval($id);
+        if (!$id) Zira\Response::notFound();
+        
+        $file = new Zira\Models\File($id);
+        if (!$file->loaded()) Zira\Response::notFound();
+ 
+        if (strpos($file->path, '..')!==false || strpos($file->path, UPLOADS_DIR.'/')!==0) Zira\Response::forbidden();
+        
+        $real_path = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file->path);
+        if (!file_exists($real_path)) Zira\Response::notFound();
+        
+        if ($file->record_id) {
+            $record = new Zira\Models\Record($file->record_id);
+            if (!$record->loaded()) Zira\Response::notFound();
+            if ($record->category_id) {
+                $category = new Zira\Models\Category($record->category_id);
+                if (!$category->loaded()) Zira\Response::notFound();
+            }
+        }
+                
+        if (isset($record) && !Zira\Permission::check(Zira\Permission::TO_DOWNLOAD_FILES)) {
+            $files_check = Zira\Config::get('files_check') || $record->files_check || (isset($category) && $category->files_check);
+            if ($files_check) Zira\Response::forbidden();
+        }
+        
+        $file->download_count++;
+        $file->save();
+        
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($real_path).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($real_path));
+        readfile($real_path);
+        exit;
+    }
 }

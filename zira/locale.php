@@ -197,6 +197,7 @@ class Locale {
         if (array_key_exists($str, self::$_strings)) return self::t($str, $arg);
         else if (!self::isLoaded(null,$module)) {
             //self::load($language, $module);
+            if (!$language) $language = self::$language;
             self::import($language, $module);
             return self::t($str, $arg);
         } else {

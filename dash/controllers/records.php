@@ -30,6 +30,11 @@ class Records extends Dash\Controller {
         $window = new Dash\Windows\Recordslides();
         return new Dash\Models\Recordslides($window);
     }
+    
+    protected function getFilesModel() {
+        $window = new Dash\Windows\Recordfiles();
+        return new Dash\Models\Recordfiles($window);
+    }
 
     protected function getEditorModel() {
         $class = (string)Zira\Request::post('class');
@@ -135,6 +140,24 @@ class Records extends Dash\Controller {
             $description = Zira\Request::post('description');
             $id = Zira\Request::post('item');
             $response = $this->getSlidesModel()->saveDescription($id, $description);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addfile() {
+        if (Zira\Request::isPost()) {
+            $files = Zira\Request::post('files');
+            $id = Zira\Request::post('item');
+            $response = $this->getFilesModel()->addRecordFiles($id, $files);
+            Zira\Page::render($response);
+        }
+    }
+
+    public function filedesc() {
+        if (Zira\Request::isPost()) {
+            $description = Zira\Request::post('description');
+            $id = Zira\Request::post('item');
+            $response = $this->getFilesModel()->saveDescription($id, $description);
             Zira\Page::render($response);
         }
     }

@@ -165,4 +165,11 @@ class Comment extends Orm {
 
         Zira\Mail::send($email, Locale::t('New comment was posted'), Helper::html($message));
     }
+    
+    public static function removeRecordComments($record_id) {
+        self::getCollection()
+                ->delete()
+                ->where('record_id', '=', $record_id)
+                ->execute();
+    }
 }

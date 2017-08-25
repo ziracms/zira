@@ -31,4 +31,11 @@ class Slide extends Orm {
             Record::getClass() => 'record_id'
         );
     }
+    
+    public static function removeRecordSlides($record_id) {
+        self::getCollection()
+                ->delete()
+                ->where('record_id', '=', $record_id)
+                ->execute();
+    }
 }

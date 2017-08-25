@@ -38,6 +38,10 @@ class Recordimages extends Model {
             $imageObj->save();
         }
         
+        $images_count = Zira\Page::getRecordImagesCount($record->id);
+        $record->images_count = intval($images_count);
+        $record->save();
+        
         Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
@@ -68,15 +72,26 @@ class Recordimages extends Model {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $record_ids = array();
         foreach($data as $id) {
             $image = new Zira\Models\Image($id);
             if (!$image->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
             $image->delete();
 
+            $record_ids []= $image->record_id;
+            
             if ($image->thumb) {
                 $thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->thumb);
                 if (file_exists($thumb)) @unlink($thumb);
             }
+        }
+        
+        foreach($record_ids as $record_id) {
+            $record = new Zira\Models\Record($record_id);
+            if (!$record->loaded()) continue;
+            $images_count = Zira\Page::getRecordImagesCount($record->id);
+            $record->images_count = intval($images_count);
+            $record->save();
         }
 
         Zira\Cache::clear();

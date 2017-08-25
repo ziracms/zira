@@ -33,7 +33,11 @@ class Meta extends Model {
                 'site_description' => 'string',
                 'site_copyright' => 'string',
                 'site_window_title' => 'int',
-                'enable_pagination' => 'int'
+                'enable_pagination' => 'int',
+                'gallery_check' => 'int',
+                'files_check' => 'int',
+                'audio_check' => 'int',
+                'video_check' => 'int'
             );
 
             $config_ids = array();

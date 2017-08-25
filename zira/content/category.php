@@ -12,7 +12,7 @@ use Zira;
 class Category extends Zira\Page {
     public static function content($last_id = null, $is_ajax = false) {
         if (!Zira\Category::current()) return;
-
+        static::setRedirectUrl(Zira\Category::current()->name);
         // checking permission
         if (Zira\Category::current()->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
             if (!Zira\User::isAuthorized()) {
@@ -85,7 +85,6 @@ class Category extends Zira\Page {
             $pagination = new Zira\Pagination();
             $pagination->setLimit($limit);
             $pagination->setPage($page);
-            $pagination->setPages($pages);
             $pagination->setTotal($records_count);
         }
         
@@ -278,31 +277,107 @@ class Category extends Zira\Page {
             if ($record) {
                 $slider_enabled = $category->slider_enabled!==null ? $category->slider_enabled : Zira\Config::get('slider_enabled', 1);
                 $gallery_enabled = $category->gallery_enabled!==null ? $category->gallery_enabled : Zira\Config::get('gallery_enabled', 1);
+                $files_enabled = $category->files_enabled!==null ? $category->files_enabled : Zira\Config::get('files_enabled', 1);
+                $audio_enabled = $category->audio_enabled!==null ? $category->audio_enabled : Zira\Config::get('audio_enabled', 1);
+                $video_enabled = $category->video_enabled!==null ? $category->video_enabled : Zira\Config::get('video_enabled', 1);
 
+                if (!$record->slides_count) $slider_enabled = false;
+                if (!$record->images_count) $gallery_enabled = false;
+                if (!$record->files_count) $files_enabled = false;
+                if (!$record->audio_count) $audio_enabled = false;
+                if (!$record->video_count) $video_enabled = false;
+                
                 if (!$record->access_check || Zira\Permission::check(Zira\Permission::TO_VIEW_RECORD)) {
 //                    static::setRecordId($record->id);
 //                    static::setRecordUrl(static::generateRecordUrl(null, $record->name));
 
+                    // checking permission for gallery, files, audio & video
+                    if (($record->gallery_check || $category->gallery_check || Zira\Config::get('gallery_check')) &&
+                       !Zira\Permission::check(Zira\Permission::TO_VIEW_GALLERY)
+                    ) {
+                        $access_gallery = false;
+                    } else {
+                        $access_gallery = true;
+                    }
+                    if (($record->files_check || $category->files_check || Zira\Config::get('files_check')) && 
+                        !Zira\Permission::check(Zira\Permission::TO_DOWNLOAD_FILES)
+                    ) {
+                        $access_files = false;
+                    } else {
+                        $access_files = true;
+                    }
+                    if (($record->audio_check || $category->audio_check || Zira\Config::get('audio_check')) && 
+                       !Zira\Permission::check(Zira\Permission::TO_LISTEN_AUDIO)
+                    ) {
+                        $access_audio = false;
+                    } else {
+                        $access_audio = true;
+                    }
+                    if (($record->video_check || $category->video_check || Zira\Config::get('video_check')) && 
+                       !Zira\Permission::check(Zira\Permission::TO_VIEW_VIDEO)
+                    ) {
+                        $access_video = false;
+                    } else {
+                        $access_video = true;
+                    }
+                        
                     if ($slider_enabled) {
-                        $slides = Zira\Models\Slide::getCollection()
-                            ->where('record_id', '=', $record->id)
-                            ->order_by('id', 'asc')
-                            ->get();
+                        $slides = static::getRecordSlides($record->id);
+                        $slides_co = count($slides);
                     } else {
-                        $slides = null;
+                        $slides = array();
+                        $slides_co = 0;
                     }
 
-                    if ($gallery_enabled) {
-                        $images = Zira\Models\Image::getCollection()
-                            ->where('record_id', '=', $record->id)
-                            ->order_by('id', 'asc')
-                            ->get();
+                    if ($gallery_enabled && $access_gallery) {
+                        $images = static::getRecordImages($record->id);
+                        $images_co = count($images);
+                    } else if ($gallery_enabled && !$access_gallery) {
+                        $images = array();
+                        $images_co = static::getRecordImagesCount($record->id);
                     } else {
-                        $images = null;
+                        $images = array();
+                        $images_co = 0;
+                    }
+                    
+                    if ($files_enabled && $access_files) {
+                        $files = static::getRecordFiles($record->id);
+                        $files_co = count($files);
+                    } else if ($files_enabled && !$access_files) {
+                        $files = array();
+                        $files_co = static::getRecordFilesCount($record->id);
+                    } else {
+                        $files = array();
+                        $files_co = 0;
+                    }
+                    
+                    if ($audio_enabled && $access_audio) {
+                        $audio = array(); // TODO
+                        $audio_co = count($audio);
+                    } else if ($audio_enabled && !$access_audio) {
+                        $audio = array();
+                        $audio_co = 0; // TODO
+                    } else {
+                        $audio = array();
+                        $audio_co = 0;
+                    }
+                    
+                    if ($video_enabled && $access_video) {
+                        $video = array(); // TODO
+                        $video_co = count($video);
+                    } else if ($video_enabled && !$access_video) {
+                        $video = array();
+                        $video_co = 0; // TODO
+                    } else {
+                        $video = array();
+                        $video_co = 0;
                     }
 
-                    if (!empty($slides) && $slider_enabled) static::setSlider($slides);
-                    if (!empty($images) && $gallery_enabled) static::setGallery($images);
+                    if ($slides_co > 0) static::setSlider($slides);
+                    if ($images_co > 0) static::setGallery($images, $access_gallery);
+                    if ($files_co > 0) static::setFiles($files, $access_files);
+                    if ($audio_co > 0) static::setAudio($audio, $access_audio);
+                    if ($video_co > 0) static::setVideo($video, $access_video);
 
                     if (!empty($slides) && $slider_enabled) $record->image = null;
                 } else {

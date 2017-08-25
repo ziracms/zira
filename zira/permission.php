@@ -17,7 +17,6 @@ class Permission {
     const TO_DELETE_USERS = 'Delete users';
     const TO_UPLOAD_FILES = 'Upload files';
     const TO_DELETE_FILES = 'Delete files';
-    const TO_DOWNLOAD_FILES = 'Download files';
     const TO_VIEW_FILES = 'View files list';
     const TO_UPLOAD_IMAGES = 'Upload images';
     const TO_DELETE_IMAGES = 'Delete images';
@@ -28,6 +27,10 @@ class Permission {
     const TO_VIEW_RECORDS = 'View records list';
     const TO_VIEW_RECORD = 'View record';
     const TO_MODERATE_COMMENTS = 'Moderate comments';
+    const TO_DOWNLOAD_FILES = 'Download files';
+    const TO_VIEW_GALLERY = 'View gallery';
+    const TO_LISTEN_AUDIO = 'Listen to audio';
+    const TO_VIEW_VIDEO = 'View video';
 
     protected static $_loaded = array();
 
@@ -42,7 +45,6 @@ class Permission {
             self::TO_DELETE_USERS,
             self::TO_UPLOAD_FILES,
             self::TO_DELETE_FILES,
-            self::TO_DOWNLOAD_FILES,
             self::TO_VIEW_FILES,
             self::TO_UPLOAD_IMAGES,
             self::TO_DELETE_IMAGES,
@@ -50,9 +52,13 @@ class Permission {
             self::TO_CREATE_RECORDS,
             self::TO_EDIT_RECORDS,
             self::TO_DELETE_RECORDS,
+            self::TO_MODERATE_COMMENTS,
             self::TO_VIEW_RECORDS,
             self::TO_VIEW_RECORD,
-            self::TO_MODERATE_COMMENTS
+            self::TO_DOWNLOAD_FILES,
+            self::TO_VIEW_GALLERY,
+            self::TO_LISTEN_AUDIO,
+            self::TO_VIEW_VIDEO
         );
     }
 

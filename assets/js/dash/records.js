@@ -36,6 +36,7 @@ var dash_records_select = function() {
     this.disableItemsByProperty('typo','widget');
     this.disableItemsByProperty('typo','slider');
     this.disableItemsByProperty('typo','gallery');
+    this.disableItemsByProperty('typo','files');
     this.disableItemsByProperty('typo','rethumb');
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo == 'record') {
         this.enableItemsByProperty('typo','editor');
@@ -53,6 +54,9 @@ var dash_records_select = function() {
         }
         if (this.options.data.gallery_enabled != 0) {
             this.enableItemsByProperty('typo','gallery');
+        }
+        if (this.options.data.files_enabled != 0) {
+            this.enableItemsByProperty('typo','files');
         }
     } else if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo == 'category') {
         this.enableItemsByProperty('typo','settings');
@@ -360,6 +364,14 @@ var dash_records_record_gallery = function() {
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
         desk_call(dash_records_record_images_wnd, null, {'data':data});
+    }
+};
+
+var dash_records_record_files = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
+        var data = {'items':[selected[0].data]};
+        desk_call(dash_records_record_files_wnd, null, {'data':data});
     }
 };
 

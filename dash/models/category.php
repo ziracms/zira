@@ -65,7 +65,11 @@ class Category extends Model {
             $category->layout = $form->getValue('layout');
             $category->parent_id = $parent_id;
             $category->access_check = (int)$form->getValue('access_check');
-
+            $category->gallery_check = (int)$form->getValue('gallery_check');
+            $category->files_check = (int)$form->getValue('files_check');
+            $category->audio_check = (int)$form->getValue('audio_check');
+            $category->video_check = (int)$form->getValue('video_check');
+            
             $category->save();
 
             Zira\Cache::clear();

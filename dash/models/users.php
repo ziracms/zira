@@ -26,6 +26,7 @@ class Users extends Model {
                 return array('error' => Zira\Locale::t('An error occurred'));
             }
             $user->delete();
+            Zira\User::deletePhoto($user);
         }
 
         return array('reload' => $this->getJSClassName());

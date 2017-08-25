@@ -132,7 +132,7 @@ class User extends Zira\Controller {
             if (Zira\User::isAllowedToLogin()) {
                 Zira\User::onUserLogin($form->getValue('rememberme'));
                 $redirect = Zira\Request::get('redirect');
-                if (!empty($redirect) && strpos($redirect,'//')===false && strpos($redirect, '.')===false) {
+                if (isset($redirect) && strpos($redirect,'//')===false && strpos($redirect, '.')===false) {
                     if ($redirect=='dash') Zira\Helper::setAddingLanguageToUrl(false);
                     Zira\Response::redirect($redirect);
                 } else {
@@ -773,7 +773,6 @@ class User extends Zira\Controller {
             $pagination = new Zira\Pagination();
             $pagination->setLimit($limit);
             $pagination->setTotal($total);
-            $pagination->setPages($pages);
             $pagination->setPage($page);
 
             Zira\Page::setView('zira/user/conversations');
@@ -877,7 +876,6 @@ class User extends Zira\Controller {
             $pagination = new Zira\Pagination();
             $pagination->setLimit($limit);
             $pagination->setTotal($total);
-            $pagination->setPages($pages);
             $pagination->setPage($page);
 
             Zira\View::addParser();

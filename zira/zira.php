@@ -126,6 +126,7 @@ class Zira {
         Router::addRoute('sitemap','zira/index/map');
         Router::addRoute('rss','zira/xml/rss');
         Router::addRoute('contact','zira/contact/index');
+        Router::addRoute('file','zira/index/file');
     }
 
     public function bootstrapModules() {

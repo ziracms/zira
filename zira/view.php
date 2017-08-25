@@ -481,6 +481,9 @@ class View {
                 $_c = str_replace('%s', $t, $s);
             }
             $c .= $_c;
+            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zira_cr='.time().';', array('type'=>'text/javascript')));
+        } else {
+            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zira_cr='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
     }
@@ -876,6 +879,9 @@ class View {
                 ) || (
                     $_widget->filter == Models\Widget::STATUS_FILTER_CATEGORY &&
                     (!Category::current() || Category::param() || Page::getRecordId()!==null)
+                ) || (
+                    $_widget->filter == Models\Widget::STATUS_FILTER_CATEGORY_AND_RECORD &&
+                    !Category::current() && Page::getRecordId()===null
                 ))) {
                     continue;
                 }

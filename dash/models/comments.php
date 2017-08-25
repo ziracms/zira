@@ -45,6 +45,9 @@ class Comments extends Model {
                     }
                 }
             }
+            
+            // deleting likes
+            Zira\Models\Commentlike::removeCommentLikes($comment->id);
         }
 
         Zira\Cache::clear();

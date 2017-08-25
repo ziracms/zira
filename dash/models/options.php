@@ -28,6 +28,7 @@ class Options extends Model {
                 'cache_lifetime'=>'int',
                 'clean_url'=>'int',
                 'gzip'=>'int',
+                'hide_file_path'=>'int',
                 'db_translates'=>'int',
                 'dash_panel_frontend' => 'int',
                 'db_widgets_enabled' => 'int',

@@ -52,6 +52,9 @@ class Categorysettings extends Window {
 
         if ($categoryArr['slider_enabled']===null) $categoryArr['slider_enabled'] = Zira\Config::get('slider_enabled', 1);
         if ($categoryArr['gallery_enabled']===null) $categoryArr['gallery_enabled'] = Zira\Config::get('gallery_enabled', 1);
+        if ($categoryArr['files_enabled']===null) $categoryArr['files_enabled'] = Zira\Config::get('files_enabled', 1);
+        if ($categoryArr['audio_enabled']===null) $categoryArr['audio_enabled'] = Zira\Config::get('audio_enabled', 1);
+        if ($categoryArr['video_enabled']===null) $categoryArr['video_enabled'] = Zira\Config::get('video_enabled', 1);
         if ($categoryArr['comments_enabled']===null) $categoryArr['comments_enabled'] = Zira\Config::get('comments_enabled', 1);
         if ($categoryArr['rating_enabled']===null) $categoryArr['rating_enabled'] = Zira\Config::get('rating_enabled', 0);
         if ($categoryArr['display_author']===null) $categoryArr['display_author'] = Zira\Config::get('display_author', 0);

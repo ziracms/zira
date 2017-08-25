@@ -38,6 +38,9 @@ class Categorysettings extends Form
         $html .= $this->hidden('id');
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);
+        $html .= $this->checkbox(Locale::t('Show files'), 'files_enabled', null, false);
+        $html .= $this->checkbox(Locale::t('Show audio'), 'audio_enabled', null, false);
+        $html .= $this->checkbox(Locale::t('Show video'), 'video_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Enable rating'), 'rating_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Display author'), 'display_author', null, false);

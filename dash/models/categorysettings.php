@@ -30,6 +30,9 @@ class Categorysettings extends Model {
 
             $category->slider_enabled = (int)$form->getValue('slider_enabled');
             $category->gallery_enabled = (int)$form->getValue('gallery_enabled');
+            $category->files_enabled = (int)$form->getValue('files_enabled');
+            $category->audio_enabled = (int)$form->getValue('audio_enabled');
+            $category->video_enabled = (int)$form->getValue('video_enabled');
             $category->comments_enabled = (int)$form->getValue('comments_enabled');
             $category->rating_enabled = (int)$form->getValue('rating_enabled');
             $category->display_author = (int)$form->getValue('display_author');

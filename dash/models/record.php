@@ -52,8 +52,13 @@ class Record extends Model {
             $record->title = $form->getValue('title');
             $record->language = $form->getValue('language');
             $record->access_check = (int)$form->getValue('access_check');
+            $record->gallery_check = (int)$form->getValue('gallery_check');
+            $record->files_check = (int)$form->getValue('files_check');
+            $record->audio_check = (int)$form->getValue('audio_check');
+            $record->video_check = (int)$form->getValue('video_check');
             $record->published = (bool)$form->getValue('published') ? Zira\Models\Record::STATUS_PUBLISHED : Zira\Models\Record::STATUS_NOT_PUBLISHED;
             $record->front_page = (bool)$form->getValue('front_page') ? Zira\Models\Record::STATUS_FRONT_PAGE : Zira\Models\Record::STATUS_NOT_FRONT_PAGE;
+            $record->comments_enabled = (int)$form->getValue('comments_enabled');
             $record->modified_date = date('Y-m-d H:i:s');
 
             $record->save();

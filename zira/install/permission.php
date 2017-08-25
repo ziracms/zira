@@ -50,7 +50,6 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 1,
             \Zira\Permission::TO_UPLOAD_FILES => 1,
             \Zira\Permission::TO_DELETE_FILES => 1,
-            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 1,
             \Zira\Permission::TO_UPLOAD_IMAGES => 1,
             \Zira\Permission::TO_DELETE_IMAGES => 1,
@@ -58,9 +57,13 @@ class Permission extends Table {
             \Zira\Permission::TO_CREATE_RECORDS => 1,
             \Zira\Permission::TO_EDIT_RECORDS => 1,
             \Zira\Permission::TO_DELETE_RECORDS => 1,
+            \Zira\Permission::TO_MODERATE_COMMENTS => 1,
             \Zira\Permission::TO_VIEW_RECORDS => 1,
             \Zira\Permission::TO_VIEW_RECORD => 1,
-            \Zira\Permission::TO_MODERATE_COMMENTS => 1
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
+            \Zira\Permission::TO_VIEW_GALLERY => 1,
+            \Zira\Permission::TO_LISTEN_AUDIO => 1,
+            \Zira\Permission::TO_VIEW_VIDEO => 1
         );
     }
 
@@ -75,7 +78,6 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 0,
             \Zira\Permission::TO_UPLOAD_FILES => 0,
             \Zira\Permission::TO_DELETE_FILES => 0,
-            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 1,
             \Zira\Permission::TO_UPLOAD_IMAGES => 1,
             \Zira\Permission::TO_DELETE_IMAGES => 1,
@@ -83,9 +85,13 @@ class Permission extends Table {
             \Zira\Permission::TO_CREATE_RECORDS => 1,
             \Zira\Permission::TO_EDIT_RECORDS => 1,
             \Zira\Permission::TO_DELETE_RECORDS => 1,
+            \Zira\Permission::TO_MODERATE_COMMENTS => 1,
             \Zira\Permission::TO_VIEW_RECORDS => 1,
             \Zira\Permission::TO_VIEW_RECORD => 1,
-            \Zira\Permission::TO_MODERATE_COMMENTS => 1
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
+            \Zira\Permission::TO_VIEW_GALLERY => 1,
+            \Zira\Permission::TO_LISTEN_AUDIO => 1,
+            \Zira\Permission::TO_VIEW_VIDEO => 1
         );
     }
 
@@ -100,7 +106,6 @@ class Permission extends Table {
             \Zira\Permission::TO_DELETE_USERS => 0,
             \Zira\Permission::TO_UPLOAD_FILES => 0,
             \Zira\Permission::TO_DELETE_FILES => 0,
-            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
             \Zira\Permission::TO_VIEW_FILES => 0,
             \Zira\Permission::TO_UPLOAD_IMAGES => 0,
             \Zira\Permission::TO_DELETE_IMAGES => 0,
@@ -108,9 +113,13 @@ class Permission extends Table {
             \Zira\Permission::TO_CREATE_RECORDS => 0,
             \Zira\Permission::TO_EDIT_RECORDS => 0,
             \Zira\Permission::TO_DELETE_RECORDS => 0,
+            \Zira\Permission::TO_MODERATE_COMMENTS => 0,
             \Zira\Permission::TO_VIEW_RECORDS => 1,
             \Zira\Permission::TO_VIEW_RECORD => 1,
-            \Zira\Permission::TO_MODERATE_COMMENTS => 0
+            \Zira\Permission::TO_DOWNLOAD_FILES => 1,
+            \Zira\Permission::TO_VIEW_GALLERY => 1,
+            \Zira\Permission::TO_LISTEN_AUDIO => 1,
+            \Zira\Permission::TO_VIEW_VIDEO => 1
         );
     }
 

@@ -11,5 +11,6 @@ return array(
     'Activated %s comments' => array('Activated %s comment', 'Activated %s comments'),
     '%s comments was posted' => array('%s comment was posted', '%s comments was posted'),
     'max. length: %s chars' => array('max. length: %s char', 'max. length: %s chars'),
-    'Updated %s thumbs' => array('Updated %s thumb', 'Updated %s thumbs')
+    'Updated %s thumbs' => array('Updated %s thumb', 'Updated %s thumbs'),
+    '%s downloads' => array('%s download', '%s downloads')
 );

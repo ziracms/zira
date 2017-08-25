@@ -168,9 +168,21 @@ class Page {
         View::addPlaceholderView(View::VAR_CONTENT_TOP, array('images'=>$images), 'zira/slider');
     }
 
-    public static function setGallery(array $images) {
+    public static function setGallery(array $images, $access_allowed = true) {
         View::addLightbox();
-        View::addPlaceholderView(View::VAR_CONTENT, array('images'=>$images), 'zira/gallery');
+        View::addPlaceholderView(View::VAR_CONTENT, array('images'=>$images, 'access_allowed' => $access_allowed), 'zira/gallery');
+    }
+    
+    public static function setFiles(array $files, $access_allowed = true) {
+        View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$files, 'access_allowed' => $access_allowed), 'zira/files');
+    }
+    
+    public static function setAudio(array $audio, $access_allowed = true) {
+        // TODO
+    }
+    
+    public static function setVideo(array $video, $access_allowed = true) {
+        // TODO
     }
 
     public static function setComments($record, $preview = false) {
@@ -303,14 +315,11 @@ class Page {
         $offset = $limit * ($page - 1);
         
         $query = Record::getCollection()
-                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
-                        ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
-                        ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
+                        ->select('id')
+                        ->where('category_id', '=', $category_id)
+                        ->and_where('language', '=', Locale::getLanguage())
+                        ->and_where('published', '=', Record::STATUS_PUBLISHED)
                         ;
-
-        $query->where('category_id', '=', $category_id);
-        $query->and_where('language', '=', Locale::getLanguage());
-        $query->and_where('published', '=', Record::STATUS_PUBLISHED);
         if ($front_page) {
             $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
         }
@@ -320,14 +329,32 @@ class Page {
         $query->order_by('id', 'desc');
         $query->limit($limit, $offset);
 
+        $rows = $query->get();
+
+        if (!$rows) return array();
+        
+        $query = Record::getCollection()
+                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+                        ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
+                        ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
+                        ;
+        
+        $record_ids = array();
+        foreach($rows as $index=>$row) {
+            $record_ids []= $row->id;
+        }
+        $query->where('id','in',$record_ids);
+
+        $query->order_by('id', 'desc');
+        
         return $query->get();
     }
     
     public static function getCategoryRecordsCount($category_id, $front_page = false) {
         $query = Record::getCollection()
                         ->count()
-                        ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
-                        ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
+                        ->join(Models\Category::getClass())
+                        ->join(Models\User::getClass())
                         ;
 
         $query->where('category_id', '=', $category_id);
@@ -392,18 +419,86 @@ class Page {
     }
     
     public static function getCategoriesRecordsCount(array $category_ids, $front_page = false) {
-        $query = Record::getCollection();
-        $query->count();
-        $query->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'));
-        $query->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'));             
-        $query->where('category_id', 'in', $category_ids);
-        $query->and_where('language', '=', Locale::getLanguage());
-        $query->and_where('published', '=', Record::STATUS_PUBLISHED);
-        if ($front_page) {
-            $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
+        $use_union = true; // seems faster
+        if (!$use_union) {
+            $query = Record::getCollection();
+            $query->count();
+            $query->join(Models\Category::getClass());
+            $query->join(Models\User::getClass());             
+            $query->where('category_id', 'in', $category_ids);
+            $query->and_where('language', '=', Locale::getLanguage());
+            $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+            if ($front_page) {
+                $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
+            }
+            return $query->get('co');
+        } else {
+            $query = Record::getCollection();
+            foreach ($category_ids as $index=>$category_id) {
+                if ($index>0) $query->union();
+                $query->count();
+                $query->join(Models\Category::getClass());
+                $query->join(Models\User::getClass());             
+                $query->where('category_id', '=', $category_id);
+                $query->and_where('language', '=', Locale::getLanguage());
+                $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+                if ($front_page) {
+                    $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
+                }
+            }
+            $rows = $query->get();
+            $co = 0;
+            foreach($rows as $row) {
+                $co += $row->co;
+            }
+            return $co;
         }
         
-        return $query->get('co');
+    }
+    
+    public static function getRecordSlides($record_id) {
+        return Models\Slide::getCollection()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get();
+    }
+    
+    public static function getRecordSlidesCount($record_id) {
+        return Models\Slide::getCollection()
+                            ->count()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get('co');
+    }
+    
+    public static function getRecordImages($record_id) {
+        return Models\Image::getCollection()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get();
+    }
+    
+    public static function getRecordImagesCount($record_id) {
+        return Models\Image::getCollection()
+                            ->count()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get('co');
+    }
+    
+    public static function getRecordFiles($record_id) {
+        return Models\File::getCollection()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get();
+    }
+    
+    public static function getRecordFilesCount($record_id) {
+        return Models\File::getCollection()
+                            ->count()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get('co');
     }
 
     public static function render(array $data = null) {

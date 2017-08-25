@@ -47,6 +47,9 @@ class Records extends Window {
         $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Gallery'), 'glyphicon glyphicon-th', 'desk_call(dash_records_record_gallery, this);', 'edit', true, array('typo'=>'gallery'))
         );
+        $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Files'), 'glyphicon glyphicon-file', 'desk_call(dash_records_record_files, this);', 'edit', true, array('typo'=>'files'))
+        );
 
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('New category'), 'glyphicon glyphicon-folder-close', 'desk_call(dash_records_create_category, this);', 'create')
@@ -150,7 +153,10 @@ class Records extends Window {
             'root' => '',
             'language' => '',
             'slider_enabled'=>0,
-            'gallery_enabled'=>0
+            'gallery_enabled'=>0,
+            'files_enabled'=>0,
+            'audio_enabled'=>0,
+            'video_enabled'=>0
         ));
 
         $this->addStrings(array(
@@ -174,7 +180,8 @@ class Records extends Window {
             'dash_records_record_meta_wnd' => Dash::getInstance()->getWindowJSName(Recordmeta::getClass()),
             'dash_records_web_wnd' => Dash::getInstance()->getWindowJSName(Web::getClass()),
             'dash_records_record_images_wnd' => Dash::getInstance()->getWindowJSName(Recordimages::getClass()),
-            'dash_records_record_slides_wnd' => Dash::getInstance()->getWindowJSName(Recordslides::getClass())
+            'dash_records_record_slides_wnd' => Dash::getInstance()->getWindowJSName(Recordslides::getClass()),
+            'dash_records_record_files_wnd' => Dash::getInstance()->getWindowJSName(Recordfiles::getClass())
         ));
 
         $this->includeJS('dash/records');
@@ -189,7 +196,10 @@ class Records extends Window {
                 'root'=>'',
                 'language'=>'',
                 'slider_enabled'=>0,
-                'gallery_enabled'=>0
+                'gallery_enabled'=>0,
+                'files_enabled'=>0,
+                'audio_enabled'=>0,
+                'video_enabled'=>0
             ));
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
@@ -206,6 +216,9 @@ class Records extends Window {
 
         $slider_enabled = Zira\Config::get('slider_enabled', 1);
         $gallery_enabled = Zira\Config::get('gallery_enabled', 1);
+        $files_enabled = Zira\Config::get('files_enabled', 1);
+        $audio_enabled = Zira\Config::get('audio_enabled', 1);
+        $video_enabled = Zira\Config::get('video_enabled', 1);
 
         $categories = array();
         if (!empty($root)) {
@@ -223,6 +236,9 @@ class Records extends Window {
                     $category_id = $row->id;
                     if ($row->slider_enabled !== null) $slider_enabled = $row->slider_enabled;
                     if ($row->gallery_enabled !== null) $gallery_enabled = $row->gallery_enabled;
+                    if ($row->files_enabled !== null) $files_enabled = $row->files_enabled;
+                    if ($row->audio_enabled !== null) $audio_enabled = $row->audio_enabled;
+                    if ($row->video_enabled !== null) $video_enabled = $row->video_enabled;
                 }
             }
         }
@@ -412,7 +428,10 @@ class Records extends Window {
             'root' => $root,
             'language' => $language,
             'slider_enabled'=>$slider_enabled,
-            'gallery_enabled'=>$gallery_enabled
+            'gallery_enabled'=>$gallery_enabled,
+            'files_enabled'=>$files_enabled,
+            'audio_enabled'=>$audio_enabled,
+            'video_enabled'=>$video_enabled
         ));
     }
 }

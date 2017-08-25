@@ -43,4 +43,11 @@ class Draft extends Orm {
             ->and_where('modified_date','<',date('Y-m-d H:i:s',time()-2592000)) // 30 days
             ->execute();
     }
+    
+    public static function removeRecordDrafts($record_id) {
+        self::getCollection()
+                ->delete()
+                ->where('record_id', '=', $record_id)
+                ->execute();
+    }
 }

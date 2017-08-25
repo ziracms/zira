@@ -29,9 +29,11 @@ class Category extends Window {
     public function create() {
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
-                'desk_window_form_init(this);'
+                'desk_call(dash_category_load, this);'
             )
         );
+        
+        $this->includeJS('dash/category');
     }
 
     public function load() {

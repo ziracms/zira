@@ -26,7 +26,7 @@ class Login extends Form {
     protected function _init() {
         $action = 'user/login';
         $redirect = Request::get('redirect');
-        if (!empty($redirect) && strpos($redirect, '//')===false && strpos($redirect, '.')===false) $action .= '?redirect='.$redirect;
+        if (isset($redirect) && strpos($redirect, '//')===false && strpos($redirect, '.')===false) $action .= '?redirect='.$redirect;
         $this->setUrl($action);
         $this->setTitle(Locale::t('Sign In'));
         $this->setDescription(Locale::t('Enter your username or email'));

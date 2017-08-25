@@ -97,12 +97,23 @@ class Records extends Model {
                     $thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $record->thumb);
                     if (file_exists($thumb)) @unlink($thumb);
                 }
+                
+                // deleting comments
+                Zira\Models\Comment::removeRecordComments($record->id);
+                
+                // deleting drafts
+                Zira\Models\Draft::removeRecordDrafts($record->id);
 
+                // deleting likes
+                Zira\Models\Like::removeRecordLikes($record->id);
+                
+                $gthumbs = array();
+                
+                // deleting gallery images
                 $images = Zira\Models\Image::getCollection()
                             ->where('record_id','=',$record->id)
                             ->get();
 
-                $gthumbs = array();
                 foreach($images as $image) {
                     if (!$image->thumb) continue;
                     $thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->thumb);
@@ -114,11 +125,39 @@ class Records extends Model {
                             ->delete()
                             ->where('record_id','=',$record->id)
                             ->execute();
+                
+                // deleting slides
+                $slides = Zira\Models\Slide::getCollection()
+                            ->where('record_id','=',$record->id)
+                            ->get();
 
+                foreach($slides as $slide) {
+                    if (!$slide->thumb) continue;
+                    $thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $slide->thumb);
+                    if (!file_exists($thumb)) continue;
+                    $gthumbs []= $thumb;
+                }
+
+                Zira\Models\Slide::getCollection()
+                            ->delete()
+                            ->where('record_id','=',$record->id)
+                            ->execute();
+
+                // deleting thumbs
                 foreach($gthumbs as $thumb) {
                     @unlink($thumb);
                 }
-
+                
+                // deleting files
+                Zira\Models\File::removeRecordFiles($record->id);
+                
+                // deleting audio
+                Zira\Models\Audio::removeRecordAudio($record->id);
+                
+                // deleting videos
+                Zira\Models\Video::removeRecordVideos($record->id);
+                
+                // deleting search index
                 Zira\Models\Search::clearRecordIndex($record);
             }
         }

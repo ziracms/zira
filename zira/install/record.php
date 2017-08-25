@@ -33,6 +33,16 @@ class Record extends Table {
             'meta_description' => Field::text(),
             'language' => Field::string(true),
             'access_check' => Field::tinyint(true, true, 0),
+            'gallery_check' => Field::tinyint(true, true, 0),
+            'files_check' => Field::tinyint(true, true, 0),
+            'audio_check' => Field::tinyint(true, true, 0),
+            'video_check' => Field::tinyint(true, true, 0),
+            'slides_count' => Field::tinyint(true, true, 0),
+            'images_count' => Field::tinyint(true, true, 0),
+            'files_count' => Field::tinyint(true, true, 0),
+            'audio_count' => Field::tinyint(true, true, 0),
+            'video_count' => Field::tinyint(true, true, 0),
+            'comments_enabled' => Field::tinyint(false, true),
             'creation_date' => Field::datetime(true),
             'modified_date' => Field::datetime(true),
             'published' => Field::tinyint(true, true, 0),
@@ -45,7 +55,8 @@ class Record extends Table {
 
     public function getKeys() {
         return array(
-            'record' => array('category_id', 'language', 'name','published','front_page')
+            'record' => array('category_id', 'language', 'name','published','front_page'),
+            'widget' => array('category_id', 'language', 'published','rating', 'comments')
         );
     }
 

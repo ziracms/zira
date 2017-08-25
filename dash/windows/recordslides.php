@@ -86,11 +86,7 @@ class Recordslides extends Window {
 
         $items = array();
         foreach($images as $image) {
-            $name = $image->image;
-            $p = strrpos($name,'/');
-            if ($p!==false) {
-                $name = substr($name, $p+1);
-            }
+            $name = basename($image->image);
             $items []= $this->createBodyItem($name, $image->description, Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description));
         }
 

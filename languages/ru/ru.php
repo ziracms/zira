@@ -131,5 +131,9 @@ return array(
     'First page' => 'Первая страница',
     'Last page' => 'Последняя страница',
     'Report a bug' => 'Сообщить об ошибке',
-    'Calendar' => 'Календарь'
+    'Calendar' => 'Календарь',
+    '%s to view gallery' => '%s, чтобы посмотреть галерею',
+    'You do not have permission to view gallery' => 'У вас нет прав для просмотра галереи',
+    '%s to download files' => '%s, чтобы скачать файлы',
+    'You do not have permission to download files' => 'У вас нет прав для скачивания файлов'
 );

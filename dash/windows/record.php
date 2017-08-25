@@ -29,9 +29,11 @@ class Record extends Window {
     public function create() {
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
-                'desk_window_form_init(this);'
+                'desk_call(dash_record_load, this);'
             )
         );
+        
+        $this->includeJS('dash/record');
     }
 
     public function load() {
@@ -77,12 +79,15 @@ class Record extends Window {
             $recordArray = $record->toArray();
             $recordArray['published'] = $record->published == Zira\Models\Record::STATUS_PUBLISHED ? 1 : 0;
             $recordArray['front_page'] = $record->front_page == Zira\Models\Record::STATUS_FRONT_PAGE ? 1 : 0;
+            if ($recordArray['comments_enabled']===null) $recordArray['comments_enabled'] = isset($category) && $category->comments_enabled!==null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1);
+
             $form->setValues($recordArray);
         } else {
             $this->setTitle(Zira\Locale::t('New record'));
             $form->setValues(array(
                 'category_id' => $category_id,
-                'language' => !empty($language) ? $language : Zira\Config::get('language')
+                'language' => !empty($language) ? $language : Zira\Config::get('language'),
+                'comments_enabled' => isset($category) && $category->comments_enabled!==null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1)
             ));
         }
 

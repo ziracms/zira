@@ -16,6 +16,7 @@ class Widget extends Orm {
     const STATUS_NOT_ACTIVE = 0;
     const STATUS_FILTER_RECORD = 'record';
     const STATUS_FILTER_CATEGORY = 'category';
+    const STATUS_FILTER_CATEGORY_AND_RECORD = 'category_record';
 
     public static $table = 'widgets';
     public static $pk = 'id';
@@ -55,7 +56,8 @@ class Widget extends Orm {
     public static function getFiltersArray() {
         return array(
             self::STATUS_FILTER_CATEGORY => Locale::t('Display on category page only'),
-            self::STATUS_FILTER_RECORD => Locale::t('Display on record page only')
+            self::STATUS_FILTER_RECORD => Locale::t('Display on record page only'),
+            self::STATUS_FILTER_CATEGORY_AND_RECORD => Locale::t('Display on category and record pages only')
         );
     }
 }

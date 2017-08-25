@@ -38,6 +38,10 @@ class Recordslides extends Model {
             $slideObj->save();
         }
         
+        $slides_count = Zira\Page::getRecordSlidesCount($record->id);
+        $record->slides_count = intval($slides_count);
+        $record->save();
+        
         Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
@@ -68,15 +72,26 @@ class Recordslides extends Model {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $record_ids = array();
         foreach($data as $id) {
             $slide = new Zira\Models\Slide($id);
             if (!$slide->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
             $slide->delete();
+            
+            $record_ids []= $slide->record_id;
 
             if ($slide->thumb) {
                 $thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $slide->thumb);
                 if (file_exists($thumb)) @unlink($thumb);
             }
+        }
+        
+        foreach($record_ids as $record_id) {
+            $record = new Zira\Models\Record($record_id);
+            if (!$record->loaded()) continue;
+            $slides_count = Zira\Page::getRecordSlidesCount($record->id);
+            $record->slides_count = intval($slides_count);
+            $record->save();
         }
 
         Zira\Cache::clear();

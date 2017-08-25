@@ -44,10 +44,32 @@ class Record extends Form
         $html .= $this->input(Locale::t('Title') . '*', 'title');
         $html .= $this->checkbox(Locale::t('Publish'), 'published', null, false);
         $html .= $this->checkbox(Locale::t('Show on front page'), 'front_page', null, false);
-        $html .= $this->checkbox(Locale::t('Restrict access'), 'access_check', null, false);
+        $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);
+        
         if ($this->getValue('image') || $this->getValue('thumb')) {
             $html .= $this->checkbox(Locale::t('Remove assigned image'), 'delete_image', null, false);
         }
+        
+        $html .= Zira\Helper::tag_open('div', array('id'=>'dashrecordform_access_button'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'col-sm-offset-4 col-sm-8'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'checkbox checkbox-float'));
+        $html .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-menu-right', 'style'=>'float:left;top:3px'));
+        $html .= Zira\Helper::tag_open('label', array('class' => 'col-sm-4 control-label', 'style'=>'width:auto;padding-top:0;padding-left:7px;', 'id'=>'dashrecordform_access_label'));
+        $html .= Locale::t('Restrict access');
+        $html .= Zira\Helper::tag_close('label');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_open('div', array('id'=>'dashrecordform_access_container', 'style'=>'display:none'));
+        $html .= $this->checkbox(Locale::t('Restrict access to page'), 'access_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to gallery'), 'gallery_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to files'), 'files_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to audio'), 'audio_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to video'), 'video_check', null, false);
+        $html .= Zira\Helper::tag_close('div');
+
         $html .= $this->close();
         return $html;
     }

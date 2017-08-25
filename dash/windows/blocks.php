@@ -33,10 +33,10 @@ class Blocks extends Window {
             $this->createSidebarSeparator()
         );
         $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Open text'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
+            $this->createSidebarItem(Zira\Locale::t('Open code'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
         );
         $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Open HTML'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
+            $this->createSidebarItem(Zira\Locale::t('Open text'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
         );
 
         $this->addDefaultMenuDropdownItem(
@@ -49,10 +49,10 @@ class Blocks extends Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Edit as text'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
+            $this->createMenuDropdownItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Edit as HTML'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
+            $this->createMenuDropdownItem(Zira\Locale::t('Edit text'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
         );
 
         $this->addDefaultContextMenuItem(
@@ -65,10 +65,10 @@ class Blocks extends Window {
             $this->createContextMenuSeparator()
         );
         $this->addDefaultContextMenuItem(
-            $this->createContextMenuItem(Zira\Locale::t('Edit as text'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
+            $this->createContextMenuItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(dash_blocks_text,this);', 'edit', true)
         );
         $this->addDefaultContextMenuItem(
-            $this->createContextMenuItem(Zira\Locale::t('Edit as HTML'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
+            $this->createContextMenuItem(Zira\Locale::t('Edit text'), 'glyphicon glyphicon-text-size', 'desk_call(dash_blocks_html,this);', 'edit', true)
         );
 
         $this->setOnSelectJSCallback(

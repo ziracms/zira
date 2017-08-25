@@ -196,6 +196,19 @@ dt {
     background: none;
     background-color: #D6D6DE;
 }
+.alert a:link,
+.alert a:visited {
+    color: #0A3241;
+}
+.alert-dark {
+    border-color: #323350;
+    background-image: linear-gradient(to bottom,#446a77 0,#313458 100%);
+    color: #eee;
+}
+.alert-dark a:link,
+.alert-dark a:visited {
+    color: #A0C4EC;
+}
 #main-container .btn-default {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	text-shadow: none;
@@ -1990,6 +2003,28 @@ ul.vote-results li .vote-result {
 }
 .zira-calendar-wrapper .zira-calendar-days li a:hover {
     text-decoration: none;
+}
+
+.files-wrapper ul.files {
+    list-style-type: none;
+    margin: 0;
+    padding: 2px;
+    display: block;
+    background-color: rgb(93, 99, 110);
+    border-radius: 3px;
+    border: 1px solid #41444e;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.15) inset, 0px 1px 5px rgba(0, 0, 0, 0.075);
+}
+.files-wrapper ul.files li {
+    padding: 2px 10px;
+    background-color: #41444e;
+}
+.files-wrapper ul.files li:nth-child(even) {
+    background-color: #535861;
+}
+.files-wrapper ul.files li a:link,
+.files-wrapper ul.files li a:visited {
+    color: #C7C5D8;
 }
 
 /** mobile **/

@@ -29,4 +29,18 @@ class Like extends Orm {
     public static function getReferences() {
         return array();
     }
+    
+    public static function removeRecordLikes($record_id) {
+        self::getCollection()
+                ->delete()
+                ->where('record_id', '=', $record_id)
+                ->execute();
+    }
+    
+    public static function removeUserLikes($user_id) {
+        self::getCollection()
+                ->delete()
+                ->where('user_id', '=', $user_id)
+                ->execute();
+    }
 }

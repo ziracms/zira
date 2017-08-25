@@ -60,6 +60,7 @@ class Options extends Form
         $html .= $this->input(Locale::t('Cache lifetime (sec.)'), 'cache_lifetime');
         $html .= $this->checkbox(Locale::t('Clean URLs'), 'clean_url', array('class'=>'form-control clean_url_option'), false);
         $html .= $this->checkbox(Locale::t('GZIP compression'), 'gzip', $gzip_attr, false);
+        $html .= $this->checkbox(Locale::t('Hide file URLs'), 'hide_file_path', null, false);
         $html .= $this->checkbox(Locale::t('Enable widgets'), 'db_widgets_enabled', null, false);
         $html .= $this->checkbox(Locale::t('DB translates'), 'db_translates', null, false);
         if (count(Zira\Config::get('languages'))>1) {

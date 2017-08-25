@@ -47,6 +47,26 @@ class Meta extends Form
         $html .= $this->input(Locale::t('Description'), 'site_description', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Copyright string'), 'site_copyright', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->checkbox(Locale::t('Show website name in window title'), 'site_window_title', null, false);
+        
+        $html .= Zira\Helper::tag_open('div', array('id'=>'dashmetaform_access_button'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'col-sm-offset-4 col-sm-8'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'checkbox checkbox-float'));
+        $html .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-menu-right', 'style'=>'float:left;top:3px'));
+        $html .= Zira\Helper::tag_open('label', array('class' => 'col-sm-4 control-label', 'style'=>'width:auto;padding-top:0;padding-left:7px;', 'id'=>'dashmetaform_access_label'));
+        $html .= Locale::t('Restrict access');
+        $html .= Zira\Helper::tag_close('label');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_open('div', array('id'=>'dashmetaform_access_container', 'style'=>'display:none'));
+        $html .= $this->checkbox(Locale::t('Restrict access to gallery'), 'gallery_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to files'), 'files_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to audio'), 'audio_check', null, false);
+        $html .= $this->checkbox(Locale::t('Restrict access to video'), 'video_check', null, false);
+        $html .= Zira\Helper::tag_close('div');
+        
         $html .= $this->close();
         return $html;
     }
