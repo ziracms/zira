@@ -9,6 +9,7 @@ namespace Dash\Windows;
 
 use Zira;
 use Zira\Permission;
+use Dash\Windows\Files;
 
 class Recordfiles extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-file';
@@ -70,7 +71,9 @@ class Recordfiles extends Window {
         if (empty($this->item) || !is_numeric($this->item)) {
             return array('error'=>Zira\Locale::t('An error occurred'));
         }
-        if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
+        if (!Permission::check(Permission::TO_CREATE_RECORDS) || 
+            !Permission::check(Permission::TO_EDIT_RECORDS)
+        ) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
@@ -87,11 +90,26 @@ class Recordfiles extends Window {
 
         $items = array();
         foreach($files as $file) {
+            $real_path = str_replace('/', DIRECTORY_SEPARATOR, $file->path);
             $name = basename($file->path);
             if ($file->download_count>0) {
                 $name .= '&nbsp;&nbsp;&nbsp;('.Zira\Locale::t('%s downloads', $file->download_count).')';
             }
-            $items []= $this->createBodyFileItem($name, $file->description, $file->id, null, false, array('description'=>$file->description));
+            if (($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
+                $items[]=$this->createBodyItem($name, $file->description, Zira\Helper::baseUrl($file->path), $file->id, null, false, array('type'=>'image', 'description'=>$file->description));
+            } else if (Files::is_audio($file->path)) {
+                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description));
+            } else if (Files::is_video($file->path)) {
+                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description));
+            } else if (Files::is_archive($file->path)) {
+                $items[]=$this->createBodyArchiveItem($name, $file->description, $file->id, null, false, array('type'=>'archive', 'description'=>$file->description));
+            } else if (Files::is_txt($file->path)) {
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'txt', 'description'=>$file->description));
+            } else if (Files::is_html($file->path)) {
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'html', 'description'=>$file->description));
+            } else {
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description));
+            }
         }
 
         $this->setBodyItems($items);

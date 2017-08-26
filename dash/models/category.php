@@ -69,6 +69,7 @@ class Category extends Model {
             $category->files_check = (int)$form->getValue('files_check');
             $category->audio_check = (int)$form->getValue('audio_check');
             $category->video_check = (int)$form->getValue('video_check');
+            $category->comments_enabled = (int)$form->getValue('comments_enabled');
             
             $category->save();
 

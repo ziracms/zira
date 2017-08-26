@@ -31,6 +31,8 @@ var DashWindow = function(id, className, options) {
     this.dashwindow_content_icon_folder_class = 'dashwindow-content-icon-folder';
     this.dashwindow_content_icon_file_class = 'dashwindow-content-icon-file';
     this.dashwindow_content_icon_archive_class = 'dashwindow-content-icon-archive';
+    this.dashwindow_content_icon_audio_class = 'dashwindow-content-icon-audio';
+    this.dashwindow_content_icon_video_class = 'dashwindow-content-icon-video';
     this.dashwindow_content_icon_txt_class = 'dashwindow-content-icon-txt';
     this.dashwindow_content_icon_html_class = 'dashwindow-content-icon-html';
     this.dashwindow_content_icon_blank_class = 'dashwindow-content-icon-blank';
@@ -2263,6 +2265,8 @@ DashWindow.prototype.createBodyItems = function(elements) {
                 if (elements[i].type=='folder') icon_class += ' ' + this.dashwindow_content_icon_folder_class;
                 else if (elements[i].type=='file') icon_class += ' ' + this.dashwindow_content_icon_file_class;
                 else if (elements[i].type=='archive') icon_class += ' ' + this.dashwindow_content_icon_archive_class;
+                else if (elements[i].type=='audio') icon_class += ' ' + this.dashwindow_content_icon_audio_class;
+                else if (elements[i].type=='video') icon_class += ' ' + this.dashwindow_content_icon_video_class;
                 else if (elements[i].type=='txt') icon_class += ' ' + this.dashwindow_content_icon_txt_class;
                 else if (elements[i].type=='html') icon_class += ' ' + this.dashwindow_content_icon_html_class;
                 else icon_class += ' ' + this.dashwindow_content_icon_blank_class;

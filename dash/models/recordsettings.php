@@ -26,7 +26,6 @@ class Recordsettings extends Model {
                 'files_enabled'=>'int',
                 'audio_enabled'=>'int',
                 'video_enabled'=>'int',
-                'comments_enabled'=>'int',
                 'rating_enabled'=>'int',
                 'display_author'=>'int',
                 'display_date'=>'int',

@@ -621,6 +621,12 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-folder {
     background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -92px;
 }
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-audio {
+    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -338px;
+}
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-video {
+    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -397px;
+}
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-blank {
     background: none;
 }

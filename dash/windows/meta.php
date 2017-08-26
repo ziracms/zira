@@ -45,6 +45,7 @@ class Meta extends Window {
         if (!array_key_exists('records_limit', $configs)) $configs['records_limit'] = 10;
         if (!array_key_exists('widget_records_limit', $configs)) $configs['widget_records_limit'] = 5;
         if (!array_key_exists('category_childs_list', $configs)) $configs['category_childs_list'] = true;
+        if (!array_key_exists('comments_enabled', $configs)) $configs['comments_enabled'] = 1;
         $form->setValues($configs);
 
         $this->setBodyContent($form);

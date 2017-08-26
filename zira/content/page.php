@@ -23,7 +23,6 @@ class Page extends Zira\Page {
             $files_enabled = Zira\Config::get('files_enabled', 1);
             $audio_enabled = Zira\Config::get('audio_enabled', 1);
             $video_enabled = Zira\Config::get('video_enabled', 1);
-            $comments_enabled = Zira\Config::get('comments_enabled', 1);
             $rating_enabled = Zira\Config::get('rating_enabled', 0);
             $display_author = Zira\Config::get('display_author', 0);
             $display_date = Zira\Config::get('display_date', 0);
@@ -33,7 +32,6 @@ class Page extends Zira\Page {
             $files_enabled = Zira\Category::current()->files_enabled!==null ? Zira\Category::current()->files_enabled : Zira\Config::get('files_enabled', 1);
             $audio_enabled = Zira\Category::current()->audio_enabled!==null ? Zira\Category::current()->audio_enabled : Zira\Config::get('audio_enabled', 1);
             $video_enabled = Zira\Category::current()->video_enabled!==null ? Zira\Category::current()->video_enabled : Zira\Config::get('video_enabled', 1); 
-            $comments_enabled = Zira\Category::current()->comments_enabled!==null ? Zira\Category::current()->comments_enabled : Zira\Config::get('comments_enabled', 1);
             $rating_enabled = Zira\Category::current()->rating_enabled!==null ? Zira\Category::current()->rating_enabled : Zira\Config::get('rating_enabled', 0);
             $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
             $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
@@ -75,7 +73,9 @@ class Page extends Zira\Page {
         if (Zira\Category::current()) static::$_record_url = static::generateRecordUrl(Zira\Category::current()->name, $row->name);
         else static::$_record_url = static::generateRecordUrl(null, $row->name);
 
-        if ($row->comments_enabled !== null) $comments_enabled = $row->comments_enabled;
+        $comments_enabled = Zira\Config::get('comments_enabled', 1);
+        if (Zira\Category::current() && Zira\Category::current()->comments_enabled!==null) $comments_enabled = Zira\Category::current()->comments_enabled && $comments_enabled;
+        if ($row->comments_enabled !== null) $comments_enabled = $row->comments_enabled && $comments_enabled;
         
         if (!$row->slides_count) $slider_enabled = false;
         if (!$row->images_count) $gallery_enabled = false;

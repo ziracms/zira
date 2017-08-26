@@ -705,6 +705,30 @@ abstract class Window {
             'column' => (string)$column
         ), $extra);
     }
+    
+    public function createBodyAudioItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
+        return array_merge(array(
+            'type' => 'audio',
+            'title' => (string)$title,
+            'tooltip' => (string)$tooltip,
+            'callback' => $this->createJSCallback($js),
+            'data' => $data,
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
+        ), $extra);
+    }
+    
+    public function createBodyVideoItem($title, $tooltip, $data=null, $js=null, $disabled=false, array $extra = array(), $column = '') {
+        return array_merge(array(
+            'type' => 'video',
+            'title' => (string)$title,
+            'tooltip' => (string)$tooltip,
+            'callback' => $this->createJSCallback($js),
+            'data' => $data,
+            'disabled' => (bool)$disabled,
+            'column' => (string)$column
+        ), $extra);
+    }
 
     public function generateOptions() {
         $js = "\t".'{';

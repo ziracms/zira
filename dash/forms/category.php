@@ -38,6 +38,7 @@ class Category extends Form
         $html .= $this->selectDropdown(Locale::t('Layout').'*','layout',Zira\View::getLayouts());
         $html .= $this->input(Locale::t('System name') . ' (' . Locale::t('URL') . ')*', 'name', array('placeholder'=>Locale::t('numbers and letters in lower case')));
         $html .= $this->input(Locale::t('Title') . '*', 'title');
+        $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);
         
         $html .= Zira\Helper::tag_open('div', array('id'=>'dashcategoryform_access_button'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));

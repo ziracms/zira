@@ -206,6 +206,10 @@ class Files extends Window {
     }
 
     public function get_image_size($abs_path) {
+        return self::image_size($abs_path);
+    }
+    
+    public static function image_size($abs_path) {
         $p = strrpos($abs_path,'.');
         if ($p===false) return false;
         $ext = substr($abs_path, $p+1);
@@ -216,7 +220,7 @@ class Files extends Window {
         return $size;
     }
 
-    protected function get_image_thumb($rel_path) {
+    public static function get_image_thumb($rel_path) {
         $rel_path = trim($rel_path, DIRECTORY_SEPARATOR);
         if (strpos($rel_path, UPLOADS_DIR . DIRECTORY_SEPARATOR)!==0) return $rel_path;
         $p = strpos($rel_path, DIRECTORY_SEPARATOR);
@@ -237,20 +241,34 @@ class Files extends Window {
         return UPLOADS_DIR . '/' .Dash\Windows\Files::THUMBS_FOLDER . '/' . str_replace(DIRECTORY_SEPARATOR, '/',$_rel_path);
     }
 
-    protected function is_archive_supported() {
+    public static function is_archive_supported() {
         return class_exists('ZipArchive');
     }
 
-    protected function is_archive($file) {
+    public static function is_archive($file) {
         return substr($file,-4)=='.zip';
     }
 
-    protected function is_txt($file) {
+    public static function is_txt($file) {
         return substr($file,-4)=='.txt';
     }
 
-    protected function is_html($file) {
+    public static function is_html($file) {
         return substr($file,-5)=='.html';
+    }
+    
+    public static function is_audio($file) {
+        $p = strrpos($file,'.');
+        if ($p===false) return false;
+        $ext = substr($file, $p+1);
+        return in_array($ext, array('mp3', 'wav', 'wma', 'aiff', 'flac', 'aac', 'ogg', 'MP3', 'WAV', 'WMA', 'AIFF', 'FLAC', 'AAC', 'OGG'));
+    }
+    
+    public static function is_video($file) {
+        $p = strrpos($file,'.');
+        if ($p===false) return false;
+        $ext = substr($file, $p+1);
+        return in_array($ext, array('webm', 'mp4', 'mkv', 'flv', 'vob', 'avi', 'wmv', 'mpeg', '3gp', 'WEBM', 'MP4', 'MKV', 'FLV', 'VOB', 'AVI', 'WMV', 'MPEG', '3GP'));
     }
 
     public function load() {
@@ -292,14 +310,18 @@ class Files extends Window {
             if (is_dir($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file)) {
                 $mtime = date(Zira\Config::get('date_format'), filemtime($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file));
                 $bodyItems[]=$this->createBodyFolderItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'folder', 'parent'=>'files'), $mtime);
-            } else if (($size=$this->get_image_size($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file))!=false) {
-                $bodyItems[]=$this->createBodyItem($file, $file, Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR, '/', $this->get_image_thumb($root . DIRECTORY_SEPARATOR . $file))), $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'image', 'parent'=>'files', 'image_width'=>$size[0], 'image_height'=>$size[1], 'image_url'=>Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR,'/',$root) . '/' . $file)), $fsize);
+            } else if (($size=self::image_size($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file))!=false) {
+                $bodyItems[]=$this->createBodyItem($file, $file, Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR, '/', self::get_image_thumb($root . DIRECTORY_SEPARATOR . $file))), $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'image', 'parent'=>'files', 'image_width'=>$size[0], 'image_height'=>$size[1], 'image_url'=>Zira\Helper::baseUrl(str_replace(DIRECTORY_SEPARATOR,'/',$root) . '/' . $file)), $fsize);
             } else if (Permission::check(Permission::TO_VIEW_FILES)) {
-                if ($this->is_archive($file)) {
+                if (self::is_audio($file)) {
+                    $bodyItems[]=$this->createBodyAudioItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'audio', 'parent'=>'files'), $fsize);
+                } else if (self::is_video($file)) {
+                    $bodyItems[]=$this->createBodyVideoItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'video', 'parent'=>'files'), $fsize);
+                } else if (self::is_archive($file)) {
                     $bodyItems[]=$this->createBodyArchiveItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'archive', 'parent'=>'files'), $fsize);
-                } else if ($this->is_txt($file)) {
+                } else if (self::is_txt($file)) {
                     $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'txt', 'parent'=>'files'), $fsize);
-                } else if ($this->is_html($file)) {
+                } else if (self::is_html($file)) {
                     $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'html', 'parent'=>'files'), $fsize);
                 } else {
                     $bodyItems[]=$this->createBodyFileItem($file, $file, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files'), $fsize);

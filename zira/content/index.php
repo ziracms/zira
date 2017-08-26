@@ -260,11 +260,13 @@ class Index extends Zira\Page {
                     // categories are cached
                     //if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
 
-                    $comments_enabled = $category->comments_enabled !== null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1);
                     $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);
                     $display_author = $category->display_author !== null ? $category->display_author : Zira\Config::get('display_author', 0);
                     $display_date = $category->display_date !== null ? $category->display_date : Zira\Config::get('display_date', 0);
 
+                    $comments_enabled = Zira\Config::get('comments_enabled', 1);
+                    if ($category->comments_enabled !== null) $comments_enabled = $category->comments_enabled && $comments_enabled;
+        
                     $childs = null;
                     if ($includeChilds && CACHE_CATEGORIES_LIST && isset($all_categories)) {
                         $childs = array();

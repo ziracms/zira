@@ -12,7 +12,7 @@
     $real_path = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file->path);
     if (file_exists($real_path)) $size = filesize($real_path);
     else $size = '';
-    if (!empty($size)) {
+    if (is_numeric($size)) {
         $size_suffix = 'B';
         if ($size > 1024) {
             $size = $size / 1024;

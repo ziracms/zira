@@ -43,7 +43,6 @@ class Recordsettings extends Window {
         if (!array_key_exists('files_enabled', $configs)) $configs['files_enabled'] = 1;
         if (!array_key_exists('audio_enabled', $configs)) $configs['audio_enabled'] = 1;
         if (!array_key_exists('video_enabled', $configs)) $configs['video_enabled'] = 1;
-        if (!array_key_exists('comments_enabled', $configs)) $configs['comments_enabled'] = 1;
         if (!array_key_exists('rating_enabled', $configs)) $configs['rating_enabled'] = 0;
         if (!array_key_exists('display_author', $configs)) $configs['display_author'] = 0;
         if (!array_key_exists('display_date', $configs)) $configs['display_date'] = 0;

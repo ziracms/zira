@@ -64,9 +64,14 @@ class Category extends Window {
             if (!empty($root)) {
                 $categoryArray['name'] = substr($categoryArray['name'], strrpos($categoryArray['name'], '/') + 1);
             }
+            if ($categoryArray['comments_enabled']===null) $categoryArray['comments_enabled'] = Zira\Config::get('comments_enabled', 1);
+
             $form->setValues($categoryArray);
         } else {
             $this->setTitle(Zira\Locale::t('New category'));
+            $form->setValues(array(
+                'comments_enabled' => Zira\Config::get('comments_enabled', 1)
+            ));
         }
 
         $form->setValue('root', $root);

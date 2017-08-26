@@ -75,11 +75,13 @@ class Category extends Zira\Page {
             $records = array();
         }
 
-        $comments_enabled = Zira\Category::current()->comments_enabled!==null ? Zira\Category::current()->comments_enabled : Zira\Config::get('comments_enabled', 1);
         $rating_enabled = Zira\Category::current()->rating_enabled!==null ? Zira\Category::current()->rating_enabled : Zira\Config::get('rating_enabled', 0);
         $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
         $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
 
+        $comments_enabled = Zira\Config::get('comments_enabled', 1);
+        if (Zira\Category::current()->comments_enabled!==null) $comments_enabled = Zira\Category::current()->comments_enabled && $comments_enabled;
+        
         $pagination = null;
         if ($use_pagination) {
             $pagination = new Zira\Pagination();
@@ -192,11 +194,13 @@ class Category extends Zira\Page {
             $records = array();
         }
 
-        $comments_enabled = Zira\Category::current()->comments_enabled!==null ? Zira\Category::current()->comments_enabled : Zira\Config::get('comments_enabled', 1);
         $rating_enabled = Zira\Category::current()->rating_enabled!==null ? Zira\Category::current()->rating_enabled : Zira\Config::get('rating_enabled', 0);
         $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
         $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
 
+        $comments_enabled = Zira\Config::get('comments_enabled', 1);
+        if (Zira\Category::current()->comments_enabled!==null) $comments_enabled = Zira\Category::current()->comments_enabled && $comments_enabled;
+        
         $data = array(
                 static::VIEW_PLACEHOLDER_CLASS => 'records',
                 static::VIEW_PLACEHOLDER_RECORDS => $records,
