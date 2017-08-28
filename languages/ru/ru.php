@@ -135,5 +135,9 @@ return array(
     '%s to view gallery' => '%s, чтобы посмотреть галерею',
     'You do not have permission to view gallery' => 'У вас нет прав для просмотра галереи',
     '%s to download files' => '%s, чтобы скачать файлы',
-    'You do not have permission to download files' => 'У вас нет прав для скачивания файлов'
+    'You do not have permission to download files' => 'У вас нет прав для скачивания файлов',
+    '%s to listen to audio' => '%s, чтобы прослушать аудио',
+    'You do not have permission to listen to audio' => 'У вас нет прав для прослушивания аудио',
+    '%s to view video' => '%s, чтобы просмотреть видео',
+    'You do not have permission to view video' => 'У вас нет прав для просмотра видео'
 );

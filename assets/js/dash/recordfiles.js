@@ -30,3 +30,10 @@ var dash_recordfiles_add = function() {
         desk_window_request(this, url('dash/records/addfile'),{'files':files, 'item':this.options.data.items[0]});
     }));
 };
+
+var dash_recordfiles_addurl = function() {
+    desk_prompt(t('Enter URL'), this.bind(this, function(address){
+        if (address.length==0) return;
+        desk_window_request(this, url('dash/records/addfile'),{'url':address, 'item':this.options.data.items[0]});
+    }));
+};

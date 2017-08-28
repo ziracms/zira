@@ -386,5 +386,15 @@ return array(
     'Show video' => 'Показывать видео',
     'Add file' => 'Добавить файл',
     'Hide file URLs' => 'Скрывать URL файлов',
-    '%s downloads' => array('%s скачивание', '%s скачивания', '%s скачиваний')
+    '%s downloads' => array('%s скачивание', '%s скачивания', '%s скачиваний'),
+    'Add URL' => 'Добавить URL',
+    'Enter URL' => 'Введите URL',
+    'Audio' => 'Аудио',
+    'Video' => 'Видео',
+    'Add audio' => 'Добавить аудио',
+    'Add video' => 'Добавить видео',
+    'Embed code' => 'Встроить код',
+    'Enter code' => 'Введите код',
+    'Code' => 'Код',
+    'Embedded code' => 'Встроенный код'
 );

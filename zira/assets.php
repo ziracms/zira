@@ -28,6 +28,7 @@ class Assets {
         'cropper.css',
         'lightbox.css',
         'bxslider.css',
+        'mediaelementplayer.css',
         'zira.css'
     );
     

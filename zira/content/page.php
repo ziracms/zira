@@ -186,22 +186,22 @@ class Page extends Zira\Page {
         }
 
         if ($audio_enabled && $access_audio) {
-            $audio = array(); // TODO
+            $audio = static::getRecordAudio($row->id);
             $audio_co = count($audio);
         } else if ($audio_enabled && !$access_audio) {
             $audio = array();
-            $audio_co = 0; // TODO
+            $audio_co = static::getRecordAudioCount($row->id);
         } else {
             $audio = array();
             $audio_co = 0;
         }
 
         if ($video_enabled && $access_video) {
-            $video = array(); // TODO
+            $video = static::getRecordVideos($row->id);
             $video_co = count($video);
         } else if ($video_enabled && !$access_video) {
             $video = array();
-            $video_co = 0; // TODO
+            $video_co = static::getRecordVideosCount($row->id);
         } else {
             $video = array();
             $video_co = 0;

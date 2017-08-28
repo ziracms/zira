@@ -400,7 +400,6 @@ class Dash {
         $js .= 'if (typeof(HTMLElement)!="undefined") {'."\r\n";
         $js .= 'var HTMLElementClick = HTMLElement.prototype.click;'."\r\n";
         $js .= 'HTMLElement.prototype.click = null;'."\r\n";
-        $js .= 'HTMLElement.prototype.dispatchEvent = null;'."\r\n";
         $js .= '}'."\r\n";
         $js .= $this->getDashPredefinedVars();
         $js .= file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . 'desk-window.js')."\r\n";
@@ -684,6 +683,8 @@ class Dash {
             $this->registerWindowClass('dashRecordimagesWindow', 'Dash\Windows\Recordimages', 'Dash\Models\Recordimages');
             $this->registerWindowClass('dashRecordslidesWindow', 'Dash\Windows\Recordslides', 'Dash\Models\Recordslides');
             $this->registerWindowClass('dashRecordfilesWindow', 'Dash\Windows\Recordfiles', 'Dash\Models\Recordfiles');
+            $this->registerWindowClass('dashRecordaudioWindow', 'Dash\Windows\Recordaudio', 'Dash\Models\Recordaudio');
+            $this->registerWindowClass('dashRecordvideosWindow', 'Dash\Windows\Recordvideos', 'Dash\Models\Recordvideos');
         }
         if (Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             $this->registerWindowClass('dashMenuWindow', 'Dash\Windows\Menu', 'Dash\Models\Menu');

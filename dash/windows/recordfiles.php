@@ -30,14 +30,20 @@ class Recordfiles extends Window {
             $this->createMenuDropdownItem(Zira\Locale::t('Add file'), 'glyphicon glyphicon-plus-sign', 'desk_call(dash_recordfiles_add, this);', 'create')
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-pencil', 'desk_window_edit_item(this);', 'edit', true)
+            $this->createMenuDropdownItem(Zira\Locale::t('Add URL'), 'glyphicon glyphicon-link', 'desk_call(dash_recordfiles_addurl, this);', 'create')
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-list-alt', 'desk_window_edit_item(this);', 'edit', true)
         );
 
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Add file'), 'glyphicon glyphicon-plus-sign', 'desk_call(dash_recordfiles_add, this);', 'create')
         );
         $this->addDefaultContextMenuItem(
-            $this->createContextMenuItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-pencil', 'desk_window_edit_item(this);', 'edit', true)
+            $this->createContextMenuItem(Zira\Locale::t('Add URL'), 'glyphicon glyphicon-link', 'desk_call(dash_recordfiles_addurl, this);', 'create')
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-list-alt', 'desk_window_edit_item(this);', 'edit', true)
         );
 
         $this->setDeleteActionEnabled(true);
@@ -46,6 +52,9 @@ class Recordfiles extends Window {
     public function create() {
         $this->addDefaultToolbarItem(
             $this->createToolbarButton(Zira\Locale::t('File'), Zira\Locale::t('Add file'), 'glyphicon glyphicon-plus-sign', 'desk_call(dash_recordfiles_add, this);', 'create')
+        );
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::t('URL'), Zira\Locale::t('Add URL'), 'glyphicon glyphicon-link', 'desk_call(dash_recordfiles_addurl, this);', 'create')
         );
 
         $this->setOnEditItemJSCallback(
@@ -61,7 +70,8 @@ class Recordfiles extends Window {
         );
 
         $this->addStrings(array(
-            'Enter description'
+            'Enter description',
+            'Enter URL'
         ));
 
         $this->includeJS('dash/recordfiles');
@@ -90,22 +100,27 @@ class Recordfiles extends Window {
 
         $items = array();
         foreach($files as $file) {
-            $real_path = str_replace('/', DIRECTORY_SEPARATOR, $file->path);
-            $name = basename($file->path);
-            if ($file->download_count>0) {
-                $name .= '&nbsp;&nbsp;&nbsp;('.Zira\Locale::t('%s downloads', $file->download_count).')';
+            if (!empty($file->path)) {
+                $real_path = str_replace('/', DIRECTORY_SEPARATOR, $file->path);
+                $name = basename($file->path);
+                if ($file->download_count>0) {
+                    $name .= '&nbsp;&nbsp;&nbsp;('.Zira\Locale::t('%s downloads', $file->download_count).')';
+                }
+            } else {
+                $name = $file->url;
+                $real_path = null;
             }
-            if (($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
+            if (isset($real_path) && ($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
                 $items[]=$this->createBodyItem($name, $file->description, Zira\Helper::baseUrl($file->path), $file->id, null, false, array('type'=>'image', 'description'=>$file->description));
-            } else if (Files::is_audio($file->path)) {
+            } else if (Files::is_audio($name)) {
                 $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description));
-            } else if (Files::is_video($file->path)) {
+            } else if (Files::is_video($name)) {
                 $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description));
-            } else if (Files::is_archive($file->path)) {
+            } else if (Files::is_archive($name)) {
                 $items[]=$this->createBodyArchiveItem($name, $file->description, $file->id, null, false, array('type'=>'archive', 'description'=>$file->description));
-            } else if (Files::is_txt($file->path)) {
+            } else if (Files::is_txt($name)) {
                 $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'txt', 'description'=>$file->description));
-            } else if (Files::is_html($file->path)) {
+            } else if (Files::is_html($name)) {
                 $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'html', 'description'=>$file->description));
             } else {
                 $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description));

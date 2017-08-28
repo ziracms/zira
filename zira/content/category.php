@@ -356,22 +356,22 @@ class Category extends Zira\Page {
                     }
                     
                     if ($audio_enabled && $access_audio) {
-                        $audio = array(); // TODO
+                        $audio = static::getRecordAudio($record->id);
                         $audio_co = count($audio);
                     } else if ($audio_enabled && !$access_audio) {
                         $audio = array();
-                        $audio_co = 0; // TODO
+                        $audio_co = static::getRecordAudioCount($record->id);
                     } else {
                         $audio = array();
                         $audio_co = 0;
                     }
                     
                     if ($video_enabled && $access_video) {
-                        $video = array(); // TODO
+                        $video = static::getRecordVideos($record->id);
                         $video_co = count($video);
                     } else if ($video_enabled && !$access_video) {
                         $video = array();
-                        $video_co = 0; // TODO
+                        $video_co = static::getRecordVideosCount($record->id);
                     } else {
                         $video = array();
                         $video_co = 0;

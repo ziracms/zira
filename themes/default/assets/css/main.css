@@ -1593,6 +1593,9 @@ a.scroll-top.visible:visited {
     text-decoration: none;
 }
 
+.files-wrapper {
+    margin: 30px 0px 20px;
+}
 .files-wrapper ul.files {
     list-style-type: none;
     margin: 0;
@@ -1614,6 +1617,27 @@ a.scroll-top.visible:visited {
 .files-wrapper ul.files li a:link,
 .files-wrapper ul.files li a:visited {
     color: #000;
+}
+
+.audio-wrapper {
+    margin: 30px 0px 20px;
+    text-align: center;
+}
+.audio-wrapper .audio-wrapper-item {
+    margin-bottom: 14px;
+}
+.audio-wrapper .audio-wrapper-item p {
+    text-align: left;
+}
+.audio-wrapper .mejs__container {
+    background: #7b7d8d;
+}
+.video-wrapper {
+    margin: 0px;
+    text-align: center;
+}
+.video-wrapper .video-wrapper-item {
+    margin-bottom: 14px;
 }
 
 /** mobile **/

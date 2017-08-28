@@ -178,11 +178,13 @@ class Page {
     }
     
     public static function setAudio(array $audio, $access_allowed = true) {
-        // TODO
+        View::addMediaElementPlayer();
+        View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$audio, 'access_allowed' => $access_allowed), 'zira/audio');
     }
     
     public static function setVideo(array $video, $access_allowed = true) {
-        // TODO
+        View::addMediaElementPlayer();
+        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('files'=>$video, 'access_allowed' => $access_allowed), 'zira/videos');
     }
 
     public static function setComments($record, $preview = false) {
@@ -495,6 +497,36 @@ class Page {
     
     public static function getRecordFilesCount($record_id) {
         return Models\File::getCollection()
+                            ->count()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get('co');
+    }
+    
+    public static function getRecordAudio($record_id) {
+        return Models\Audio::getCollection()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get();
+    }
+    
+    public static function getRecordAudioCount($record_id) {
+        return Models\Audio::getCollection()
+                            ->count()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get('co');
+    }
+    
+    public static function getRecordVideos($record_id) {
+        return Models\Video::getCollection()
+                            ->where('record_id', '=', $record_id)
+                            ->order_by('id', 'asc')
+                            ->get();
+    }
+    
+    public static function getRecordVideosCount($record_id) {
+        return Models\Video::getCollection()
                             ->count()
                             ->where('record_id', '=', $record_id)
                             ->order_by('id', 'asc')

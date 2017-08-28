@@ -11,8 +11,8 @@ use Zira;
 use Zira\Permission;
 
 class Recordfiles extends Model {
-    public function addRecordFiles($id, $files) {
-        if (empty($id) || !is_array($files) || empty($files)) return array('error' => Zira\Locale::t('An error occurred'));
+    public function addRecordFiles($id, $files, $url) {
+        if (empty($id) || (is_array($files) && empty($files)) || (!is_array($files) && empty($url))) return array('error' => Zira\Locale::t('An error occurred'));
         if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
@@ -22,14 +22,22 @@ class Recordfiles extends Model {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
 
-        foreach ($files as $file) {
-            if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
-                return array('error' => Zira\Locale::t('An error occurred'));
-            }
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
+                    return array('error' => Zira\Locale::t('An error occurred'));
+                }
 
+                $fileObj = new Zira\Models\File();
+                $fileObj->record_id = $record->id;
+                $fileObj->path = str_replace(DIRECTORY_SEPARATOR, '/', $file);
+                //$fileObj->description = Zira\Helper::utf8Clean(strip_tags($record->title));
+                $fileObj->save();
+            }
+        } else if (!empty($url)) {
             $fileObj = new Zira\Models\File();
             $fileObj->record_id = $record->id;
-            $fileObj->path = str_replace(DIRECTORY_SEPARATOR, '/', $file);
+            $fileObj->url = $url;
             //$fileObj->description = Zira\Helper::utf8Clean(strip_tags($record->title));
             $fileObj->save();
         }

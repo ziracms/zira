@@ -64,6 +64,8 @@ class View {
     protected static $_parser_added = false;
     protected static $_codemirror_assets_added = false;
     protected static $_codemirror_added = false;
+    protected static $_mediaelement_assets_added = false;
+    protected static $_mediaelement_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -723,6 +725,30 @@ class View {
         //self::addHTML($script, self::VAR_BODY_BOTTOM);
         self::addBodyBottomScript($script);
         self::$_codemirror_added = true;
+    }
+    
+    public static function addMediaElementPlayerAssets() {
+        if (self::$_mediaelement_assets_added) return;
+        self::addStyle('mediaelementplayer.css');
+        self::addScript('mediaelement/mediaelement-and-player.min.js');
+        if (Locale::getLanguage()=='ru') self::addScript('mediaelement/lang/ru.js');
+        self::$_mediaelement_assets_added = true;
+    }
+    
+    public static function addMediaElementPlayer() {
+        if (self::$_mediaelement_added) return;
+        self::addMediaElementPlayerAssets();
+        $script = Helper::tag_open('script', array('type'=>'text/javascript'));
+        $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'mejs.i18n.language(\''.Locale::getLanguage().'\');';
+        $script .= '$(\'.mediaelement\').mediaelementplayer({';
+	$script .= 'pluginPath: \''.Helper::jsUrl('mediaelement').'/\',';
+	$script .= 'shimScriptAccess: \'always\'';
+        $script .= '});';
+        $script .= '});';
+        $script .= Helper::tag_close('script');
+        self::addBodyBottomScript($script);
+        self::$_mediaelement_added = true;
     }
 
     public static function addAutoCompleter() {

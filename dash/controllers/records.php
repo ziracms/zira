@@ -35,6 +35,16 @@ class Records extends Dash\Controller {
         $window = new Dash\Windows\Recordfiles();
         return new Dash\Models\Recordfiles($window);
     }
+    
+    protected function getAudioModel() {
+        $window = new Dash\Windows\Recordaudio();
+        return new Dash\Models\Recordaudio($window);
+    }
+    
+    protected function getVideoModel() {
+        $window = new Dash\Windows\Recordvideos();
+        return new Dash\Models\Recordvideos($window);
+    }
 
     protected function getEditorModel() {
         $class = (string)Zira\Request::post('class');
@@ -147,8 +157,9 @@ class Records extends Dash\Controller {
     public function addfile() {
         if (Zira\Request::isPost()) {
             $files = Zira\Request::post('files');
+            $url = Zira\Request::post('url');
             $id = Zira\Request::post('item');
-            $response = $this->getFilesModel()->addRecordFiles($id, $files);
+            $response = $this->getFilesModel()->addRecordFiles($id, $files, $url);
             Zira\Page::render($response);
         }
     }
@@ -158,6 +169,66 @@ class Records extends Dash\Controller {
             $description = Zira\Request::post('description');
             $id = Zira\Request::post('item');
             $response = $this->getFilesModel()->saveDescription($id, $description);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addaudio() {
+        if (Zira\Request::isPost()) {
+            $files = Zira\Request::post('files');
+            $url = Zira\Request::post('url');
+            $code = Zira\Request::post('code');
+            $id = Zira\Request::post('item');
+            $response = $this->getAudioModel()->addRecordAudio($id, $files, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function editaudio() {
+        if (Zira\Request::isPost()) {
+            $url = Zira\Request::post('url');
+            $code = Zira\Request::post('code');
+            $id = Zira\Request::post('item');
+            $response = $this->getAudioModel()->editRecordAudio($id, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+
+    public function audiodesc() {
+        if (Zira\Request::isPost()) {
+            $description = Zira\Request::post('description');
+            $id = Zira\Request::post('item');
+            $response = $this->getAudioModel()->saveDescription($id, $description);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addvideo() {
+        if (Zira\Request::isPost()) {
+            $files = Zira\Request::post('files');
+            $url = Zira\Request::post('url');
+            $code = Zira\Request::post('code');
+            $id = Zira\Request::post('item');
+            $response = $this->getVideoModel()->addRecordVideos($id, $files, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function editvideo() {
+        if (Zira\Request::isPost()) {
+            $url = Zira\Request::post('url');
+            $code = Zira\Request::post('code');
+            $id = Zira\Request::post('item');
+            $response = $this->getVideoModel()->editRecordVideo($id, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+
+    public function videodesc() {
+        if (Zira\Request::isPost()) {
+            $description = Zira\Request::post('description');
+            $id = Zira\Request::post('item');
+            $response = $this->getVideoModel()->saveDescription($id, $description);
             Zira\Page::render($response);
         }
     }

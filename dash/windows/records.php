@@ -48,6 +48,12 @@ class Records extends Window {
             $this->createSidebarItem(Zira\Locale::t('Gallery'), 'glyphicon glyphicon-th', 'desk_call(dash_records_record_gallery, this);', 'edit', true, array('typo'=>'gallery'))
         );
         $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Audio'), 'glyphicon glyphicon-music', 'desk_call(dash_records_record_audio, this);', 'edit', true, array('typo'=>'audio'))
+        );
+        $this->addDefaultSidebarItem(
+            $this->createSidebarItem(Zira\Locale::t('Video'), 'glyphicon glyphicon-play-circle', 'desk_call(dash_records_record_video, this);', 'edit', true, array('typo'=>'video'))
+        );
+        $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Files'), 'glyphicon glyphicon-file', 'desk_call(dash_records_record_files, this);', 'edit', true, array('typo'=>'files'))
         );
 
@@ -181,7 +187,9 @@ class Records extends Window {
             'dash_records_web_wnd' => Dash::getInstance()->getWindowJSName(Web::getClass()),
             'dash_records_record_images_wnd' => Dash::getInstance()->getWindowJSName(Recordimages::getClass()),
             'dash_records_record_slides_wnd' => Dash::getInstance()->getWindowJSName(Recordslides::getClass()),
-            'dash_records_record_files_wnd' => Dash::getInstance()->getWindowJSName(Recordfiles::getClass())
+            'dash_records_record_files_wnd' => Dash::getInstance()->getWindowJSName(Recordfiles::getClass()),
+            'dash_records_record_audio_wnd' => Dash::getInstance()->getWindowJSName(Recordaudio::getClass()),
+            'dash_records_record_video_wnd' => Dash::getInstance()->getWindowJSName(Recordvideos::getClass())
         ));
 
         $this->includeJS('dash/records');

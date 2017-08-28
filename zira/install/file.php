@@ -22,7 +22,8 @@ class File extends Table {
             'id' => Field::primary(),
             'record_id' => Field::int(true, true),
             'description' => Field::string(),
-            'path' => Field::string(true),
+            'path' => Field::string(),
+            'url' => Field::string(),
             'download_count' => Field::int(true, true, 0)
         );
     }
