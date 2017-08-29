@@ -1,5 +1,6 @@
 var dash_records_load = function() {
     $(this.element).find('.record-infobar').html('');
+    $(this.element).find('.sidebar-badge').remove();
     var item = this.findToolbarItemByProperty('action','level');
     var root = this.options.data.root.split('/').slice(0,-1);
     if (root.length>0) {
@@ -78,25 +79,54 @@ var dash_records_select = function() {
             }
         }
     }
+    if (selected && selected.length && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo!='record') {
+        $(this.element).find('.record-infobar').html('');
+        $(this.element).find('.sidebar-badge').remove();
+    }       
     if (selected && selected.length && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record' && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.record-infobar').html().length==0)) {
         this.info_last_item = selected[0].data;
         $(this.element).find('.record-infobar').html('');
+        $(this.element).find('.sidebar-badge').remove();
         try { window.clearTimeout(this.timer); } catch(err) {};
         this.timer = window.setTimeout(this.bind(this,function(){
             $(this.element).find('.record-infobar').html('');
             var selected = this.getSelectedContentItems();
             if (!selected || !selected.length || selected.length!=1) return;
             desk_post(url('dash/records/info'),{'item':selected[0].data, 'token':token()}, this.bind(this, function(response){
-                if (response && response.length>0) {
+                if (response && typeof(response.info)!="undefined" && response.info.length>0) {
                     $(this.element).find('.record-infobar').append('<div style="cursor:default;padding:0px;margin:10px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
                     $(this.element).find('.record-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:10px 0px"></div>');
-                    for (var i=0; i<response.length; i++) {
-                        $(this.element).find('.record-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');
+                    for (var i=0; i<response.info.length; i++) {
+                        $(this.element).find('.record-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+response.info[i].split('>').slice(-1)[0]+'">'+response.info[i]+'</div>');
                     }
+                }
+                if (response && typeof(response.slides_count)!="undefined" && typeof(response.images_count)!="undefined" && typeof(response.audio_count)!="undefined" && typeof(response.video_count)!="undefined" && typeof(response.files_count)!="undefined") {
+                    dash_records_display_sidebar_counters.call(this, response.slides_count, response.images_count, response.audio_count, response.video_count, response.files_count);
                 }
             }));
         }),1000);
     }
+};
+
+var dash_records_display_sidebar_counters = function(slides_count, images_count, audio_count, video_count, files_count) {
+    if (typeof(slides_count) == "undefined" ||
+        typeof(images_count) == "undefined" ||
+        typeof(audio_count) == "undefined" ||
+        typeof(video_count) == "undefined" ||
+        typeof(files_count) == "undefined"
+    ) return;
+    
+    var slider_item = this.findSidebarItemByProperty('typo', 'slider');
+    var gallery_item = this.findSidebarItemByProperty('typo', 'gallery');
+    var audio_item = this.findSidebarItemByProperty('typo', 'audio');
+    var video_item = this.findSidebarItemByProperty('typo', 'video');
+    var files_item = this.findSidebarItemByProperty('typo', 'files');
+    
+    if (slides_count>0) $(slider_item.element).append('<span class="badge sidebar-badge">'+slides_count+'</span>');
+    if (images_count>0) $(gallery_item.element).append('<span class="badge sidebar-badge">'+images_count+'</span>');
+    if (audio_count>0) $(audio_item.element).append('<span class="badge sidebar-badge">'+audio_count+'</span>');
+    if (video_count>0) $(video_item.element).append('<span class="badge sidebar-badge">'+video_count+'</span>');
+    if (files_count>0) $(files_item.element).append('<span class="badge sidebar-badge">'+files_count+'</span>');
 };
 
 var dash_records_drop = function(element) {
@@ -371,7 +401,15 @@ var dash_records_record_gallery = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
-        desk_call(dash_records_record_images_wnd, null, {'data':data});
+        desk_call(dash_records_record_images_wnd, null, {
+            'data':data, 
+            'parentWnd': this,
+            'onClose': function(){
+                $(this.options.parentWnd.element).find('.record-infobar').html('');
+                $(this.options.parentWnd.element).find('.sidebar-badge').remove();
+                desk_call(dash_records_select, this.options.parentWnd);
+            }
+        });
     }
 };
 
@@ -379,7 +417,15 @@ var dash_records_record_files = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
-        desk_call(dash_records_record_files_wnd, null, {'data':data});
+        desk_call(dash_records_record_files_wnd, null, {
+            'data':data,
+            'parentWnd': this,
+            'onClose': function(){
+                $(this.options.parentWnd.element).find('.record-infobar').html('');
+                $(this.options.parentWnd.element).find('.sidebar-badge').remove();
+                desk_call(dash_records_select, this.options.parentWnd);
+            }
+        });
     }
 };
 
@@ -387,7 +433,15 @@ var dash_records_record_audio = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
-        desk_call(dash_records_record_audio_wnd, null, {'data':data});
+        desk_call(dash_records_record_audio_wnd, null, {
+            'data':data,
+            'parentWnd': this,
+            'onClose': function(){
+                $(this.options.parentWnd.element).find('.record-infobar').html('');
+                $(this.options.parentWnd.element).find('.sidebar-badge').remove();
+                desk_call(dash_records_select, this.options.parentWnd);
+            }
+        });
     }
 };
 
@@ -395,7 +449,15 @@ var dash_records_record_video = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
-        desk_call(dash_records_record_video_wnd, null, {'data':data});
+        desk_call(dash_records_record_video_wnd, null, {
+            'data':data,
+            'parentWnd': this,
+            'onClose': function(){
+                $(this.options.parentWnd.element).find('.record-infobar').html('');
+                $(this.options.parentWnd.element).find('.sidebar-badge').remove();
+                desk_call(dash_records_select, this.options.parentWnd);
+            }
+        });
     }
 };
 
@@ -403,7 +465,15 @@ var dash_records_record_slider = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
         var data = {'items':[selected[0].data]};
-        desk_call(dash_records_record_slides_wnd, null, {'data':data});
+        desk_call(dash_records_record_slides_wnd, null, {
+            'data':data,
+            'parentWnd': this,
+            'onClose': function(){
+                $(this.options.parentWnd.element).find('.record-infobar').html('');
+                $(this.options.parentWnd.element).find('.sidebar-badge').remove();
+                desk_call(dash_records_select, this.options.parentWnd);
+            }
+        });
     }
 };
 

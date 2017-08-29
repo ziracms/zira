@@ -469,6 +469,7 @@ body.dashboard-window-sidebar-resizing {
     text-decoration: none;
     text-overflow: ellipsis;
     overflow: hidden;
+    position: relative;
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a:hover,
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.active {
@@ -500,6 +501,14 @@ body.dashboard-window-sidebar-resizing {
     list-style-type: none;
     margin: 0px;
     padding: 0px;
+}
+.dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper .badge {
+    float: right;
+    background: #62879c;
+    font-weight: normal;
+    position: absolute;
+    right: 4px;
+    top: 5px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper {
     margin: 0px;

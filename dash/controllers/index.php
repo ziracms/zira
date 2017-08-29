@@ -219,17 +219,19 @@ class Index extends Dash\Controller {
         Zira\View::setAjax(true);
         $response = array('notifications'=>array());
 
-        $check_url = 'h'.'t'. 't'.'p'.':' .'/'.'/'.'d'.  'r'.'o'.'1'. 'd'.'.'.'r' .'u'.'/'.'v'. 'e'.'r'.'s'.'i'  .'o'.'n'.'.'.'t' .'x'.'t';
-        try {
-            $check_version = @file_get_contents($check_url . '?t=' . time());
-        } catch(\Exception $e) {
-            $check_version = false;
-        }
-        if ($check_version && version_compare($check_version, Zira::VERSION)>0) {
-            $response['notifications'][] = array(
-                'message'=>Zira\Locale::t('Version %s is available for download', $check_version),
-                'callback'=>'desk_web_zira'
-            );
+        if (Zira\Config::get('check_updates', 1)) {
+            $check_url = 'h'.'t'. 't'.'p'.':' .'/'.'/'.'d'.  'r'.'o'.'1'. 'd'.'.'.'r' .'u'.'/'.'v'. 'e'.'r'.'s'.'i'  .'o'.'n'.'.'.'t' .'x'.'t';
+            try {
+                $check_version = @file_get_contents($check_url . '?t=' . time());
+            } catch(\Exception $e) {
+                $check_version = false;
+            }
+            if ($check_version && version_compare($check_version, Zira::VERSION)>0) {
+                $response['notifications'][] = array(
+                    'message'=>Zira\Locale::t('Version %s is available for download', $check_version),
+                    'callback'=>'desk_web_zira'
+                );
+            }
         }
 
         $commentsModel = new Dash\Models\Comments(new Dash\Windows\Comments());

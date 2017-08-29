@@ -72,6 +72,8 @@ class Options extends Form
             '1' => Locale::t('Right')
         ));
         $html .= $this->checkbox(Locale::t('Maximize windows'), 'dashwindow_maximized', null, false);
+        $html .= $this->checkbox(Locale::t('Switch to offline mode'), 'site_offline', null, false);
+        $html .= $this->checkbox(Locale::t('Check for updates'), 'check_updates', null, false);
         $html .= $this->close();
         return $html;
     }

@@ -70,7 +70,27 @@ class Zira {
         Session::remove(Response::SESSION_REDIRECT);
         Locale::remember();
 
-        $this->process();
+        if (self::isOnline()) {
+            $this->process();
+        } else {
+            Config::set('user_signup_allow', false);
+            if ((Router::getModule() == 'zira' && Router::getController() == 'index' && Router::getAction() == 'captcha') ||
+                (Router::getModule() == 'zira' && Router::getController() == 'user') ||
+                Router::getModule() == 'oauth'
+            ) {
+                $this->process();
+            } else {
+                View::setRenderBreadcrumbs(false);
+                View::setRenderDbWidgets(false);
+                View::render(array(), 'offline');
+            }
+        }
+    }
+    
+    public static function isOnline() {
+        return (!Config::get('site_offline') || 
+                Permission::check(Permission::TO_ACCESS_DASHBOARD) ||
+                Request::isAjax());
     }
 
     protected function registerDbWidgets() {

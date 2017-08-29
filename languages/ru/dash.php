@@ -396,5 +396,7 @@ return array(
     'Embed code' => 'Встроить код',
     'Enter code' => 'Введите код',
     'Code' => 'Код',
-    'Embedded code' => 'Встроенный код'
+    'Embedded code' => 'Встроенный код',
+    'Switch to offline mode' => 'Перевести в оффлайн режим',
+    'Check for updates' => 'Проверять обновления'
 );

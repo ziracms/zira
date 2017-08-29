@@ -505,6 +505,6 @@ class Records extends Model {
         $info[] = '<span class="glyphicon glyphicon-comment"></span> ' . Zira\Locale::t('Comments: %s', Zira\Helper::html($record->comments));
         //$info[] = '<span class="glyphicon glyphicon-time"></span> ' . date(Zira\Config::get('date_format'), strtotime($record->creation_date));
 
-        return $info;
+        return array('info'=>$info, 'slides_count'=>$record->slides_count, 'images_count'=>$record->images_count, 'audio_count'=>$record->audio_count, 'video_count'=>$record->video_count, 'files_count'=>$record->files_count);
     }
 }

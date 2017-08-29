@@ -11,14 +11,22 @@ class Widgets {
     const CACHE_KEY = 'widgets';
 
     public static function getDefaultDbWidgets() {
-        return array(
-            'logo' => '\Zira\Widgets\Logo',
-            'topmenu' => '\Zira\Widgets\Topmenu',
-            'childmenu' => '\Zira\Widgets\Childmenu',
-            'footermenu' => '\Zira\Widgets\Footermenu',
-            'languages' => '\Zira\Widgets\Languages',
-            'usermenu' => '\Zira\Widgets\Usermenu'
-        );
+        if (Zira::isOnline()) {
+            return array(
+                'logo' => '\Zira\Widgets\Logo',
+                'topmenu' => '\Zira\Widgets\Topmenu',
+                'childmenu' => '\Zira\Widgets\Childmenu',
+                'footermenu' => '\Zira\Widgets\Footermenu',
+                'languages' => '\Zira\Widgets\Languages',
+                'usermenu' => '\Zira\Widgets\Usermenu'
+            );
+        } else {
+            return array(
+                'logo' => '\Zira\Widgets\Logo',
+                'languages' => '\Zira\Widgets\Languages',
+                'usermenu' => '\Zira\Widgets\Usermenu'
+            );
+        }
     }
 
     public static function addDefaultDbWidgets() {

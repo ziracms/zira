@@ -34,7 +34,9 @@ class Options extends Model {
                 'db_widgets_enabled' => 'int',
                 'dashwindow_mode' => 'int',
                 'dashwindow_maximized' => 'int',
-                'watermark_margin' => 'int'
+                'watermark_margin' => 'int',
+                'site_offline' => 'int',
+                'check_updates' => 'int'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

@@ -399,7 +399,15 @@ class Dash {
         }
         $js .= 'if (typeof(HTMLElement)!="undefined") {'."\r\n";
         $js .= 'var HTMLElementClick = HTMLElement.prototype.click;'."\r\n";
-        $js .= 'HTMLElement.prototype.click = null;'."\r\n";
+        $js .= 'HTMLElement.prototype.click = function() {'."\r\n";
+        $js .= 'var parent = $(this).parents(\'.dashboard-window\');'."\r\n";
+        $js .= 'if ($(parent).length==0) HTMLElementClick.call(this);'."\r\n";
+        $js .= '};'."\r\n";
+        $js .= 'var HTMLElementDispatchEvent = HTMLElement.prototype.dispatchEvent;'."\r\n";
+        $js .= 'HTMLElement.prototype.dispatchEvent = function(event) {'."\r\n";
+        $js .= 'var parent = $(this).parents(\'.dashboard-window\');'."\r\n";
+        $js .= 'if ($(parent).length==0) HTMLElementDispatchEvent.call(this, event);'."\r\n";
+        $js .= '};'."\r\n";
         $js .= '}'."\r\n";
         $js .= $this->getDashPredefinedVars();
         $js .= file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . 'desk-window.js')."\r\n";
