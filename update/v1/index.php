@@ -16,6 +16,11 @@ $alterRecord = new \Update\V1\Record();
 $alterRecord->execute();
 Zira\Log::write('Updated record table');
 
+// adding new fields to widgets table
+$alterWidgets = new \Update\V1\Widget();
+$alterWidgets->execute();
+Zira\Log::write('Updated widgets table');
+
 // creating files table
 $filesTable = new \Zira\Install\File();
 $filesTable->install();

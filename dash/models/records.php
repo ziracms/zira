@@ -360,6 +360,26 @@ class Records extends Model {
             }
         }
 
+        // copying record slides
+        $slides = Zira\Models\Slide::getCollection()
+                            ->where('record_id','=',$record->id)
+                            ->order_by('id', 'asc')
+                            ->get();
+
+        foreach($slides as $slide) {
+            $image = str_replace('/', DIRECTORY_SEPARATOR, $slide->image);
+            $thumb = Zira\Page::createRecordThumb(ROOT_DIR . DIRECTORY_SEPARATOR . $image, $new->category_id, $new->id, false, true);
+            if (!$thumb) continue;
+
+            $slideObj = new Zira\Models\Slide();
+            $slideObj->record_id = $new->id;
+            $slideObj->thumb = $thumb;
+            $slideObj->image = $slide->image;
+            $slideObj->description = $slide->description;
+            $slideObj->save();
+        }
+        
+        // copying record images
         $images = Zira\Models\Image::getCollection()
                             ->where('record_id','=',$record->id)
                             ->order_by('id', 'asc')
@@ -376,6 +396,54 @@ class Records extends Model {
             $imageObj->image = $_image->image;
             $imageObj->description = $_image->description;
             $imageObj->save();
+        }
+        
+        // copying record audio
+        $files = Zira\Models\Audio::getCollection()
+                            ->where('record_id','=',$record->id)
+                            ->order_by('id', 'asc')
+                            ->get();
+
+        foreach($files as $file) {
+            $fileObj = new Zira\Models\Audio();
+            $fileObj->record_id = $new->id;
+            $fileObj->path = $file->path;
+            $fileObj->url = $file->url;
+            $fileObj->embed = $file->embed;
+            $fileObj->description = $file->description;
+            $fileObj->save();
+        }
+        
+        // copying record videos
+        $files = Zira\Models\Video::getCollection()
+                            ->where('record_id','=',$record->id)
+                            ->order_by('id', 'asc')
+                            ->get();
+
+        foreach($files as $file) {
+            $fileObj = new Zira\Models\Video();
+            $fileObj->record_id = $new->id;
+            $fileObj->path = $file->path;
+            $fileObj->url = $file->url;
+            $fileObj->embed = $file->embed;
+            $fileObj->description = $file->description;
+            $fileObj->save();
+        }
+        
+        // copying record files
+        $files = Zira\Models\File::getCollection()
+                            ->where('record_id','=',$record->id)
+                            ->order_by('id', 'asc')
+                            ->get();
+
+        foreach($files as $file) {
+            $fileObj = new Zira\Models\File();
+            $fileObj->record_id = $new->id;
+            $fileObj->path = $file->path;
+            $fileObj->url = $file->url;
+            $fileObj->download_count = 0;
+            $fileObj->description = $file->description;
+            $fileObj->save();
         }
 
         Zira\Models\Search::indexRecord($new);

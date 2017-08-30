@@ -98,12 +98,13 @@
 
     zira_autocomplete_close = function() {
         $('.zira-autocomplete-wnd').remove();
-        $('body').unbind('click',zira_autocomplete_click);
+        $('body').unbind('mousedown',zira_autocomplete_click);
         $('body').unbind('keyup',zira_autocomplete_press);
         $(this).parents('form').unbind('submit',zira_autocomplete_prevent_submit);
     };
 
     zira_autocomplete_click = function(e) {
+        console.log(2)
         if (typeof(e.originalEvent)=="undefined" || typeof(e.originalEvent.target)=="undefined") return;
         if ($(e.originalEvent.target).parents('.zira-autocomplete-wnd').length==0 &&
             !$(e.originalEvent.target).is(zira_autocomplete_click.input)

@@ -191,6 +191,7 @@ class Widgets extends Model {
         $copy->placeholder = $widget->placeholder;
         $copy->params = $widget->params;
         $copy->category_id = $widget->category_id;
+        $copy->record_id = $widget->record_id;
         $copy->sort_order = ++$max_order;
         $copy->active = Zira\Models\Widget::STATUS_NOT_ACTIVE;
         $copy->save();
@@ -245,5 +246,46 @@ class Widgets extends Model {
         Zira\Cache::clear();
 
         return array('reload'=>$this->getJSClassName());
+    }
+    
+    public function autoCompletePage($search) {
+        if (empty($search))  return array();
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $records = Zira\Models\Record::getCollection()
+                        ->open_query()
+                        ->select('id', 'title')
+                        ->left_join(Zira\Models\Category::getClass(), array('category_title'=>'title'))
+                        ->where('title', 'like', $search.'%')
+                        ->limit(5)
+                        ->order_by('id', 'DESC')
+                        ->close_query()
+                        ->union()
+                        ->open_query()
+                        ->select('id', 'title')
+                        ->left_join(Zira\Models\Category::getClass(), array('category_title'=>'title'))
+                        ->where('name', 'like', $search.'%')
+                        ->limit(5)
+                        ->order_by('id', 'DESC')
+                        ->close_query()
+                        ->merge()
+                        ->limit(5)
+                        ->order_by('id', 'DESC')
+                        ->get();
+        
+        $results = array();
+        foreach($records as $record) {
+            $title = $record->title;
+            if (!empty($record->category_title)) $title = $record->category_title.' / '.$record->title;
+            $results []= array(
+                'record_id' => $record->id,
+                'record_title' => $record->title,
+                'title' => $title
+            );
+        }
+        
+        return $results;
     }
 }

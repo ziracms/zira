@@ -388,6 +388,8 @@ class Collection implements \Zira\Db\Implement\Collection {
     public function reset() {
         $this->_fields = array();
         $this->_joins = array();
+        $this->_left_joins = array();
+        $this->_right_joins = array();
         $this->_ons = array();
         $this->_limit = null;
         $this->_offset = null;

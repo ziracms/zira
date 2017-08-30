@@ -92,6 +92,9 @@ class Contact extends Zira\Controller {
         $contact_google_map = Zira\Config::get('contact_google_map');
         if ($contact_google_map && $contact_address) $contacts['google_map'] = $contact_google_map;
 
+//        Zira\Page::setLayout(Zira\View::LAYOUT_ALL_SIDEBARS);
+//        Zira\View::setRenderDbWidgets(false);
+            
         if (empty($form) && empty($contacts)) {
             Zira\Page::render(array(
                 Zira\Page::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t('Contacts'),

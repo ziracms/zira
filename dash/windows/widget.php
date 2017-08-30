@@ -28,9 +28,15 @@ class Widget extends Window {
     public function create() {
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
-                'desk_window_form_init(this);'
+                'desk_call(dash_widget_load, this);'
             )
         );
+        
+        $this->addVariables(array(
+            'dash_widget_autocomplete_url' => Zira\Helper::url('dash/widgets/autocompletepage'),
+        ));
+        
+        $this->includeJS('dash/widget');
     }
 
     public function load() {
@@ -55,6 +61,14 @@ class Widget extends Window {
             $values = $widget->toArray();
             if ($values['category_id']===null) {
                 $values['category_id'] = -1;
+            }
+            if ($values['record_id']>0) {
+                $values['category_id'] = -2;
+                $record = new Zira\Models\Record($values['record_id']);
+                if ($record->loaded()) $values['record'] = $record->title;
+            }
+            if ($values['language']!==null && !in_array($values['language'],Zira\Config::get('languages'))) {
+                $values['language'] = null;
             }
 
             $this->setTitle(Zira\Locale::t('Widget').' - '.Zira\Locale::tm($available_widgets[$widget->name]->getTitle(), $widget->module));

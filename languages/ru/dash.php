@@ -398,5 +398,8 @@ return array(
     'Code' => 'Код',
     'Embedded code' => 'Встроенный код',
     'Switch to offline mode' => 'Перевести в оффлайн режим',
-    'Check for updates' => 'Проверять обновления'
+    'Check for updates' => 'Проверять обновления',
+    'Choose page...' => 'Выбрать страницу...',
+    'Choose page' => 'Выберите страницу',
+    'Enter page title or system name' => 'Введите название страницы или системное имя'
 );

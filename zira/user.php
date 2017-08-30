@@ -682,7 +682,7 @@ class User {
         $links []= array(
             'url' => 'user/messages',
             'icon' => 'glyphicon glyphicon-envelope',
-            'title' => Locale::t('Messages')
+            'title' => Locale::t('Messages') . ($user->messages>0 ? ' ('.$user->messages.')' : '')
         );
         $links []= array(
             'type' => 'separator'

@@ -33,7 +33,7 @@
 </div><!--/user-head-->
 <div class="clear"></div>
 <div class="user-button">
-<?php if (isset($is_owner) && $is_owner): ?>
+<?php if (false && isset($is_owner) && $is_owner): ?>
 <div class="dropdown user-profile-links">
 <button class="btn btn-primary dropdown-toggle" type="button" id="user-edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 <?php echo t('My account'); ?>&nbsp;<span class="caret"></span>

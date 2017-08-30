@@ -9,7 +9,8 @@ ob_start();
 if (file_exists('../config.php')) $config = @include '../config.php';
 if (!empty($config) && is_array($config)) {
     http_response_code(403);
-    die('403 Forbidden');
+    include('..' . DIRECTORY_SEPARATOR . '403.html');
+    exit;
 }
 ob_clean();
 

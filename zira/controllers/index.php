@@ -77,6 +77,9 @@ class Index extends Zira\Controller {
         Zira\Page::addTitle(Zira\Locale::t('Site map'));
         Zira\Page::addBreadcrumb('sitemap', Zira\Locale::t('Site map'));
 
+//        Zira\Page::setLayout(Zira\View::LAYOUT_ALL_SIDEBARS);
+//        Zira\View::setRenderDbWidgets(false);
+            
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array('categories'=>$categories), 'zira/map');
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t('Site map'),

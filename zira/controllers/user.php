@@ -13,6 +13,12 @@ class User extends Zira\Controller {
     public function _before() {
         parent::_before();
         Zira\View::setRenderDbWidgets(false);
+        if (Zira\User::isAuthorized() && Zira\Router::getAction()!='index') {
+            Zira\View::addPlaceholderView(Zira\View::VAR_SIDEBAR_RIGHT, array('user'=>Zira\User::getCurrent()), 'zira/user/nav');
+            Zira\Page::setLayout(Zira\View::LAYOUT_RIGHT_SIDEBAR);
+        } else {
+            Zira\Page::setLayout(Zira\View::LAYOUT_ALL_SIDEBARS);
+        }
     }
 
     public function index($id) {
@@ -65,7 +71,7 @@ class User extends Zira\Controller {
             'is_owner' => Zira\User::isSelf($user),
             'verified' => Zira\User::isProfileVerified($user),
             'user' => $user
-        ),'zira/user/profile');
+        ),'zira/user/profile', Zira\Page::getLayout());
     }
 
     public function signup() {
@@ -623,7 +629,7 @@ class User extends Zira\Controller {
             'is_owner' => true,
             'verified' => Zira\User::isVerified(),
             'user' => Zira\User::getCurrent()
-        ));
+        ), null, Zira\Page::getLayout());
     }
 
     public function message($recipient_id) {

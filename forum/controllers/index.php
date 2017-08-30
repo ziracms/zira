@@ -704,9 +704,18 @@ class Index extends Zira\Controller {
 
         Zira\Page::addTitle($title);
 
-        Zira\Page::putBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::addBreadcrumb('user/profile',Zira\Locale::t('Profile'));
+        Zira\Page::removeBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
+        Zira\Page::addBreadcrumb(Forum\Forum::ROUTE, Zira\Locale::tm('Forum', 'forum'));
 
-        if (Zira\Config::get('forum_layout')) {
+//        if (Zira\Config::get('forum_layout')) {
+//            Zira\Page::setLayout(Zira\Config::get('forum_layout'));
+//        }
+        if (!$id) {
+            Zira\View::addPlaceholderView(Zira\View::VAR_SIDEBAR_RIGHT, array('user'=>Zira\User::getCurrent()), 'zira/user/nav');
+            Zira\Page::setLayout(Zira\View::LAYOUT_RIGHT_SIDEBAR);
+            Zira\View::setRenderDbWidgets(false);
+        } else {
             Zira\Page::setLayout(Zira\Config::get('forum_layout'));
         }
         Zira\Page::setView('forum/page');
@@ -726,7 +735,8 @@ class Index extends Zira\Controller {
                                                                 'items'=>$rows,
                                                                 'user_groups' => Zira\Models\Group::getArray(true),
                                                                 'pagination' => $pagination,
-                                                                'searchForm' => $searchForm
+                                                                'searchForm' => $searchForm,
+                                                                'user' => $user
                                                             ), 'forum/user');
 
         Zira\Page::render(array(

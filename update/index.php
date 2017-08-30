@@ -5,6 +5,12 @@
  * (c)2017 http://dro1d.ru
  */
 
+if (file_exists('.forbidden')) {
+    http_response_code(403);
+    include('..' . DIRECTORY_SEPARATOR . '403.html');
+    exit;
+}
+
 require('..' . DIRECTORY_SEPARATOR . 'const.php');
 if (file_exists('../config.php')) $config = @include '../config.php';
 if (empty($config) || !is_array($config)) {

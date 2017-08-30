@@ -12,7 +12,7 @@ return array(
     'detect_language' => false,
     'db_translates' => false,
     'theme' => 'default',
-    'layout' => 'layout',
+    'layout' => 'layout-right',
     'modules' => array(),
     'caching' => true,
     'cache_lifetime' => 3600,

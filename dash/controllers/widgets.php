@@ -69,4 +69,12 @@ class Widgets extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function autocompletepage() {
+        if (Zira\Request::isPost()) {
+            $search = Zira\Request::post('search');
+            $response = $this->getWindowModel()->autoCompletePage($search);
+            Zira\Page::render($response);
+        }
+    }
 }

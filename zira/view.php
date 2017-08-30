@@ -899,6 +899,8 @@ class View {
         }
         foreach(self::$_db_widgets[$placeholder] as $_widget) {
             try {
+                if (!self::$_render_db_widgets && !in_array($_widget->name, $defaultDbWidgets)) continue;
+                if ($_widget->record_id && $_widget->record_id!=Page::getRecordId()) continue;
                 if ($_widget->filter && ((
                     $_widget->filter == Models\Widget::STATUS_FILTER_RECORD &&
                     Page::getRecordId()===null
@@ -911,7 +913,6 @@ class View {
                 ))) {
                     continue;
                 }
-                if (!self::$_render_db_widgets && !in_array($_widget->name, $defaultDbWidgets)) continue;
                 $widget = new $_widget->name;
                 if (!($widget instanceof Widget)) continue;
                 $widget->setData($_widget->params);

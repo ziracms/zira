@@ -38,7 +38,7 @@ class Usermenu extends Zira\Widget {
                         array(
                             'url' => 'user/messages',
                             'icon' => 'glyphicon glyphicon-envelope',
-                            'title' => Zira\Locale::t('Messages') . (Zira\User::getCurrent()->messages>0 ? '('.Zira\User::getCurrent()->messages.')' : '')
+                            'title' => Zira\Locale::t('Messages') . (Zira\User::getCurrent()->messages>0 ? ' ('.Zira\User::getCurrent()->messages.')' : '')
                         ),
                         array(
                             'type' => 'separator'

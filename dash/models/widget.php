@@ -56,6 +56,9 @@ class Widget extends Model {
             if ($category_id<0) $category_id = null;
             else if ($category_id==0) $category_id = Zira\Category::ROOT_CATEGORY_ID;
             $widget->category_id = $category_id;
+            $record_id = intval($form->getValue('record_id'));
+            if ($record_id<=0) $record_id = null;
+            $widget->record_id = $record_id;
             $widget->placeholder = $form->getValue('placeholder');
             $widget->active = intval($form->getValue('active')) ? Zira\Models\Widget::STATUS_ACTIVE : Zira\Models\Widget::STATUS_NOT_ACTIVE;
             $widget->filter = $form->getValue('filter') ? $form->getValue('filter') : null;

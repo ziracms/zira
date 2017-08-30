@@ -37,14 +37,15 @@ class Widget extends Form
         $categories = Zira\Models\Category::getArray();
         $_categories = array(
             -1 => Locale::t('All pages'),
+            -2 => Locale::t('Choose page...'),
             Zira\Category::ROOT_CATEGORY_ID => Locale::t('Home page')
         );
         $categories = $_categories + $categories;
 
         $filter_attr = array('class'=>'form-control filter-select');
-        if ($this->getValue('category_id') == Zira\Category::ROOT_CATEGORY_ID) {
-            $filter_attr['disabled'] = 'disabled';
-        }
+//        if ($this->getValue('category_id') == Zira\Category::ROOT_CATEGORY_ID) {
+//            $filter_attr['disabled'] = 'disabled';
+//        }
 
         $filters = array_merge(array(
             '' => Locale::t('Do not apply filter')
@@ -53,12 +54,18 @@ class Widget extends Form
         $html = $this->open();
         $html .= $this->hidden('id');
         $html .= $this->select(Locale::t('Placeholder').'*','placeholder',$placeholders);
-        $html .= $this->select(Locale::t('Page').' / '.Locale::t('Category').'*','category_id',$categories, array('onchange'=>'if ($(this).val()==\'0\') $(this).parents(\'form\').find(\'.filter-select\').attr(\'disabled\',\'disabled\'); else $(this).parents(\'form\').find(\'.filter-select\').removeAttr(\'disabled\');'));
+        $html .= $this->select(Locale::t('Page').' / '.Locale::t('Category').'*','category_id',$categories, array('class'=>'form-control dash_form_widget_record_select'));
+        
+        $html .= $this->hidden('record_id', array('class'=>'dash_form_widget_record_hidden'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'dash_form_widget_record_container'));
+        $html .= $this->input(Locale::t('Choose page'),'record',array('class'=>'form-control dash_form_widget_record_input', 'placeholder'=>Zira\Locale::t('Enter page title or system name')));
+        $html .= Zira\Helper::tag_close('div');
+        
         if (count(Zira\Config::get('languages'))<2) {
             $html .= $this->hidden('language');
         } else {
             $languagesArr = array_merge(array(''=>Locale::t('All languages')), Locale::getLanguagesArray());
-            $html .= $this->select(Locale::t('Language').'*','language',$languagesArr);
+            $html .= $this->select(Locale::t('Language').'*','language',$languagesArr, array('class'=>'form-control language-select'));
         }
         $html .= $this->select(Locale::t('Filter'),'filter',$filters, $filter_attr);
         $html .= $this->checkbox(Locale::t('active'),'active', null, false);
@@ -90,7 +97,7 @@ class Widget extends Form
     public static function checkCategory($category_id) {
         $category_id = intval($category_id);
         $categories = Zira\Models\Category::getArray();
-        return $category_id===-1 || $category_id===0 || array_key_exists($category_id, $categories);
+        return $category_id===-1 || $category_id===-2 || $category_id===0 || array_key_exists($category_id, $categories);
     }
 
     public static function checkFilter($filter) {

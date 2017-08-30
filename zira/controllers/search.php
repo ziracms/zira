@@ -61,6 +61,9 @@ class Search extends Zira\Controller {
             Zira\Page::addTitle(Zira\Locale::t('Search'));
             Zira\Page::addBreadcrumb('search', Zira\Locale::t('Search'));
 
+//            Zira\Page::setLayout(Zira\View::LAYOUT_ALL_SIDEBARS);
+//            Zira\View::setRenderDbWidgets(false);
+            
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT_TOP, array('form' => $form, 'found' => $found), 'zira/search');
             Zira\Page::render($data);
         }

@@ -11,7 +11,7 @@
 <a class="navbar-brand" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE)) ?>" title="<?php echo tm('Forum','forum') ?>"><span class="glyphicon glyphicon-link"></span></a>
 </div>
 <div class="collapse navbar-collapse" id="user-messages-panel">
-<?php if (Zira\User::isAuthorized()): ?>
+<?php if (Zira\User::isAuthorized() && isset($user) && Zira\User::isSelf($user)): ?>
 <ul class="nav navbar-nav">
 <li class="active"><a href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Forum::ROUTE.'/user')) ?>"><span class="glyphicon glyphicon-comment"></span> <?php echo tm('My discussions','forum') ?></a></li>
 </ul>
