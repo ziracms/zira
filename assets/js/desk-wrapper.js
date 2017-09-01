@@ -387,6 +387,21 @@ var desk_window_search_init = function(wnd) {
         });
         search.isBinded = true;
     }
+    
+    if ((typeof (wnd.options) == "undefined" || 
+            typeof (wnd.options.data)== "undefined" || 
+            typeof (wnd.options.data.search) == "undefined" || 
+            wnd.options.data.search.length==0) && 
+        typeof(search.notEmpty)!="undefined" && search.notEmpty
+        ) {
+        $(search.element).parent().find('.input-group-addon .glyphicon')
+            .removeClass('glyphicon-remove')
+            .removeClass('dashboard-glyphicon-pointer')
+            .addClass('glyphicon-search')
+            .unbind('click')
+        ;
+        search.notEmpty = false;
+    }
 };
 
 var desk_window_pagination_next = function(wnd) {

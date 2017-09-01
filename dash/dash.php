@@ -805,6 +805,7 @@ class Dash {
             Zira\View::addTinyMCEAssets();
             Zira\View::addCropperAssets();
             Zira\View::addCodeMirror();
+            Zira\View::addParser();
 
             if (Zira\Router::getModule()!='dash') {
                 self::loadDashLanguage();

@@ -42,6 +42,8 @@
         if (typeof(zira_parse.highlight)!="undefined" && zira_parse.highlight) {
             zira_parse_load_highlighter();
         }
+        
+        zira_parse_tables(selector);
     };
 
     zira_parse_emoji = function(content, size) {
@@ -177,6 +179,22 @@
     zira_parse_highlight = function() {
         $('pre.highlight').each(function(i, block) {
             hljs.highlightBlock(block);
+        });
+    };
+    
+    zira_parse_tables = function(selector) {
+        $(selector).find('table').each(function(){
+            var cellspacing = $(this).attr('cellspacing');
+            var cellpadding = $(this).attr('cellpadding');
+            if (typeof(cellspacing)!="undefined") {
+                $(this).css({
+                    'border-collapse': 'separate',
+                    'border-spacing': parseInt(cellspacing) + 'px'
+                });
+            }
+            if (typeof(cellpadding)!="undefined") {
+                $(this).find('td').css('padding', parseInt(cellpadding)+'px');
+            }
         });
     };
 

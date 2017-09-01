@@ -397,7 +397,7 @@ return array(
     'Enter code' => 'Введите код',
     'Code' => 'Код',
     'Embedded code' => 'Встроенный код',
-    'Switch to offline mode' => 'Перевести в оффлайн режим',
+    'Switch to offline mode' => 'Включить режим профилактики',
     'Check for updates' => 'Проверять обновления',
     'Choose page...' => 'Выбрать страницу...',
     'Choose page' => 'Выберите страницу',

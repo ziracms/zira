@@ -140,7 +140,7 @@ return array(
     'You do not have permission to listen to audio' => 'У вас нет прав для прослушивания аудио',
     '%s to view video' => '%s, чтобы просмотреть видео',
     'You do not have permission to view video' => 'У вас нет прав для просмотра видео',
-    'Site offline' => 'Сайт оффлайн',
+    'Site offline' => 'Профилактика',
     'Sorry, but website is currently under maintenance.' => 'На сайте ведутся профилактические работы.',
     'We should be back shortly.' => 'Мы вернёмся очень скоро.',
     'Thank you for your patience.' => 'Благодарим за ваше терпение.'

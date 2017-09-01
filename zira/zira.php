@@ -82,7 +82,7 @@ class Zira {
             } else {
                 View::setRenderBreadcrumbs(false);
                 View::setRenderDbWidgets(false);
-                View::render(array(), 'offline');
+                View::render(array(), 'offline', View::LAYOUT_ALL_SIDEBARS);
             }
         }
     }
