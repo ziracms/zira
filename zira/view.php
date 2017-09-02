@@ -743,7 +743,8 @@ class View {
         $script .= 'mejs.i18n.language(\''.Locale::getLanguage().'\');';
         $script .= '$(\'.mediaelement\').mediaelementplayer({';
 	$script .= 'pluginPath: \''.Helper::jsUrl('mediaelement').'/\',';
-	$script .= 'shimScriptAccess: \'always\'';
+	$script .= 'shimScriptAccess: \'always\',';
+        $script .= 'renderers: [\'html5\', \'flash_video\']';
         $script .= '});';
         $script .= '});';
         $script .= Helper::tag_close('script');

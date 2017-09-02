@@ -209,9 +209,9 @@ class Page extends Zira\Page {
 
         if ($slides_co > 0) static::setSlider($slides);
         if ($images_co > 0) static::setGallery($images, $access_gallery);
-        if ($files_co > 0) static::setFiles($files, $access_files);
         if ($audio_co > 0) static::setAudio($audio, $access_audio);
-        if ($video_co > 0) static::setVideo($video, $access_video);
+        if ($video_co > 0) static::setVideo($video, $access_video, $row->image);
+        if ($files_co > 0) static::setFiles($files, $access_files);
                     
         if ($comments_enabled) static::setComments($row, $preview);
 
@@ -228,7 +228,7 @@ class Page extends Zira\Page {
 
         static::render(array(
             static::VIEW_PLACEHOLDER_TITLE => $row->title,
-            static::VIEW_PLACEHOLDER_IMAGE => empty($slides) || !$slider_enabled ? $row->image : null,
+            static::VIEW_PLACEHOLDER_IMAGE => (empty($slides) || !$slider_enabled) && (empty($video) || !$video_enabled) ? $row->image : null,
             static::VIEW_PLACEHOLDER_CONTENT => $row->content,
             static::VIEW_PLACEHOLDER_DATE => $display_date ? $row->modified_date : null,
             static::VIEW_PLACEHOLDER_AUTHOR => $author,

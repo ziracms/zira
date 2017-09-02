@@ -1,4 +1,5 @@
 <?php if (!empty($files)): ?>
+<?php if (!empty($poster)) $poster = ' poster="'.Zira\Helper::baseUrl(Zira\Helper::html($poster)).'"'; else $poster = ''; ?>
 <div class="video-wrapper">
 <?php foreach($files as $file): ?>
     <?php 
@@ -21,7 +22,7 @@
     <?php endif; ?>
     <?php if (!empty($file->embed)) echo $file->embed; ?>
     <?php if (!empty($url)): ?>
-    <video class="mediaelement" width="700" height="400" style="max-width:100%" controls="controls"><source src="<?php echo Zira\Helper::html($url) ?>"></video> 
+    <video class="mediaelement" width="700" height="400" style="max-width:100%" controls="controls"<?php echo $poster ?>><source src="<?php echo Zira\Helper::html($url) ?>"></video> 
     <?php endif; ?>
     </div>
 <?php endforeach; ?>

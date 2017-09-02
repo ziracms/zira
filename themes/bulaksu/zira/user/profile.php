@@ -30,32 +30,13 @@
 <a href="javascript:void(0)" data-action="black-list" data-user="<?php echo Zira\Helper::html($id) ?>" data-url="<?php echo Zira\Helper::url('user/ajax'); ?>" data-token="<?php echo Zira\User::getToken() ?>" class="user-black-list-link<?php if (Zira\User::isUserBlocked($id)) echo ' blocked' ?>"><span class="if-not-blocked"><span class="glyphicon glyphicon-ban-circle"></span> <?php echo t('Add to black list') ?></span> <span class="if-blocked"><span class="glyphicon glyphicon-minus-sign"></span> <?php echo t('Remove from black list') ?></span></a>
 </div>
 <?php endif; ?>
-</div><!--/user-head-->
-<div class="clear"></div>
-<div class="user-button">
-<?php if (false && isset($is_owner) && $is_owner): ?>
-<div class="dropdown user-profile-links">
-<button class="btn btn-primary dropdown-toggle" type="button" id="user-edit-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-<?php echo t('My account'); ?>&nbsp;<span class="caret"></span>
-</button>
-<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="user-edit-dropdown">
-<?php foreach (Zira\User::getProfileEditLinks() as $link): ?>
-<?php if (array_key_exists('type', $link) && $link['type']=='separator'): ?>
-<li role="separator" class="divider"></li>
-<?php else: ?>
-<?php $icon = !empty($link['icon']) ? '<span class="'.Zira\Helper::html($link['icon']).'"></span>' : ''; ?>
-<li><a href="<?php echo Zira\Helper::html(Zira\Helper::url($link['url'])) ?>"><?php echo $icon; ?> <?php echo Zira\Helper::html($link['title']) ?></a></li>
-<?php endif; ?>
-<?php endforeach; ?>
-</ul>
-</div><!--/user-profile-links-->
-<?php endif; ?>
 <?php if (empty($is_owner) && Zira\User::isAuthorized()): ?>
-<div class="user-profile-links">
-<a class="btn btn-primary" href="<?php echo Zira\Helper::url('user/message/'.Zira\Helper::html($id)) ?>"><span class="glyphicon glyphicon-envelope"></span> <?php echo t('Send message') ?></a>
+<div>
+<a href="<?php echo Zira\Helper::url('user/message/'.Zira\Helper::html($id)) ?>"><span class="glyphicon glyphicon-envelope"></span> <?php echo t('Send message') ?></a>
 </div>
 <?php endif; ?>
-</div><!--/user-button-->
+</div><!--/user-head-->
+<div class="clear"></div>
 <h2><span class="glyphicon glyphicon-list-alt"></span>&nbsp;<?php echo t('User information') ?></h2>
 <dl class="user-info">
 <?php if (isset($group)) echo '<dt><span class="glyphicon glyphicon-user"></span>&nbsp;'.t('Group').': </dt><dd>'.Zira\Helper::html($group).'</dd>'; ?>

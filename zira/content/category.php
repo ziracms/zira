@@ -379,11 +379,12 @@ class Category extends Zira\Page {
 
                     if ($slides_co > 0) static::setSlider($slides);
                     if ($images_co > 0) static::setGallery($images, $access_gallery);
-                    if ($files_co > 0) static::setFiles($files, $access_files);
                     if ($audio_co > 0) static::setAudio($audio, $access_audio);
-                    if ($video_co > 0) static::setVideo($video, $access_video);
+                    if ($video_co > 0) static::setVideo($video, $access_video, $record->image);
+                    if ($files_co > 0) static::setFiles($files, $access_files);
 
-                    if (!empty($slides) && $slider_enabled) $record->image = null;
+                    if ((!empty($slides) && $slider_enabled) || (!empty($video) && $video_enabled)) 
+                        $record->image = null;
                 } else {
                     $record = null;
                 }

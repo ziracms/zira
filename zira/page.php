@@ -182,9 +182,9 @@ class Page {
         View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$audio, 'access_allowed' => $access_allowed), 'zira/audio');
     }
     
-    public static function setVideo(array $video, $access_allowed = true) {
+    public static function setVideo(array $video, $access_allowed = true, $poster = null) {
         View::addMediaElementPlayer();
-        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('files'=>$video, 'access_allowed' => $access_allowed), 'zira/videos');
+        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('files'=>$video, 'access_allowed' => $access_allowed, 'poster' => $poster), 'zira/videos');
     }
 
     public static function setComments($record, $preview = false) {
