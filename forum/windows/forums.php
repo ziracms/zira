@@ -132,7 +132,7 @@ class Forums extends Dash\Windows\Window {
             $this->createMenuDropdownSeparator()
         );
 
-        $categories = Forum\Models\Category::getCategpries();
+        $categories = Forum\Models\Category::getCategories();
         foreach($categories as $category) {
             if (!$_category_id) $_category_id = $category->id;
             if (!$category_id && $_category_id == $category->id) {

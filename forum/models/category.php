@@ -46,7 +46,7 @@ class Category extends Orm {
         return array();
     }
 
-    public static function getCategpries() {
+    public static function getCategories() {
         return self::getCollection()
                             ->order_by('sort_order', 'asc')
                             ->get();

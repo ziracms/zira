@@ -46,7 +46,7 @@ class Forum extends Form
             $html .= $this->hidden('category_id');
         } else {
             $categories_arr = array();
-            $categories = \Forum\Models\Category::getCategpries();
+            $categories = \Forum\Models\Category::getCategories();
             foreach($categories as $category) {
                 $categories_arr[$category->id] = $category->title;
             }

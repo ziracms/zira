@@ -51,7 +51,7 @@ class Records extends Window {
             $this->createSidebarItem(Zira\Locale::t('Audio'), 'glyphicon glyphicon-music', 'desk_call(dash_records_record_audio, this);', 'edit', true, array('typo'=>'audio'))
         );
         $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Video'), 'glyphicon glyphicon-play-circle', 'desk_call(dash_records_record_video, this);', 'edit', true, array('typo'=>'video'))
+            $this->createSidebarItem(Zira\Locale::t('Video'), 'glyphicon glyphicon-facetime-video', 'desk_call(dash_records_record_video, this);', 'edit', true, array('typo'=>'video'))
         );
         $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Files'), 'glyphicon glyphicon-file', 'desk_call(dash_records_record_files, this);', 'edit', true, array('typo'=>'files'))

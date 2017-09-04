@@ -12,7 +12,7 @@ use Zira\Permission;
 use Dash\Windows\Files;
 
 class Recordvideos extends Window {
-    protected static $_icon_class = 'glyphicon glyphicon-play-circle';
+    protected static $_icon_class = 'glyphicon glyphicon-facetime-video';
     protected static $_title = 'Video';
 
     //protected $_help_url = 'zira/help/record-videos';
