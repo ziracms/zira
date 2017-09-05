@@ -167,9 +167,9 @@ class Forums extends Dash\Windows\Window {
 
         $items = array();
         foreach($forums as $forum) {
-            $title = $forum->title;
+            $title = Zira\Helper::html($forum->title);
             if (array_key_exists($forum->id, $unpublished)) $title = $title.' ('.$unpublished[$forum->id].')';
-            $items[]=$this->createBodyItem($title, $forum->description, Zira\Helper::imgUrl('drag.png'), $forum->id, 'desk_call(dash_forum_threads, this);', false, array('sort_order'=>$forum->sort_order,'inactive'=>$forum->active ? 0 : 1, 'page'=>Forum\Models\Forum::generateUrl($forum)));
+            $items[]=$this->createBodyItem($title, Zira\Helper::html($forum->description), Zira\Helper::imgUrl('drag.png'), $forum->id, 'desk_call(dash_forum_threads, this);', false, array('sort_order'=>$forum->sort_order,'inactive'=>$forum->active ? 0 : 1, 'page'=>Forum\Models\Forum::generateUrl($forum)));
         }
         $this->setBodyItems($items);
 

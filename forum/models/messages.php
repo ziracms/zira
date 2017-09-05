@@ -188,10 +188,10 @@ class Messages extends Dash\Models\Model {
         }
 
         return array(
-            'user'=>$username,
+            'user'=>Zira\Helper::html($username),
             'content'=>'<p class="parse-content">'.Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($message->content))).'</p>',
             'attaches'=>$attaches,
-            'topic'=>Zira\Locale::tm('Forum thread','forum').': '.$message->topic_title
+            'topic'=>Zira\Locale::tm('Forum thread','forum').': '.Zira\Helper::html($message->topic_title)
         );
     }
 }

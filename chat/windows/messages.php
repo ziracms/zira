@@ -89,7 +89,7 @@ class Messages extends Dash\Windows\Window {
         foreach($messages as $message) {
             $content = Zira\Helper::html($message->content);
             $username = $message->user_login ? $message->user_login : Zira\Locale::tm('Guest', 'chat');
-            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.$username, $message->id, 'desk_call(dash_chat_message_preview, this);', false, array('type'=>'txt'));
+            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.Zira\Helper::html($username), $message->id, 'desk_call(dash_chat_message_preview, this);', false, array('type'=>'txt'));
         }
         $this->setBodyItems($items);
 

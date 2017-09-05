@@ -56,7 +56,7 @@ class Categories extends Dash\Windows\Window {
 
         $items = array();
         foreach($categories as $category) {
-            $items[]=$this->createBodyItem($category->title, $category->description, Zira\Helper::imgUrl('drag.png'), $category->id, null, false, array('sort_order'=>$category->sort_order));
+            $items[]=$this->createBodyItem(Zira\Helper::html($category->title), Zira\Helper::html($category->description), Zira\Helper::imgUrl('drag.png'), $category->id, null, false, array('sort_order'=>$category->sort_order));
         }
         $this->setBodyItems($items);
     }

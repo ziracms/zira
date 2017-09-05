@@ -50,8 +50,26 @@ class Chat extends Widget {
         $chat = new \Chat\Models\Chat($id);
         if (!$chat->loaded()) return;
         
+        if ($chat->visible_group && !Zira\Permission::check(\Chat\Chat::PERMISSION_MODERATE) &&
+            (!Zira\User::isAuthorized() || Zira\User::getCurrent()->group_id != $chat->visible_group) 
+        ) {
+            return;
+        }
+        
+        if (!$chat->check_auth || Zira\User::isAuthorized()) {
+            $form = new \Chat\Forms\Submit();
+            $form->setValues(array(
+                'chat_id' => $chat->id
+            ));
+        } else {
+            $form = null;
+        }
+        
+        if ($chat->refresh_delay < 1) $chat->refresh_delay = 1;
+        
         Zira\View::renderView(array(
-            'chat' => $chat
+            'chat' => $chat,
+            'form' => $form
         ),'chat/widgets/chat');
     }
 }

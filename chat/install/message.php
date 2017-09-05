@@ -22,6 +22,7 @@ class Message extends Table {
             'id' => Field::primary(),
             'chat_id' => Field::int(true, true),
             'creator_id' => Field::int(true, true),
+            'creator_name' => Field::string(),
             'content' => Field::text(true),
             'date_created' => Field::datetime(true),
             'status' => Field::tinyint(true, true, 0)

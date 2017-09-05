@@ -57,6 +57,11 @@ class Modules extends Model {
             foreach ($tables as $table) {
                 $table->uninstall();
             }
+            
+            Zira\Models\Widget::getCollection()
+                                ->delete()
+                                ->where('module','=',$module)
+                                ->execute();
         } catch(\Exception $e) {
             return array('error' => Zira\Locale::t('Failed to uninstall module'));
         }
@@ -129,6 +134,13 @@ class Modules extends Model {
             $optionObj->module = 'zira';
             $optionObj->save();
 
+            Zira\Models\Widget::getCollection()
+                                ->update(array(
+                                    'active' => Zira\Models\Widget::STATUS_NOT_ACTIVE
+                                ))
+                                ->where('module','=',$module)
+                                ->execute();
+            
             Zira\Models\Option::raiseVersion();
         }
 

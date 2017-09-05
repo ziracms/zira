@@ -84,7 +84,7 @@ class Files extends Dash\Windows\Window {
                 else $filename = $path;
                 $content = Zira\Helper::html($filename);
                 $username = $file->user_login ? $file->user_login : Zira\Locale::tm('User deleted', 'forum');
-                $items[] = $this->createBodyFileItem($content, $username, $file->id.'_'.$field_num, 'desk_call(dash_forum_file_show, this);', false, array('type' => 'txt', 'path'=>Zira\Helper::baseUrl(UPLOADS_DIR.'/'.str_replace(DIRECTORY_SEPARATOR, '/', $path))));
+                $items[] = $this->createBodyFileItem($content, Zira\Helper::html($username), $file->id.'_'.$field_num, 'desk_call(dash_forum_file_show, this);', false, array('type' => 'txt', 'path'=>Zira\Helper::baseUrl(UPLOADS_DIR.'/'.str_replace(DIRECTORY_SEPARATOR, '/', $path))));
             }
         }
         $this->setBodyItems($items);

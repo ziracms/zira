@@ -15,6 +15,8 @@ class Chat {
     const WIDGET_CLASS = '\Chat\Widgets\Chat';
     const WIDGET_PLACEHOLDER = Zira\View::VAR_SIDEBAR_RIGHT;
     const DEFAULT_DELAY = 5;
+    const MAX_CHARS = 1024;
+    const WIDGET_LIMIT = 30;
     
     private static $_instance;
 

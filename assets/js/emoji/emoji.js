@@ -81,7 +81,7 @@
     /**
      * Parse text and replace emoji with images
      */
-    function emoji_parse(selector) {
+    emoji_parse = function(selector) {
         $(selector).each(function(){
             //if ($(this).hasClass('article')) return true;
             if ($(this).hasClass('emoji-parsed-content')) return true;

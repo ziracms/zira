@@ -118,9 +118,7 @@ class Messages extends Dash\Windows\Window {
             for ($i=1; $i<=\Forum\Models\File::MAX_FILES_COUNT; $i++) {
                 $field = 'file_path'.$i;
                 if ($message->{$field}) {
-                    $_p = strrpos($message->{$field}, DIRECTORY_SEPARATOR);
-                    if ($_p!==false) $filename = substr($message->{$field}, $_p+1);
-                    else $filename = $message->{$field};
+                    $filename = basename($message->{$field});
                     $files[$message->{$field}] = $filename;
                 }
             }
@@ -130,7 +128,7 @@ class Messages extends Dash\Windows\Window {
 
             $content = Zira\Helper::html($message->content);
             $username = $message->user_login ? $message->user_login : Zira\Locale::tm('User deleted', 'forum');
-            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.$username.$files_str, $message->id, 'desk_call(dash_forum_message_preview, this);', false, array('type'=>'txt','published'=>$message->published ? 1 : 0));
+            $items[]=$this->createBodyFileItem($content, Zira\Locale::t('User').': '.Zira\Helper::html($username).Zira\Helper::html($files_str), $message->id, 'desk_call(dash_forum_message_preview, this);', false, array('type'=>'txt','published'=>$message->published ? 1 : 0));
         }
         $this->setBodyItems($items);
 

@@ -157,9 +157,9 @@ class Comments extends Window {
             if ($row->author_id > 0) {
                 $username = $row->author_username;
             } else {
-                $username = ($row->sender_name ? Zira\Helper::html($row->sender_name) : Zira\Locale::t('Guest'));
+                $username = ($row->sender_name ? $row->sender_name : Zira\Locale::t('Guest'));
             }
-            $items[]=$this->createBodyFileItem($content, $username, $row->id, 'desk_call(dash_comments_preview, this);', false, array('type'=>'txt','inactive'=>$row->published==Zira\Models\Comment::STATUS_PUBLISHED ? 0 : 1,'page'=>isset($urls[$row->record_id]) ? $urls[$row->record_id] : ''));
+            $items[]=$this->createBodyFileItem($content, Zira\Helper::html($username), $row->id, 'desk_call(dash_comments_preview, this);', false, array('type'=>'txt','inactive'=>$row->published==Zira\Models\Comment::STATUS_PUBLISHED ? 0 : 1,'page'=>isset($urls[$row->record_id]) ? $urls[$row->record_id] : ''));
         }
         $this->setBodyItems($items);
 

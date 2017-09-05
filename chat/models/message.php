@@ -44,6 +44,7 @@ class Message extends Orm {
             'id',
             'chat_id',
             'creator_id',
+            'creator_name',
             'content',
             'date_created',
             'status'

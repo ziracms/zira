@@ -19,5 +19,7 @@ return array(
     'Default' => 'По-умолчанию',
     'Information' => 'Информация',
     'Message' => 'Сообщение',
-    'Warning' => 'Предупреждение'
+    'Warning' => 'Предупреждение',
+    'Sorry, your message is too big' => 'Извините, ваше сообщение слишком длинное',
+    'Send a message' => 'Отправить сообщение'
 );

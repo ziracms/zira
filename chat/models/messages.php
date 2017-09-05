@@ -89,9 +89,9 @@ class Messages extends Dash\Models\Model {
         }
 
         return array(
-            'user'=>$username,
+            'user'=>Zira\Helper::html($username),
             'content'=>'<p class="parse-content">'.Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($message->content))).'</p>',
-            'chat'=>Zira\Locale::tm('Chat','chat').': '.$message->chat_title
+            'chat'=>Zira\Locale::tm('Chat','chat').': '.Zira\Helper::html($message->chat_title)
         );
     }
 }
