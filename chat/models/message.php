@@ -59,4 +59,11 @@ class Message extends Orm {
             self::STATUS_WARNING => Zira\Locale::tm('Warning', 'chat')
         );
     }
+    
+    public static function cleanUp() {
+        self::getCollection()
+                ->delete()
+                ->where('date_created','<',date('Y-m-d H:i:s', time()-86400))
+                ->execute();
+    }
 }

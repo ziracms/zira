@@ -21,5 +21,8 @@ return array(
     'Message' => 'Сообщение',
     'Warning' => 'Предупреждение',
     'Sorry, your message is too big' => 'Извините, ваше сообщение слишком длинное',
-    'Send a message' => 'Отправить сообщение'
+    'Send a message' => 'Отправить сообщение',
+    'Incorrect message length' => 'Некорректная длина сообщения',
+    'Chat database cleaned up' => 'База чата очищена',
+    'Your message' => 'Ваше сообщение'
 );

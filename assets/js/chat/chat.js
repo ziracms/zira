@@ -30,7 +30,7 @@
                     if (response.status) {
                         $(this).find('.user-rich-input').val('');
                         $(this).trigger('xhr-submit-success');
-                        $(this).parents('.widget-chat-wrapper').zira_chat();
+                        //$(this).parents('.widget-chat-wrapper').zira_chat();
                     }
                 }), 'json');
             });
@@ -41,11 +41,11 @@
                 }
             }));
             
-            $(this).zira_chat();
+            $(this).zira_chat(true);
         });
     });
     
-    $.fn.zira_chat = function() {
+    $.fn.zira_chat = function(scrollDown) {
         var id = $(this).attr('id');
         var url = $(this).data('url');
         var chat = $(this).data('chat');
@@ -53,12 +53,13 @@
         
         if (typeof(id)=="undefined" || typeof(url)=="undefined" || typeof(chat)=="undefined" || typeof(delay)=="undefined") return;
         
-        chat_update.call(this, id, url, chat, delay);
+        chat_update.call(this, id, url, chat, delay, scrollDown);
     };
     
-    var chat_update = function(id, url, chat, delay) {
+    var chat_update = function(id, url, chat, delay, scrollDown) {
         if (typeof(chat_update.timers)=="undefined") chat_update.timers = {};
         if (typeof(chat_update.last_ids)=="undefined") chat_update.last_ids = {};
+        if (typeof(scrollDown)=="undefined") scrollDown = false;
         if (delay<1) delay = 1;
         try {
             window.clearTimeout(chat_update.timers[id]);
@@ -74,6 +75,11 @@
                 chat_update.last_ids[id] = response.last_id;
             }
             if (response.messages && response.messages.length) {
+                try {
+                    if ($(this).find('.widget-chat-messages').get(0).scrollTop + $(this).find('.widget-chat-messages').height() >= $(this).find('.widget-chat-messages').get(0).scrollHeight-30) {
+                        scrollDown = true;
+                    }
+                } catch(e) {}
                 for(var i=0; i<response.messages.length; i++) {
                     $(this).find('.widget-chat-messages').append(response.messages[i]);
                 }
@@ -85,7 +91,9 @@
                 zira_parse('.widget-chat-wrapper .parse-content');
                 try {
                     emoji_parse('.widget-chat-wrapper .parse-content');
-                    $(this).find('.widget-chat-messages').get(0).scrollTop = $(this).find('.widget-chat-messages').get(0).scrollHeight;
+                    if (scrollDown) {
+                        $(this).find('.widget-chat-messages').get(0).scrollTop = $(this).find('.widget-chat-messages').get(0).scrollHeight;
+                    }
                 } catch(e) {}
             }
             chat_update.timers[id] = window.setTimeout(zira_bind(this, function(){

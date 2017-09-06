@@ -51,7 +51,7 @@ class Submit extends Form {
             $html .= Helper::tag_close('div');
         }
 
-        $html .= $this->textarea(Locale::tm('Send a message','chat').'*','message', array('class'=>'form-control user-rich-input'));
+        $html .= $this->textarea(Locale::tm('Your message','chat'),'message', array('class'=>'form-control user-rich-input'));
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;
@@ -63,7 +63,7 @@ class Submit extends Form {
         $validator->registerString('sender_name', 1, 255, false, Locale::t('Invalid name'));
         $validator->registerNoTags('sender_name', Locale::t('Invalid name'));
         $validator->registerUtf8('sender_name', Locale::t('Invalid name'));
-        $validator->registerString('message', null, \Chat\Chat::MAX_CHARS, true, Locale::tm('Sorry, your message is too big', 'chat'));
+        $validator->registerString('message', null, \Chat\Chat::MAX_CHARS, true, Locale::tm('Incorrect message length', 'chat'));
         $validator->registerNoTags('message', Locale::t('Message contains bad character'));
     }
 }

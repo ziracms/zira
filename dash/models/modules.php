@@ -133,13 +133,6 @@ class Modules extends Model {
             $optionObj->value = Zira\Models\Option::convertArrayToString($active_modules);
             $optionObj->module = 'zira';
             $optionObj->save();
-
-            Zira\Models\Widget::getCollection()
-                                ->update(array(
-                                    'active' => Zira\Models\Widget::STATUS_NOT_ACTIVE
-                                ))
-                                ->where('module','=',$module)
-                                ->execute();
             
             Zira\Models\Option::raiseVersion();
         }

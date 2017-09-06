@@ -47,23 +47,23 @@ class Index extends Zira\Controller {
             if ($row->status == Chat\Models\Message::STATUS_INFO) $micon = '<span class="glyphicon glyphicon-exclamation-sign"></span> ';
             if ($row->status == Chat\Models\Message::STATUS_WARNING) $micon = '<span class="glyphicon glyphicon-warning-sign"></span> ';
 
-            $message = '<div class="chat-message-wrapper">';
-            $message .= '<div class="chat-message-image">';
+            $message = Zira\Helper::tag_open('div', array('class'=>'chat-message-wrapper'));
+            $message .= Zira\Helper::tag_open('div', array('class'=>'chat-message-image'));
             if ($row->creator_id > 0 && $row->author_username !== null && $row->author_firstname !== null && $row->author_secondname !== null)
                 $message .= Zira\User::generateUserProfileThumbLink($row->creator_id, $row->author_firstname, $row->author_secondname, $row->author_username, null, $row->author_image, null, array('class'=>'chat-message-avatar'));
             else
                 $message .= Zira\User::generateUserProfileThumb($row->author_image, null, array('class'=>'chat-message-avatar'));
-            $message .= '</div>';
-            $message .= '<div class="chat-message-author">';
+            $message .= Zira\Helper::tag_close('div');
+            $message .= Zira\Helper::tag_open('div', array('class'=>'chat-message-author'));
             if ($row->creator_id > 0 && $row->author_username !== null && $row->author_firstname !== null && $row->author_secondname !== null)
                 $message .= ($row->creator_name ? Zira\User::generateUserProfileLink($row->creator_id, null, null, $row->creator_name) : Zira\User::generateUserProfileLink($row->creator_id, $row->author_firstname, $row->author_secondname, $row->author_username));
             else 
                 $message .= ($row->creator_name ? Zira\Helper::html($row->creator_name) : Zira\Locale::tm('Guest','chat'));
-            $message .= '</div>';
-            $message .= '<p class="chat-message-text parse-content'.$mclass.'">'.$micon;
+            $message .= Zira\Helper::tag_close('div');
+            $message .= Zira\Helper::tag_open('p', array('class'=>'chat-message-text parse-content'.$mclass)).$micon;
             $message .= Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($row->content)));
-            $message .= '</p>';
-            $message .= '</div>';
+            $message .= Zira\Helper::tag_close('p');
+            $message .= Zira\Helper::tag_close('div');
             $response['messages'][]=$message;
             $response['last_id'] = $row->id;
         }
@@ -93,7 +93,7 @@ class Index extends Zira\Controller {
             $content = $form->getValue('message');
             $content = str_replace("\r",'',$content);
             $content = str_replace("\n","\r\n",$content);
-            $content = Zira\Helper::utf8Entity($content);
+            $content = Zira\Helper::utf8Entity(html_entity_decode($content));
             
             $message = new Chat\Models\Message();
             $message->chat_id = $chat->id;
