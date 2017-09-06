@@ -64,7 +64,7 @@ class Block extends Zira\Widget {
             } else if ($ext=='jpg' || $ext=='jpeg' || $ext=='png' || $ext=='gif') {
                 $size = getimagesize(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1]);
                 if (!$size) return;
-                echo '<img src="'.Zira\Helper::baseUrl('').$m[1].'" '.$size[3].' class="block-image" />';
+                echo '<img src="'.Zira\Helper::baseUrl('').$m[1].'" '.$size[3].' class="block block-image" />';
             }
         } else {
             $block = new Zira\Models\Block($id);

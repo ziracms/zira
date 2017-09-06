@@ -1,6 +1,6 @@
-<div class="forum-discussion-widget-wrapper">
+<div class="block forum-discussion-widget-wrapper">
 <div class="page-header">
-<h2 class="widget-category-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::url('forum')) ?>" title="<?php echo tm('Discussed on forum', 'forum') ?>"><?php echo tm('Forum', 'forum') ?></a></h2>
+<h2 class="widget-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::url('forum')) ?>" title="<?php echo tm('Discussed on forum', 'forum') ?>"><?php echo tm('Forum', 'forum') ?></a></h2>
 </div>
 <?php if (!empty($items)): ?>
 <ul class="widget-list list forum-widget-list">

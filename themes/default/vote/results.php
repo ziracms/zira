@@ -2,7 +2,9 @@
 <?php if (!$is_ajax): ?>
 <div class="vote-results-wrapper block">
 <?php if ($is_sidebar): ?>
-<h2><?php echo tm('Vote','vote') ?></h2>
+<div class="page-header">
+<h2 class="widget-title"><?php echo tm('Vote','vote') ?></h2>
+</div>
 <?php else: ?>
 <div class="page-header">
 <h2><?php echo tm('Vote','vote') ?></h2>

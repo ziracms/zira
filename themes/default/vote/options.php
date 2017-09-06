@@ -1,7 +1,9 @@
 <?php if (count($options)>0): ?>
 <div class="vote-options-wrapper block">
 <?php if ($is_sidebar): ?>
-<h2><?php echo tm('Vote','vote') ?></h2>
+<div class="page-header">
+<h2 class="widget-title"><?php echo tm('Vote','vote') ?></h2>
+</div>
 <?php else: ?>
 <div class="page-header">
 <h2><?php echo tm('Vote','vote') ?></h2>

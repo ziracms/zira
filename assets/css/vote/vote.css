@@ -1,5 +1,6 @@
 .vote-options-wrapper p.subject,
 .vote-results-wrapper p.subject {
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 .vote-options-wrapper ul,

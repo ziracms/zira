@@ -202,7 +202,9 @@ dt {
 }
 .alert-dark {
     border-color: #323350;
+    background: #313458;
     background-image: linear-gradient(to bottom,#446a77 0,#313458 100%);
+    filter: none;
     color: #eee;
 }
 .alert-dark a:link,
@@ -808,7 +810,9 @@ header #top-menu-wrapper nav .btn-default {
     max-width:100%;
     height:auto;
     display: block;
-    margin: 0px auto 20px;
+}
+.block .block-content {
+    margin-top: 10px;
 }
 article .article p {
     line-height: 26px;
@@ -1084,10 +1088,6 @@ article .rating .share-wrapper .share-btn {
 .list-view-more-wrapper {
     margin: 20px 0px;
 }
-.widget-category-wrapper,
-.widget-top-wrapper {
-    margin-bottom: 20px;
-}
 /** comments **/
 .comments-wrapper {
     margin: 40px 0px;
@@ -1258,11 +1258,11 @@ pre {
     padding: 10px;
     border-radius: 4px;
 }
-.sidebar .widget-category-title {
+.sidebar .widget-title {
     font-size: 20px;
     margin: 0px;
 }
-.sidebar .widget-category-title a {
+.sidebar .widget-title a {
     color: #dddddd;
 }
 .sidebar .list {
@@ -1953,9 +1953,6 @@ ul.vote-results li .vote-result {
     box-shadow: 0px 0px 4px #444554 inset;
 }
 
-.widget-search-wrapper {
-    margin-bottom: 20px;
-}
 .widget-search-wrapper .form-group {
     margin: 0;
 }

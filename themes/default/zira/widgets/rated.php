@@ -1,7 +1,7 @@
-<div class="widget-top-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
+<div class="block<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
 <?php if (!empty($title)): ?>
 <div class="page-header">
-<h2 class="widget-category-title"><?php echo Zira\Helper::html($title) ?></h2>
+<h2 class="widget-title"><?php echo Zira\Helper::html($title) ?></h2>
 </div>
 <?php endif; ?>
 <?php if (!empty($records)): ?>

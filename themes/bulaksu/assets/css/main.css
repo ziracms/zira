@@ -497,7 +497,9 @@ ul#language-switcher li a.active {
     max-width:100%;
     height:auto;
     display: block;
-    margin: 0px auto 20px;
+}
+.block .block-content {
+    margin-top: 10px;
 }
 article .datetime {
     font-style: italic;
@@ -745,10 +747,6 @@ article .rating .share-wrapper .share-btn {
 .list-view-more-wrapper {
     margin: 20px 0px;
 }
-.widget-category-wrapper,
-.widget-top-wrapper {
-    margin-bottom: 20px;
-}
 /** comments **/
 .comments-wrapper {
     margin: 40px 0px;
@@ -891,7 +889,7 @@ pre {
     margin: 0px;
     padding-bottom: 4px;
 }
-.sidebar .widget-category-title {
+.sidebar .widget-title {
     font-size: 20px;
     margin-top: 0px;
     text-shadow: 1px 1px 0px #fff;
@@ -1482,9 +1480,6 @@ a.scroll-top.visible:visited {
     color: #5FB1A8;
 }
 
-.widget-search-wrapper {
-    margin-bottom: 20px;
-}
 .widget-search-wrapper .form-group {
     margin: 0;
 }

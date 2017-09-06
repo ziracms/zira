@@ -70,6 +70,6 @@ class Chat extends Widget {
         Zira\View::renderView(array(
             'chat' => $chat,
             'form' => $form
-        ),'chat/widgets/chat');
+        ),'chat/widget');
     }
 }

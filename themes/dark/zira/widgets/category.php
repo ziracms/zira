@@ -1,10 +1,10 @@
-<div class="widget-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
+<div class="block widget-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
 <?php if (!empty($title)): ?>
 <div class="page-header">
 <?php if (!empty($url)): ?>
-<h2 class="widget-category-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::url($url)) ?>" title="<?php echo Zira\Helper::html($title) ?>"><?php echo Zira\Helper::html($title) ?></a></h2>
+<h2 class="widget-title"><a href="<?php echo Zira\Helper::html(Zira\Helper::url($url)) ?>" title="<?php echo Zira\Helper::html($title) ?>"><?php echo Zira\Helper::html($title) ?></a></h2>
 <?php else: ?>
-<h2 class="widget-category-title"><?php echo Zira\Helper::html($title) ?></h2>
+<h2 class="widget-title"><?php echo Zira\Helper::html($title) ?></h2>
 <?php endif; ?>
 </div>
 <?php endif; ?>
