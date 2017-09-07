@@ -143,5 +143,6 @@ return array(
     'Site offline' => 'Профилактика',
     'Sorry, but website is currently under maintenance.' => 'На сайте ведутся профилактические работы.',
     'We should be back shortly.' => 'Мы вернёмся очень скоро.',
-    'Thank you for your patience.' => 'Благодарим за ваше терпение.'
+    'Thank you for your patience.' => 'Благодарим за ваше терпение.',
+    'To play the media you will need to either update your browser to a recent version or update your flash plugin.' => 'Для проигрывыния медиа установите последнюю версию браузера или обновите flash-плеер.'
 );

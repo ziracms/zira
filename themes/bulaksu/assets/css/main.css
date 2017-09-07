@@ -1563,11 +1563,10 @@ a.scroll-top.visible:visited {
 .audio-wrapper .audio-wrapper-item {
     margin-bottom: 14px;
 }
-.audio-wrapper .audio-wrapper-item p {
-    text-align: left;
-}
-.audio-wrapper .mejs__container {
-    background: #938fa2;
+.jplayer-audio-wrapper {
+    display: none;
+    margin-bottom: 14px;
+    overflow: hidden;
 }
 .video-wrapper {
     margin: 0px;
@@ -1575,6 +1574,11 @@ a.scroll-top.visible:visited {
 }
 .video-wrapper .video-wrapper-item {
     margin-bottom: 14px;
+}
+.jplayer-video-wrapper {
+    display: none;
+    margin-bottom: 14px;
+    overflow: hidden;
 }
 
 /** mobile **/

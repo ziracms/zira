@@ -2034,11 +2034,10 @@ ul.vote-results li .vote-result {
 .audio-wrapper .audio-wrapper-item {
     margin-bottom: 14px;
 }
-.audio-wrapper .audio-wrapper-item p {
-    text-align: left;
-}
-.audio-wrapper .mejs__container {
-    background: #41444e;
+.jplayer-audio-wrapper {
+    display: none;
+    margin-bottom: 14px;
+    overflow: hidden;
 }
 .video-wrapper {
     margin: 0px;
@@ -2046,6 +2045,11 @@ ul.vote-results li .vote-result {
 }
 .video-wrapper .video-wrapper-item {
     margin-bottom: 14px;
+}
+.jplayer-video-wrapper {
+    display: none;
+    margin-bottom: 14px;
+    overflow: hidden;
 }
 
 /** mobile **/

@@ -178,13 +178,33 @@ class Page {
     }
     
     public static function setAudio(array $audio, $access_allowed = true) {
-        View::addMediaElementPlayer();
-        View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$audio, 'access_allowed' => $access_allowed), 'zira/audio');
+        $container_id = 'jplayer-container-audio';
+        $player_id = 'jplayer-audio';
+        $urls = array(); 
+        $embeds = array();
+        foreach($audio as $file) {
+            if (!empty($file->path) || !empty($file->url)) $urls []= $file;
+            else if (!empty($file->embed)) $embeds []= $file;
+        }
+        if (!empty($urls)) {
+            View::addJPlayer($container_id, $player_id, $urls, 'audio');
+        }
+        View::addPlaceholderView(View::VAR_CONTENT, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/audio');
     }
     
     public static function setVideo(array $video, $access_allowed = true, $poster = null) {
-        View::addMediaElementPlayer();
-        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('files'=>$video, 'access_allowed' => $access_allowed, 'poster' => $poster), 'zira/videos');
+        $container_id = 'jplayer-container-video';
+        $player_id = 'jplayer-video';
+        $urls = array(); 
+        $embeds = array();
+        foreach($video as $file) {
+            if (!empty($file->path) || !empty($file->url)) $urls []= $file;
+            else if (!empty($file->embed)) $embeds []= $file;
+        }
+        if (!empty($urls)) {
+            View::addJPlayer($container_id, $player_id, $urls, 'video', $poster);
+        }
+        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'poster' => $poster, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/videos');
     }
 
     public static function setComments($record, $preview = false) {

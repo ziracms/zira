@@ -64,8 +64,7 @@ class View {
     protected static $_parser_added = false;
     protected static $_codemirror_assets_added = false;
     protected static $_codemirror_added = false;
-    protected static $_mediaelement_assets_added = false;
-    protected static $_mediaelement_added = false;
+    protected static $_jplayer_assets_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -727,29 +726,116 @@ class View {
         self::$_codemirror_added = true;
     }
     
-    public static function addMediaElementPlayerAssets() {
-        if (self::$_mediaelement_assets_added) return;
-        self::addStyle('mediaelementplayer.css');
-        self::addScript('mediaelement/mediaelement-and-player.min.js');
-        if (Locale::getLanguage()=='ru') self::addScript('mediaelement/lang/ru.js');
-        self::$_mediaelement_assets_added = true;
+    public static function addJPlayerAssets() {
+        if (self::$_jplayer_assets_added) return;
+        self::addStyle('jplayer.css');
+        self::addScript('jplayer/jquery.jplayer.min.js');
+        self::addScript('jplayer/jplayer.playlist.min.js');
+        self::$_jplayer_assets_added = true;
     }
     
-    public static function addMediaElementPlayer() {
-        if (self::$_mediaelement_added) return;
-        self::addMediaElementPlayerAssets();
-        $script = Helper::tag_open('script', array('type'=>'text/javascript'));
+    public static function addJPlayer($container_id, $player_id, array $files, $media_type, $poster = null) {
+        if (empty($container_id) || empty($player_id) || empty($files)) return;
+        if ($media_type != 'audio' && $media_type != 'video') return;
+        $formats = array();
+        $playlist = self::_generateJPlayerPlaylist($files, $media_type, $formats, $poster);
+        if (empty($playlist)) return;
+        self::addJPlayerAssets();
+        $script = Helper::tag_open('script', array('type'=>'text/javascript'))."\r\n";
         $script .= 'jQuery(document).ready(function(){ ';
-        $script .= 'mejs.i18n.language(\''.Locale::getLanguage().'\');';
-        $script .= '$(\'.mediaelement\').mediaelementplayer({';
-	$script .= 'pluginPath: \''.Helper::jsUrl('mediaelement').'/\',';
-	$script .= 'shimScriptAccess: \'always\',';
-        $script .= 'renderers: [\'html5\', \'flash_video\']';
-        $script .= '});';
-        $script .= '});';
+        if ($media_type == 'audio') {
+            $script .= 'jQuery(\'.jplayer-audio-wrapper\').css(\'display\',\'block\');'."\r\n";
+        } else if ($media_type == 'video') {
+            $script .= 'jQuery(\'.jplayer-video-wrapper\').css(\'display\',\'block\');'."\r\n";
+        }
+        $script .= 'new jPlayerPlaylist({'."\r\n";
+        $script .= 'jPlayer: \'#'.Helper::html($player_id).'\','."\r\n";
+        $script .= 'cssSelectorAncestor: \'#'.Helper::html($container_id).'\''."\r\n";
+	$script .= '},'."\r\n";
+        $script .= $playlist;
+        $script .= ', {'."\r\n";
+        $script .= 'swfPath: \''.Helper::jsUrl('jplayer/jquery.jplayer.swf').'\','."\r\n";
+        $script .= 'errorAlerts: false,'."\r\n";
+        /*
+        if ($media_type == 'audio') {
+            $script .= 'supplied: \'webma, oga, mp3, m4a, fla\','."\r\n";
+        } else if ($media_type == 'video') {
+            $script .= 'supplied: \'webmv, ogv, m4v, flv\','."\r\n";
+        }
+         */
+        $script .= 'supplied: \''. implode(',', $formats).'\','."\r\n";
+        $script .= 'useStateClassSkin: true,'."\r\n";
+        $script .= 'autoBlur: false,'."\r\n";
+        $script .= 'smoothPlayBar: false,'."\r\n";
+        $script .= 'keyEnabled: false,'."\r\n";
+        if ($media_type == 'video') {
+            $script .= 'size: {'."\r\n";
+            $script .= 'width: "100%",'."\r\n";
+            $script .= 'height: "400px"'."\r\n";
+            $script .= '},'."\r\n";
+        }
+        $script .= 'remainingDuration: true'."\r\n";
+	$script .= '});'."\r\n";
+        $script .= '});'."\r\n";
         $script .= Helper::tag_close('script');
         self::addBodyBottomScript($script);
-        self::$_mediaelement_added = true;
+    }
+    
+    protected static function _generateJPlayerPlaylist($files, $media_type, &$formats, $poster = null) {
+        $media = array();
+        foreach($files as $file) {
+            if (!empty($file->embed)) continue;
+            
+            $media_str = '{'."\r\n";
+            if (!empty($file->description)) {
+                $media_str .= 'title:\''.Helper::html($file->description).'\','."\r\n";
+            } else if (!empty($file->path)) {
+                $media_str .= 'title:\''.Helper::html(basename($file->path)).'\','."\r\n";
+            } else if (!empty($file->url)) {
+                $media_str .= 'title:\''.Helper::html(basename($file->url)).'\','."\r\n";
+            }
+            
+            if ($media_type == 'video' && !empty($poster)) {
+                $media_str .= 'poster:\''.Helper::baseUrl(Helper::html($poster)).'\','."\r\n";
+            }
+            
+            if (!empty($file->path)) {
+                $url = Helper::baseUrl($file->path);
+            } else if (!empty($file->url)) {
+                $url = $file->url;
+            }
+            $format = '';
+            $p = strrpos($url, '.');
+            if ($p!==false) {
+                $ext = substr($url, $p+1);
+                if ($ext == 'mp3' || $ext == 'm4a' || $ext == 'oga' || $ext == 'webma' || $ext == 'fla' || 
+                    $ext == 'm4v'|| $ext == 'ogv' || $ext == 'webmv' || $ext == 'flv'
+                ) {
+                    $format = $ext;
+                }
+                if ($ext == 'ogg' && $media_type=='audio') $format = 'oga';
+                else if ($ext == 'ogg' && $media_type=='video') $format = 'ogv';
+                if ($ext == 'mp4' && $media_type=='audio') $format = 'm4a';
+                else if ($ext == 'mp4' && $media_type=='video') $format = 'm4v';
+                if ($ext == 'webm' && $media_type=='audio') $format = 'webma';
+                else if ($ext == 'webm' && $media_type=='video') $format = 'webmv';
+            }
+            if (empty($format)) continue;
+    
+            if (!in_array($format, $formats)) $formats []= $format;
+            
+            $media_str .= $format.':\''.Helper::html($url).'\''."\r\n";
+            $media_str .= '}';
+            $media []= $media_str;
+        }
+        
+        if (empty($media)) return;
+        
+        $playlist = '[';
+        $playlist .= implode(','."\r\n", $media);
+        $playlist .= ']';
+        
+        return $playlist;
     }
 
     public static function addAutoCompleter() {

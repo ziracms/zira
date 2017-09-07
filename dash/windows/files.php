@@ -261,14 +261,16 @@ class Files extends Window {
         $p = strrpos($file,'.');
         if ($p===false) return false;
         $ext = substr($file, $p+1);
-        return in_array($ext, array('mp3', 'wav', 'wma', 'aiff', 'flac', 'aac', 'ogg', 'MP3', 'WAV', 'WMA', 'AIFF', 'FLAC', 'AAC', 'OGG'));
+        return in_array($ext, array('mp3', 'wav', 'wma', 'aiff', 'flac', 'aac', 'ogg', 'webma', 'oga', 'm4a', 'fla',
+                                    'MP3', 'WAV', 'WMA', 'AIFF', 'FLAC', 'AAC', 'OGG', 'WEBMA', 'OGA', 'M4A', 'FLA'));
     }
     
     public static function is_video($file) {
         $p = strrpos($file,'.');
         if ($p===false) return false;
         $ext = substr($file, $p+1);
-        return in_array($ext, array('webm', 'mp4', 'mkv', 'flv', 'vob', 'avi', 'wmv', 'mpeg', '3gp', 'WEBM', 'MP4', 'MKV', 'FLV', 'VOB', 'AVI', 'WMV', 'MPEG', '3GP'));
+        return in_array($ext, array('webm', 'mp4', 'mkv', 'flv', 'vob', 'avi', 'wmv', 'mpeg', '3gp', 'webmv', 'ogv', 'm4v',
+                                    'WEBM', 'MP4', 'MKV', 'FLV', 'VOB', 'AVI', 'WMV', 'MPEG', '3GP', 'WEBMV', 'OGV', 'M4V'));
     }
 
     public function load() {
