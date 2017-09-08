@@ -64,10 +64,9 @@ body.dashboard-window-sidebar-resizing {
     height: 300px;
     min-width: 70px;
     min-height: 70px;
-    background-color: #C1C5D1;
-    border: 1px solid #99A5BA;
-    border: 1px solid rgb(143, 155, 162);
-    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), inset 0px 0px 3px #CCC9DB;
+    background-color: #e6e6e6;
+    border: 1px solid #cccccc;
+    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), inset 0px 0px 3px #ffffff;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     z-index: 999;
@@ -85,15 +84,11 @@ body.dashboard-window-sidebar-resizing {
     */
 }
 .dashboard-window-focused {
-    background-color: #BEBDDB;
-    background-color: rgb(201, 204, 210);
-    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), 0px 0px 3px #CCC9DB inset;
-}
-.dashboard-window-maximized.dashboard-window-focused {
-    background-color: #D7D7E1;
+    background-color: #f9f9f9;
+    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), 0px 0px 3px #FFF inset;
 }
 .dashboard-window-disabled {
-    background-color: #CAC3CF;
+    background-color: #E7DDE6;
 }
 .dashboard-window-maximized {
     border-radius: 0px;
@@ -107,7 +102,7 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window-moving {
     box-shadow: none;
-    border: 1px solid #a3a5e9;
+    border: 1px solid #97CFE9;
 }
 .dashboard-windows-overlay {
     position: fixed;
@@ -133,7 +128,7 @@ body.dashboard-window-sidebar-resizing {
     position: relative;
     width: 100%;
     height: 30px;
-    border-bottom: 1px solid #C7CDCE;
+    border-bottom: 1px solid #eeeeee;
     overflow: hidden;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -146,9 +141,9 @@ body.dashboard-window-sidebar-resizing {
     position: relative;
     width: 100%;
     height: 24px;
-    border-top: 1px solid #F1F6F6;
-    border-bottom: 1px solid #C7CDCE;
-    background-color: #E0E2ED;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #F4F5F8;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -162,8 +157,8 @@ body.dashboard-window-sidebar-resizing {
     width: 180px;
     height: 230px;
     border-top: 1px solid #efefef;
-    border-bottom: 1px solid #C7CDCE;
-    background-color: #D3CCFE;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #D0D9FB;
     overflow: auto;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -172,11 +167,8 @@ body.dashboard-window-sidebar-resizing {
     -ms-user-select: none;
     user-select: none;
 }
-.dashboard-window-maximized .dashboard-window-sidebar {
-    background-color: #D3D6E1;
-}
 .dashboard-window-focused .dashboard-window-sidebar {
-    border-top: 1px solid #F1F6F6;
+    border-top: 1px solid #ffffff;
 }
 .dashboard-window .dashboard-window-content {
     position: relative;
@@ -184,13 +176,13 @@ body.dashboard-window-sidebar-resizing {
     height: 230px;
     margin-left: 180px;
     border-top: 1px solid #efefef;
-    border-bottom: 1px solid #C7CDCE;
+    border-bottom: 1px solid #eeeeee;
     background-color: #ffffff;
     overflow: auto;
     transition: background-color 100ms linear;
 }
 .dashboard-window-focused .dashboard-window-content {
-    border-top: 1px solid #F1F6F6;
+    border-top: 1px solid #ffffff;
 }
 .dashboard-window-nosidebar .dashboard-window-content {
     margin-left: 0px;
@@ -220,7 +212,7 @@ body.dashboard-window-sidebar-resizing {
     user-select: none;
 }
 .dashboard-window-focused .dashboard-window-footer {
-    border-top: 1px solid #F1F6F6;
+    border-top: 1px solid #ffffff;
 }
 .dashboard-window .dashboard-window-header .dashboard-window-title {
     display: block;
@@ -233,11 +225,11 @@ body.dashboard-window-sidebar-resizing {
     text-align: center;
     line-height: 30px;
     cursor: default;
-    color: #898DA4;
-    text-shadow: 1px 1px 1px #E7ECF2;
+    color: #99A7A3;
+    text-shadow: 1px 1px 1px #ffffff;
 }
 .dashboard-window-focused .dashboard-window-header .dashboard-window-title {
-    color: #3A4753;
+    color: #645A69;
 }
 .dashboard-window-animating .dashboard-window-header .dashboard-window-title {
     display: none;
@@ -386,7 +378,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-menu ul.dashboard-window-menu-list li.dashboard-window-menu-list-item.open a.dashboard-window-menu-list-item-link {
     color: #FFFFFF;
     text-shadow: none;
-    background-color: #838B9E;
+    background-color: #9eaeb4;
 }
 .dashboard-window .dashboard-window-menu ul.dashboard-window-menu-list li.dashboard-window-menu-list-item .dropdown-menu {
     margin: 0px;
@@ -397,8 +389,8 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-toolbar {
     height: 50px;
     position: relative;
-    border-top: 1px solid #F1F6F6;
-    border-bottom: 1px solid #C7CDCE;
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #eeeeee;
     background-color: #eee;
     overflow: hidden;
     -webkit-touch-callout: none;
@@ -472,11 +464,11 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a:hover,
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.active {
-    background-color: #9395AE;
+    background-color: #58A3DD;
     color: #FBFBFB;
     text-shadow: 0px 1px 1px #5C7D92;
     border-radius: 5px;
-    box-shadow: 0px 0px 7px #768EA7 inset;
+    box-shadow: 0px 0px 7px #507FB1 inset;
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.disabled:link,
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.disabled:visited {
@@ -503,7 +495,7 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper .badge {
     float: right;
-    background: #65629c;
+    background: #378aba;
     font-weight: normal;
     position: absolute;
     right: 4px;
@@ -575,7 +567,7 @@ body.dashboard-window-sidebar-resizing {
     border-radius: 7px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-grid li a.active {
-    background-color: #E0E1F6;
+    background-color: #C9D8F8;
     box-shadow: 0px 0px 3px #D3D4F5 inset;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-grid li img,
@@ -649,8 +641,8 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window .dashboard-window-footer .dashboard-footer-content-wrapper {
     margin: 0px 10px;
-    color: #434A5F;
-    text-shadow: none;
+    color: #9F9F9F;
+    text-shadow: 0px 1px 1px #ffffff;
     font-size: 12px;
     line-height: 12px;
     white-space: nowrap;
@@ -679,9 +671,9 @@ body.dashboard-window-sidebar-resizing {
     display: block;
 }
 .dashboard-window-highlight {
-    border: 1px solid #AFB8FF;
-    box-shadow: 0px 0px 20px #83B5F6, 0px 0px 3px #FFF inset;
-    background-color: #A6BAF2;
+    border: 1px solid #cdafff;
+    box-shadow: 0px 0px 20px #AA83F6, inset 0px 0px 3px #ffffff;
+    background-color: #D7CAFB;
 }
 .dashboard-window-highlight .dashboard-window-header .dashboard-window-title {
     color: #644484;
@@ -740,9 +732,6 @@ body.dashboard-window-sidebar-resizing {
     color: #298069;
 }
 
-body.dashboard {
-    color: #3E3C48;
-}
 /** Dashboard **/
 html.dashboard,
 body.dashboard,
@@ -756,10 +745,10 @@ body.dashboard #main-wrapper {
     min-width: 800px;
     min-height: 500px;
     background: #efebf0;
-    background: -moz-linear-gradient(top, #ECEBF0 0%, #D5D1F0 100%);
-    background: -webkit-linear-gradient(top, #ECEBF0 0%,#D5D1F0 100%);
-    background: linear-gradient(to bottom, #ECEBF0 0%,#D5D1F0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ECEBF0', endColorstr='#D5D1F0',GradientType=0 );
+    background: -moz-linear-gradient(top, #efebf0 0%, #dfd1f0 100%);
+    background: -webkit-linear-gradient(top, #efebf0 0%,#dfd1f0 100%);
+    background: linear-gradient(to bottom, #efebf0 0%,#dfd1f0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efebf0', endColorstr='#dfd1f0',GradientType=0 );
 }
 body.dashboard #dashboard-wrapper {
     background: url(../images/dash-pattern.png) repeat 0 0;
@@ -773,9 +762,9 @@ body.dashboard #dashboard-sidebar {
     width: 280px;
     float: right;
     background: #ddd;
-    background: rgba(176, 185, 189, 0.4);
+    background: rgba(170, 233, 186, 0.4);
     border-left: 1px solid #F8F4F4;
-    box-shadow: 0px 0px 1px #AEAEAE, 0px 0px 100px #E2E6F2 inset;
+    box-shadow: 0px 0px 1px #AEAEAE, 0px 0px 100px #ECF2E2 inset;
 }
 body.dashboard #remote-clock-wrapper {
     display: none;
