@@ -103,14 +103,19 @@
             }
         });
         
-        if ($('#jplayer-video').length) {
-            $(window).resize(zira_resize_jplayer);
+        if ($('.jplayer-video-wrapper .jp-jplayer').length) {
+            $('.jplayer-video-wrapper .jp-jplayer').each(function(){
+                $(window).resize(zira_bind(this, zira_resize_jplayer));
+                $(this).bind(jQuery.jPlayer.event.ready, zira_bind(this, zira_resize_jplayer));
+                $(this).bind(jQuery.jPlayer.event.play, zira_bind(this, zira_resize_jplayer));
+            });
         }
     });
 
     zira_resize_jplayer = function() {
-        if ($(jplayervideo.cssSelector.jPlayer).data('jPlayer').status.cssClass == 'jp-video-full') return;
-        var w = $('#jplayer-video').width();
+        var jPlayer = $(this).data('jPlayer');
+        if (typeof(jPlayer)=="undefined" || jPlayer.status.cssClass == 'jp-video-full') return;
+        var w = $(this).width();
         var h = w * 9 / 16;
         $('#jplayer-video').css('height',h+'px');
         $('#jplayer-video').find('img,video,object').css('height',h+'px');

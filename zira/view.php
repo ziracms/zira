@@ -749,7 +749,7 @@ class View {
         } else if ($media_type == 'video') {
             $script .= 'jQuery(\'#'.Helper::html($container_id).'\').parents(\'.jplayer-video-wrapper\').css(\'display\',\'block\');';
         }
-        $script .= 'jplayer'.Helper::html($media_type).' = new jPlayerPlaylist({';
+        $script .= 'new jPlayerPlaylist({';
         $script .= 'jPlayer: \'#'.Helper::html($player_id).'\',';
         $script .= 'cssSelectorAncestor: \'#'.Helper::html($container_id).'\'';
 	$script .= '},';
@@ -777,10 +777,6 @@ class View {
         }
         $script .= 'remainingDuration: true';
 	$script .= '});';
-        if ($media_type == 'video') {
-            $script .= 'jQuery(jplayervideo.cssSelector.jPlayer).bind(jQuery.jPlayer.event.play, zira_resize_jplayer);';
-            $script .= 'zira_resize_jplayer();';
-        }
         $script .= '});';
         $script .= Helper::tag_close('script');
         self::addBodyBottomScript($script);
