@@ -24,11 +24,11 @@
   font-family: Verdana, Arial, sans-serif;
   line-height: 1.6;
   color: #fff;
-  border-top: 1px solid #554461;
-  border-left: 1px solid #554461;
-  border-right: 1px solid #180a1f;
-  border-bottom: 1px solid #180a1f;
-  background-color: #3a2a45; }
+  border-top: 1px solid #444761;
+  border-left: 1px solid #444761;
+  border-right: 1px solid #0c0a1f;
+  border-bottom: 1px solid #0c0a1f;
+  background-color: #313d49; }
 
 .jp-audio {
   /*width: 201px;*/
@@ -89,7 +89,7 @@ width: 100%; }
 .jp-interface {
   position: relative;
   width: 100%;
-  background-color: #3a2a45;
+  background-color: #313d49;
   /* Required for the full screen */ }
 
 /* @group CONTROLS */
@@ -112,7 +112,7 @@ width: 100%; }
   height: 50px; }
 
 .jp-controls {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0 0 no-repeat;
+  background: url("../images/jplayer/jplayer.jpg") 0 0 no-repeat;
   padding: 1px 0 2px 1px;
   overflow: hidden;
   width: 201px;
@@ -151,27 +151,27 @@ width: 100%; }
   width: 99px; }
 
 .jp-type-single .jp-play {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -40px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") 0px -40px no-repeat; }
 
-.jp-type-single .jp-play:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -100px -40px no-repeat; }
+.jp-type-single .jp-play:active {
+  background: url("../images/jplayer/jplayer.jpg") -100px -40px no-repeat; }
 
 .jp-state-playing .jp-type-single .jp-play {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -120px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") 0px -120px no-repeat; }
 
-.jp-state-playing .jp-type-single .jp-play:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -100px -120px no-repeat; }
+.jp-state-playing .jp-type-single .jp-play:active {
+  background: url("../images/jplayer/jplayer.jpg") -100px -120px no-repeat; }
 
 /* The right border is normally in the ul background image. */
 .jp-audio-stream .jp-play,
 .jp-audio-stream .jp-pause {
-  border-right: 1px solid #180920; }
+  border-right: 1px solid #080f20; }
 
 .jp-type-single .jp-stop {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -80px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") 0px -80px no-repeat; }
 
-.jp-type-single .jp-stop:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -100px -80px no-repeat; }
+.jp-type-single .jp-stop:active {
+  background: url("../images/jplayer/jplayer.jpg") -100px -80px no-repeat; }
 
 /* @end */
 /* @group playlist player controls */
@@ -179,34 +179,34 @@ width: 100%; }
   width: 49px; }
 
 .jp-type-playlist .jp-play {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -24px -40px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -24px -40px no-repeat; }
 
-.jp-type-playlist .jp-play:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -124px -40px no-repeat; }
+.jp-type-playlist .jp-play:active {
+  background: url("../images/jplayer/jplayer.jpg") -124px -40px no-repeat; }
 
 .jp-state-playing div.jp-type-playlist .jp-play {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -24px -120px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -24px -120px no-repeat; }
 
-.jp-state-playing div.jp-type-playlist .jp-play:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -124px -120px no-repeat; }
+.jp-state-playing div.jp-type-playlist .jp-play:active {
+  background: url("../images/jplayer/jplayer.jpg") -124px -120px no-repeat; }
 
 .jp-type-playlist .jp-stop {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -24px -80px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -24px -80px no-repeat; }
 
-.jp-type-playlist .jp-stop:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -124px -80px no-repeat; }
+.jp-type-playlist .jp-stop:active {
+  background: url("../images/jplayer/jplayer.jpg") -124px -80px no-repeat; }
 
 .jp-type-playlist .jp-previous {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -24px -200px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -24px -200px no-repeat; }
 
-.jp-type-playlist .jp-previous:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -124px -200px no-repeat; }
+.jp-type-playlist .jp-previous:active {
+  background: url("../images/jplayer/jplayer.jpg") -124px -200px no-repeat; }
 
 .jp-type-playlist .jp-next {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -24px -160px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -24px -160px no-repeat; }
 
-.jp-type-playlist .jp-next:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -124px -160px no-repeat; }
+.jp-type-playlist .jp-next:active {
+  background: url("../images/jplayer/jplayer.jpg") -124px -160px no-repeat; }
 
 /* @end */
 /* @group TOGGLES */
@@ -240,43 +240,43 @@ width: 100%; }
   cursor: pointer; }
 
 .jp-full-screen {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0 -420px no-repeat;
+  background: url("../images/jplayer/jplayer.jpg") 0 -420px no-repeat;
   margin-left: 15px; }
 
-.jp-full-screen:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -30px -420px no-repeat; }
+.jp-full-screen:active {
+  background: url("../images/jplayer/jplayer.jpg") -30px -420px no-repeat; }
 
 .jp-state-full-screen .jp-full-screen {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -60px -420px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -60px -420px no-repeat; }
 
-.jp-state-full-screen .jp-full-screen:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -90px -420px no-repeat; }
+.jp-state-full-screen .jp-full-screen:active {
+  background: url("../images/jplayer/jplayer.jpg") -90px -420px no-repeat; }
 
 .jp-repeat {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0 -440px no-repeat;
+  background: url("../images/jplayer/jplayer.jpg") 0 -440px no-repeat;
   margin-left: 0; }
 
-.jp-repeat:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -30px -440px no-repeat; }
+.jp-repeat:active {
+  background: url("../images/jplayer/jplayer.jpg") -30px -440px no-repeat; }
 
 .jp-state-looped .jp-repeat {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -60px -440px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -60px -440px no-repeat; }
 
-.jp-state-looped .jp-repeat:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -90px -440px no-repeat; }
+.jp-state-looped .jp-repeat:active {
+  background: url("../images/jplayer/jplayer.jpg") -90px -440px no-repeat; }
 
 .jp-shuffle {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0 -460px no-repeat;
+  background: url("../images/jplayer/jplayer.jpg") 0 -460px no-repeat;
   margin-left: 15px; }
 
-.jp-shuffle:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -30px -460px no-repeat; }
+.jp-shuffle:active {
+  background: url("../images/jplayer/jplayer.jpg") -30px -460px no-repeat; }
 
 .jp-state-shuffled .jp-shuffle {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -60px -460px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -60px -460px no-repeat; }
 
-.jp-state-shuffled .jp-shuffle:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -90px -460px no-repeat; }
+.jp-state-shuffled .jp-shuffle:active {
+  background: url("../images/jplayer/jplayer.jpg") -90px -460px no-repeat; }
 
 .jp-audio .jp-shuffle {
   margin-left: 5px; }
@@ -285,10 +285,10 @@ width: 100%; }
 /* @group progress bar */
 /* The seeking class is added/removed inside jPlayer */
 div.jp-seeking-bg {
-  background: url("../images/jplayer/jplayer.pink.flag.seeking.gif"); }
+  background: url("../images/jplayer/jplayer.seeking.gif"); }
 
 .jp-progress {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -240px no-repeat;
+  background: url("../images/jplayer/jplayer.jpg") 0px -240px no-repeat;
   /*width: 197px;*/
   width: 100%;
   /*height: 13px;*/
@@ -300,21 +300,21 @@ div.jp-seeking-bg {
 
 div.jp-audio .jp-progress,
 div.jp-video .jp-progress {
-  border-top: 1px solid #180a1f;
+  border-top: 1px solid #0c0a1f;
   border-bottom: 1px solid #554560;
   width: 100%;
   background-image: none;
   padding: 0; }
 
 .jp-seek-bar {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -260px repeat-x;
+  background: url("../images/jplayer/jplayer.jpg") 0px -260px repeat-x;
   width: 0px;
   height: 100%;
   overflow: hidden;
   cursor: pointer; }
 
 .jp-play-bar {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -280px repeat-x;
+  background: url("../images/jplayer/jplayer.jpg") 0px -280px repeat-x;
   width: 0px;
   height: 100%;
   overflow: hidden; }
@@ -363,25 +363,25 @@ div.jp-video .jp-progress {
   top: 14px; }
 
 .jp-volume-controls .jp-mute {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -330px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") 0px -330px no-repeat; }
 
-.jp-volume-controls .jp-mute:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -25px -330px no-repeat; }
+.jp-volume-controls .jp-mute:active {
+  background: url("../images/jplayer/jplayer.jpg") -25px -330px no-repeat; }
 
 .jp-state-muted .jp-volume-controls .jp-mute {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -60px -330px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") -60px -330px no-repeat; }
 
-.jp-state-muted .jp-volume-controls .jp-mute:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -85px -330px no-repeat; }
+.jp-state-muted .jp-volume-controls .jp-mute:active {
+  background: url("../images/jplayer/jplayer.jpg") -85px -330px no-repeat; }
 
 .jp-volume-controls .jp-volume-max {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -350px no-repeat; }
+  background: url("../images/jplayer/jplayer.jpg") 0px -350px no-repeat; }
 
-.jp-volume-controls .jp-volume-max:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") -25px -350px no-repeat; }
+.jp-volume-controls .jp-volume-max:active {
+  background: url("../images/jplayer/jplayer.jpg") -25px -350px no-repeat; }
 
 .jp-volume-bar {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -300px repeat-x;
+  background: url("../images/jplayer/jplayer.jpg") 0px -300px repeat-x;
   position: absolute;
   width: 197px;
   height: 4px;
@@ -395,33 +395,33 @@ div.jp-video .jp-progress {
   top: 0;
   left: 0;
   width: 95px;
-  border-right: 1px solid #180920;
+  border-right: 1px solid #080f20;
   padding-right: 1px;
   margin-top: 30px;}
 
 .jp-audio-stream .jp-interface .jp-volume-bar {
   width: 97px;
-  border-right: 1px solid #180920;
+  border-right: 1px solid #080f20;
   padding-right: 1px; }
 
 .jp-video .jp-volume-bar {
   top: 0;
   left: 0;
   width: 95px;
-  border-right: 1px solid #180920;
+  border-right: 1px solid #080f20;
   padding-right: 1px;
   margin-top: 30px; }
 
 .jp-volume-bar-value {
-  background: url("../images/jplayer/jplayer.pink.flag.jpg") 0px -320px repeat-x;
+  background: url("../images/jplayer/jplayer.jpg") 0px -320px repeat-x;
   height: 4px; }
 
 /* @end */
 /* @group current time and duration */
 .jp-current-time, .jp-duration {
   width: 70px;
-  font-size: .5em;
-  color: #8c7a99; }
+  font-size: .7em;
+  color: #7a8699; }
 
 .jp-current-time {
   float: left;
@@ -463,7 +463,7 @@ div.jp-video .jp-progress {
 
 .jp-playlist ul {
   list-style-type: none;
-  font-size: .7em;
+  font-size: .9em;
   margin: 0;
   padding: 0; }
 
@@ -474,8 +474,8 @@ div.jp-video .jp-progress {
 .jp-playlist li {
   position: relative;
   padding: 2px 0;
-  border-top: 1px solid #554461;
-  border-bottom: 1px solid #180a1f;
+  border-top: 1px solid #444761;
+  border-bottom: 1px solid #0c0a1f;
   overflow: hidden; }
 
 /* Note that the first-child (IE6) and last-child (IE6/7/8) selectors do not work on IE */
@@ -492,17 +492,17 @@ div.jp-type-playlist div.jp-playlist a {
   text-decoration: none; }
 
 div.jp-type-playlist div.jp-playlist a:hover {
-  color: #e892e9; }
+  color: #92c4e9; }
 
 div.jp-type-playlist div.jp-playlist li.jp-playlist-current {
-  background-color: #26102e;
+  background-color: #1e252d;
   margin: 0 -20px;
   padding: 2px 20px;
-  border-top: 1px solid #26102e;
-  border-bottom: 1px solid #26102e; }
+  border-top: 1px solid #1e252d;
+  border-bottom: 1px solid #1e252d; }
 
 div.jp-type-playlist div.jp-playlist li.jp-playlist-current a {
-  color: #e892e9; }
+  color: #92c4e9; }
 
 div.jp-type-playlist div.jp-playlist a.jp-playlist-item-remove {
   float: right;
@@ -510,26 +510,26 @@ div.jp-type-playlist div.jp-playlist a.jp-playlist-item-remove {
   text-align: right;
   margin-left: 10px;
   font-weight: bold;
-  color: #8C7A99; }
+  color: #7a8499; }
 
 div.jp-type-playlist div.jp-playlist a.jp-playlist-item-remove:hover {
-  color: #E892E9; }
+  color: #92b5e9; }
 
 div.jp-type-playlist div.jp-playlist span.jp-free-media {
   float: right;
   display: inline;
   text-align: right;
-  color: #8C7A99; }
+  color: #7a8499; }
 
 div.jp-type-playlist div.jp-playlist span.jp-free-media a {
-  color: #8C7A99; }
+  color: #7a8499; }
 
 div.jp-type-playlist div.jp-playlist span.jp-free-media a:hover {
-  color: #E892E9; }
+  color: #92b5e9; }
 
 span.jp-artist {
   font-size: .8em;
-  color: #8C7A99; }
+  color: #7a8499; }
 
 /* @end */
 .jp-video .jp-video-play {
@@ -563,11 +563,11 @@ span.jp-artist {
   top: 50%;
   border: none;
   cursor: pointer;
-  background: url("../images/jplayer/jplayer.pink.flag.video.play.png") 0 0 no-repeat;
+  background: url("../images/jplayer/jplayer.video.play.png") 0 0 no-repeat;
   text-indent: -9999px; }
 
-.jp-video-play-icon:focus {
-  background: url("../images/jplayer/jplayer.pink.flag.video.play.png") 0 -100px no-repeat; }
+.jp-video-play-icon:active {
+  background: url("../images/jplayer/jplayer.video.play.png") 0 -100px no-repeat; }
 
 .jp-jplayer audio,
 .jp-jplayer {
@@ -577,15 +577,18 @@ span.jp-artist {
 .jp-jplayer {
   background-color: #000000; }
 
+.jp-jplayer img {
+    vertical-align: top;}
+
 /* @group NO SOLUTION error feedback */
 .jp-no-solution {
   padding: 5px;
   font-size: .8em;
-  background-color: #3a2a45;
-  border-top: 2px solid #554461;
-  border-left: 2px solid #554461;
-  border-right: 2px solid #180a1f;
-  border-bottom: 2px solid #180a1f;
+  background-color: #313d49;
+  border-top: 2px solid #444761;
+  border-left: 2px solid #444761;
+  border-right: 2px solid #0c0a1f;
+  border-bottom: 2px solid #0c0a1f;
   color: #FFF;
   display: none; }
 
@@ -612,7 +615,6 @@ span.jp-artist {
     .jp-audio .jp-controls-holder > div,
     .jp-video .jp-controls-holder > div {
         float: none;
-        display: block;
         margin: 4px auto;
     }
     .jp-audio .jp-controls-holder .jp-volume-controls,
@@ -624,6 +626,7 @@ span.jp-artist {
     .jp-audio .jp-controls-holder .jp-controls,
     .jp-video .jp-controls-holder .jp-controls {
         width: 201px;
+        display: block;
     }
     .jp-audio .jp-controls-holder .jp-toggles {
         width: 55px;

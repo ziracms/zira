@@ -729,8 +729,9 @@ class View {
     public static function addJPlayerAssets() {
         if (self::$_jplayer_assets_added) return;
         self::addStyle('jplayer.css');
-        self::addScript('jplayer/jquery.jplayer.min.js');
-        self::addScript('jplayer/jplayer.playlist.min.js');
+        //self::addScript('jplayer/jquery.jplayer.min.js');
+        //self::addScript('jplayer/jplayer.playlist.min.js');
+        self::addScript('jplayer/jplayer-and-playlist.min.js');
         self::$_jplayer_assets_added = true;
     }
     
@@ -741,42 +742,46 @@ class View {
         $playlist = self::_generateJPlayerPlaylist($files, $media_type, $formats, $poster);
         if (empty($playlist)) return;
         self::addJPlayerAssets();
-        $script = Helper::tag_open('script', array('type'=>'text/javascript'))."\r\n";
+        $script = Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';
         if ($media_type == 'audio') {
-            $script .= 'jQuery(\'.jplayer-audio-wrapper\').css(\'display\',\'block\');'."\r\n";
+            $script .= 'jQuery(\'#'.Helper::html($container_id).'\').parents(\'.jplayer-audio-wrapper\').css(\'display\',\'block\');';
         } else if ($media_type == 'video') {
-            $script .= 'jQuery(\'.jplayer-video-wrapper\').css(\'display\',\'block\');'."\r\n";
+            $script .= 'jQuery(\'#'.Helper::html($container_id).'\').parents(\'.jplayer-video-wrapper\').css(\'display\',\'block\');';
         }
-        $script .= 'new jPlayerPlaylist({'."\r\n";
-        $script .= 'jPlayer: \'#'.Helper::html($player_id).'\','."\r\n";
-        $script .= 'cssSelectorAncestor: \'#'.Helper::html($container_id).'\''."\r\n";
-	$script .= '},'."\r\n";
+        $script .= 'jplayer'.Helper::html($media_type).' = new jPlayerPlaylist({';
+        $script .= 'jPlayer: \'#'.Helper::html($player_id).'\',';
+        $script .= 'cssSelectorAncestor: \'#'.Helper::html($container_id).'\'';
+	$script .= '},';
         $script .= $playlist;
-        $script .= ', {'."\r\n";
-        $script .= 'swfPath: \''.Helper::jsUrl('jplayer/jquery.jplayer.swf').'\','."\r\n";
-        $script .= 'errorAlerts: false,'."\r\n";
+        $script .= ', {';
+        $script .= 'swfPath: \''.Helper::jsUrl('jplayer/jquery.jplayer.swf').'\',';
+        $script .= 'errorAlerts: false,';
         /*
         if ($media_type == 'audio') {
-            $script .= 'supplied: \'webma, oga, mp3, m4a, fla\','."\r\n";
+            $script .= 'supplied: \'webma, oga, mp3, m4a, fla\',';
         } else if ($media_type == 'video') {
-            $script .= 'supplied: \'webmv, ogv, m4v, flv\','."\r\n";
+            $script .= 'supplied: \'webmv, ogv, m4v, flv\',';
         }
          */
-        $script .= 'supplied: \''. implode(',', $formats).'\','."\r\n";
-        $script .= 'useStateClassSkin: true,'."\r\n";
-        $script .= 'autoBlur: false,'."\r\n";
-        $script .= 'smoothPlayBar: false,'."\r\n";
-        $script .= 'keyEnabled: false,'."\r\n";
+        $script .= 'supplied: \''. implode(',', $formats).'\',';
+        $script .= 'useStateClassSkin: true,';
+        $script .= 'autoBlur: false,';
+        $script .= 'smoothPlayBar: false,';
+        $script .= 'keyEnabled: false,';
         if ($media_type == 'video') {
-            $script .= 'size: {'."\r\n";
-            $script .= 'width: "100%",'."\r\n";
-            $script .= 'height: "400px"'."\r\n";
-            $script .= '},'."\r\n";
+            $script .= 'size: {';
+            $script .= 'width: "100%",';
+            $script .= 'height: "400px"';
+            $script .= '},';
         }
-        $script .= 'remainingDuration: true'."\r\n";
-	$script .= '});'."\r\n";
-        $script .= '});'."\r\n";
+        $script .= 'remainingDuration: true';
+	$script .= '});';
+        if ($media_type == 'video') {
+            $script .= 'jQuery(jplayervideo.cssSelector.jPlayer).bind(jQuery.jPlayer.event.play, zira_resize_jplayer);';
+            $script .= 'zira_resize_jplayer();';
+        }
+        $script .= '});';
         $script .= Helper::tag_close('script');
         self::addBodyBottomScript($script);
     }
@@ -786,17 +791,17 @@ class View {
         foreach($files as $file) {
             if (!empty($file->embed)) continue;
             
-            $media_str = '{'."\r\n";
+            $media_str = '{';
             if (!empty($file->description)) {
-                $media_str .= 'title:\''.Helper::html($file->description).'\','."\r\n";
+                $media_str .= 'title:\''.Helper::html($file->description).'\',';
             } else if (!empty($file->path)) {
-                $media_str .= 'title:\''.Helper::html(basename($file->path)).'\','."\r\n";
+                $media_str .= 'title:\''.Helper::html(basename($file->path)).'\',';
             } else if (!empty($file->url)) {
-                $media_str .= 'title:\''.Helper::html(basename($file->url)).'\','."\r\n";
+                $media_str .= 'title:\''.Helper::html(basename($file->url)).'\',';
             }
             
             if ($media_type == 'video' && !empty($poster)) {
-                $media_str .= 'poster:\''.Helper::baseUrl(Helper::html($poster)).'\','."\r\n";
+                $media_str .= 'poster:\''.Helper::baseUrl(Helper::html($poster)).'\',';
             }
             
             if (!empty($file->path)) {
@@ -824,7 +829,7 @@ class View {
     
             if (!in_array($format, $formats)) $formats []= $format;
             
-            $media_str .= $format.':\''.Helper::html($url).'\''."\r\n";
+            $media_str .= $format.':\''.Helper::html($url).'\'';
             $media_str .= '}';
             $media []= $media_str;
         }
@@ -832,7 +837,7 @@ class View {
         if (empty($media)) return;
         
         $playlist = '[';
-        $playlist .= implode(','."\r\n", $media);
+        $playlist .= implode(',', $media);
         $playlist .= ']';
         
         return $playlist;

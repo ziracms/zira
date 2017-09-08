@@ -1567,6 +1567,9 @@ a.scroll-top.visible:visited {
     display: none;
     margin-bottom: 14px;
     overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid #eeeeee;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.15) inset, 0px 1px 5px rgba(0, 0, 0, 0.075);
 }
 .video-wrapper {
     margin: 0px;
@@ -1579,6 +1582,10 @@ a.scroll-top.visible:visited {
     display: none;
     margin-bottom: 14px;
     overflow: hidden;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #eeeeee;
+    box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.15) inset, 0px 1px 5px rgba(0, 0, 0, 0.075);
 }
 
 /** mobile **/

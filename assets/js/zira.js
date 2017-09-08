@@ -102,8 +102,21 @@
                 $(this).trigger('click');
             }
         });
+        
+        if ($('#jplayer-video').length) {
+            $(window).resize(zira_resize_jplayer);
+        }
     });
 
+    zira_resize_jplayer = function() {
+        if ($(jplayervideo.cssSelector.jPlayer).data('jPlayer').status.cssClass == 'jp-video-full') return;
+        var w = $('#jplayer-video').width();
+        var h = w * 9 / 16;
+        $('#jplayer-video').css('height',h+'px');
+        $('#jplayer-video').find('img,video,object').css('height',h+'px');
+        $('#jplayer-container-video').find('.jp-video-play').css({'height':h+'px',marginTop:-h+'px'});
+    };
+    
     zira_init_form_dropdown = function(e){
         var value = $(this).attr('rel');
         var name = $(this).text();
