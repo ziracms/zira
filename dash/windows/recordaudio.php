@@ -89,6 +89,10 @@ class Recordaudio extends Window {
                 'desk_call(dash_recordaudio_select, this);'
             )
         );
+        
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_recordaudio_load, this);'
+        );
 
         $this->addStrings(array(
             'Enter description',
@@ -143,10 +147,11 @@ class Recordaudio extends Window {
                 $typo = '';
                 $edit_value = '';
             }
+            $inactive = isset($real_path) && !file_exists($real_path) ? 1 : 0;
             if (Files::is_audio($name)) {
-                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value));
+                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             } else {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value));
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             }
         }
 

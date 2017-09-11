@@ -57,6 +57,10 @@ class Recordimages extends Window {
                 'desk_call(dash_recordimages_drop, this, element);'
             )
         );
+        
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_recordimages_load, this);'
+        );
 
         $this->addStrings(array(
             'Enter description'
@@ -87,7 +91,8 @@ class Recordimages extends Window {
         $items = array();
         foreach($images as $image) {
             $name = basename($image->image);
-            $items []= $this->createBodyItem($name, $image->description, Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description));
+            $inactive = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->image)) ? 0 : 1;
+            $items []= $this->createBodyItem($name, $image->description, Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description,'inactive'=>$inactive));
         }
 
         $this->setBodyItems($items);

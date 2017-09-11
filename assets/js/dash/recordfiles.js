@@ -1,3 +1,11 @@
+var dash_recordfiles_load = function() {
+    for (var i=0; i<this.options.bodyItems.length; i++) {
+        if (typeof(this.options.bodyItems[i].inactive)!="undefined" && this.options.bodyItems[i].inactive) {
+            $(this.options.bodyItems[i].element).addClass('inactive');
+        }
+    }
+};
+
 var dash_recordfiles_desc = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].description)!="undefined") {

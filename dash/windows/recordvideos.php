@@ -89,6 +89,10 @@ class Recordvideos extends Window {
                 'desk_call(dash_recordvideos_select, this);'
             )
         );
+        
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_recordvideos_load, this);'
+        );
 
         $this->addStrings(array(
             'Enter description',
@@ -143,10 +147,11 @@ class Recordvideos extends Window {
                 $typo = '';
                 $edit_value = '';
             }
+            $inactive = isset($real_path) && !file_exists($real_path) ? 1 : 0;
             if (Files::is_video($name)) {
-                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value));
+                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             } else {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value));
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             }
         }
 

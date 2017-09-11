@@ -68,6 +68,10 @@ class Recordfiles extends Window {
                 'desk_call(dash_recordfiles_drop, this, element);'
             )
         );
+        
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_recordfiles_load, this);'
+        );
 
         $this->addStrings(array(
             'Enter description',
@@ -110,20 +114,21 @@ class Recordfiles extends Window {
                 $name = $file->url;
                 $real_path = null;
             }
-            if (isset($real_path) && ($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
-                $items[]=$this->createBodyItem($name, $file->description, Zira\Helper::baseUrl($file->path), $file->id, null, false, array('type'=>'image', 'description'=>$file->description));
+            $inactive = isset($real_path) && !file_exists($real_path) ? 1 : 0;
+            if (isset($real_path) && !$inactive && ($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
+                $items[]=$this->createBodyItem($name, $file->description, Zira\Helper::baseUrl($file->path), $file->id, null, false, array('type'=>'image', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_audio($name)) {
-                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description));
+                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_video($name)) {
-                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description));
+                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_archive($name)) {
-                $items[]=$this->createBodyArchiveItem($name, $file->description, $file->id, null, false, array('type'=>'archive', 'description'=>$file->description));
+                $items[]=$this->createBodyArchiveItem($name, $file->description, $file->id, null, false, array('type'=>'archive', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_txt($name)) {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'txt', 'description'=>$file->description));
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'txt', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_html($name)) {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'html', 'description'=>$file->description));
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'html', 'description'=>$file->description, 'inactive'=>$inactive));
             } else {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description));
+                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'inactive'=>$inactive));
             }
         }
 
