@@ -16,7 +16,7 @@ class Chats extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-transfer';
     protected static $_title = 'Chats';
 
-    //protected $_help_url = 'zira/help/chats';
+    protected $_help_url = 'zira/help/chats';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

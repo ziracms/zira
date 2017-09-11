@@ -15,7 +15,7 @@ class Recordaudio extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-music';
     protected static $_title = 'Audio';
 
-    //protected $_help_url = 'zira/help/record-audio';
+    protected $_help_url = 'zira/help/record-audio';
 
     public $item;
 

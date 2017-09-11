@@ -15,7 +15,7 @@ class Recordfiles extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-file';
     protected static $_title = 'Files';
 
-    //protected $_help_url = 'zira/help/record-files';
+    protected $_help_url = 'zira/help/record-files';
 
     public $item;
 

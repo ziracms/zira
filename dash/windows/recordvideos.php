@@ -15,7 +15,7 @@ class Recordvideos extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-facetime-video';
     protected static $_title = 'Video';
 
-    //protected $_help_url = 'zira/help/record-videos';
+    protected $_help_url = 'zira/help/record-videos';
 
     public $item;
 

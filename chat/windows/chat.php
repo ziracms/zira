@@ -15,7 +15,7 @@ class Chat extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-comment';
     protected static $_title = 'Chat';
 
-    //protected $_help_url = 'zira/help/chat';
+    protected $_help_url = 'zira/help/chat';
 
     public $item;
 

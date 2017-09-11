@@ -16,6 +16,8 @@ class Featured extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-star';
     protected static $_title = 'Featured records';
 
+    protected $_help_url = 'zira/help/featured-records';
+    
     public function init() {
         $this->setIconClass(self::$_icon_class);
         $this->setTitle(Zira\Locale::t(self::$_title));
