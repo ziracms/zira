@@ -64,7 +64,11 @@ class System extends Dash\Controller {
     public function dump() {
         if (Zira\Permission::check(Zira\Permission::TO_EXECUTE_TASKS)) {
             header("Content-type: application/octet-stream");
-            header("Content-Disposition: attachment; filename=" . DB_NAME . '-' . date('Y-m-d') . '.sql');
+            if (DB_TYPE == 'sqlite') {
+                header("Content-Disposition: attachment; filename=" . DB_TYPE . '-' . date('Y-m-d') . '.sql');
+            } else {
+                header("Content-Disposition: attachment; filename=" . DB_NAME . '-' . date('Y-m-d') . '.sql');
+            }
 
             $model = new Dash\Models\System(new Dash\Windows\System());
             $model->dump();
