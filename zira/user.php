@@ -682,7 +682,7 @@ class User {
         $links []= array(
             'url' => 'user/messages',
             'icon' => 'glyphicon glyphicon-envelope',
-            'title' => Locale::t('Messages') . ($user->messages>0 ? ' ('.$user->messages.')' : '')
+            'title' => Locale::tm('Messages', 'zira') . ($user->messages>0 ? ' ('.$user->messages.')' : '')
         );
         $links []= array(
             'type' => 'separator'
@@ -690,18 +690,18 @@ class User {
         $links []= array(
             'url' => 'user/photo',
             'icon' => 'glyphicon glyphicon-picture',
-            'title' => Locale::t('Edit photo')
+            'title' => Locale::tm('Edit photo', 'zira')
         );
         if ($user->image) {
             $links [] = array(
                 'url' => 'user/avatar',
                 'icon' => 'glyphicon glyphicon-scissors',
-                'title' => Locale::t('Edit avatar')
+                'title' => Locale::tm('Edit avatar', 'zira')
             );
             $links []= array(
             'url' => 'user/nophoto',
             'icon' => 'glyphicon glyphicon-ban-circle',
-            'title' => Locale::t('Delete photo')
+            'title' => Locale::tm('Delete photo', 'zira')
         );
         }
         $links []= array(
@@ -710,24 +710,24 @@ class User {
         $links []= array(
             'url' => 'user/edit',
             'icon' => 'glyphicon glyphicon-list-alt',
-            'title' => Locale::t('Edit profile')
+            'title' => Locale::tm('Edit profile', 'zira')
         );
         $links []= array(
             'url' => 'user/email',
             'icon' => 'glyphicon glyphicon-envelope',
-            'title' => Locale::t('Edit email')
+            'title' => Locale::tm('Edit email', 'zira')
         );
         if (Config::get(self::CONFIG_ALLOW_LOGIN_CHANGE, true)) {
             $links [] = array(
                 'url' => 'user/name',
                 'icon' => 'glyphicon glyphicon-user',
-                'title' => Locale::t('Edit username')
+                'title' => Locale::tm('Edit username', 'zira')
             );
         }
         $links []= array(
             'url' => 'user/pwd',
             'icon' => 'glyphicon glyphicon-lock',
-            'title' => Locale::t('Edit password')
+            'title' => Locale::tm('Edit password', 'zira')
         );
         $extra_links = Hook::run(self::PROFILE_LINKS_HOOK);
         if (!empty($extra_links)) {
