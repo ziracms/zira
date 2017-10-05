@@ -15,7 +15,7 @@
 <div class="collapse navbar-collapse" id="user-messages-panel">
 <?php if (isset($searchForm)) echo $searchForm; ?>
 <?php if (isset($form) && !empty($topic_active)): ?>
-<button class="btn btn-default navbar-btn navbar-right reply-btn scroll-down" data-target=".form-panel"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Reply') ?></button>
+<button class="btn btn-default navbar-btn navbar-right reply-btn scroll-down" data-target=".form-panel"><span class="glyphicon glyphicon-share-alt"></span> <?php echo t('Reply') ?></button>
 <?php endif; ?>
 <?php if (isset($form) && empty($topic_active)): ?>
 <button class="btn btn-default navbar-btn navbar-right disabled" title="<?php echo tm('Thread is closed','forum') ?>"><span class="glyphicon glyphicon-lock"></span></button>
@@ -32,7 +32,7 @@
 <li id="forum-message-<?php echo Zira\Helper::html($item->id); ?>" class="list-item no-thumb <?php echo ($co%2==0 ? 'odd' : 'even') ?>">
 <h3 class="list-title-wrapper">
 <?php if (isset($form) && !empty($topic_active)): ?>
-<a href="javascript:void(0)" class="forum-reply-inline forum-right-item"><span class="glyphicon glyphicon-pencil"></span> <?php echo tm('Reply', 'forum') ?></a>
+<a href="javascript:void(0)" class="forum-reply-inline forum-right-item"><span class="glyphicon glyphicon-share-alt"></span> <?php echo tm('Reply', 'forum') ?></a>
 <?php endif; ?>
 <?php if ($item->user_username): ?>
 <?php echo Zira\User::generateUserProfileLink($item->creator_id, $item->user_firstname, $item->user_secondname, $item->user_username, 'author') ?>

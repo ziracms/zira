@@ -114,5 +114,5 @@
 </ul>
 <?php if (isset($pagination)) echo $pagination; ?>
 <?php else: ?>
-<p><?php echo tm('No posts found', 'forum') ?></p>
+<p class="list"><?php echo tm('No posts found', 'forum') ?></p>
 <?php endif; ?>

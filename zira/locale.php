@@ -31,7 +31,7 @@ class Locale {
             } else {
                 $locale = self::detect();
             }
-            if ($locale!=Config::get('language')) {
+            if ($locale && $locale!=Config::get('language')) {
                 Helper::setAddingLanguageToUrl(false);
                 Response::redirect($locale);
             }

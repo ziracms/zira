@@ -98,9 +98,9 @@ $response = array('content'=>Zira\Helper::tag('style', '.system-ok { color: gree
                         (!$htaccess_exists || !$robots_exists || !$config_exists ?
                         Zira\Helper::tag('p', Zira\Locale::t('You have to rename the following files:')).
                         Zira\Helper::tag_open('ul').
-                        Zira\Helper::tag('li', 'htaccess.txt ⇨ .htaccess').
-                        Zira\Helper::tag('li', 'robots.src.txt ⇨ robots.txt').
-                        Zira\Helper::tag('li', 'config.src.php ⇨ config.php').
+                        (!$htaccess_exists ? Zira\Helper::tag('li', 'htaccess.txt ⇨ .htaccess') : '').
+                        (!$robots_exists ? Zira\Helper::tag('li', 'robots.src.txt ⇨ robots.txt') : '').
+                        (!$config_exists ? Zira\Helper::tag('li', 'config.src.php ⇨ config.php') : '').
                         Zira\Helper::tag_close('ul').
                         Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p')
                         : '').

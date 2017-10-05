@@ -71,6 +71,10 @@
 .forum-list.list .list-item.odd-b {
     background-color: #fdfdfd;
 }
+.forum-list.list .list-item .list-title-wrapper {
+    position: relative;
+    padding: 10px 110px 10px 14px;
+}
 .forum-list.list .list-item a.list-title:link,
 .forum-list.list .list-item a.list-title:visited,
 .forum-list.list .list-item .list-title-wrapper a:link,
@@ -82,7 +86,8 @@
     color: #4573A1;
 }
 .forum-list.list .list-item .list-title-wrapper .forum-right-item {
-    float: right;
+    position: absolute;
+    right: 14px;
     font-size: 16px;
     margin-top: 3px;
 }
@@ -222,4 +227,25 @@
 .forum-empty-message {
     margin: 40px 0px;
     font-style: italic;
+}
+
+@media (max-width: 639px) {
+    .forum-message-wrapper .forum-avatar-wrapper {
+        min-width: 40px;
+        padding: 0px;
+        border-radius: 20px;
+    }
+    .forum-message-wrapper .forum-avatar-wrapper img {
+        max-width: 40px;
+        border-radius: 20px;
+    }
+    .forum-user-info {
+        display: none;
+    }
+    .forum-message-wrapper .forum-message {
+        margin-left: 60px;
+    }
+    .forum-list.list .list-item .forum-message-attaches {
+        margin-left: 70px;
+    }
 }
