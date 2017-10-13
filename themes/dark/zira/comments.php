@@ -30,8 +30,8 @@
 <?php else : ?>
 <?php echo ($comment->sender_name ? Zira\Helper::html($comment->sender_name) : t('Guest')); ?>
 <?php endif; ?>
-<?php if ($comment->recipient_name): ?>
-&nbsp; <span class="glyphicon glyphicon-share-alt"></span> &nbsp;<?php echo Zira\Helper::html($comment->recipient_name) ?>
+<?php if ($comment->parent_id): ?>
+&nbsp; <span class="glyphicon glyphicon-share-alt"></span> &nbsp;<?php echo $comment->recipient_name ? Zira\Helper::html($comment->recipient_name) : t('Guest') ?>
 <?php endif; ?>
 </span>
 <p class="comment-text parse-content"><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($comment->content))) ?></p>
