@@ -26,13 +26,21 @@ class Comments extends Zira\Controller {
             $limit = Zira\Config::get('comments_limit', 10);
             $comments = Zira\Models\Comment::getComments($record_id, $limit, $page*$limit, !$preview);
 
+            $commenting_allowed = Zira\Config::get('comments_allowed',true);
+            if (!Zira\Config::get('comment_anonymous',true) &&
+                !Zira\User::isAuthorized()
+            ) {
+                $commenting_allowed = false;
+            }
+        
             Zira\View::renderView(array(
                 'record_id'=>$record_id,
                 'comments'=>$comments,
                 'limit'=>$limit,
                 'page'=>$page,
                 'total'=>Zira\Models\Comment::countComments($record_id, !$preview),
-                'ajax'=>true
+                'ajax'=>true,
+                'commenting_allowed'=>$commenting_allowed
             ), 'zira/comments');
         }
     }
@@ -55,12 +63,25 @@ class Comments extends Zira\Controller {
                     $form->setError(Zira\Locale::t('An error occurred'));
                 } else {
                     $parent = null;
+                    $reply = null;
                     $parent_id = (int)$form->getValue('parent_id');
+                    $reply_id = (int)$form->getValue('reply_id');
                     if ($parent_id>0) {
                         $parent = new Zira\Models\Comment($parent_id);
                         if (!$parent->loaded()) {
                             $parent = null;
                             $parent_id = 0;
+                            $reply = null;
+                            $reply_id = 0;
+                        }
+                        if ($parent && $reply_id>0 && $reply_id != $parent_id) {
+                            $reply = new Zira\Models\Comment($reply_id);
+                            if (!$reply->loaded()) {
+                                $reply = null;
+                                $reply_id = 0;
+                            }
+                        } else if ($parent) {
+                            $reply = $parent;
                         }
                     }
                     $comment = new Zira\Models\Comment();
@@ -73,8 +94,8 @@ class Comments extends Zira\Controller {
                         $comment->sender_name = strip_tags($form->getValue('sender_name'));
                     }
                     $comment->parent_id = $parent_id;
-                    if ($parent!==null) {
-                        $comment->recipient_name = $parent->sender_name;
+                    if ($reply!==null) {
+                        $comment->recipient_name = $reply->sender_name;
                     }
                     $path_offset = Zira\Models\Comment::getPathOffset($record->id, $parent);
                     $comment->path_offset = $path_offset+1;

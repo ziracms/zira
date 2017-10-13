@@ -228,7 +228,8 @@ class Page {
             'comments'=>$comments,
             'limit'=>$limit,
             'page'=>0,
-            'total'=>Models\Comment::countComments($record->id, !$preview)
+            'total'=>Models\Comment::countComments($record->id, !$preview),
+            'commenting_allowed'=>$commenting_allowed
         ), 'zira/comments');
         View::preloadThemeLoader();
         View::addParser();

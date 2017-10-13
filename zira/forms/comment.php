@@ -40,6 +40,7 @@ class Comment extends Form {
         $html = $this->open();
         $html .= $this->hidden('record_id');
         $html .= $this->hidden('parent_id');
+        $html .= $this->hidden('reply_id');
         $html .= Helper::tag('div',null,array('class'=>'form-group comment-reply-preview'));
         if(!User::isAuthorized()) {
             $html .= $this->input(Locale::t('Name'), 'sender_name');

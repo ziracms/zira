@@ -45,8 +45,8 @@
 <span class="glyphicon glyphicon-thumbs-down"></span>
 <span class="rating-value"><?php echo intval($comment->dislikes); ?></span>
 </a> &nbsp;
-<?php if ($comment_offset+1<50): ?>
-<a href="javascript:void(0)" data-comment="<?php echo ($comment_offset < Zira\Config::get('comments_max_nesting', 5) ? intval($comment->id) : intval($comment->parent_id)) ?>" class="comment-reply-link"><span class="glyphicon glyphicon-comment"></span> <?php echo t('Reply') ?></a>
+<?php if (!empty($commenting_allowed) && (!Zira\User::isAuthorized() || Zira\User::getCurrent()->id != $comment->author_id) && $comment_offset+1<50): ?>
+<a href="javascript:void(0)" data-parent="<?php echo ($comment_offset < Zira\Config::get('comments_max_nesting', 5) ? intval($comment->id) : intval($comment->parent_id)) ?>" data-reply="<?php echo intval($comment->id) ?>" class="comment-reply-link"><span class="glyphicon glyphicon-comment"></span> <?php echo t('Reply') ?></a>
 <?php endif; ?>
 </span>
 </li>
