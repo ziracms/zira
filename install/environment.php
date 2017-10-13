@@ -58,17 +58,17 @@ if (!$json_supported) $supported = false;
 $json = Zira\Helper::tag('span',null,array('class'=>($json_supported ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $json .= ' JSON '.($json_supported ? Zira\Locale::t('supported') : Zira\Locale::t('not supported'));
 
-$cache_dir_writatable = is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
+$cache_dir_writatable = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR) && is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
 if (!$cache_dir_writatable) $supported = false;
 $cache_dir = Zira\Helper::tag('span',null,array('class'=>($cache_dir_writatable ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $cache_dir .= ' '.Zira\Locale::t('%s directory','cache').' '.($cache_dir_writatable ? Zira\Locale::t('is writable') : Zira\Locale::t('is not writable'));
 
-$log_dir_writatable = is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . LOG_DIR);
+$log_dir_writatable = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . LOG_DIR) && is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . LOG_DIR);
 if (!$log_dir_writatable) $supported = false;
 $log_dir = Zira\Helper::tag('span',null,array('class'=>($log_dir_writatable ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $log_dir .= ' '.Zira\Locale::t('%s directory','log').' '.($log_dir_writatable ? Zira\Locale::t('is writable') : Zira\Locale::t('is not writable'));
 
-$upload_dir_writatable = is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR);
+$upload_dir_writatable = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR) && is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR);
 if (!$upload_dir_writatable) $supported = false;
 $upload_dir = Zira\Helper::tag('span',null,array('class'=>($upload_dir_writatable ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $upload_dir .= ' '.Zira\Locale::t('%s directory','uploads').' '.($upload_dir_writatable ? Zira\Locale::t('is writable') : Zira\Locale::t('is not writable'));
