@@ -105,7 +105,7 @@ class Login extends Zira\Controller {
             }
         }
 
-        if (!Oauth\Models\Oauth::isUserActive($user, !empty($email))) {
+        if (!Oauth\Models\Oauth::isUserActive($user, !empty($fb_user->email))) {
             Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
         }
 
@@ -202,7 +202,7 @@ class Login extends Zira\Controller {
             }
         }
 
-        if (!Oauth\Models\Oauth::isUserActive($user, !empty($email))) {
+        if (!Oauth\Models\Oauth::isUserActive($user, !empty($vk_user->email))) {
             Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
         }
 

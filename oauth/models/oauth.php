@@ -32,7 +32,8 @@ class Oauth {
         if ($trust_email && $_user->verified != Zira\Models\User::STATUS_VERIFIED) {
             User::getCollection()
                 ->update(array(
-                    'verified' => Zira\Models\User::STATUS_VERIFIED
+                    'verified' => Zira\Models\User::STATUS_VERIFIED,
+                    'password' => Zira\User::getHashedUserToken(Zira\User::generateUserToken())
                 ))
                 ->where('id','=',$user->id)
                 ->execute();
