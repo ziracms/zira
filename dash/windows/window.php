@@ -92,6 +92,9 @@ abstract class Window {
     public function __construct() {
         $this->_js_name = Dash\Dash::getInstance()->getWindowJSName(self::getClass());
         if (empty($this->_js_name)) throw new \Exception('Failed to construct window: ' . self::getClass());
+        
+        $maximized = (bool)Config::get('dashwindow_maximized');
+        $this->setMaximized($maximized);
     }
 
     public function build() {
@@ -204,9 +207,6 @@ abstract class Window {
         
         $classic_mode = (bool)Config::get('dashwindow_mode');
         $this->setOption('classic_mode', $classic_mode);
-        
-        $maximized = (bool)Config::get('dashwindow_maximized');
-        $this->setMaximized($maximized);
 
         $this->create();
 

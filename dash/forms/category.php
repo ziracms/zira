@@ -66,6 +66,13 @@ class Category extends Form
 
     protected function _validate()
     {
+        $name = trim($this->getValue('name'));
+        $title = trim($this->getValue('title'));
+        $this->updateValues(array(
+            'name' => $name,
+            'title' => $title
+        ));
+        
         $validator = $this->getValidator();
         $validator->registerCustom(array(get_class(), 'checkRoot'), 'root', Locale::t('An error occurred'));
         $validator->registerString('name', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('System name')));

@@ -33,7 +33,7 @@ class Widget extends Window {
         );
         
         $this->addVariables(array(
-            'dash_widget_autocomplete_url' => Zira\Helper::url('dash/widgets/autocompletepage'),
+            'dash_widget_autocomplete_url' => Zira\Helper::url('dash/widgets/autocompletepage')
         ));
         
         $this->includeJS('dash/widget');
@@ -66,6 +66,8 @@ class Widget extends Window {
                 $values['category_id'] = -2;
                 $record = new Zira\Models\Record($values['record_id']);
                 if ($record->loaded()) $values['record'] = $record->title;
+            } else if (strlen($values['url'])>0) {
+                $values['category_id'] = -3;
             }
             if ($values['language']!==null && !in_array($values['language'],Zira\Config::get('languages'))) {
                 $values['language'] = null;

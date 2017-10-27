@@ -137,9 +137,9 @@ class Validator {
     protected function validateNumber(array $field) {
         $value = $this->getValue($field);
         if ($field['required'] && $value===null) return false;
-        if ($value!==null && !is_numeric($value)) return false;
-        if ($value!==null && $field['min']!==null && $value<$field['min']) return false;
-        if ($value!==null && $field['max']!==null && $value>$field['max']) return false;
+        if (!empty($value) && !is_numeric($value)) return false;
+        if (!empty($value) && $field['min']!==null && $value<$field['min']) return false;
+        if (!empty($value) && $field['max']!==null && $value>$field['max']) return false;
         return true;
     }
 

@@ -401,5 +401,6 @@ return array(
     'Check for updates' => 'Проверять обновления',
     'Choose page...' => 'Выбрать страницу...',
     'Choose page' => 'Выберите страницу',
+    'Set URL...' => ' Задать URL...',
     'Enter page title or system name' => 'Введите название страницы или системное имя'
 );

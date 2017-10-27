@@ -5,9 +5,13 @@ var dash_widget_load = function() {
     
     var input = $(this.element).find('.dash_form_widget_record_input');
     var hidden = $(this.element).find('.dash_form_widget_record_hidden');
+    var input2 = $(this.element).find('.dash_form_widget_url_input');
     
     if ($(hidden).val().length==0) {
         $(this.element).find('.dash_form_widget_record_container').css('display', 'none');
+    }
+    if ($(input2).val().length==0) {
+        $(this.element).find('.dash_form_widget_url_container').css('display', 'none');
     }
     
     $(this.element).find('.dash_form_widget_record_select').trigger('change');
@@ -134,18 +138,29 @@ var dash_widget_page_input_select = function() {
         $(this).parents('form').find('.dash_form_widget_record_input').val('');
         $(this).parents('form').find('.dash_form_widget_record_hidden').val('');
     }
+    if ($(this).val()!='-3') {
+        $(this).parents('form').find('.dash_form_widget_url_input').val('');
+    }
     
     if ($(this).val()=='0') {
         $(this).parents('form').find('.language-select').removeAttr('disabled');
         $(this).parents('form').find('.filter-select').attr('disabled','disabled'); 
         $(this).parents('form').find('.dash_form_widget_record_container').css('display', 'none');
+        $(this).parents('form').find('.dash_form_widget_url_container').css('display', 'none');
     } else if ($(this).val()=='-2') {
         $(this).parents('form').find('.language-select').attr('disabled','disabled'); 
         $(this).parents('form').find('.filter-select').attr('disabled','disabled'); 
         $(this).parents('form').find('.dash_form_widget_record_container').css('display', 'block');
+        $(this).parents('form').find('.dash_form_widget_url_container').css('display', 'none');
+    } else if ($(this).val()=='-3') {
+        $(this).parents('form').find('.language-select').removeAttr('disabled'); 
+        $(this).parents('form').find('.filter-select').removeAttr('disabled'); 
+        $(this).parents('form').find('.dash_form_widget_record_container').css('display', 'none');
+        $(this).parents('form').find('.dash_form_widget_url_container').css('display', 'block');
     } else {
         $(this).parents('form').find('.language-select').removeAttr('disabled');
         $(this).parents('form').find('.filter-select').removeAttr('disabled');
         $(this).parents('form').find('.dash_form_widget_record_container').css('display', 'none');
+        $(this).parents('form').find('.dash_form_widget_url_container').css('display', 'none');
     }
 };

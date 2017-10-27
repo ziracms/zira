@@ -76,6 +76,13 @@ class Record extends Form
 
     protected function _validate()
     {
+        $name = trim($this->getValue('name'));
+        $title = trim($this->getValue('title'));
+        $this->updateValues(array(
+            'name' => $name,
+            'title' => $title
+        ));
+        
         $validator = $this->getValidator();
         $validator->registerCustom(array(get_class(), 'checkLanguage'), 'language', Locale::t('An error occurred'));
         $validator->registerCustom(array(get_class(), 'checkCategory'), 'category_id', Locale::t('An error occurred'));

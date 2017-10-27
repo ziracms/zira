@@ -1,0 +1,10 @@
+<?php
+
+return array(
+    'Themes designer' => 'Дизайнер тем',
+    'Create your own theme' => 'Создайте свою собственную тему',
+    'Style' => 'Стиль',
+    'New style' => 'Новый стиль',
+    'Style editor' => 'Редактор стиля',
+    'Enter title' => 'Введите заголовок'
+);

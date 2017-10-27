@@ -65,6 +65,8 @@ class View {
     protected static $_codemirror_assets_added = false;
     protected static $_codemirror_added = false;
     protected static $_jplayer_assets_added = false;
+    protected static $_colorpicker_assets_added = false;
+    protected static $_colorpicker_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -82,6 +84,7 @@ class View {
     protected static $_db_widget_objects = null;
 
     protected static $_body_bottom_scripts = array();
+    protected static $_before_render_callbacks = array();
 
     public static function isInitialized() {
         return self::$_theme !== null;
@@ -180,9 +183,21 @@ class View {
     public static function setDescriptionAdded($value) {
         self::$_description_added = (bool)$value;
     }
+    
+    public static function registerRenderHook($object, $method) {
+        self::$_before_render_callbacks []= array($object, $method);
+    }
 
     public static function render(array $data, $view=null, $layout=null) {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
+        
+        foreach(self::$_before_render_callbacks as $callback) {
+            try {
+                call_user_func($callback);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
 
         if (!$view) {
             $view = Router::getModule() . DIRECTORY_SEPARATOR .
@@ -216,19 +231,19 @@ class View {
                 self::$_theme . DIRECTORY_SEPARATOR .
                 $layout . '.php';
 
+            if (self::$_theme!=DEFAULT_THEME && !file_exists($layout_file)) {
+                $layout_file = ROOT_DIR . DIRECTORY_SEPARATOR .
+                            THEMES_DIR . DIRECTORY_SEPARATOR .
+                            DEFAULT_THEME . DIRECTORY_SEPARATOR .
+                            $layout . '.php';
+            }
+            
             $default_layouts = self::getDefaultLayouts();
             if (!file_exists($layout_file) && !array_key_exists($layout, $default_layouts)) {
                 $layout_file = ROOT_DIR . DIRECTORY_SEPARATOR .
                             THEMES_DIR . DIRECTORY_SEPARATOR .
                             self::$_theme . DIRECTORY_SEPARATOR .
                             self::LAYOUT_ALL_SIDEBARS . '.php';
-            }
-
-            if (self::$_theme!=DEFAULT_THEME && !file_exists($layout_file)) {
-                $layout_file = ROOT_DIR . DIRECTORY_SEPARATOR .
-                            THEMES_DIR . DIRECTORY_SEPARATOR .
-                            DEFAULT_THEME . DIRECTORY_SEPARATOR .
-                            $layout . '.php';
             }
 
             self::$data = $data;
@@ -426,6 +441,10 @@ class View {
         if (empty(self::$_body_bottom_scripts)) return '';
         return implode("\r\n", self::$_body_bottom_scripts);
     }
+    
+    public static function &getBodyBottomScriptsArray() {
+        return self::$_body_bottom_scripts;
+    }
 
     public static function getTheme() {
         return self::$_theme;
@@ -557,7 +576,7 @@ class View {
         self::addSliderAssets();
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';
-        $script .= '$(\'#'.Helper::html($id).'\').bxSlider({';
+        $script .= 'jQuery(\'#'.Helper::html($id).'\').bxSlider({';
         if ($options) {
             $_options = array();
             foreach($options as $k=>$v) {
@@ -589,7 +608,7 @@ class View {
         self::addCropperAssets();
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';
-        $script .= '$(\'img#'.Helper::html($id).'\').cropper({';
+        $script .= 'jQuery(\'img#'.Helper::html($id).'\').cropper({';
         if ($options) {
             $_options = array();
             foreach($options as $k=>$v) {
@@ -780,6 +799,32 @@ class View {
         $script .= '});';
         $script .= Helper::tag_close('script');
         self::addBodyBottomScript($script);
+    }
+    
+    public static function addColorpickerAssets() {
+        if (self::$_colorpicker_assets_added) return;
+        self::addStyle('bootstrap-colorpicker.min.css');
+        self::addScript('bootstrap-colorpicker.min.js');
+        self::$_colorpicker_assets_added = true;
+    }
+
+    public static function addColorpicker() {
+        if (self::$_colorpicker_added) return;
+        self::addColorpickerAssets();
+        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
+        $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'jQuery(\'.zira-colorpicker\').each(function(){';
+        $script .= 'jQuery(this).colorpicker().on(\'changeColor\', zira_bind(this, function(e) {';
+        $script .= 'var color = e.color.toString(\'rgba\');';
+        $script .= 'jQuery(this).data(\'color\', color);';
+        $script .= 'jQuery(this).trigger(\'change\');';
+        $script .= '}));';
+        $script .= '});';
+        $script .= '});';
+        $script .= Helper::tag_close('script');
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
+        self::$_colorpicker_added = true;
     }
     
     protected static function _generateJPlayerPlaylist($files, $media_type, &$formats, $poster = null) {
@@ -989,6 +1034,18 @@ class View {
             try {
                 if (!self::$_render_db_widgets && !in_array($_widget->name, $defaultDbWidgets)) continue;
                 if ($_widget->record_id && $_widget->record_id!=Page::getRecordId()) continue;
+                if ($_widget->url && strlen($_widget->url)>0) {
+                    $request = urldecode(Router::getRequest());
+                    if ($_widget->url != $request && (
+                        strlen($_widget->url)<=2 || 
+                        substr($_widget->url, -2) != '/*' 
+                    )) continue;
+                    if ($_widget->url != $request && ( 
+                        strlen($_widget->url)<=2 ||
+                        substr($_widget->url, -2) != '/*' ||
+                        mb_strpos($request.'/', substr($_widget->url, 0, strlen($_widget->url)-1), 0, CHARSET)!==0
+                    )) continue;
+                }
                 if ($_widget->filter && ((
                     $_widget->filter == Models\Widget::STATUS_FILTER_RECORD &&
                     Page::getRecordId()===null

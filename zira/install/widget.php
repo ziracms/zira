@@ -27,6 +27,7 @@ class Widget extends Table {
             'language' => Field::string(),
             'category_id' => Field::int(false, true),
             'record_id' => Field::int(false, true),
+            'url' => Field::string(),
             'sort_order' => Field::int(true, false, 0),
             'active' => Field::tinyint(true, true, 0),
             'filter' => Field::string()

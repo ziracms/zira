@@ -200,17 +200,6 @@ dt {
 .alert a:visited {
     color: #0A3241;
 }
-.alert-dark {
-    border-color: #323350;
-    background: #313458;
-    background-image: linear-gradient(to bottom,#446a77 0,#313458 100%);
-    filter: none;
-    color: #eee;
-}
-.alert-dark a:link,
-.alert-dark a:visited {
-    color: #A0C4EC;
-}
 #main-container .btn-default {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	text-shadow: none;

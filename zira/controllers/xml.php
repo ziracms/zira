@@ -30,7 +30,7 @@ class Xml extends Zira\Controller {
                         ->where('language','=',Zira\Locale::getLanguage())
                         ->and_where('published','=',Zira\Models\Record::STATUS_PUBLISHED)
                         ->order_by('id','desc')
-                        ->limit(50000)
+                        ->limit(10000)
                         ->get();
 
             $urls = array();

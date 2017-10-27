@@ -40,7 +40,7 @@
 <?php endif; ?>
 
 <?php if (empty($files) && empty($access_allowed)): ?>
-<div class="alert alert-warning alert-dark" role="alert">
+<div class="alert alert-warning" role="alert">
     <?php if (!Zira\User::isAuthorized()): ?>
     <?php echo t('%s to download files', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRedirectUrl()).'">'.t('Login').'</a>') ?>
     <?php else: ?>

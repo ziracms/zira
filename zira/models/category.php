@@ -20,7 +20,7 @@ class Category extends Orm {
     public static $pk = 'id';
     public static $alias = 'cat';
 
-    const REGEXP_NAME = '/^[a-zа-я]+[a-zа-я0-9_-]*$/u';
+    const REGEXP_NAME = '/^[a-zа-яё0-9_-]*[a-zа-яё]+[a-zа-яё0-9_-]*$/u';
 
     public static function getTable() {
         return self::$table;

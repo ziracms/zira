@@ -1,0 +1,40 @@
+.colorpicker-2x .colorpicker-saturation { 
+    width: 200px; 
+    height: 200px; 
+} 
+.colorpicker-2x .colorpicker-hue,
+.colorpicker-2x .colorpicker-alpha { 
+    width: 30px; 
+    height: 200px;
+} 
+.colorpicker-2x .colorpicker-color,
+.colorpicker-2x .colorpicker-color div { 
+    height: 30px; 
+}
+.designer_colorpicker {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px #ffffff;
+    background: #005599 url(../../images/designer/colorpicker.jpg);
+    z-index: 2500;
+    cursor: pointer;
+    animation: colorpicker 20s linear infinite;
+}
+
+@keyframes colorpicker {
+  0% { 
+      -webkit-transform: rotate(-360deg);
+      transform: rotate(-360deg);
+  },
+  50% { 
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+  },
+  100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+  }
+}

@@ -59,6 +59,9 @@ class Widget extends Model {
             $record_id = intval($form->getValue('record_id'));
             if ($record_id<=0) $record_id = null;
             $widget->record_id = $record_id;
+            $url = trim($form->getValue('url'));
+            if (strlen($url)==0) $url = null;
+            $widget->url = $url;
             $widget->placeholder = $form->getValue('placeholder');
             $widget->active = intval($form->getValue('active')) ? Zira\Models\Widget::STATUS_ACTIVE : Zira\Models\Widget::STATUS_NOT_ACTIVE;
             $widget->filter = $form->getValue('filter') ? $form->getValue('filter') : null;
