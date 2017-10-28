@@ -212,7 +212,7 @@ var designer_designer_onsave = function() {
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
     var code = designerEditorWindow.editorContent();
-    this.message(t('Code')+':' + '<textarea style="width:100%" cols="20" rows="8" name="desifner-style-code-message">'+code+'</textarea>');
+    this.message(t('CSS code')+':' + '<textarea style="width:100%;white-space:nowrap" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea>');
 };
 
 var designer_designer_wnd = function() {

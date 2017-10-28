@@ -35,7 +35,7 @@
     src: url(../fonts/Roboto-Regular.ttf);
 }*/
 html, body {
-    height: 100%;
+    min-height: 100%;
 }
 body {
     /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
@@ -83,7 +83,7 @@ a.btn-primary {
 }
 #main-container-wrapper {
     background: url(../images/gradient.jpg) repeat-x 0 0;
-    height: 100%;
+    min-height: 100%;
 }
 #main-container {
     background: url(../images/bg.jpg) no-repeat 50% 0%;

@@ -35,7 +35,7 @@
     src: url(../fonts/Roboto-Regular.ttf);
 }*/
 html, body {
-    height: 100%;
+    min-height: 100%;
 }
 body {
     font-family: Roboto,Arial,sans-serif;
@@ -110,7 +110,7 @@ dt {
     background-color: #484F57;
 }
 #main-container-wrapper {
-    height: 100%;
+    min-height: 100%;
 }
 #main-container {
     min-height: 100%;
