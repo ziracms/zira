@@ -9,12 +9,14 @@
 <body class="<?php echo Zira\Helper::html(Zira\View::$body_class); ?>">
 <?php layout_body_top() ?>
 <div id="main-container-wrapper"><div id="main-container">
+<header>
 <div class="container">
 <div class="row">
-<header>
 <?php layout_header() ?>
-</header>
 </div>
+</div>
+</header>  
+<div class="container">
 <div class="row">
 <div id="content" class="col-sm-12">
 <?php breadcrumbs(); ?>

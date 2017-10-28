@@ -28,6 +28,10 @@ class Designer extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::t('Code'), Zira\Locale::t('CSS code'), 'glyphicon glyphicon-list-alt', 'desk_call(designer_designer_code, this);', 'code', false, true)
+        );
+        
         $this->setOnOpenJSCallback(
             $this->createJSCallback(
                 'desk_call(designer_designer_open, this);'

@@ -60,7 +60,8 @@ class Styles extends Dash\Windows\Window {
         $this->addDefaultOnLoadScript('desk_call(designer_styles_load, this);');
         
         $this->addStrings(array(
-            'Enter title'
+            'Enter title',
+            'Code'
         ));
         
         $this->addVariables(array(
@@ -78,7 +79,10 @@ class Styles extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $styles = Designer\Models\Style::getCollection()->get();
+        $styles = Designer\Models\Style::getCollection()
+                ->where('theme', '=', Zira\View::getTheme())
+                ->order_by('id')
+                ->get();
 
         $items = array();
         foreach($styles as $style) {

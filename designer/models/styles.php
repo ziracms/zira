@@ -27,6 +27,7 @@ class Styles extends Dash\Models\Model {
                 if (!$style->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
             } else {
                 $style = new Designer\Models\Style();
+                $style->theme = Zira\View::getTheme();
                 $style->creator_id = Zira\User::getCurrent()->id;
                 $style->date_created = date('Y-m-d H:i:s');
             }
@@ -42,6 +43,16 @@ class Styles extends Dash\Models\Model {
             if ($record_id<=0) $record_id = null;
             $style->record_id = $record_id;
             $url = trim($form->getValue('url'));
+            if (strlen($url)>0) {
+                $url = preg_replace('/(.+?)([?].*)?/','$1',$url);
+                if (strpos($url, 'http')===0) {
+                    $url = preg_replace('/^http(?:[s])?:\/\/[^\/]+(.*?)/','$1',$url);
+                }
+                $url = trim($url,'/');
+                if (count(Zira\Config::get('languages'))>1) {
+                    $url = preg_replace('/^(?:'.implode('|',Zira\Config::get('languages')).')\/(.+?)/','$1',$url);
+                }
+            }
             if (strlen($url)==0) $url = null;
             $style->url = $url;
             $style->filter = $form->getValue('filter') ? $form->getValue('filter') : null;
@@ -88,6 +99,7 @@ class Styles extends Dash\Models\Model {
         unset($values['id']);
         $values['title'] = $title;
         $values['active'] = 0;
+        $values['date_created'] = date('Y-m-d H:i:s');
         
         $newStyle = new Designer\Models\Style();
         $newStyle->loadFromArray($values);

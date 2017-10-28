@@ -60,6 +60,16 @@ class Widget extends Model {
             if ($record_id<=0) $record_id = null;
             $widget->record_id = $record_id;
             $url = trim($form->getValue('url'));
+            if (strlen($url)>0) {
+                $url = preg_replace('/(.+?)([?].*)?/','$1',$url);
+                if (strpos($url, 'http')===0) {
+                    $url = preg_replace('/^http(?:[s])?:\/\/[^\/]+(.*?)/','$1',$url);
+                }
+                $url = trim($url,'/');
+                if (count(Zira\Config::get('languages'))>1) {
+                    $url = preg_replace('/^(?:'.implode('|',Zira\Config::get('languages')).')\/(.+?)/','$1',$url);
+                }
+            }
             if (strlen($url)==0) $url = null;
             $widget->url = $url;
             $widget->placeholder = $form->getValue('placeholder');

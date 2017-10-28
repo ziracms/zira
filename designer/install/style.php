@@ -21,6 +21,7 @@ class Style extends Table {
         return array(
             'id' => Field::primary(),
             'creator_id' => Field::int(true, true),
+            'theme' => Field::string(true),
             'title' => Field::string(true),
             'content' => Field::text(),
             'language' => Field::string(),
@@ -35,7 +36,7 @@ class Style extends Table {
 
     public function getKeys() {
         return array(
-            'search' => array('language', 'active', 'date_created')
+            'search' => array('theme', 'language', 'active', 'date_created')
         );
     }
 

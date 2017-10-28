@@ -6,5 +6,7 @@ return array(
     'Style' => 'Стиль',
     'New style' => 'Новый стиль',
     'Style editor' => 'Редактор стиля',
-    'Enter title' => 'Введите заголовок'
+    'Enter title' => 'Введите заголовок',
+    'Code' => 'Код',
+    'CSS code' => 'CSS код'
 );

@@ -1,6 +1,7 @@
 <?php
 
 return array(
-    'Header background color' => 'Цвет фона шапки'
+    'Header color' => 'Цвет шапки',
+    'Background color' => 'Цвет фона'
 );
 

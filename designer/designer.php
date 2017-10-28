@@ -39,17 +39,19 @@ class Designer {
     }
     
     public static function applyStyle() {
-        $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\Locale::getLanguage());
+        $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage());
         if (!$styles) {
             $styles = \Designer\Models\Style::getCollection()
                         ->open_query()
-                        ->where('language','is',null)
+                        ->where('theme', '=', Zira\View::getTheme())
+                        ->and_where('language','is',null)
                         ->and_where('active', '=', 1)
                         ->order_by('date_created', 'DESC')
                         ->close_query()
                         ->union()
                         ->open_query()
-                        ->where('language','=',Zira\Locale::getLanguage())
+                        ->where('theme', '=', Zira\View::getTheme())
+                        ->and_where('language','=',Zira\Locale::getLanguage())
                         ->and_where('active', '=', 1)
                         ->order_by('date_created', 'DESC')
                         ->close_query()
@@ -57,7 +59,7 @@ class Designer {
                         ->order_by('date_created', 'DESC')
                         ->get();
             
-            Zira\Cache::setObject(self::CACHE_KEY.'.'.Zira\Locale::getLanguage(), $styles);
+            Zira\Cache::setObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage(), $styles);
         }
         
         $active_style = null;
