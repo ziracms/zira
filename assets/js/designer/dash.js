@@ -187,6 +187,11 @@ var designer_style_page_input_select = function() {
 var designer_designer_open = function() {
     if (typeof(designerWindows)=="undefined") designerWindows = {};
     designerWindows[this.getId()] = this;
+    if (typeof(desk_file_selector) != "undefined") {
+        this.filemanager = desk_file_selector;
+        this.desk_ds = desk_ds;
+        this.baseUrl = baseUrl;
+    }
 };
 
 var designer_designer_load = function() {
@@ -212,7 +217,7 @@ var designer_designer_onsave = function() {
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
     var code = designerEditorWindow.editorContent();
-    this.message(t('CSS code')+':' + '<textarea style="width:100%;white-space:nowrap" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea>');
+    this.message(t('CSS code')+':' + '<textarea style="width:100%;white-space:pre" cols="20" rows="12" name="desifner-style-code-message" readonly="readonly">'+code+'</textarea>');
 };
 
 var designer_designer_wnd = function() {
