@@ -394,13 +394,11 @@ ul#language-switcher li a:visited {
 }
 ul#language-switcher li a:hover,
 ul#language-switcher li a.active {
-    background-color: #ECE2FF;
-    background-color: rgba(236, 226, 255, 0.5);
+    background-color: #c0d3f4;
     color: #000000;
     text-decoration: none;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    box-shadow: 0px 0px 1px #92B4C5;
 }
 ul#language-switcher li a.active {
     background-color: #73A8C3;

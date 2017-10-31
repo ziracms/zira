@@ -10,7 +10,6 @@
         var colorpicker_wnd_size = 280;
         var gradientpicker_wnd_size = 280;
         var container_x = $('#content').offset().left;
-        var designerWindow = getDesignerWindow();
         
         var designer_positions = [];
         $(window).resize(function(){
@@ -63,25 +62,23 @@
             }, 'left');
             
             // body bg image
-            if (designerWindow && typeof(designerWindow.filemanager)!="undefined") {
-                $('body').append('<div class="designer_imagepicker" id="body-designer-imagepicker" title="'+t('Background image')+'"></div>');
-                designer_positions['body_image'] = function() {
-                    var body_ix = colorpicker_size/2+1.25*colorpicker_size;
-                    var body_iy = $('header').offset().top+$('header').outerHeight()+2*colorpicker_size;
-                    $('#body-designer-imagepicker').css({'left':body_ix,'top':body_iy});
-                };
-                $('#body-designer-imagepicker').tooltip();
-                designer_imagepicker($('#body-designer-imagepicker'), function(url){
-                    var bg_color = $('body').css('backgroundColor');
-                    var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
-                    $('body').css('background', background);
-                    $('#main-container-wrapper').css('background', 'none');
-                    $('#main-container').css('background', 'none');
-                    setBackgroundStyle('body', background);
-                    setBackgroundStyle('#main-container-wrapper', 'none');
-                    setBackgroundStyle('#main-container', 'none');
-                });
-            }
+            $('body').append('<div class="designer_imagepicker" id="body-designer-imagepicker" title="'+t('Background image')+'"></div>');
+            designer_positions['body_image'] = function() {
+                var body_ix = colorpicker_size/2+1.25*colorpicker_size;
+                var body_iy = $('header').offset().top+$('header').outerHeight()+2*colorpicker_size;
+                $('#body-designer-imagepicker').css({'left':body_ix,'top':body_iy});
+            };
+            $('#body-designer-imagepicker').tooltip();
+            designer_imagepicker($('#body-designer-imagepicker'), function(url){
+                var bg_color = $('body').css('backgroundColor');
+                var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
+                $('body').css('background', background);
+                $('#main-container-wrapper').css('background', 'none');
+                $('#main-container').css('background', 'none');
+                setBackgroundStyle('body', background);
+                setBackgroundStyle('#main-container-wrapper', 'none');
+                setBackgroundStyle('#main-container', 'none');
+            });
         }
         
         // header
@@ -120,19 +117,80 @@
             });
             
             // header bg image
-            if (designerWindow && typeof(designerWindow.filemanager)!="undefined") {
-                $('body').append('<div class="designer_imagepicker" id="header-designer-imagepicker" title="'+t('Header image')+'"></div>');
-                designer_positions['header_image'] = function() {
-                    var header_ix = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2+.25*colorpicker_size;
-                    var header_iy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2;
-                    $('#header-designer-imagepicker').css({'left':header_ix,'top':header_iy});
+            $('body').append('<div class="designer_imagepicker" id="header-designer-imagepicker" title="'+t('Header image')+'"></div>');
+            designer_positions['header_image'] = function() {
+                var header_ix = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2+.25*colorpicker_size;
+                var header_iy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2;
+                $('#header-designer-imagepicker').css({'left':header_ix,'top':header_iy});
+            };
+            $('#header-designer-imagepicker').tooltip();
+            designer_imagepicker($('#header-designer-imagepicker'), function(url){
+                var bg_color = $('header').css('backgroundColor');
+                var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
+                $('header').css('background', background);
+                setBackgroundStyle('header', background);
+            });
+            
+            // header logo color
+            if ($('header #site-logo').length>0) {
+                var logo_color = $('header #site-logo').css('color');
+                $('body').append('<div class="designer_colorpicker" id="logo-designer-colorpicker" title="'+t('Logo color')+'"></div>');
+                designer_positions['logo_color'] = function() {
+                    var logo_cx = $('header #site-logo').offset().left+.5*colorpicker_size;
+                    var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2;
+                    $('#logo-designer-colorpicker').css({'left':logo_cx,'top':logo_cy});
                 };
-                $('#header-designer-imagepicker').tooltip();
-                designer_imagepicker($('#header-designer-imagepicker'), function(url){
-                    var bg_color = $('header').css('backgroundColor');
-                    var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
-                    $('header').css('background', background);
-                    setBackgroundStyle('header', background);
+                $('#logo-designer-colorpicker').tooltip();
+                designer_colorpicker($('#logo-designer-colorpicker'), logo_color, function(color){
+                    $('header #site-logo').css('color', color);
+                    setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color);
+                }, 'left');
+            }
+            
+            // header slogan color
+            if ($('header #site-slogan').length>0) {
+                var slogan_color = $('header #site-slogan').css('color');
+                $('body').append('<div class="designer_colorpicker" id="slogan-designer-colorpicker" title="'+t('Slogan color')+'"></div>');
+                designer_positions['slogan_color'] = function() {
+                    var slogan_cx = $('header #site-slogan').offset().left+.5*colorpicker_size;
+                    var slogan_cy = $('header #site-slogan').offset().top+($('header #site-slogan').outerHeight()-colorpicker_size)/2;
+                    $('#slogan-designer-colorpicker').css({'left':slogan_cx,'top':slogan_cy});
+                };
+                $('#slogan-designer-colorpicker').tooltip();
+                designer_colorpicker($('#slogan-designer-colorpicker'), slogan_color, function(color){
+                    $('header #site-slogan').css('color', color);
+                    setColorStyle('#site-logo-wrapper #site-slogan', color);
+                }, 'left');
+            }
+            
+            // header language switcher
+            if ($('header ul#language-switcher').length>0) {
+                // header language switcher color
+                var lang_color = $('header ul#language-switcher li a.active').css('color');
+                $('body').append('<div class="designer_colorpicker" id="lang-color-designer-colorpicker" title="'+t('Language color')+'"></div>');
+                designer_positions['lang_color'] = function() {
+                    var lang_cx = $('header ul#language-switcher').offset().left;
+                    var lang_cy = $('header ul#language-switcher').offset().top+$('header ul#language-switcher').outerHeight()+.5*colorpicker_size;
+                    $('#lang-color-designer-colorpicker').css({'left':lang_cx,'top':lang_cy});
+                };
+                $('#lang-color-designer-colorpicker').tooltip();
+                designer_colorpicker($('#lang-color-designer-colorpicker'), lang_color, function(color){
+                    $('header ul#language-switcher li a').css('color', color);
+                    setColorStyle('ul#language-switcher li a:link,ul#language-switcher li a:visited,ul#language-switcher li a:hover,ul#language-switcher li a.active', color);
+                });
+                
+                // header language switcher background
+                var lang_bg = $('header ul#language-switcher li a.active').css('backgroundColor');
+                $('body').append('<div class="designer_colorpicker" id="lang-bg-designer-colorpicker" title="'+t('Language background')+'"></div>');
+                designer_positions['lang_bg'] = function() {
+                    var lang_bx = $('header ul#language-switcher').offset().left+1.5*colorpicker_size;
+                    var lang_by = $('header ul#language-switcher').offset().top+$('header ul#language-switcher').outerHeight()+.5*colorpicker_size;
+                    $('#lang-bg-designer-colorpicker').css({'left':lang_bx,'top':lang_by});
+                };
+                $('#lang-bg-designer-colorpicker').tooltip();
+                designer_colorpicker($('#lang-bg-designer-colorpicker'), lang_bg, function(color){
+                    $('header ul#language-switcher li a.active').css('backgroundColor', color);
+                    setBackgroundColorStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', color);
                 });
             }
         }
@@ -200,22 +258,20 @@
     
     var designer_imagepicker = function(element, callback) {
         $(element).click(zira_bind(element, function(){
-            var designerWindow = getDesignerWindow();
-            if (!designerWindow || typeof(designerWindow.filemanager)=="undefined") return;
-
-            designerWindow.filemanager(zira_bind(this, function(elements){
+            parent.jQuery('body', parent.document).trigger('designerEditorFileSelector', [zira_bind(this, function(elements){
                 if (!elements || elements.length==0) return;
                 var element = elements[0];
                 if (element instanceof FileList) return;
                 if (typeof(element)!="object" || typeof(element.type)=="undefined" || typeof(element.data)=="undefined" || typeof(element.title)=="undefined") return;
                 if (typeof(element.parent)=="undefined" || element.parent!='files') return;
                 if (element.type!='image') return;
-                var regexp = new RegExp('\\'+designerWindow.desk_ds, 'g');
-                var url = designerWindow.baseUrl(element.data.replace(regexp,'/')); 
+                var regexp = new RegExp('\\'+this.desk_ds, 'g');
+                var url = this.baseUrl(element.data.replace(regexp,'/')); 
                 if (typeof(callback)!="undefined") {
                     callback.call(this, url);
-                }    
-            }));
+                }
+                parent.jQuery('body', parent.document).trigger('designerEditorFocus');
+            }), this]);
         }));
     };
     
@@ -305,10 +361,26 @@
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
         window.editorStyles[element]['bg']=null;
     };
+
+    var setColorStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['color']='color:' + value + ';';
+    };
+    
+    var getColorStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['color'])=="undefined") return null;
+        return window.editorStyles[element]['color'];
+    };
+    
+    var removeColorStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['color']=null;
+    };
     
     var parseStyles = function(code) {
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
-        var regexp = new RegExp('([a-z0-9_#\.\-]+(?:[:][a-z]+)?)[{]([^}]+)[}]', 'gi');
+        var regexp = new RegExp('([^{]+)[{]([^}]+)[}]', 'gi');
         var m, m2, m3, m4, element, regexp2, prop, value, regexp3, regexp4;
         while (m = regexp.exec(code)) {
             element = m[1];
@@ -345,6 +417,8 @@
                     }
                 } else if (prop == 'background') {
                     setBackgroundStyle(element, value, true);
+                } else if (prop == 'color') {
+                    setColorStyle(element, value);
                 }
             }
         }
@@ -385,22 +459,11 @@
         return gradient;
     };
     
-    var getDesignerWindow = function() {
-        var parentDesignerWindowId = window.location.hash.replace('#','');
-        if (parentDesignerWindowId.length>0 && typeof(parent.designerWindows[parentDesignerWindowId])!="undefined") {
-            return parent.designerWindows[parentDesignerWindowId];
-        }
-        return false;
-    };
-    
     $(window).keydown(function(e){
         if (e.keyCode == 83 && e.ctrlKey) {
             e.preventDefault();
             e.stopPropagation();
-            var designerWindow = getDesignerWindow();
-            if (designerWindow) {
-                designerWindow.saveBody();
-            }
+            parent.jQuery('body', parent.document).trigger('designerEditorSave');
         }
     });
     

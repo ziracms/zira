@@ -7,5 +7,9 @@ return array(
     'Background color' => 'Цвет фона',
     'Background gradient' => 'Градиент фона',
     'Background image' => 'Фоновое изображение',
+    'Logo color' => 'Цвет лого',
+    'Slogan color' => 'Цвет слогана',
+    'Language color' => 'Цвет языка',
+    'Language background' => 'Фон языка'
 );
 

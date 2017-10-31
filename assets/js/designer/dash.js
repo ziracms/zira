@@ -185,24 +185,41 @@ var designer_style_page_input_select = function() {
 };
 
 var designer_designer_open = function() {
-    if (typeof(designerWindows)=="undefined") designerWindows = {};
-    designerWindows[this.getId()] = this;
-    if (typeof(desk_file_selector) != "undefined") {
-        this.filemanager = desk_file_selector;
-        this.desk_ds = desk_ds;
-        this.baseUrl = baseUrl;
+    if (typeof(designerEditorCallbacks)=="undefined") designerEditorCallbacks = {};
+    designerEditorCallbacks[this.getId()] = {};
+    designerEditorCallbacks[this.getId()]['designerEditorSave'] = zira_bind(this, function(){
+        designer_designer_onsave.call(this);
+        this.saveBody();
+    });
+    designerEditorCallbacks[this.getId()]['designerEditorFileSelector'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, callback, context){
+        context.desk_ds = desk_ds;
+        context.baseUrl = baseUrl;
+        desk_file_selector.call(this, callback);
+    });
+    designerEditorCallbacks[this.getId()]['designerEditorFocus'] = zira_bind(this, function(){
+        this.focus();
+    });
+    for (var eventName in designerEditorCallbacks[this.getId()]) {
+        $('body').on(eventName, designerEditorCallbacks[this.getId()][eventName]);
     }
 };
 
 var designer_designer_load = function() {
     if (typeof(this.options.data.items)=="undefined" || this.options.data.items.length!=1) return;
     var item = this.options.data.items[0];
-    this.setBodyFullContent('<iframe src="'+designer_layout_url+'&id='+item+'#'+this.getId()+'" width="100%" height="100%" style="border:none;margin:0;padding:0"></iframe><form style="display:none"><textarea name="content"></textarea><input type="hidden" name="item" /></form>');
+    this.setBodyFullContent('<iframe src="'+designer_layout_url+'&id='+item+'" width="100%" height="100%" style="border:none;margin:0;padding:0"></iframe><form style="display:none"><textarea name="content"></textarea><input type="hidden" name="item" /></form>');
 };
 
 var designer_designer_close = function() {
-    if (typeof(designerWindows)=="undefined") return;
-    designerWindows[this.getId()] = null;
+    if (typeof(designerEditorCallbacks)=="undefined") return;
+    if (typeof(designerEditorCallbacks[this.getId()])=="undefined") return;
+    for (var eventName in designerEditorCallbacks[this.getId()]) {
+        $('body').off(eventName, designerEditorCallbacks[this.getId()][eventName]);
+    }
 };
 
 var designer_designer_onsave = function() {
