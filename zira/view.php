@@ -1003,7 +1003,11 @@ class View {
         $i=0;
         foreach(self::$_widgets as $class) {
             try {
-                $widget = new $class;
+                if (is_object($class)) {
+                    $widget = $class;
+                } else {
+                    $widget = new $class;
+                }
                 if (!($widget instanceof Widget)) continue;
                 $orders[$i] = $widget->getOrder();
                 $placeholders[$i] = $widget->getPlaceholder();

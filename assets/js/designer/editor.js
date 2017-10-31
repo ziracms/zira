@@ -163,6 +163,22 @@
                 }, 'left');
             }
             
+            // header text color
+            if ($('header #header-text-example').length>0) {
+                var header_text_color = $('header #header-text-example').css('color');
+                $('body').append('<div class="designer_colorpicker" id="header-text-designer-colorpicker" title="'+t('Header text color')+'"></div>');
+                designer_positions['header_text_color'] = function() {
+                    var header_text_cx = $('header #header-text-example').offset().left+$('header #header-text-example').outerWidth()-colorpicker_size;
+                    var header_text_cy = $('header #header-text-example').offset().top+$('header #header-text-example').outerHeight()+colorpicker_size/2;
+                    $('#header-text-designer-colorpicker').css({'left':header_text_cx,'top':header_text_cy});
+                };
+                $('#header-text-designer-colorpicker').tooltip();
+                designer_colorpicker($('#header-text-designer-colorpicker'), header_text_color, function(color){
+                    $('header #header-text-example').css('color', color);
+                    setColorStyle('header', color);
+                }, 'left');
+            }
+            
             // header language switcher
             if ($('header ul#language-switcher').length>0) {
                 // header language switcher color
@@ -300,7 +316,11 @@
     var setBackgroundGradientStyle = function(element, value1, value2, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bggradientwebkit1']='-webkit-linear-gradient(top, ' + value1 + ' 0, ' + value2 + ' 100%);';
+        window.editorStyles[element]['bggradientwebkit2']='-webkit-gradient(linear, left top, left bottom, from(' + value1 + '), to(' + value2 + '));';
+        window.editorStyles[element]['bggradientopera']='-o-linear-gradient(top, ' + value1 + ' 0, ' + value2 + ' 100%);';
         window.editorStyles[element]['bggradient']='background-image:linear-gradient(to bottom,' + value1 + ',' + value2 + ');';
+        window.editorStyles[element]['bggradientie']='filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHex(value1) + ', endColorstr=' + rgbaToHex(value2) + ', GradientType=0);';
         if (!addOnly) {
             removeBackgroundColorStyle(element);
             removeBackgroundImageStyle(element);
@@ -316,7 +336,11 @@
     
     var removeBackgroundGradientStyle = function(element) {
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bggradientwebkit1']=null;
+        window.editorStyles[element]['bggradientwebkit2']=null;
+        window.editorStyles[element]['bggradientopera']=null;
         window.editorStyles[element]['bggradient']=null;
+        window.editorStyles[element]['bggradientie']=null;
     };
     
     var setBackgroundImageStyle = function(element, value, addOnly) {
@@ -457,6 +481,22 @@
             gradient = [color, color];
         }
         return gradient;
+    };
+    
+    var digitToHex = function(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    };
+
+    var rgbaToHex = function(color) {
+        if (color.indexOf('#')==0) return color;
+        var regexp = new RegExp('rgb(?:[a])?[\(]([^,]+)[,]([^,]+)[,]([^,\)]+)(?:[,]([^\)]+))?[\)]', 'i');
+        var m = regexp.exec(color);
+        if (!m) return color;
+        var hex = '#';
+        if (typeof(m[4])!="undefined") hex += digitToHex(Math.floor(parseFloat(m[4])*255));
+        hex += digitToHex(parseInt(m[1])) + digitToHex(parseInt(m[2])) + digitToHex(parseInt(m[3]));
+        return hex;
     };
     
     $(window).keydown(function(e){

@@ -55,16 +55,20 @@ class Block extends Zira\Widget {
     protected function _render() {
         $id = $this->getData();
         if (!is_numeric($id)) {
-            if (strpos($id, '..')!==false || !preg_match('/^\[file=(.+)\]$/',$id, $m) || !file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1])) return;
-            $p = strrpos($m[1], '.');
-            $ext = strtolower(substr($m[1],$p+1));
+            if (strpos($id, '..')!==false) return;
+            if (preg_match('/^\[file=(.+)\]$/',$id, $m) && file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1])) {
+                $p = strrpos($m[1], '.');
+                $ext = strtolower(substr($m[1],$p+1));
 
-            if ($ext == 'txt' || $ext=='html') {
-                echo file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1]);
-            } else if ($ext=='jpg' || $ext=='jpeg' || $ext=='png' || $ext=='gif') {
-                $size = getimagesize(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1]);
-                if (!$size) return;
-                echo '<img src="'.Zira\Helper::baseUrl('').$m[1].'" '.$size[3].' class="block block-image" />';
+                if ($ext == 'txt' || $ext=='html') {
+                    echo file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1]);
+                } else if ($ext=='jpg' || $ext=='jpeg' || $ext=='png' || $ext=='gif') {
+                    $size = getimagesize(ROOT_DIR . DIRECTORY_SEPARATOR . $m[1]);
+                    if (!$size) return;
+                    echo '<img src="'.Zira\Helper::baseUrl('').$m[1].'" '.$size[3].' class="block block-image" />';
+                }
+            } else {
+                echo $id;
             }
         } else {
             $block = new Zira\Models\Block($id);

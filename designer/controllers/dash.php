@@ -32,6 +32,14 @@ class Dash extends \Dash\Controller {
         Zira\View::setRenderDbWidgets(false);
         Zira\Assets::setActive(false);
         
+        $block = new Zira\Widgets\Block();
+        $block->setCaching(false);
+        $block->setPlaceholder(Zira\View::VAR_HEADER);
+        $block->setOrder(-1);
+        $block->setTitle(Zira\Locale::t('Themes designer'));
+        $block->setData('<div id="header-text-example" style="width:400px;float:left;text-align:right;margin:4px">Lorem ipsum dolor sit amet</div>');
+        Zira\View::addWidget($block);
+        
         $layout_data = &Zira\View::getLayoutDataArray();
         unset($layout_data[Zira\View::VAR_STYLES]);
         unset($layout_data[Zira\View::VAR_SCRIPTS]);

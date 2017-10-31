@@ -10,6 +10,7 @@ return array(
     'Logo color' => 'Цвет лого',
     'Slogan color' => 'Цвет слогана',
     'Language color' => 'Цвет языка',
-    'Language background' => 'Фон языка'
+    'Language background' => 'Фон языка',
+    'Header text color' => 'Цвет текста шапки'
 );
 
