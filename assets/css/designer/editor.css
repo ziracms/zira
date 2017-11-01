@@ -30,8 +30,8 @@
 }
 .designer_colorpicker {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     border: 1px solid #ffffff;
     border-radius: 3px;
     box-shadow: 0px 0px 10px #ffffff;
@@ -42,8 +42,8 @@
 }
 .designer_gradientpicker {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     border: 1px solid #ffffff;
     border-radius: 3px;
     box-shadow: 0px 0px 10px #0099ed;
@@ -55,16 +55,16 @@
 .designer_gradientpicker_hidden {
     visibility: hidden;
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     border: 1px solid #ffffff;
     z-index: 2499;
     animation: colorpicker 20s linear infinite;
 }
 .designer_imagepicker {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 22px;
+    height: 22px;
     border: 1px solid #ffffff;
     border-radius: 3px;
     box-shadow: 0px 0px 10px #0099ed;

@@ -6,7 +6,7 @@
             parseStyles($('head style').text());
         }
         
-        var colorpicker_size = 32;
+        var colorpicker_size = 22;
         var colorpicker_wnd_size = 280;
         var gradientpicker_wnd_size = 280;
         var container_x = $('#content').offset().left;
@@ -55,10 +55,7 @@
                 setBackgroundGradientStyle('body', color1, color2);
                 setBackgroundStyle('#main-container-wrapper', 'none');
                 setBackgroundStyle('#main-container', 'none');
-                var bg_color = $('body').css('backgroundColor');
-                if (bg_color != "transparent") {
-                    setBackgroundColorStyle('body', bg_color, true);
-                }
+                setBackgroundColorStyle('body', color1, true);
             }, 'left');
             
             // body bg image
@@ -110,10 +107,7 @@
             designer_gradientpicker($('#header-designer-gradientpicker'), $('#header-designer-gradientpicker-hidden'), header_gr[0], header_gr[1], function(color1, color2){
                 $('header').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                 setBackgroundGradientStyle('header', color1, color2);
-                var bg_color = $('header').css('backgroundColor');
-                if (bg_color != "transparent") {
-                    setBackgroundColorStyle('header', bg_color, true);
-                }
+                setBackgroundColorStyle('header', color1, true);
             });
             
             // header bg image
@@ -136,9 +130,14 @@
                 var logo_color = $('header #site-logo').css('color');
                 $('body').append('<div class="designer_colorpicker" id="logo-designer-colorpicker" title="'+t('Logo color')+'"></div>');
                 designer_positions['logo_color'] = function() {
+                    if ($('header #site-logo').css('display')=='none' || $('header #site-logo').css('visibility')=='hidden') {
+                        $('#logo-designer-colorpicker').hide();
+                        return;
+                    }
                     var logo_cx = $('header #site-logo').offset().left+.5*colorpicker_size;
                     var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2;
                     $('#logo-designer-colorpicker').css({'left':logo_cx,'top':logo_cy});
+                    $('#logo-designer-colorpicker').show();
                 };
                 $('#logo-designer-colorpicker').tooltip();
                 designer_colorpicker($('#logo-designer-colorpicker'), logo_color, function(color){
@@ -152,9 +151,14 @@
                 var slogan_color = $('header #site-slogan').css('color');
                 $('body').append('<div class="designer_colorpicker" id="slogan-designer-colorpicker" title="'+t('Slogan color')+'"></div>');
                 designer_positions['slogan_color'] = function() {
+                    if ($('header #site-slogan').css('display')=='none' || $('header #site-slogan').css('visibility')=='hidden') {
+                        $('#slogan-designer-colorpicker').hide();
+                        return;
+                    }
                     var slogan_cx = $('header #site-slogan').offset().left+.5*colorpicker_size;
                     var slogan_cy = $('header #site-slogan').offset().top+($('header #site-slogan').outerHeight()-colorpicker_size)/2;
                     $('#slogan-designer-colorpicker').css({'left':slogan_cx,'top':slogan_cy});
+                    $('#slogan-designer-colorpicker').show();
                 };
                 $('#slogan-designer-colorpicker').tooltip();
                 designer_colorpicker($('#slogan-designer-colorpicker'), slogan_color, function(color){
@@ -185,9 +189,14 @@
                 var lang_color = $('header ul#language-switcher li a.active').css('color');
                 $('body').append('<div class="designer_colorpicker" id="lang-color-designer-colorpicker" title="'+t('Language color')+'"></div>');
                 designer_positions['lang_color'] = function() {
+                    if ($('header ul#language-switcher').css('display')=='none' || $('header ul#language-switcher').css('visibility')=='hidden') {
+                        $('#lang-color-designer-colorpicker').hide();
+                        return;
+                    }
                     var lang_cx = $('header ul#language-switcher').offset().left;
                     var lang_cy = $('header ul#language-switcher').offset().top+$('header ul#language-switcher').outerHeight()+.5*colorpicker_size;
                     $('#lang-color-designer-colorpicker').css({'left':lang_cx,'top':lang_cy});
+                    $('#lang-color-designer-colorpicker').show();
                 };
                 $('#lang-color-designer-colorpicker').tooltip();
                 designer_colorpicker($('#lang-color-designer-colorpicker'), lang_color, function(color){
@@ -199,14 +208,123 @@
                 var lang_bg = $('header ul#language-switcher li a.active').css('backgroundColor');
                 $('body').append('<div class="designer_colorpicker" id="lang-bg-designer-colorpicker" title="'+t('Language background')+'"></div>');
                 designer_positions['lang_bg'] = function() {
+                    if ($('header ul#language-switcher').css('display')=='none' || $('header ul#language-switcher').css('visibility')=='hidden') {
+                        $('#lang-bg-designer-colorpicker').hide();
+                        return;
+                    }
                     var lang_bx = $('header ul#language-switcher').offset().left+1.5*colorpicker_size;
                     var lang_by = $('header ul#language-switcher').offset().top+$('header ul#language-switcher').outerHeight()+.5*colorpicker_size;
                     $('#lang-bg-designer-colorpicker').css({'left':lang_bx,'top':lang_by});
+                    $('#lang-bg-designer-colorpicker').show();
                 };
                 $('#lang-bg-designer-colorpicker').tooltip();
                 designer_colorpicker($('#lang-bg-designer-colorpicker'), lang_bg, function(color){
                     $('header ul#language-switcher li a.active').css('backgroundColor', color);
                     setBackgroundColorStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', color);
+                });
+            }
+
+            // header user menu
+            if ($('header ul#user-menu').length>0) {
+                // header user menu color
+                var usermenu_color = $('header ul#user-menu li a').css('color');
+                $('body').append('<div class="designer_colorpicker" id="usermenu-color-designer-colorpicker" title="'+t('User menu color')+'"></div>');
+                designer_positions['usermenu_color'] = function() {
+                    if ($('header ul#user-menu').css('display')=='none' || $('header ul#user-menu').css('visibility')=='hidden') {
+                        $('#usermenu-color-designer-colorpicker').hide();
+                        return;
+                    }
+                    var usermenu_cx = $('header ul#user-menu').offset().left;
+                    var usermenu_cy = $('header ul#user-menu').offset().top+$('header ul#user-menu').outerHeight()+.5*colorpicker_size;
+                    $('#usermenu-color-designer-colorpicker').css({'left':usermenu_cx,'top':usermenu_cy});
+                    $('#usermenu-color-designer-colorpicker').show();
+                };
+                $('#usermenu-color-designer-colorpicker').tooltip();
+                designer_colorpicker($('#usermenu-color-designer-colorpicker'), usermenu_color, function(color){
+                    $('header ul#user-menu li a').css('color', color);
+                    setColorStyle('ul#user-menu li.menu-item,ul#user-menu li.menu-item a.menu-link:link,ul#user-menu li.menu-item a.menu-link:visited,ul#user-menu li.menu-item a.menu-link:hover,ul#user-menu li.menu-item a.menu-link.active,ul#user-menu ul.dropdown-menu li a,ul#user-menu ul.dropdown-menu li a:hover,ul#user-menu ul.dropdown-menu li a:focus', color);
+                });
+                
+                // header user menu background
+                var usermenu_gr = extractGradient($('header ul#user-menu'));
+                $('body').append('<div class="designer_gradientpicker" id="usermenu-bg-designer-gradientpicker" title="'+t('User menu background')+'"></div><div class="designer_gradientpicker_hidden" id="usermenu-bg-designer-gradientpicker-hidden"></div>');
+                designer_positions['usermenu_bg'] = function() {
+                    if ($('header ul#user-menu').css('display')=='none' || $('header ul#user-menu').css('visibility')=='hidden') {
+                        $('#usermenu-bg-designer-gradientpicker').hide();
+                        $('#usermenu-bg-designer-gradientpicker-hidden').hide();
+                        return;
+                    }
+                    var usermenu_bx = $('header ul#user-menu').offset().left+1.5*colorpicker_size;
+                    var usermenu_by = $('header ul#user-menu').offset().top+$('header ul#user-menu').outerHeight()+.5*colorpicker_size;
+                    $('#usermenu-bg-designer-gradientpicker').css({'left':usermenu_bx,'top':usermenu_by});
+                    $('#usermenu-bg-designer-gradientpicker-hidden').css({'left':usermenu_bx-gradientpicker_wnd_size,'top':usermenu_by});
+                    $('#usermenu-bg-designer-gradientpicker').show();
+                    $('#usermenu-bg-designer-gradientpicker-hidden').show();
+                };
+                $('#usermenu-bg-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#usermenu-bg-designer-gradientpicker'), $('#usermenu-bg-designer-gradientpicker-hidden'), usermenu_gr[1], usermenu_gr[0], function(color2, color1){
+                    $('header ul#user-menu').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                    $('header ul#user-menu').css('border-color', color1);
+                    setBackgroundGradientStyle('header ul#user-menu', color1, color2);
+                    setBackgroundStyle('header ul#user-menu li.menu-item.open,header ul#user-menu ul.dropdown-menu', color2);
+                    setBackgroundStyle('ul#user-menu ul.dropdown-menu li a:hover,ul#user-menu ul.dropdown-menu li a:focus,ul#user-menu ul.dropdown-menu .divider', color1);
+                    setBackgroundColorStyle('header ul#user-menu', color1, true);
+                    setBorderColorStyle('header ul#user-menu', color1);
+                });
+            }
+
+            // header top menu
+            if ($('header #top-menu-wrapper nav').length>0) {
+                // header top menu color
+                var topmenu_color = $('header #top-menu-wrapper nav a').css('color');
+                $('body').append('<div class="designer_colorpicker" id="topmenu-color-designer-colorpicker" title="'+t('Top menu color')+'"></div>');
+                designer_positions['topmenu_color'] = function() {
+                    if ($('header #top-menu-wrapper').css('display')=='none' || $('header #top-menu-wrapper').css('visibility')=='hidden') {
+                        $('#topmenu-color-designer-colorpicker').hide();
+                        return;
+                    }
+                    var topmenu_cx = $('header #top-menu-wrapper nav').offset().left+($('header #top-menu-wrapper nav').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                    var topmenu_cy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size)/2;
+                    $('#topmenu-color-designer-colorpicker').css({'left':topmenu_cx,'top':topmenu_cy});
+                    $('#toprmenu-color-designer-colorpicker').show();
+                };
+                $('#topmenu-color-designer-colorpicker').tooltip();
+                designer_colorpicker($('#topmenu-color-designer-colorpicker'), topmenu_color, function(color){
+                    $('header #top-menu-wrapper nav a, header #top-menu-wrapper .form-control, header #top-menu-wrapper .form-control::placeholder, header #top-menu-wrapper .btn-default').css('color', color);
+                    setColorStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper .form-control,header #top-menu-wrapper .btn-default,header .navbar-default .navbar-toggle', color);
+                    setColorStyle('header #top-menu-wrapper .form-control::placeholder', color);
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color);
+                });
+                
+                // header top menu background
+                var topmenu_gr = extractGradient($('header #top-menu-wrapper nav'));
+                $('body').append('<div class="designer_gradientpicker" id="topmenu-bg-designer-gradientpicker" title="'+t('Top menu background')+'"></div><div class="designer_gradientpicker_hidden" id="topmenu-bg-designer-gradientpicker-hidden"></div>');
+                designer_positions['topmenu_bg'] = function() {
+                    if ($('header #top-menu-wrapper').css('display')=='none' || $('header #top-menu-wrapper').css('visibility')=='hidden') {
+                        $('#topmenu-bg-designer-gradientpicker').hide();
+                        $('#topmenu-bg-designer-gradientpicker-hidden').hide();
+                        return;
+                    }
+                    var topmenu_gx = $('header #top-menu-wrapper nav').offset().left+($('header #top-menu-wrapper nav').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                    var topmenu_gy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size)/2;
+                    $('#topmenu-bg-designer-gradientpicker').css({'left':topmenu_gx,'top':topmenu_gy});
+                    $('#topmenu-bg-designer-gradientpicker-hidden').css({'left':topmenu_gx+gradientpicker_wnd_size,'top':topmenu_gy});
+                    $('#topmenu-bg-designer-gradientpicker').show();
+                    $('#topmenu-bg-designer-gradientpicker-hidden').show();
+                };
+                $('#topmenu-bg-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#topmenu-bg-designer-gradientpicker'), $('#topmenu-bg-designer-gradientpicker-hidden'), topmenu_gr[0], topmenu_gr[1], function(color1, color2){
+                    $('header #top-menu-wrapper nav').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                    $('header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .navbar-default .navbar-nav .active a, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('background', color2);
+                    $('header #top-menu-wrapper .navbar-default, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color1);
+                    $('header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color2);
+                    setBackgroundGradientStyle('header #top-menu-wrapper nav.navbar-default', color1, color2);
+                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default', color2);
+                    setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover', color1);
+                    setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', color1, true);
+                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form', color1);
+                    setTextShadowStyle('header #top-menu-wrapper .btn-default', '0 1px 0 '+color2);
+                    setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
                 });
             }
         }
@@ -316,11 +434,11 @@
     var setBackgroundGradientStyle = function(element, value1, value2, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bggradientwebkit1']='-webkit-linear-gradient(top, ' + value1 + ' 0, ' + value2 + ' 100%);';
-        window.editorStyles[element]['bggradientwebkit2']='-webkit-gradient(linear, left top, left bottom, from(' + value1 + '), to(' + value2 + '));';
-        window.editorStyles[element]['bggradientopera']='-o-linear-gradient(top, ' + value1 + ' 0, ' + value2 + ' 100%);';
+        window.editorStyles[element]['bggradientwebkit1']='-webkit-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);';
+        window.editorStyles[element]['bggradientwebkit2']='-webkit-gradient(linear,left top,left bottom,from(' + value1 + '),to(' + value2 + '));';
+        window.editorStyles[element]['bggradientopera']='-o-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);';
         window.editorStyles[element]['bggradient']='background-image:linear-gradient(to bottom,' + value1 + ',' + value2 + ');';
-        window.editorStyles[element]['bggradientie']='filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHex(value1) + ', endColorstr=' + rgbaToHex(value2) + ', GradientType=0);';
+        window.editorStyles[element]['bggradientie']='filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHex(value1) + ',endColorstr=' + rgbaToHex(value2) + ',GradientType=0);';
         if (!addOnly) {
             removeBackgroundColorStyle(element);
             removeBackgroundImageStyle(element);
@@ -401,6 +519,86 @@
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
         window.editorStyles[element]['color']=null;
     };
+
+    var setBorderColorStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bordercolor']='border-color:' + value + ';';
+    };
+    
+    var getBorderColorStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['bordercolor'])=="undefined") return null;
+        return window.editorStyles[element]['bordercolor'];
+    };
+    
+    var removeBorderColorStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bordercolor']=null;
+    };
+
+    var setBorderStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['border']='border:' + value + ';';
+    };
+    
+    var getBorderStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['border'])=="undefined") return null;
+        return window.editorStyles[element]['border'];
+    };
+    
+    var removeBorderStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['border']=null;
+    };
+    
+    var setBoxShadowStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['boxshadow']='box-shadow:' + value + ';';
+    };
+    
+    var getBoxShadowStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['boxshadow'])=="undefined") return null;
+        return window.editorStyles[element]['boxshadow'];
+    };
+    
+    var removeBoxShadowStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['boxshadow']=null;
+    };
+    
+    var setTextShadowStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['textshadow']='text-shadow:' + value + ';';
+    };
+    
+    var getTextShadowStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['textshadow'])=="undefined") return null;
+        return window.editorStyles[element]['textshadow'];
+    };
+    
+    var removeTextShadowStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['textshadow']=null;
+    };
+
+    var setFilterStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bggradientie']='filter:' + value + ';';
+    };
+    
+    var getFilterStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['bggradientie'])=="undefined") return null;
+        return window.editorStyles[element]['bggradientie'];
+    };
+    
+    var removeFilterStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bggradientie']=null;
+    };
     
     var parseStyles = function(code) {
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
@@ -420,18 +618,18 @@
                         if (m3[1] == 'url') {
                             setBackgroundImageStyle(element, m3[2], true);
                         } else if (m3[1] == 'linear-gradient') {
-                            regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[,](rgb[a]?[\(][^\)]+[\)])','gi');
+                            regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
                             m4 = regexp4.exec(m3[2]);
                             if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[,]([a-z0-9#]+)','gi');
+                                regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[^,]*[,]([a-z0-9#]+)','gi');
                                 m4 = regexp4.exec(m3[2]);
                             }
                             if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[,](rgb[a]?[\(][^\)]+[\)])','gi');
+                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
                                 m4 = regexp4.exec(m3[2]);
                             }
                             if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[,]([a-z0-9#]+)','gi');
+                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[^,]*[,]([a-z0-9#]+)','gi');
                                 m4 = regexp4.exec(m3[2]);
                             }
                             if (m4) {
@@ -443,6 +641,16 @@
                     setBackgroundStyle(element, value, true);
                 } else if (prop == 'color') {
                     setColorStyle(element, value);
+                } else if (prop == 'border-color') {
+                    setBorderColorStyle(element, value);
+                } else if (prop == 'border') {
+                    setBorderStyle(element, value);
+                } else if (prop == 'box-shadow') {
+                    setBoxShadowStyle(element, value);
+                } else if (prop == 'text-shadow') {
+                    setTextShadowStyle(element, value);
+                } else if (prop == 'filter') {
+                    setFilterStyle(element, value);
                 }
             }
         }
@@ -456,18 +664,18 @@
             regexp = new RegExp('([a-z\-]+)[\(](.+)[\)]','gi');
             if (m = regexp.exec(value)) {
                 if (m[1] == 'linear-gradient') {
-                    var regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[,](rgb[a]?[\(][^\)]+[\)])','gi');
+                    var regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
                     var m2 = regexp2.exec(m[2]);
                     if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[,]([a-z0-9#]+)','gi');
+                        regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,]([a-z0-9#]+)','gi');
                         m2 = regexp2.exec(m[2]);
                     }
                     if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[,](rgb[a]?[\(][^\)]+[\)])','gi');
+                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
                         m2 = regexp2.exec(m[2]);
                     }
                     if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[,]([a-z0-9#]+)','gi');
+                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,]([a-z0-9#]+)','gi');
                         m2 = regexp2.exec(m[2]);
                     }
                     if (m2) {
@@ -489,6 +697,7 @@
     };
 
     var rgbaToHex = function(color) {
+        if (color == 'transparent') return '#00000000';
         if (color.indexOf('#')==0) return color;
         var regexp = new RegExp('rgb(?:[a])?[\(]([^,]+)[,]([^,]+)[,]([^,\)]+)(?:[,]([^\)]+))?[\)]', 'i');
         var m = regexp.exec(color);

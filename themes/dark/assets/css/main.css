@@ -268,13 +268,13 @@ dt {
 .btn-primary {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color: #525C6F;
-	background-image:-webkit-linear-gradient(top,#525C6F 0, #2D2D3B 100%);
-	background-image:-o-linear-gradient(top,#525C6F 0,#2D2D3B 100%);
-	background-image:-webkit-gradient(linear,left top,left bottom,from(#525C6F),to(#2D2D3B));
-	background-image:linear-gradient(to bottom,#525C6F 0,#2D2D3B 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff525C6F', endColorstr='#ff2D2D3B', GradientType=0);
-	background-repeat:repeat-x;
-	border-color: rgb(57, 65, 71);
+    background-image:-webkit-linear-gradient(top,#525C6F 0, #2D2D3B 100%);
+    background-image:-o-linear-gradient(top,#525C6F 0,#2D2D3B 100%);
+    background-image:-webkit-gradient(linear,left top,left bottom,from(#525C6F),to(#2D2D3B));
+    background-image:linear-gradient(to bottom,#525C6F 0,#2D2D3B 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff525C6F', endColorstr='#ff2D2D3B', GradientType=0);
+    background-repeat:repeat-x;
+    border-color: rgb(57, 65, 71);
     color: #ddd;
 }
 .btn-primary:hover,
@@ -288,9 +288,9 @@ dt {
     border-color: #324465;
 }
 .btn-primary.active.focus,.btn-primary.active:focus,.btn-primary.active:hover,.btn-primary:active.focus,.btn-primary:active:focus,.btn-primary:active:hover,.open>.dropdown-toggle.btn-primary.focus,.open>.dropdown-toggle.btn-primary:focus,.open>.dropdown-toggle.btn-primary:hover {
-	color:#fff;
+    color:#fff;
     background-color: rgb(60, 67, 78);
-	border-color: #1b2e40
+    border-color: #1b2e40
 }
 #main-container .form-control {
     background-color: #42464B;
@@ -597,7 +597,7 @@ ul#user-menu li.menu-item {
     color: #D8D8D8;
 }
 ul#user-menu li.menu-item.open {
-
+    border-radius: 0px 0px 10px 10px;
 }
 ul#user-menu li.menu-item-separator {
     margin: 0px 0px;
@@ -677,9 +677,6 @@ ul#language-switcher li a.active {
     margin-right: 10px;
     max-width: 200px;
     max-height: 80px;
-
-    /*-webkit-filter: hue-rotate(330deg);*/
-    /*filter: hue-rotate(330deg);*/
 }
 #site-logo-wrapper a#site-logo span {
     font-size: 30px;
@@ -728,7 +725,7 @@ header #top-menu-wrapper .navbar-default .navbar-nav > .active > a,
 header #top-menu-wrapper .navbar-default .navbar-nav > .open > a {
     color: #ffffff;
 }
-header #top-menu-wrapper nav input[name=text] {
+header #top-menu-wrapper nav .form-control {
     background-color: #616875;
     color: #cccccc;
     border: 1px solid #888;

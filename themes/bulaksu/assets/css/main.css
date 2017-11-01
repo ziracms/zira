@@ -331,9 +331,9 @@ header .header-top-buttons .header-top-button .social-btn {
 ul#user-menu {
     list-style-type: none;
     display: block;
-    margin: 0px 15px 0px 50px;
+    margin: 0px 15px 0px 45px;
     padding: 0px;
-    height: 30px;
+    height: 35px;
     float: right;
 }
 ul#user-menu.authorized {

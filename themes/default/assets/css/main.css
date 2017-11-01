@@ -361,7 +361,7 @@ ul#user-menu li.menu-item {
     color: #333;
 }
 ul#user-menu li.menu-item.open {
-
+    border-radius: 0px 0px 10px 10px;
 }
 ul#user-menu li.menu-item-separator {
     margin: 0px 0px;
@@ -1722,7 +1722,7 @@ a.scroll-top.visible:visited {
     a.scroll-top {
         display: none !important;
     }
-    
+}
 @media (min-width: 768px) {
     .search-simple-form {
         display: none;
