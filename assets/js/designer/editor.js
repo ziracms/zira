@@ -1,7 +1,9 @@
 (function($){
     $(document).ready(function(){
         $('body').append('<div class="designer_overlay"></div>');
-        
+    });
+    
+    $(window).load(function(){
         if ($('head style').length>0) {
             parseStyles($('head style').text());
         }
@@ -33,9 +35,8 @@
                 $('body').css('background', color);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
-                setBackgroundColorStyle('body', color);
-                setBackgroundStyle('#main-container-wrapper', 'none');
-                setBackgroundStyle('#main-container', 'none');
+                setBackgroundStyle('body', color);
+                setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
             }, 'left');
             
             // body bg gradient
@@ -53,8 +54,7 @@
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
                 setBackgroundGradientStyle('body', color1, color2);
-                setBackgroundStyle('#main-container-wrapper', 'none');
-                setBackgroundStyle('#main-container', 'none');
+                setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
                 setBackgroundColorStyle('body', color1, true);
             }, 'left');
             
@@ -73,8 +73,7 @@
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
                 setBackgroundStyle('body', background);
-                setBackgroundStyle('#main-container-wrapper', 'none');
-                setBackgroundStyle('#main-container', 'none');
+                setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
             });
         }
         
@@ -127,8 +126,9 @@
                 setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
             });
             
-            // header logo color
+            // header logo
             if ($('header #site-logo').length>0) {
+                // header logo color
                 var logo_color = $('header #site-logo').css('color');
                 $('body').append('<div class="designer_colorpicker" id="logo-designer-colorpicker" title="'+t('Logo color')+'"></div>');
                 designer_positions['logo_color'] = function() {
@@ -137,7 +137,7 @@
                         return;
                     }
                     var logo_cx = $('header #site-logo').offset().left+.5*colorpicker_size;
-                    var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2;
+                    var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
                     $('#logo-designer-colorpicker').css({'left':logo_cx,'top':logo_cy});
                     $('#logo-designer-colorpicker').show();
                 };
@@ -146,10 +146,30 @@
                     $('header #site-logo').css('color', color);
                     setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color);
                 }, 'left');
+                
+                // header logo font size
+                var logo_font = $('header #site-logo span').css('fontSize');
+                $('body').append('<div class="designer_fontpicker" id="logo-designer-fontpicker" title="'+t('Logo font size')+'"></div>');
+                designer_positions['logo_font'] = function() {
+                    if ($('header #site-logo').css('display')=='none' || $('header #site-logo').css('visibility')=='hidden') {
+                        $('#logo-designer-fontpicker').hide();
+                        return;
+                    }
+                    var logo_fx = $('header #site-logo').offset().left+.5*colorpicker_size;
+                    var logo_fy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2+.75*colorpicker_size;
+                    $('#logo-designer-fontpicker').css({'left':logo_fx,'top':logo_fy});
+                    $('#logo-designer-fontpicker').show();
+                };
+                $('#logo-designer-fontpicker').tooltip();
+                designer_fontpicker($('#logo-designer-fontpicker'), logo_font, designer_positions, function(size){
+                    $('header #site-logo span').css('fontSize', size);
+                    setFontSizeStyle('#site-logo-wrapper a#site-logo span', size);
+                });
             }
             
-            // header slogan color
+            // header slogan
             if ($('header #site-slogan').length>0) {
+                // header slogan color
                 var slogan_color = $('header #site-slogan').css('color');
                 $('body').append('<div class="designer_colorpicker" id="slogan-designer-colorpicker" title="'+t('Slogan color')+'"></div>');
                 designer_positions['slogan_color'] = function() {
@@ -167,6 +187,25 @@
                     $('header #site-slogan').css('color', color);
                     setColorStyle('#site-logo-wrapper #site-slogan', color);
                 }, 'left');
+                
+                // header slogan font size
+                var slogan_font = $('header #site-slogan').css('fontSize');
+                $('body').append('<div class="designer_fontpicker" id="slogan-designer-fontpicker" title="'+t('Slogan font size')+'"></div>');
+                designer_positions['slogan_font'] = function() {
+                    if ($('header #site-slogan').css('display')=='none' || $('header #site-slogan').css('visibility')=='hidden') {
+                        $('#slogan-designer-fontpicker').hide();
+                        return;
+                    }
+                    var slogan_fx = $('header #site-slogan').offset().left+2*colorpicker_size;
+                    var slogan_fy = $('header #site-slogan').offset().top+($('header #site-slogan').outerHeight()-colorpicker_size)/2;
+                    $('#slogan-designer-fontpicker').css({'left':slogan_fx,'top':slogan_fy});
+                    $('#slogan-designer-fontpicker').show();
+                };
+                $('#slogan-designer-fontpicker').tooltip();
+                designer_fontpicker($('#slogan-designer-fontpicker'), slogan_font, designer_positions, function(size){
+                    $('header #site-slogan').css('fontSize', size);
+                    setFontSizeStyle('#site-logo-wrapper #site-slogan', size);
+                });
             }
             
             // header text color
@@ -181,7 +220,7 @@
                 $('#header-text-designer-colorpicker').tooltip();
                 designer_colorpicker($('#header-text-designer-colorpicker'), header_text_color, function(color){
                     $('header #header-text-example').css('color', color);
-                    setColorStyle('header', color);
+                    setColorStyle('header,#site-logo-wrapper a#site-logo:hover', color);
                 }, 'left');
             }
             
@@ -266,12 +305,12 @@
                 $('#usermenu-bg-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#usermenu-bg-designer-gradientpicker'), $('#usermenu-bg-designer-gradientpicker-hidden'), usermenu_gr[1], usermenu_gr[0], function(color2, color1){
                     $('header ul#user-menu').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
-                    $('header ul#user-menu').css('border-color', color1);
+                    $('header,header ul#user-menu').css('border-color', color1);
                     setBackgroundGradientStyle('header ul#user-menu', color1, color2);
                     setBackgroundStyle('header ul#user-menu li.menu-item.open,header ul#user-menu ul.dropdown-menu', color2);
                     setBackgroundStyle('ul#user-menu ul.dropdown-menu li a:hover,ul#user-menu ul.dropdown-menu li a:focus,ul#user-menu ul.dropdown-menu .divider', color1);
                     setBackgroundColorStyle('header ul#user-menu', color1, true);
-                    setBorderColorStyle('header ul#user-menu,header ul#user-menu ul.dropdown-menu', color1);
+                    setBorderColorStyle('header,header ul#user-menu,header ul#user-menu ul.dropdown-menu', color1);
                 });
             }
 
@@ -318,19 +357,159 @@
                 designer_gradientpicker($('#topmenu-bg-designer-gradientpicker'), $('#topmenu-bg-designer-gradientpicker-hidden'), topmenu_gr[0], topmenu_gr[1], function(color1, color2){
                     $('header #top-menu-wrapper nav').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                     $('header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .navbar-default .navbar-nav .active a, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('background', color2);
-                    $('header #top-menu-wrapper .navbar-default, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color1);
+                    $('header #top-menu-wrapper .navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color1);
                     $('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color2);
                     setBackgroundGradientStyle('header #top-menu-wrapper nav.navbar-default', color1, color2);
                     setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', color2);
                     setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', color1);
                     setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', color1, true);
-                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item:last-child,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', color1);
+                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item:last-child,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', color1);
                     setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+color2);
                     setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
                 });
             }
         }
         
+        // content
+        if ($('#content main article').length>0) {
+            // article
+            if ($('#content main article .article').length>0) {
+                // article text color
+                var article_color = $('#content main article .article').css('color');
+                $('body').append('<div class="designer_colorpicker" id="article-designer-colorpicker" title="'+t('Text color')+'"></div>');
+                designer_positions['article_color'] = function() {
+                    var article_cx = $('#content main article .article').offset().left+($('#content main article .article').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                    var article_cy = $('#content main article .article').offset().top+($('#content main article .article').outerHeight()-colorpicker_size)/2;
+                    $('#article-designer-colorpicker').css({'left':article_cx,'top':article_cy});
+                };
+                $('#article-designer-colorpicker').tooltip();
+                designer_colorpicker($('#article-designer-colorpicker'), article_color, function(color){
+                    $('body').css('color', color);
+                    setColorStyle('body', color);
+                });
+                
+                // article font size
+                var article_font = $('#content main article .article').css('fontSize');
+                $('body').append('<div class="designer_fontpicker" id="article-designer-fontpicker" title="'+t('Font size')+'"></div>');
+                designer_positions['article_font'] = function() {
+                    var article_fx = $('#content main article .article').offset().left+($('#content main article .article').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                    var article_fy = $('#content main article .article').offset().top+($('#content main article .article').outerHeight()-colorpicker_size)/2;
+                    $('#article-designer-fontpicker').css({'left':article_fx,'top':article_fy});
+                };
+                $('#article-designer-fontpicker').tooltip();
+                designer_fontpicker($('#article-designer-fontpicker'), article_font, designer_positions, function(size){
+                    $('#content main article .article').css('fontSize', size);
+                    $('#content main article .article p').css('lineHeight', parseInt(size)+10+'px');
+                    setFontSizeStyle('#content main article .article', size);
+                    setLineHeightStyle('#content main article .article p', parseInt(size)+10+'px');
+                });
+                
+                // article title text color
+                var article_title_color = $('h1').css('color');
+                $('body').append('<div class="designer_colorpicker" id="article-title-designer-colorpicker" title="'+t('Title color')+'"></div>');
+                designer_positions['article_title_color'] = function() {
+                    var article_title_cx = $('h1').offset().left+$('h1').outerWidth()-4*colorpicker_size;
+                    var article_title_cy = $('h1').offset().top+($('h1').outerHeight()-colorpicker_size)/2;
+                    $('#article-title-designer-colorpicker').css({'left':article_title_cx,'top':article_title_cy});
+                };
+                $('#article-title-designer-colorpicker').tooltip();
+                designer_colorpicker($('#article-title-designer-colorpicker'), article_title_color, function(color){
+                    $('h1').css('color', color);
+                    setColorStyle('h1', color);
+                });
+                
+                // article title font size
+                var article_title_font = $('h1').css('fontSize');
+                $('body').append('<div class="designer_fontpicker" id="article-title-designer-fontpicker" title="'+t('Title font size')+'"></div>');
+                designer_positions['article_title_font'] = function() {
+                    var article_title_fx = $('h1').offset().left+$('h1').outerWidth()-2.5*colorpicker_size;
+                    var article_title_fy = $('h1').offset().top+($('h1').outerHeight()-colorpicker_size)/2;
+                    $('#article-title-designer-fontpicker').css({'left':article_title_fx,'top':article_title_fy});
+                };
+                $('#article-title-designer-fontpicker').tooltip();
+                designer_fontpicker($('#article-title-designer-fontpicker'), article_title_font, designer_positions, function(size){
+                    $('h1').css('fontSize', size);
+                    setFontSizeStyle('h1', size);
+                });
+            
+                // article info
+                if ($('#content main article .article-info').length>0) {
+                    // article info text color
+                    var article_info_color = $('#content main article .article-info .datetime').css('color');
+                    $('body').append('<div class="designer_colorpicker" id="article-info-designer-colorpicker" title="'+t('Date and author color')+'"></div>');
+                    designer_positions['article_info_color'] = function() {
+                        var article_info_cx = $('.article-info .datetime').offset().left+$('.article-info .datetime').outerWidth()+colorpicker_size;
+                        var article_info_cy = $('.article-info .datetime').offset().top+($('.article-info .datetime').outerHeight()-colorpicker_size)/2;
+                        $('#article-info-designer-colorpicker').css({'left':article_info_cx,'top':article_info_cy});
+                    };
+                    $('#article-info-designer-colorpicker').tooltip();
+                    designer_colorpicker($('#article-info-designer-colorpicker'), article_info_color, function(color){
+                        $('#content main article .article-info .datetime,#content main article .article-info .author').css('color', color);
+                        setColorStyle('#content main article .article-info .datetime,#content main article .article-info .author', color);
+                    });
+
+                    // article info font size
+                    var article_info_font = $('#content main article .article-info .datetime').css('fontSize');
+                    $('body').append('<div class="designer_fontpicker" id="article-info-designer-fontpicker" title="'+t('Date and author font size')+'"></div>');
+                    designer_positions['article_info_font'] = function() {
+                        var article_info_fx = $('.article-info .datetime').offset().left+$('.article-info .datetime').outerWidth()+2.5*colorpicker_size;
+                        var article_info_fy = $('.article-info .datetime').offset().top+($('.article-info .datetime').outerHeight()-colorpicker_size)/2;
+                        $('#article-info-designer-fontpicker').css({'left':article_info_fx,'top':article_info_fy});
+                    };
+                    $('#article-info-designer-fontpicker').tooltip();
+                    designer_fontpicker($('#article-info-designer-fontpicker'), article_info_font, designer_positions, function(size){
+                        $('#content main article .article-info .datetime,#content main article .article-info .author').css('fontSize', size);
+                        setFontSizeStyle('#content main article .article-info .datetime,#content main article .article-info .author', size);
+                    });
+                }
+                
+                // article links color
+                var article_link_color = $('.article a').css('color');
+                $('body').append('<div class="designer_colorpicker" id="article-link-designer-colorpicker" title="'+t('Link color')+'"></div>');
+                designer_positions['article_link_color'] = function() {
+                    var article_link_cx = $('.article a').offset().left+$('.article a').outerWidth()+.5*colorpicker_size;
+                    var article_link_cy = $('.article a').offset().top+($('.article a').outerHeight()-colorpicker_size)/2;
+                    $('#article-link-designer-colorpicker').css({'left':article_link_cx,'top':article_link_cy});
+                };
+                $('#article-link-designer-colorpicker').tooltip();
+                designer_colorpicker($('#article-link-designer-colorpicker'), article_link_color, function(color){
+                    $('.article a,.article-info a,.zira-calendar-selector a,.comment-head a').css('color', color);
+                    setColorStyle('a:link,a:visited,a:hover,a:active,a.active,a.external-url', color);
+                },'left');
+            }
+
+            // subtitle text color
+            var subtitle_color = $('h2').eq(0).css('color');
+            $('body').append('<div class="designer_colorpicker" id="subtitle-designer-colorpicker" title="'+t('Subtitle color')+'"></div>');
+            designer_positions['subtitle_color'] = function() {
+                var subtitle_cx = $('h2').eq(0).offset().left+$('h2').eq(0).outerWidth()-4*colorpicker_size;
+                var subtitle_cy = $('h2').eq(0).offset().top+($('h2').eq(0).outerHeight()-colorpicker_size)/2;
+                $('#subtitle-designer-colorpicker').css({'left':subtitle_cx,'top':subtitle_cy});
+            };
+            $('#subtitle-designer-colorpicker').tooltip();
+            designer_colorpicker($('#subtitle-designer-colorpicker'), subtitle_color, function(color){
+                $('h2').not('.panel-title').css('color', color);
+                setColorStyle('h2', color);
+                setColorStyle('.home-category-wrapper .home-category-title,.home-category-wrapper .home-category-title a:link,.home-category-wrapper .home-category-title a:visited', color);
+            });
+
+            // subtitle font size
+            var subtitle_font = $('h2').eq(0).css('fontSize');
+            $('body').append('<div class="designer_fontpicker" id="subtitle-designer-fontpicker" title="'+t('Subtitle font size')+'"></div>');
+            designer_positions['subtitle_font'] = function() {
+                var subtitle_fx = $('h2').eq(0).offset().left+$('h2').eq(0).outerWidth()-2.5*colorpicker_size;
+                var subtitle_fy = $('h2').eq(0).offset().top+($('h2').eq(0).outerHeight()-colorpicker_size)/2;
+                $('#subtitle-designer-fontpicker').css({'left':subtitle_fx,'top':subtitle_fy});
+            };
+            $('#subtitle-designer-fontpicker').tooltip();
+            designer_fontpicker($('#subtitle-designer-fontpicker'), subtitle_font, designer_positions, function(size){
+                $('#content h2').not('.panel-title').css('fontSize', size);
+                setFontSizeStyle('h2', size);
+                setFontSizeStyle('.home-category-wrapper .home-category-title,.home-category-wrapper .home-category-title a:link,.home-category-wrapper .home-category-title a:visited', size);
+            });
+        }
+        
+        $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_fontpicker, .designer_fontpicker_sign').show();
         $(window).trigger('resize');
     });
     
@@ -346,7 +525,7 @@
             color: init_color,
             align: position
         }).on('changeColor', zira_bind($(element), function(e) {
-            var color = e.color.toString('rgba');
+            var color = e.color.toString();
             if (typeof(callback)!="undefined") {
                 callback.call(this, color);
             }
@@ -367,8 +546,8 @@
         }).on('showPicker', zira_bind($(child), function() {
             $(this).colorpicker('show');    
         })).on('changeColor', zira_bind($(child), function(e) {
-            var color1 = e.color.toString('rgba');
-            var color2 = $(this).data('colorpicker').color.toString('rgba');
+            var color1 = e.color.toString();
+            var color2 = $(this).data('colorpicker').color.toString();
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
@@ -384,8 +563,8 @@
             color: init_color2,
             align: position
         }).on('changeColor', zira_bind($(element), function(e) {
-            var color2 = e.color.toString('rgba');
-            var color1 = $(this).data('colorpicker').color.toString('rgba');
+            var color2 = e.color.toString();
+            var color1 = $(this).data('colorpicker').color.toString();
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
@@ -409,6 +588,40 @@
                 parent.jQuery('body', parent.document).trigger('designerEditorFocus');
             }), this]);
         }));
+    };
+    
+    var designer_fontpicker = function(element, size, designer_positions, callback) {
+        if (typeof(size)=="undefined") size = $('body').css('fontSize');
+        size = parseInt(size);
+        var id = $(element).attr('id');
+        $('body').append('<span id="'+id+'-plus'+'" data-sign="1" class="designer_fontpicker_sign glyphicon glyphicon-plus-sign" title="'+t('Increase')+'"></span>');
+        $('body').append('<span id="'+id+'-minus'+'" data-sign="-1" class="designer_fontpicker_sign glyphicon glyphicon-minus-sign" title="'+t('Decrease')+'"></span>');
+        designer_positions[id+'_fontpicker_sign'] = zira_bind(element, function() {
+            var id = $(this).attr('id');
+            if ($(this).css('display')=='none' || $(this).css('visibility')=='hidden') {
+                $('#'+id+'-plus').hide();
+                $('#'+id+'-minus').hide();
+                return;
+            }
+            var fh = parseInt($('.designer_fontpicker_sign').css('fontSize'));
+            var fx = $(this).offset().left + $(this).outerWidth() + .5*fh;
+            var fy = $(this).offset().top + ($(this).outerHeight()-fh)/2;
+            $('#'+id+'-plus').css({left:fx,top:fy-.5*fh-1});
+            $('#'+id+'-minus').css({left:fx,top:fy+.5*fh+1});
+            $('#'+id+'-plus').show();
+            $('#'+id+'-minus').show();
+        });
+        $('#'+id+'-plus').tooltip();
+        $('#'+id+'-minus').tooltip();
+        $('#'+id+'-plus,#'+id+'-minus').click(function(){
+            var sign = parseInt($(this).data('sign'));
+            size += sign;
+            if (size<1) size = 1;
+            if (size>50) size = 50;
+            if (typeof(callback)!="undefined") {
+                callback.call(this, size+'px');
+            }
+        });
     };
     
     var setBackgroundColorStyle = function(element, value, addOnly) {
@@ -601,6 +814,38 @@
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
         window.editorStyles[element]['bggradientie']=null;
     };
+
+    var setFontSizeStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['fontsize']='font-size:' + value + ';';
+    };
+    
+    var getFontSizeStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['fontsize'])=="undefined") return null;
+        return window.editorStyles[element]['fontsize'];
+    };
+    
+    var removeFontSizeStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['fontsize']=null;
+    };
+    
+    var setLineHeightStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['lineheight']='line-height:' + value + ';';
+    };
+    
+    var getLineHeightStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['lineheight'])=="undefined") return null;
+        return window.editorStyles[element]['lineheight'];
+    };
+    
+    var removeLineHeightStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['lineheight']=null;
+    };
     
     var parseStyles = function(code) {
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
@@ -653,6 +898,10 @@
                     setTextShadowStyle(element, value);
                 } else if (prop == 'filter') {
                     setFilterStyle(element, value);
+                } else if (prop == 'font-size') {
+                    setFontSizeStyle(element, value);
+                } else if (prop == 'line-height') {
+                    setLineHeightStyle(element, value);
                 }
             }
         }
@@ -729,7 +978,7 @@
     window.editorContent = function() {
         var content = '';
         for (var prop in window.editorStyles) {
-            content += prop + ' {' + "\r\n\t" + $.map(window.editorStyles[prop], function(value, index) { return value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
+            content += prop.split(',').join(','+"\r\n") + ' {' + "\r\n\t" + $.map(window.editorStyles[prop], function(value, index) { return value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
         }
         return content;
     };

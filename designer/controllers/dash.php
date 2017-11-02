@@ -52,8 +52,8 @@ class Dash extends \Dash\Controller {
         Zira\View::addScript('bootstrap.min.js');
         Zira\View::addCoreStyles();
         Zira\View::addCoreScripts();
-        Zira\View::addStyle('designer/editor.css');
-        Zira\View::addScript('designer/editor.js');
+        Zira\View::addStyle('designer/editor.css?t='.time());
+        Zira\View::addScript('designer/editor.js?t='.time());
         Zira\View::addSlider('slider', array(
             'auto' => true,
             'speed' => 500,

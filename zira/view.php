@@ -801,32 +801,6 @@ class View {
         self::addBodyBottomScript($script);
     }
     
-    public static function addColorpickerAssets() {
-        if (self::$_colorpicker_assets_added) return;
-        self::addStyle('bootstrap-colorpicker.min.css');
-        self::addScript('bootstrap-colorpicker.min.js');
-        self::$_colorpicker_assets_added = true;
-    }
-
-    public static function addColorpicker() {
-        if (self::$_colorpicker_added) return;
-        self::addColorpickerAssets();
-        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ ';
-        $script .= 'jQuery(\'.zira-colorpicker\').each(function(){';
-        $script .= 'jQuery(this).colorpicker().on(\'changeColor\', zira_bind(this, function(e) {';
-        $script .= 'var color = e.color.toString(\'rgba\');';
-        $script .= 'jQuery(this).data(\'color\', color);';
-        $script .= 'jQuery(this).trigger(\'change\');';
-        $script .= '}));';
-        $script .= '});';
-        $script .= '});';
-        $script .= Helper::tag_close('script');
-        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
-        self::addBodyBottomScript($script);
-        self::$_colorpicker_added = true;
-    }
-    
     protected static function _generateJPlayerPlaylist($files, $media_type, &$formats, $poster = null) {
         $media = array();
         foreach($files as $file) {
@@ -882,6 +856,32 @@ class View {
         $playlist .= ']';
         
         return $playlist;
+    }
+    
+    public static function addColorpickerAssets() {
+        if (self::$_colorpicker_assets_added) return;
+        self::addStyle('bootstrap-colorpicker.min.css');
+        self::addScript('bootstrap-colorpicker.min.js');
+        self::$_colorpicker_assets_added = true;
+    }
+
+    public static function addColorpicker() {
+        if (self::$_colorpicker_added) return;
+        self::addColorpickerAssets();
+        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
+        $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'jQuery(\'.zira-colorpicker\').each(function(){';
+        $script .= 'jQuery(this).colorpicker().on(\'changeColor\', zira_bind(this, function(e) {';
+        $script .= 'var color = e.color.toString(\'rgba\');';
+        $script .= 'jQuery(this).data(\'color\', color);';
+        $script .= 'jQuery(this).trigger(\'change\');';
+        $script .= '}));';
+        $script .= '});';
+        $script .= '});';
+        $script .= Helper::tag_close('script');
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
+        self::$_colorpicker_added = true;
     }
 
     public static function addAutoCompleter() {

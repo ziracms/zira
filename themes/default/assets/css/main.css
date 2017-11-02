@@ -75,7 +75,7 @@ a.active {
     color: #337AB7;
 }
 a.external-url {
-    color: #337AB7 !important;
+    color: #337AB7;
 }
 a.btn-primary {
     color: #FFF;
@@ -441,9 +441,6 @@ ul#language-switcher li a.active {
     margin-right: 10px;
     max-width: 200px;
     max-height: 80px;
-
-    /*-webkit-filter: hue-rotate(330deg);*/
-    /*filter: hue-rotate(330deg);*/
 }
 #site-logo-wrapper a#site-logo span {
     font-size: 30px;

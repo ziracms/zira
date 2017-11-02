@@ -62,7 +62,7 @@ class Reply extends Form {
             $html .= Helper::tag_close('div');
             $html .= Helper::tag_close('div');
             $html .= Helper::tag_open('div',array('class'=>'forum-attach-input-wrapper'));
-            $html .= $this->fileButton(Locale::tm('Attach files', 'forum'), 'attaches', array('class'=>'forum-attaches', 'title'=>Locale::tm('File max. size: %s', 'forum', \Forum\Models\File::DEFAULT_MAX_SIZE).' kB'), true);
+            $html .= $this->fileButton(Locale::tm('Attach files', 'forum'), 'attaches', array('class'=>'forum-attaches', 'title'=>Locale::tm('File max. size: %s', 'forum', (int)\Zira\Config::get('forum_file_max_size', \Forum\Models\File::DEFAULT_MAX_SIZE)).' kB'), true);
             $html .= Helper::tag_close('div');
         }
         $html .= $this->captcha(Locale::t('Enter result').'*');

@@ -78,7 +78,7 @@ a.active {
     text-decoration: underline;
 }
 a.external-url {
-    color: #81CAFF !important;
+    color: #81CAFF;
 }
 a.btn-primary {
     color: #FFF;
