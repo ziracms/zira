@@ -398,9 +398,9 @@
                 };
                 $('#article-designer-fontpicker').tooltip();
                 designer_fontpicker($('#article-designer-fontpicker'), article_font, designer_positions, function(size){
-                    $('#content main article .article').css('fontSize', size);
+                    $('#content main article .article,#content main article .article p').css('fontSize', size);
                     $('#content main article .article p').css('lineHeight', parseInt(size)+10+'px');
-                    setFontSizeStyle('#content main article .article', size);
+                    setFontSizeStyle('#content main article .article,#content main article .article p', size);
                     setLineHeightStyle('#content main article .article p', parseInt(size)+10+'px');
                 });
                 
@@ -445,7 +445,9 @@
                     $('#article-info-designer-colorpicker').tooltip();
                     designer_colorpicker($('#article-info-designer-colorpicker'), article_info_color, function(color){
                         $('#content main article .article-info .datetime,#content main article .article-info .author').css('color', color);
+                        $('.page-header').css('borderBottom', '1px solid '+color);
                         setColorStyle('#content main article .article-info .datetime,#content main article .article-info .author', color);
+                        setBorderBottomStyle('.page-header', '1px solid '+color);
                     });
 
                     // article info font size
@@ -506,6 +508,75 @@
                 $('#content h2').not('.panel-title').css('fontSize', size);
                 setFontSizeStyle('h2', size);
                 setFontSizeStyle('.home-category-wrapper .home-category-title,.home-category-wrapper .home-category-title a:link,.home-category-wrapper .home-category-title a:visited', size);
+            });
+        }
+        
+        // breadcrumbs
+        if ($('.breadcrumb').length>0) {
+            // breadcrumbs text color
+            var breadcrumbs_color1 = $('.breadcrumb a').css('color');
+            var breadcrumbs_color2 = $('.breadcrumb li.active').css('color');
+            $('body').append('<div class="designer_gradientpicker" id="breadcrumbs-designer-gradientpicker" title="'+t('Breadcrumbs color')+'"></div><div class="designer_gradientpicker_hidden" id="breadcrumbs-designer-gradientpicker-hidden"></div>');
+            designer_positions['breadcrumbs_color'] = function() {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                    $('#breadcrumbs-designer-gradientpicker').hide();
+                    $('#breadcrumbs-designer-gradientpicker-hidden').hide();
+                    return;
+                }
+                var breadcrumbs_cx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var breadcrumbs_cy = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                $('#breadcrumbs-designer-gradientpicker').css({'left':breadcrumbs_cx,'top':breadcrumbs_cy});
+                $('#breadcrumbs-designer-gradientpicker-hidden').css({'left':breadcrumbs_cx+gradientpicker_wnd_size,'top':breadcrumbs_cy});
+                $('#breadcrumbs-designer-gradientpicker').show();
+                $('#breadcrumbs-designer-gradientpicker-hidden').show();
+            };
+            $('#breadcrumbs-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#breadcrumbs-designer-gradientpicker'), $('#breadcrumbs-designer-gradientpicker-hidden'), breadcrumbs_color1, breadcrumbs_color2, function(color1, color2){
+                $('.breadcrumb a').css('color', color1);
+                $('.breadcrumb li.active').css('color', color2);
+                setColorStyle('.breadcrumb a:link,.breadcrumb a:visited', color1);
+                setColorStyle('.breadcrumb,.breadcrumb .active,.breadcrumb li a:before', color2);
+                setColorStyle('.breadcrumb li + li::before', color2);
+            });
+
+            // breadcrumbs font size
+            var breadcrumbs_font = $('.breadcrumb a').css('fontSize');
+            $('body').append('<div class="designer_fontpicker" id="breadcrumbs-designer-fontpicker" title="'+t('Breadcrumbs font size')+'"></div>');
+            designer_positions['breadcrumbs_font'] = function() {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                    $('#breadcrumbs-designer-colorpicker').hide();
+                    return;
+                }
+                var breadcrumbs_fx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var breadcrumbs_fy = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                $('#breadcrumbs-designer-fontpicker').css({'left':breadcrumbs_fx,'top':breadcrumbs_fy});
+                $('#breadcrumbs-designer-colorpicker').show();
+            };
+            $('#breadcrumbs-designer-fontpicker').tooltip();
+            designer_fontpicker($('#breadcrumbs-designer-fontpicker'), breadcrumbs_font, designer_positions, function(size){
+                $('.breadcrumb,.breadcrumb a:link,.breadcrumb a:visited').css('fontSize', size);
+                setFontSizeStyle('.breadcrumb,.breadcrumb a:link,.breadcrumb a:visited', size);
+            });
+            
+            // breadcrumbs background color
+            var breadcrumbs_bg_color = $('.breadcrumb').css('backgroundColor');
+            $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
+            designer_positions['breadcrumbs_bg_color'] = function() {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                    $('#breadcrumbs-bg-designer-colorpicker').hide();
+                    return;
+                }
+                var breadcrumbs_bx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+3*colorpicker_size;
+                var breadcrumbs_by = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                $('#breadcrumbs-bg-designer-colorpicker').css({'left':breadcrumbs_bx,'top':breadcrumbs_by});
+                $('#breadcrumbs-bg-designer-colorpicker').show();
+            };
+            $('#breadcrumbs-bg-designer-colorpicker').tooltip();
+            designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
+                $('.breadcrumb').css('background-color', color);
+                $('.breadcrumb').css('padding', '10px 15px');
+                setBackgroundStyle('.breadcrumb', color);
+                setPaddingStyle('.breadcrumb', '10px 15px');
             });
         }
         
@@ -766,6 +837,70 @@
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
         window.editorStyles[element]['border']=null;
     };
+
+    var setBorderTopStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bordertop']='border-top:' + value + ';';
+    };
+    
+    var getBorderTopStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['bordertop'])=="undefined") return null;
+        return window.editorStyles[element]['bordertop'];
+    };
+    
+    var removeBorderTopStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['bordertop']=null;
+    };
+    
+    var setBorderBottomStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderbottom']='border-bottom:' + value + ';';
+    };
+    
+    var getBorderBottomStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['borderbottom'])=="undefined") return null;
+        return window.editorStyles[element]['borderbottom'];
+    };
+    
+    var removeBorderBottomStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderbottom']=null;
+    };
+    
+    var setBorderLeftStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderleft']='border-left:' + value + ';';
+    };
+    
+    var getBorderLeftStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['borderleft'])=="undefined") return null;
+        return window.editorStyles[element]['borderleft'];
+    };
+    
+    var removeBorderLeftStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderleft']=null;
+    };
+    
+    var setBorderRightStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderright']='border-right:' + value + ';';
+    };
+    
+    var getBorderRightStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['borderright'])=="undefined") return null;
+        return window.editorStyles[element]['borderright'];
+    };
+    
+    var removeBorderRightStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['borderright']=null;
+    };
     
     var setBoxShadowStyle = function(element, value) {
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
@@ -846,6 +981,22 @@
         if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
         window.editorStyles[element]['lineheight']=null;
     };
+
+    var setPaddingStyle = function(element, value) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['padding']='padding:' + value + ';';
+    };
+    
+    var getPaddingStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        if (typeof(window.editorStyles[element]['padding'])=="undefined") return null;
+        return window.editorStyles[element]['padding'];
+    };
+    
+    var removePaddingStyle = function(element) {
+        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
+        window.editorStyles[element]['padding']=null;
+    };
     
     var parseStyles = function(code) {
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
@@ -890,6 +1041,14 @@
                     setColorStyle(element, value);
                 } else if (prop == 'border-color') {
                     setBorderColorStyle(element, value);
+                } else if (prop == 'border-top') {
+                    setBorderTopStyle(element, value);
+                } else if (prop == 'border-bottom') {
+                    setBorderBottomStyle(element, value);
+                } else if (prop == 'border-left') {
+                    setBorderLeftStyle(element, value);
+                } else if (prop == 'border-right') {
+                    setBorderRightStyle(element, value);
                 } else if (prop == 'border') {
                     setBorderStyle(element, value);
                 } else if (prop == 'box-shadow') {
@@ -902,6 +1061,8 @@
                     setFontSizeStyle(element, value);
                 } else if (prop == 'line-height') {
                     setLineHeightStyle(element, value);
+                } else if (prop == 'padding') {
+                    setPaddingStyle(element, value);
                 }
             }
         }

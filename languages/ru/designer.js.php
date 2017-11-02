@@ -28,6 +28,9 @@ return array(
     'Date and author font size' => 'Размер шрифта даты и автора',
     'Link color' => 'Цвет ссылки',
     'Subtitle color' => 'Цвет подзаголовка',
-    'Subtitle font size' => 'Размер шрифта подзаголовка'
+    'Subtitle font size' => 'Размер шрифта подзаголовка',
+    'Breadcrumbs color' => 'Цвет хлебных крошек',
+    'Breadcrumbs font size' => 'Размер шрифта хлебных крошек',
+    'Breadcrumbs background' => 'Фон хлебных крошек'
 );
 

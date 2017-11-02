@@ -73,6 +73,8 @@ class Dash extends \Dash\Controller {
         Zira\Router::setController(DEFAULT_CONTROLLER);
         Zira\Router::setAction(DEFAULT_ACTION);
         
+        Zira\Page::addBreadcrumb(null,Zira\Locale::t('User profile'));
+        
         Zira\View::render(array(), 'designer/page', 'designer/layout');
     }
     
