@@ -31,6 +31,9 @@ return array(
     'Subtitle font size' => 'Размер шрифта подзаголовка',
     'Breadcrumbs color' => 'Цвет хлебных крошек',
     'Breadcrumbs font size' => 'Размер шрифта хлебных крошек',
-    'Breadcrumbs background' => 'Фон хлебных крошек'
+    'Breadcrumbs background' => 'Фон хлебных крошек',
+    'Footer background' => 'Фон подвала',
+    'Footer text color' => 'Цвет текста подвала',
+    'Footer link color' => 'Цвет ссылок подвала'
 );
 
