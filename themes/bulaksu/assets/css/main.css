@@ -440,6 +440,10 @@ ul#language-switcher li a.active {
     margin: 20px 15px 0px;
     clear: both;
 }
+#top-menu-wrapper nav {
+    box-shadow: none;
+    border: none;
+}
 /** content **/
 .image {
     max-width:100%;

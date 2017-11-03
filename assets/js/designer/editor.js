@@ -9,7 +9,7 @@
         }
         
         var colorpicker_size = 22;
-        var colorpicker_wnd_size = 280;
+        var colorpicker_wnd_size = 245;
         var gradientpicker_wnd_size = 280;
         var container_x = $('#content').offset().left;
         
@@ -35,9 +35,16 @@
                 $('body').css('background', color);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
-                setBackgroundStyle('body', color);
+                if (color.indexOf('rgba')==0) {
+                    setBackgroundColorStyle('body', hexColor(color));
+                    setBackgroundStyle('body', color, true);
+                    setFilterStyle('body', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                } else {
+                    setBackgroundStyle('body', 'none');
+                    setBackgroundColorStyle('body', color, true);
+                }
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-            }, 'left');
+            }, 'left', false);
             
             // body bg gradient
             var body_gr = extractGradient($('body'));
@@ -50,12 +57,12 @@
             };
             $('#body-designer-gradientpicker').tooltip();
             designer_gradientpicker($('#body-designer-gradientpicker'), $('#body-designer-gradientpicker-hidden'), body_gr[0], body_gr[1], function(color1, color2){
-                $('body').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                $('body').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
+                setBackgroundColorStyle('body', hexColor(color1), true);
                 setBackgroundGradientStyle('body', color1, color2);
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-                setBackgroundColorStyle('body', color1, true);
             }, 'left');
             
             // body bg image
@@ -68,7 +75,7 @@
             $('#body-designer-imagepicker').tooltip();
             designer_imagepicker($('#body-designer-imagepicker'), function(url){
                 var bg_color = $('body').css('backgroundColor');
-                var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
+                var background = hexColor(bg_color) + ' url(' + url + ') no-repeat 50% 0%';
                 $('body').css('background', background);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
@@ -90,9 +97,15 @@
             $('#header-designer-colorpicker').tooltip();
             designer_colorpicker($('#header-designer-colorpicker'), header_bg, function(color){
                 $('header').css('background', color);
-                setBackgroundColorStyle('header', color);
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', color);
-            });
+                if (color.indexOf('rgba')==0) {
+                    setBackgroundColorStyle('header', hexColor(color));
+                    setBackgroundStyle('header', color, true);
+                    setFilterStyle('header', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                } else {
+                    setBackgroundColorStyle('header', color);
+                }
+                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
+            }, 'right', false);
             
             // header bg gradient
             var header_gr = extractGradient($('header'));
@@ -105,9 +118,10 @@
             };
             $('#header-designer-gradientpicker').tooltip();
             designer_gradientpicker($('#header-designer-gradientpicker'), $('#header-designer-gradientpicker-hidden'), header_gr[0], header_gr[1], function(color1, color2){
-                $('header').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                $('header').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                setBackgroundColorStyle('header', hexColor(color1), true);
                 setBackgroundGradientStyle('header', color1, color2);
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', color1, true);
+                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color1), true);
             });
             
             // header bg image
@@ -120,7 +134,7 @@
             $('#header-designer-imagepicker').tooltip();
             designer_imagepicker($('#header-designer-imagepicker'), function(url){
                 var bg_color = $('header').css('backgroundColor');
-                var background = bg_color + ' url(' + url + ') no-repeat 50% 0%';
+                var background = hexColor(bg_color) + ' url(' + url + ') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
                 setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
@@ -220,7 +234,7 @@
                 $('#header-text-designer-colorpicker').tooltip();
                 designer_colorpicker($('#header-text-designer-colorpicker'), header_text_color, function(color){
                     $('header #header-text-example').css('color', color);
-                    setColorStyle('header,#site-logo-wrapper a#site-logo:hover', color);
+                    setColorStyle('header,#site-logo-wrapper a#site-logo:hover,header .zira-search-preview-wnd .list .list-item .list-content-wrapper', color);
                 }, 'left');
             }
             
@@ -261,8 +275,14 @@
                 $('#lang-bg-designer-colorpicker').tooltip();
                 designer_colorpicker($('#lang-bg-designer-colorpicker'), lang_bg, function(color){
                     $('header ul#language-switcher li a.active').css('backgroundColor', color);
-                    setBackgroundColorStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', color);
-                });
+                    if (color.indexOf('rgba')==0) {
+                        setBackgroundColorStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', hexColor(color));
+                        setBackgroundStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', color, true);
+                        setFilterStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                    } else {
+                        setBackgroundColorStyle('ul#language-switcher li a:hover,ul#language-switcher li a.active', color);
+                    }
+                }, 'right', false);
             }
 
             // header user menu
@@ -304,13 +324,13 @@
                 };
                 $('#usermenu-bg-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#usermenu-bg-designer-gradientpicker'), $('#usermenu-bg-designer-gradientpicker-hidden'), usermenu_gr[1], usermenu_gr[0], function(color2, color1){
-                    $('header ul#user-menu').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                    $('header ul#user-menu').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                     $('header,header ul#user-menu').css('border-color', color1);
+                    setBackgroundColorStyle('header ul#user-menu', hexColor(color1), true);
                     setBackgroundGradientStyle('header ul#user-menu', color1, color2);
-                    setBackgroundStyle('header ul#user-menu li.menu-item.open,header ul#user-menu ul.dropdown-menu', color2);
-                    setBackgroundStyle('ul#user-menu ul.dropdown-menu li a:hover,ul#user-menu ul.dropdown-menu li a:focus,ul#user-menu ul.dropdown-menu .divider', color1);
-                    setBackgroundColorStyle('header ul#user-menu', color1, true);
-                    setBorderColorStyle('header,header ul#user-menu,header ul#user-menu ul.dropdown-menu', color1);
+                    setBackgroundStyle('header ul#user-menu li.menu-item.open,header ul#user-menu ul.dropdown-menu', hexColor(color2));
+                    setBackgroundStyle('ul#user-menu ul.dropdown-menu li a:hover,ul#user-menu ul.dropdown-menu li a:focus,ul#user-menu ul.dropdown-menu .divider', hexColor(color1));
+                    setBorderColorStyle('header,header ul#user-menu,header ul#user-menu ul.dropdown-menu', hexColor(color1));
                 });
             }
 
@@ -355,16 +375,17 @@
                 };
                 $('#topmenu-bg-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#topmenu-bg-designer-gradientpicker'), $('#topmenu-bg-designer-gradientpicker-hidden'), topmenu_gr[0], topmenu_gr[1], function(color1, color2){
-                    $('header #top-menu-wrapper nav').css('backgroundImage', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                    $('header #top-menu-wrapper nav').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                     $('header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .navbar-default .navbar-nav .active a, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('background', color2);
                     $('header #top-menu-wrapper .navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color1);
                     $('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color2);
+                    setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default', hexColor(color1), true);
                     setBackgroundGradientStyle('header #top-menu-wrapper nav.navbar-default', color1, color2);
-                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', color2);
-                    setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', color1);
-                    setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', color1, true);
-                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item:last-child,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', color1);
-                    setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+color2);
+                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', hexColor(color2));
+                    setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', hexColor(color1));
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color1), true);
+                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item:last-child,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', hexColor(color1));
+                    setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
                     setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
                 });
             }
@@ -401,7 +422,7 @@
                     $('#content main article .article,#content main article .article p').css('fontSize', size);
                     $('#content main article .article p').css('lineHeight', parseInt(size)+10+'px');
                     setFontSizeStyle('#content main article .article,#content main article .article p', size);
-                    setLineHeightStyle('#content main article .article p', parseInt(size)+10+'px');
+                    setLineHeightStyle('#content main article .article,#content main article .article p', parseInt(size)+10+'px');
                 });
                 
                 // article title text color
@@ -516,7 +537,7 @@
             // breadcrumbs text color
             var breadcrumbs_color1 = $('.breadcrumb a').css('color');
             var breadcrumbs_color2 = $('.breadcrumb li.active').css('color');
-            $('body').append('<div class="designer_gradientpicker" id="breadcrumbs-designer-gradientpicker" title="'+t('Breadcrumbs color')+'"></div><div class="designer_gradientpicker_hidden" id="breadcrumbs-designer-gradientpicker-hidden"></div>');
+            $('body').append('<div class="designer_colorpicker" id="breadcrumbs-designer-gradientpicker" title="'+t('Breadcrumbs color')+'"></div><div class="designer_gradientpicker_hidden" id="breadcrumbs-designer-gradientpicker-hidden"></div>');
             designer_positions['breadcrumbs_color'] = function() {
                 if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
                     $('#breadcrumbs-designer-gradientpicker').hide();
@@ -526,7 +547,7 @@
                 var breadcrumbs_cx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
                 var breadcrumbs_cy = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
                 $('#breadcrumbs-designer-gradientpicker').css({'left':breadcrumbs_cx,'top':breadcrumbs_cy});
-                $('#breadcrumbs-designer-gradientpicker-hidden').css({'left':breadcrumbs_cx+gradientpicker_wnd_size,'top':breadcrumbs_cy});
+                $('#breadcrumbs-designer-gradientpicker-hidden').css({'left':breadcrumbs_cx+colorpicker_wnd_size,'top':breadcrumbs_cy});
                 $('#breadcrumbs-designer-gradientpicker').show();
                 $('#breadcrumbs-designer-gradientpicker-hidden').show();
             };
@@ -537,7 +558,7 @@
                 setColorStyle('.breadcrumb a:link,.breadcrumb a:visited', color1);
                 setColorStyle('.breadcrumb,.breadcrumb .active,.breadcrumb li a:before', color2);
                 setColorStyle('.breadcrumb li + li::before', color2);
-            });
+            }, 'right', 'rgb');
 
             // breadcrumbs font size
             var breadcrumbs_font = $('.breadcrumb a').css('fontSize');
@@ -575,17 +596,24 @@
             designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
                 $('.breadcrumb').css('background-color', color);
                 $('.breadcrumb').css('padding', '10px 15px');
-                setBackgroundStyle('.breadcrumb', color);
+                if (color.indexOf('rgba')==0) {
+                    setBackgroundColorStyle('.breadcrumb', hexColor(color));
+                    setBackgroundStyle('.breadcrumb', color, true);
+                    setFilterStyle('.breadcrumb', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                } else {
+                    setBackgroundStyle('.breadcrumb', color);
+                }
                 setPaddingStyle('.breadcrumb', '10px 15px');
-            });
+            }, 'right', false);
         }
         
         $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_fontpicker, .designer_fontpicker_sign').show();
         $(window).trigger('resize');
     });
     
-    var designer_colorpicker = function(element, init_color, callback, position) {
+    var designer_colorpicker = function(element, init_color, callback, position, color_format) {
         if (typeof(position)=="undefined") position = 'right';
+        if (typeof(color_format)=="undefined") color_format = 'rgb';
         $(element).colorpicker({
             customClass: 'colorpicker-2x',
             sliders: { 
@@ -594,7 +622,8 @@
                 alpha: { maxTop: 200 }
             },
             color: init_color,
-            align: position
+            align: position,
+            format: color_format
         }).on('changeColor', zira_bind($(element), function(e) {
             var color = e.color.toString();
             if (typeof(callback)!="undefined") {
@@ -603,8 +632,9 @@
         }));
     };
     
-    var designer_gradientpicker = function(element, child, init_color1, init_color2, callback, position) {
+    var designer_gradientpicker = function(element, child, init_color1, init_color2, callback, position, color_format) {
         if (typeof(position)=="undefined") position = 'right';
+        if (typeof(color_format)=="undefined") color_format = false;
         $(element).colorpicker({
             customClass: 'colorpicker-2x',
             sliders: { 
@@ -613,7 +643,8 @@
                 alpha: { maxTop: 200 }
             },
             color: init_color1,
-            align: position
+            align: position,
+            format: color_format
         }).on('showPicker', zira_bind($(child), function() {
             $(this).colorpicker('show');    
         })).on('changeColor', zira_bind($(child), function(e) {
@@ -632,7 +663,8 @@
                 alpha: { maxTop: 200 }
             },
             color: init_color2,
-            align: position
+            align: position,
+            format: color_format
         }).on('changeColor', zira_bind($(element), function(e) {
             var color2 = e.color.toString();
             var color1 = $(this).data('colorpicker').color.toString();
@@ -697,8 +729,7 @@
     
     var setBackgroundColorStyle = function(element, value, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bgcolor']='background-color:' + value + ';';
+        editorMap.set(element, 'bgcolor', 'background-color:' + value + ';');
         if (!addOnly) {
             removeBackgroundGradientStyle(element);
             removeBackgroundImageStyle(element);
@@ -707,50 +738,41 @@
     };
     
     var getBackgroundColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bgcolor'])=="undefined") return null;
-        return window.editorStyles[element]['bgcolor'];
+        return editorMap.get(element, 'bgcolor');
     };
     
     var removeBackgroundColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bgcolor']=null;
+        editorMap.remove(element, 'bgcolor');
     };
     
     var setBackgroundGradientStyle = function(element, value1, value2, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bggradientwebkit1']='-webkit-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);';
-        window.editorStyles[element]['bggradientwebkit2']='-webkit-gradient(linear,left top,left bottom,from(' + value1 + '),to(' + value2 + '));';
-        window.editorStyles[element]['bggradientopera']='-o-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);';
-        window.editorStyles[element]['bggradient']='background-image:linear-gradient(to bottom,' + value1 + ',' + value2 + ');';
-        window.editorStyles[element]['bggradientie']='filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHex(value1) + ',endColorstr=' + rgbaToHex(value2) + ',GradientType=0);';
+        editorMap.set(element, 'bggradientwebkit1', 'background:-webkit-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);');
+        editorMap.set(element, 'bggradientwebkit2', 'background:-webkit-gradient(linear,left top,left bottom,from(' + value1 + '),to(' + value2 + '));');
+        editorMap.set(element, 'bggradientopera', 'background:-o-linear-gradient(top,' + value1 + ' 0,' + value2 + ' 100%);');
+        editorMap.set(element, 'bggradient', 'background:linear-gradient(to bottom,' + value1 + ',' + value2 + ');');
+        editorMap.set(element, 'bggradientie', 'filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(value1) + ',endColorstr=' + rgbaToHexIE(value2) + ',GradientType=0);');
         if (!addOnly) {
-            removeBackgroundColorStyle(element);
             removeBackgroundImageStyle(element);
             removeBackgroundStyle(element);
         }
     };
     
     var getBackgroundGradientStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bggradient'])=="undefined") return null;
-        return window.editorStyles[element]['bggradient'];
+        return editorMap.get(element, 'bggradient');
     };
     
     var removeBackgroundGradientStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bggradientwebkit1']=null;
-        window.editorStyles[element]['bggradientwebkit2']=null;
-        window.editorStyles[element]['bggradientopera']=null;
-        window.editorStyles[element]['bggradient']=null;
-        window.editorStyles[element]['bggradientie']=null;
+        editorMap.remove(element, 'bggradientwebkit1');
+        editorMap.remove(element, 'bggradientwebkit2');
+        editorMap.remove(element, 'bggradientopera');
+        editorMap.remove(element, 'bggradient');
+        editorMap.remove(element, 'bggradientie');
     };
     
     var setBackgroundImageStyle = function(element, value, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bgimage']='background-image:url(' + value + ');';
+        editorMap.set(element, 'bgimage', 'background-image:url(' + value + ');');
         if (!addOnly) {
             removeBackgroundGradientStyle(element);
             removeBackgroundStyle(element);
@@ -758,20 +780,16 @@
     };
     
     var getBackgroundImageStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bgimage'])=="undefined") return null;
-        return window.editorStyles[element]['bgimage'];
+        return editorMap.get(element, 'bgimage');
     };
     
     var removeBackgroundImageStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bgimage']=null;
+        editorMap.remove(element, 'bgimage');
     };
     
     var setBackgroundStyle = function(element, value, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bg']='background:' + value + ';';
+        editorMap.set(element, 'bg', 'background:' + value + ';');
         if (!addOnly) {
             removeBackgroundColorStyle(element);
             removeBackgroundGradientStyle(element);
@@ -780,222 +798,167 @@
     };
     
     var getBackgroundStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bg'])=="undefined") return null;
-        return window.editorStyles[element]['bg'];
+        return editorMap.get(element, 'bg');
     };
     
     var removeBackgroundStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bg']=null;
+        editorMap.remove(element, 'bg');
     };
 
     var setColorStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['color']='color:' + value + ';';
+        editorMap.set(element, 'color', 'color:' + value + ';');
     };
     
     var getColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['color'])=="undefined") return null;
-        return window.editorStyles[element]['color'];
+        return editorMap.get(element, 'color');
     };
     
     var removeColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['color']=null;
+        editorMap.remove(element, 'color');
     };
 
     var setBorderColorStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bordercolor']='border-color:' + value + ';';
+        editorMap.set(element, 'bordercolor', 'border-color:' + value + ';');
     };
     
     var getBorderColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bordercolor'])=="undefined") return null;
-        return window.editorStyles[element]['bordercolor'];
+        return editorMap.get(element, 'bordercolor');
     };
     
     var removeBorderColorStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bordercolor']=null;
+        editorMap.remove(element, 'bordercolor');
     };
 
     var setBorderStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['border']='border:' + value + ';';
+        editorMap.set(element, 'border', 'border:' + value + ';');
     };
     
     var getBorderStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['border'])=="undefined") return null;
-        return window.editorStyles[element]['border'];
+        return editorMap.get(element, 'border');
     };
     
     var removeBorderStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['border']=null;
+        editorMap.remove(element, 'border');
     };
 
     var setBorderTopStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bordertop']='border-top:' + value + ';';
+        editorMap.set(element, 'bordertop', 'border-top:' + value + ';');
     };
     
     var getBorderTopStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bordertop'])=="undefined") return null;
-        return window.editorStyles[element]['bordertop'];
+        return editorMap.get(element, 'bordertop');
     };
     
     var removeBorderTopStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bordertop']=null;
+        editorMap.remove(element, 'bordertop');
     };
     
     var setBorderBottomStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderbottom']='border-bottom:' + value + ';';
+        editorMap.set(element, 'borderbottom', 'border-bottom:' + value + ';');
     };
     
     var getBorderBottomStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['borderbottom'])=="undefined") return null;
-        return window.editorStyles[element]['borderbottom'];
+        return editorMap.get(element, 'borderbottom');
     };
     
     var removeBorderBottomStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderbottom']=null;
+        editorMap.remove(element, 'borderbottom');
     };
     
     var setBorderLeftStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderleft']='border-left:' + value + ';';
+        editorMap.set(element, 'borderleft', 'border-left:' + value + ';');
     };
     
     var getBorderLeftStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['borderleft'])=="undefined") return null;
-        return window.editorStyles[element]['borderleft'];
+        return editorMap.get(element, 'borderleft');
     };
     
     var removeBorderLeftStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderleft']=null;
+        editorMap.remove(element, 'borderleft');
     };
     
     var setBorderRightStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderright']='border-right:' + value + ';';
+        editorMap.set(element, 'borderright', 'border-right:' + value + ';');
     };
     
     var getBorderRightStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['borderright'])=="undefined") return null;
-        return window.editorStyles[element]['borderright'];
+        return editorMap.get(element, 'borderright');
     };
     
     var removeBorderRightStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['borderright']=null;
+        editorMap.remove(element, 'borderright');
     };
     
     var setBoxShadowStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['boxshadow']='box-shadow:' + value + ';';
+        editorMap.set(element, 'boxshadow', 'box-shadow:' + value + ';');
     };
     
     var getBoxShadowStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['boxshadow'])=="undefined") return null;
-        return window.editorStyles[element]['boxshadow'];
+        return editorMap.get(element, 'boxshadow');
     };
     
     var removeBoxShadowStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['boxshadow']=null;
+        editorMap.remove(element, 'boxshadow');
     };
     
     var setTextShadowStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['textshadow']='text-shadow:' + value + ';';
+        editorMap.set(element, 'textshadow', 'text-shadow:' + value + ';');
     };
     
     var getTextShadowStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['textshadow'])=="undefined") return null;
-        return window.editorStyles[element]['textshadow'];
+        return editorMap.get(element, 'textshadow');
     };
     
     var removeTextShadowStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['textshadow']=null;
+        editorMap.remove(element, 'textshadow');
     };
 
     var setFilterStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bggradientie']='filter:' + value + ';';
+        editorMap.set(element, 'bggradientie', 'filter:' + value + ';');
     };
     
     var getFilterStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['bggradientie'])=="undefined") return null;
-        return window.editorStyles[element]['bggradientie'];
+        return editorMap.get(element, 'bggradientie');
     };
     
     var removeFilterStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['bggradientie']=null;
+        editorMap.remove(element, 'bggradientie');
     };
 
     var setFontSizeStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['fontsize']='font-size:' + value + ';';
+        editorMap.set(element, 'fontsize', 'font-size:' + value + ';');
     };
     
     var getFontSizeStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['fontsize'])=="undefined") return null;
-        return window.editorStyles[element]['fontsize'];
+        return editorMap.get(element, 'fontsize');
     };
     
     var removeFontSizeStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['fontsize']=null;
+        editorMap.remove(element, 'fontsize');
     };
     
     var setLineHeightStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['lineheight']='line-height:' + value + ';';
+        editorMap.set(element, 'lineheight', 'line-height:' + value + ';');
     };
     
     var getLineHeightStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['lineheight'])=="undefined") return null;
-        return window.editorStyles[element]['lineheight'];
+        return editorMap.get(element, 'lineheight');
     };
     
     var removeLineHeightStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['lineheight']=null;
+        editorMap.remove(element, 'lineheight');
     };
 
     var setPaddingStyle = function(element, value) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['padding']='padding:' + value + ';';
+        editorMap.set(element, 'padding', 'padding:' + value + ';');
     };
     
     var getPaddingStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        if (typeof(window.editorStyles[element]['padding'])=="undefined") return null;
-        return window.editorStyles[element]['padding'];
+        return editorMap.get(element, 'padding');
     };
     
     var removePaddingStyle = function(element) {
-        if (typeof(window.editorStyles[element])=="undefined") window.editorStyles[element] = {};
-        window.editorStyles[element]['padding']=null;
+        editorMap.remove(element, 'padding');
     };
     
     var parseStyles = function(code) {
@@ -1010,8 +973,8 @@
                 value = m2[2];
                 if (prop == 'background-color') {
                     setBackgroundColorStyle(element, value, true);
-                } else if (prop == 'background-image') {
-                    regexp3 = new RegExp('([a-z\-]+)[\(](.+)[\)]','gi');
+                } else if (prop == 'background-image' || prop == 'background') {
+                    regexp3 = new RegExp('^([a-z\-]+)[\(](.+)[\)][\x20]*$','gi');
                     if (m3 = regexp3.exec(value)) {
                         if (m3[1] == 'url') {
                             setBackgroundImageStyle(element, m3[2], true);
@@ -1033,10 +996,12 @@
                             if (m4) {
                                 setBackgroundGradientStyle(element, m4[1], m4[2], true);
                             }
+                        } else {
+                            setBackgroundStyle(element, value, true);
                         }
+                    } else {
+                        setBackgroundStyle(element, value, true);
                     }
-                } else if (prop == 'background') {
-                    setBackgroundStyle(element, value, true);
                 } else if (prop == 'color') {
                     setColorStyle(element, value);
                 } else if (prop == 'border-color') {
@@ -1108,7 +1073,7 @@
         return hex.length == 1 ? "0" + hex : hex;
     };
 
-    var rgbaToHex = function(color) {
+    var rgbaToHexIE = function(color) {
         if (color == 'transparent') return '#00000000';
         if (color.indexOf('#')==0) return color;
         var regexp = new RegExp('rgb(?:[a])?[\(]([^,]+)[,]([^,]+)[,]([^,\)]+)(?:[,]([^\)]+))?[\)]', 'i');
@@ -1120,6 +1085,55 @@
         return hex;
     };
     
+    var hexColor = function(color) {
+        if (color == 'transparent' || color.indexOf('#')==0) return color;
+        var regexp = new RegExp('rgb(?:[a])?[\(]([^,]+)[,]([^,]+)[,]([^,\)]+)(?:[,]([^\)]+))?[\)]', 'i');
+        var m = regexp.exec(color);
+        if (!m) return color;
+        var hex = '#';
+        hex += digitToHex(parseInt(m[1])) + digitToHex(parseInt(m[2])) + digitToHex(parseInt(m[3]));
+        return hex;
+    };
+    
+    var editorMap = {
+        styles: {},
+        indexes: {},
+        set: function(element, prop, val) {
+            if (typeof(this.styles[element])=="undefined") this.styles[element] = {};
+            var i = 0;
+            if (typeof(this.indexes[element])!="undefined") {
+                i = this.indexes[element] + 1;
+            }
+            this.styles[element][prop] = { index: i, value: val };
+            this.indexes[element] = i;
+        },
+        get: function(element, prop) {
+            if (typeof(this.styles[element])=="undefined") return null;
+            if (typeof(this.styles[element][prop])=="undefined") return null;
+            return this.styles[element][prop].value;
+        },
+        remove: function(element, prop) {
+            if (typeof(this.styles[element])=="undefined") return;
+            if (typeof(this.styles[element][prop])=="undefined") return;
+            this.styles[element][prop] = null;
+        },
+        getContent: function() {
+            var content = {};
+            for (var element in this.styles) {
+                var props = [];
+                for (var prop in this.styles[element]) {
+                    if (this.styles[element][prop]===null) continue;
+                    props.push(this.styles[element][prop]);
+                }
+                props.sort(function(a, b){
+                    return a.index - b.index;
+                });
+                content[element] = props;
+            }
+            return content;
+        }
+    };
+    
     $(window).keydown(function(e){
         if (e.keyCode == 83 && e.ctrlKey) {
             e.preventDefault();
@@ -1128,18 +1142,19 @@
         }
     });
     
-    window.editorStyles = {};
     window.editorStyle = function() {
+        var styles = editorMap.getContent();
         var content = '';
-        for (var prop in window.editorStyles) {
-            content += prop + '{' + $.map(window.editorStyles[prop], function(value, index) { return value; }).join('') + '}';
+        for (var prop in styles) {
+            content += prop + '{' + $.map(styles[prop], function(value, index) { return value.value; }).join('') + '}';
         }
         return content;
     };
     window.editorContent = function() {
+        var styles = editorMap.getContent();
         var content = '';
-        for (var prop in window.editorStyles) {
-            content += prop.split(',').join(','+"\r\n") + ' {' + "\r\n\t" + $.map(window.editorStyles[prop], function(value, index) { return value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
+        for (var prop in styles) {
+            content += prop.split(',').join(','+"\r\n") + ' {' + "\r\n\t" + $.map(styles[prop], function(value, index) { return value.value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
         }
         return content;
     };
