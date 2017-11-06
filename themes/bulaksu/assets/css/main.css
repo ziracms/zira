@@ -415,7 +415,8 @@ ul#language-switcher li a.active {
     text-decoration: none;
     height: 80px;
 }
-#site-logo-wrapper a#site-logo:hover {
+#site-logo-wrapper a#site-logo:hover,
+#site-logo-wrapper a#site-logo.active {
     color: #1B6D85;
 }
 #site-logo-wrapper a#site-logo img {

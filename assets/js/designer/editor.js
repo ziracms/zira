@@ -75,7 +75,8 @@
             $('#body-designer-imagepicker').tooltip();
             designer_imagepicker($('#body-designer-imagepicker'), function(url){
                 var bg_color = $('body').css('backgroundColor');
-                var background = hexColor(bg_color) + ' url(' + url + ') no-repeat 50% 0%';
+                var t = (new Date()).getTime();
+                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
                 $('body').css('background', background);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
@@ -134,7 +135,8 @@
             $('#header-designer-imagepicker').tooltip();
             designer_imagepicker($('#header-designer-imagepicker'), function(url){
                 var bg_color = $('header').css('backgroundColor');
-                var background = hexColor(bg_color) + ' url(' + url + ') no-repeat 50% 0%';
+                var t = (new Date()).getTime();
+                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
                 setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
@@ -143,23 +145,30 @@
             // header logo
             if ($('header #site-logo').length>0) {
                 // header logo color
-                var logo_color = $('header #site-logo').css('color');
-                $('body').append('<div class="designer_colorpicker" id="logo-designer-colorpicker" title="'+t('Logo color')+'"></div>');
+                var logo_color1 = $('header #site-logo').css('color');
+                $('header #site-logo').addClass('active');
+                var logo_color2 = $('header #site-logo').css('color');
+                $('header #site-logo').removeClass('active');
+                $('body').append('<div class="designer_colorpicker" id="logo-designer-gradientpicker" title="'+t('Logo color')+'"></div><div class="designer_gradientpicker_hidden" id="logo-designer-gradientpicker-hidden"></div>');
                 designer_positions['logo_color'] = function() {
                     if ($('header #site-logo').css('display')=='none' || $('header #site-logo').css('visibility')=='hidden') {
-                        $('#logo-designer-colorpicker').hide();
+                        $('#logo-designer-gradientpicker').hide();
+                        $('#logo-designer-gradientpicker-hidden').hide();
                         return;
                     }
                     var logo_cx = $('header #site-logo').offset().left+.5*colorpicker_size;
-                    var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
-                    $('#logo-designer-colorpicker').css({'left':logo_cx,'top':logo_cy});
-                    $('#logo-designer-colorpicker').show();
+                    var logo_cy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2+.75*colorpicker_size;
+                    $('#logo-designer-gradientpicker').css({'left':logo_cx,'top':logo_cy});
+                    $('#logo-designer-gradientpicker-hidden').css({'left':logo_cx+colorpicker_wnd_size,'top':logo_cy});
+                    $('#logo-designer-gradientpicker').show();
+                    $('#logo-designer-gradientpicker-hidden').show();
                 };
-                $('#logo-designer-colorpicker').tooltip();
-                designer_colorpicker($('#logo-designer-colorpicker'), logo_color, function(color){
-                    $('header #site-logo').css('color', color);
-                    setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color);
-                }, 'left');
+                $('#logo-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#logo-designer-gradientpicker'), $('#logo-designer-gradientpicker-hidden'), logo_color1, logo_color2, function(color1, color2){
+                    $('header #site-logo').css('color', color1);
+                    setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color1);
+                    setColorStyle('#site-logo-wrapper a#site-logo:hover,#site-logo-wrapper a#site-logo.active', color2);
+                }, 'left', 'rgb');
                 
                 // header logo font size
                 var logo_font = $('header #site-logo span').css('fontSize');
@@ -170,7 +179,7 @@
                         return;
                     }
                     var logo_fx = $('header #site-logo').offset().left+.5*colorpicker_size;
-                    var logo_fy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2+.75*colorpicker_size;
+                    var logo_fy = $('header #site-logo').offset().top+($('header #site-logo').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
                     $('#logo-designer-fontpicker').css({'left':logo_fx,'top':logo_fy});
                     $('#logo-designer-fontpicker').show();
                 };
@@ -234,7 +243,8 @@
                 $('#header-text-designer-colorpicker').tooltip();
                 designer_colorpicker($('#header-text-designer-colorpicker'), header_text_color, function(color){
                     $('header #header-text-example').css('color', color);
-                    setColorStyle('header,#site-logo-wrapper a#site-logo:hover,header .zira-search-preview-wnd .list .list-item .list-content-wrapper', color);
+                    setColorStyle('header', color);
+                    setColorStyle('header .zira-search-preview-wnd .list .list-item .list-content-wrapper', color);
                 }, 'left');
             }
             
@@ -487,17 +497,22 @@
                 }
                 
                 // article links color
-                var article_link_color = $('.article a').css('color');
-                $('body').append('<div class="designer_colorpicker" id="article-link-designer-colorpicker" title="'+t('Link color')+'"></div>');
+                var article_link_color1 = $('.article a').css('color');
+                $('.article a').addClass('active');
+                var article_link_color2 = $('.article a').css('color');
+                $('.article a').removeClass('active');
+                $('body').append('<div class="designer_colorpicker" id="article-link-designer-gradientpicker" title="'+t('Link color')+'"></div><div class="designer_gradientpicker_hidden" id="article-link-designer-gradientpicker-hidden"></div>');
                 designer_positions['article_link_color'] = function() {
                     var article_link_cx = $('.article a').offset().left+$('.article a').outerWidth()+.5*colorpicker_size;
                     var article_link_cy = $('.article a').offset().top+($('.article a').outerHeight()-colorpicker_size)/2;
-                    $('#article-link-designer-colorpicker').css({'left':article_link_cx,'top':article_link_cy});
+                    $('#article-link-designer-gradientpicker').css({'left':article_link_cx,'top':article_link_cy});
+                    $('#article-link-designer-gradientpicker-hidden').css({'left':article_link_cx+colorpicker_wnd_size,'top':article_link_cy});
                 };
-                $('#article-link-designer-colorpicker').tooltip();
-                designer_colorpicker($('#article-link-designer-colorpicker'), article_link_color, function(color){
-                    $('.article a,.article-info a,.zira-calendar-selector a,.comment-head a').css('color', color);
-                    setColorStyle('a:link,a:visited,a:hover,a:active,a.active,a.external-url', color);
+                $('#article-link-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#article-link-designer-gradientpicker'), $('#article-link-designer-gradientpicker-hidden'), article_link_color1, article_link_color2, function(color1, color2){
+                    $('.article a,.article-info a,.zira-calendar-selector a,.comment-head a').css('color', color1);
+                    setColorStyle('a:link,a:visited,a.external-url', color1);
+                    setColorStyle('a:hover,a:active,a.active', color2);
                 },'left');
             }
 
@@ -567,26 +582,29 @@
                 designer_colorpicker($('#footer-text-designer-colorpicker'), footer_text_color, function(color){
                     $('footer p').css('color', color);
                     setColorStyle('footer p', color);
-                    setColorStyle('#footer-menu-wrapper ul.menu li.menu-item a.menu-link:hover,#main-container footer ul.dropdown-menu li a:hover,#main-container footer ul.dropdown-menu li a:focus', color);
                 }, 'left');
             }
             
             // footer link color
             if ($('footer a').length>0) {
-                var footer_link_color = $('footer a').css('color');
-                $('body').append('<div class="designer_colorpicker" id="footer-link-designer-colorpicker" title="'+t('Footer link color')+'"></div>');
+                var footer_link_color1 = $('#main-container footer ul.menu li').not('.active').children('a').css('color');
+                var footer_link_color2 = $('#main-container footer ul.menu li.active a').css('color');
+                $('body').append('<div class="designer_colorpicker" id="footer-link-designer-gradientpicker" title="'+t('Footer link color')+'"></div><div class="designer_gradientpicker_hidden" id="footer-link-designer-gradientpicker-hidden"></div>');
                 designer_positions['footer_link_color'] = function() {
                     var footer_link_cx = $('footer').offset().left + ($('footer').outerWidth()-colorpicker_size)/2-1.5*colorpicker_size;
                     var footer_link_cy = $('footer').offset().top-2*colorpicker_size;
-                    $('#footer-link-designer-colorpicker').css({'left':footer_link_cx,'top':footer_link_cy});
+                    $('#footer-link-designer-gradientpicker').css({'left':footer_link_cx,'top':footer_link_cy});
+                    $('#footer-link-designer-gradientpicker-hidden').css({'left':footer_link_cx+colorpicker_wnd_size,'top':footer_link_cy});
                 };
-                $('#footer-link-designer-colorpicker').tooltip();
-                designer_colorpicker($('#footer-link-designer-colorpicker'), footer_link_color, function(color){
-                    $('footer a').css('color', color);
-                    setColorStyle('footer a:link,footer a:visited,footer p a:link,footer p a:visited,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:link,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:visited,#main-container footer ul.dropdown-menu li a', color);
-                    setColorStyle('#footer-menu-wrapper ul.menu li.menu-item-separator::after', color);
+                $('#footer-link-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#footer-link-designer-gradientpicker'), $('#footer-link-designer-gradientpicker-hidden'), footer_link_color1, footer_link_color2, function(color1, color2){
+                    $('#main-container footer ul.menu li').not('.active').children('a').css('color', color1);
+                    $('#main-container footer ul.menu li.active a').css('color', color2);
+                    setColorStyle('footer a:link,footer a:visited,footer p a:link,footer p a:visited,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:link,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:visited,#main-container footer ul.dropdown-menu li a', color1);
+                    setColorStyle('#footer-menu-wrapper ul.menu li.menu-item a.menu-link:hover,#footer-menu-wrapper ul.menu li.menu-item.active a.menu-link,#main-container footer ul.dropdown-menu li a:hover,#main-container footer ul.dropdown-menu li a:focus', color2);
+                    setColorStyle('#footer-menu-wrapper ul.menu li.menu-item-separator::after', color1);
                     setFilterStyle('#main-container footer ul.dropdown-menu li:hover,#main-container footer ul.dropdown-menu li a:hover', 'none');
-                }, 'left');
+                }, 'right', 'rgb');
             }
         }
         
@@ -1154,6 +1172,7 @@
     };
     
     var editorMap = {
+        map: [],
         styles: {},
         indexes: {},
         set: function(element, prop, val) {
@@ -1162,6 +1181,7 @@
             if (typeof(this.indexes[element])!="undefined") {
                 i = this.indexes[element] + 1;
             }
+            if (typeof(this.map[element]) == "undefined") this.map.push(element);
             this.styles[element][prop] = { index: i, value: val };
             this.indexes[element] = i;
         },
@@ -1177,7 +1197,8 @@
         },
         getContent: function() {
             var content = {};
-            for (var element in this.styles) {
+            for (var i=0; i<this.map.length; i++) {
+                var element = this.map[i];
                 var props = [];
                 for (var prop in this.styles[element]) {
                     if (this.styles[element][prop]===null) continue;

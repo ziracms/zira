@@ -668,7 +668,8 @@ ul#language-switcher li a.active {
     text-shadow: 1px 1px 0px #0A3241;
     height: 80px;
 }
-#site-logo-wrapper a#site-logo:hover {
+#site-logo-wrapper a#site-logo:hover,
+#site-logo-wrapper a#site-logo.active {
     color: #fff;
 }
 #site-logo-wrapper a#site-logo img {
