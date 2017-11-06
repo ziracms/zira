@@ -1,12 +1,14 @@
 <!--record page-->
 <main>
 <article>
+<!--
 <div class="slider-wrapper">
 <ul id="slider" class="slider">
 <li><img class="image zira-lightbox" src="<?php echo Zira\Helper::baseUrl('assets/images/designer/image.jpg') ?>" title="Lorem ipsum dolor sit amet" /></li>
 <li><img class="image zira-lightbox" src="<?php echo Zira\Helper::baseUrl('assets/images/designer/image.jpg') ?>" title="Lorem ipsum dolor sit amet" /></li>
 </ul>
 </div>
+-->
 <div class="page-header">
 <h1>Lorem ipsum dolor sit amet</h1>
 </div>

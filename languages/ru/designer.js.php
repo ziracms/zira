@@ -34,6 +34,10 @@ return array(
     'Breadcrumbs background' => 'Фон хлебных крошек',
     'Footer background' => 'Фон подвала',
     'Footer text color' => 'Цвет текста подвала',
-    'Footer link color' => 'Цвет ссылок подвала'
+    'Footer link color' => 'Цвет ссылок подвала',
+    'Gallery background' => 'Фон галереи',
+    'Files color' => 'Цвет файлов',
+    'Files font size' => 'Размер шрифта файлов',
+    'Files background' => 'Фон файлов'
 );
 

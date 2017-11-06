@@ -977,16 +977,16 @@ article .rating .share-wrapper .share-btn {
 }
 .bx-wrapper .bx-loading {
     min-height: 50px;
-    background: url(../images/bx-loader.gif) center center no-repeat #5C6368 !important;
+    background: url(../images/bx-loader.gif) center center no-repeat #5C6368;
 }
 .bx-wrapper .bx-viewport {
-    background: #5C6368 !important;
-    box-shadow: 0px 0px 2px #697074 !important;
-    border: 1px solid #3B444A !important;
+    background: #5C6368;
+    box-shadow: 0px 0px 2px #697074;
+    border: 1px solid #3B444A;
 }
 .bx-wrapper .bx-caption {
-    background: rgb(60, 65, 69) !important;
-    background: rgba(60, 65, 69, 0.8) !important;
+    background: rgb(60, 65, 69);
+    background: rgba(60, 65, 69, 0.8);
 }
 #emoji-modal-dialog .modal-content {
     background-color: #51545d;
