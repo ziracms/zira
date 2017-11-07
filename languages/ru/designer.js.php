@@ -4,9 +4,11 @@ return array(
     'Header color' => 'Цвет шапки',
     'Header gradient' => 'Градиент шапки',
     'Header image' => 'Изображение шапки',
+    'Header pattern' => 'Текстура шапки',
     'Background color' => 'Цвет фона',
     'Background gradient' => 'Градиент фона',
     'Background image' => 'Фоновое изображение',
+    'Background pattern' => 'Фоновая текстура',
     'Logo color' => 'Цвет лого',
     'Slogan color' => 'Цвет слогана',
     'Language color' => 'Цвет языка',
@@ -38,6 +40,19 @@ return array(
     'Gallery background' => 'Фон галереи',
     'Files color' => 'Цвет файлов',
     'Files font size' => 'Размер шрифта файлов',
-    'Files background' => 'Фон файлов'
+    'Files background' => 'Фон файлов',
+    'Information message background' => 'Фон информационного сообщения',
+    'Error message background' => 'Фон ошибки',
+    'Information message text color' => 'Цвет текста информационного сообщения',
+    'Error message text color' => 'Цвет текста ошибки',
+    'Primary button background' => 'Фон основной кнопки',
+    'Primary button text color' => 'Цвет текста основной кнопки',
+    'Default button background' => 'Фон обычной кнопки',
+    'Default button text color' => 'Цвет текста обычной кнопки',
+    'Comments color' => 'Цвет комментариев',
+    'Comments background' => 'Фон комментариев',
+    'Comments rating' => 'Рейтинг комментариев',
+    'Forms background' => 'Фон форм',
+    'Forms text color' => 'Цвет текста форм'
 );
 

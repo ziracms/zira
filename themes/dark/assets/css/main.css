@@ -335,7 +335,7 @@ dt {
 .pagination>.active>span,
 .pagination>.active>span:focus,
 .pagination>.active>span:hover {
-	background-color: #6B707B;
+    background-color: #6B707B;
     border-color: #6A7487;
     color: #ddd;
 }
@@ -1153,29 +1153,25 @@ article .rating .share-wrapper .share-btn {
     display: block;
     margin: 5px 0px 5px 60px;
 }
-.comments .comments-item .comment-info a:link,
-.comments .comments-item .comment-info a:visited {
-    text-decoration: none;
-}
-.comments .comments-item .comment-info a:hover {
-    color: #dddddd;
-    text-decoration: none;
-}
 .comments .comments-item .comment-info a.comment-like:link,
 .comments .comments-item .comment-info a.comment-like:visited {
     color: #7FE1BE;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-like:hover,
 .comments .comments-item .comment-info a.comment-like.active {
     color: #DDFBF4;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-dislike:link,
 .comments .comments-item .comment-info a.comment-dislike:visited {
     color: #EC8266;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-dislike:hover,
 .comments .comments-item .comment-info a.comment-dislike.active {
     color: #F2DCD3;
+    text-decoration: none;
 }
 .comments-view-more-wrapper {
     margin-bottom: 40px;

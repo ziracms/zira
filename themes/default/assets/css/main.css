@@ -857,30 +857,25 @@ article .rating .share-wrapper .share-btn {
     display: block;
     margin: 5px 0px 5px 60px;
 }
-.comments .comments-item .comment-info a:link,
-.comments .comments-item .comment-info a:visited {
-    color: #000000;
-    text-decoration: none;
-}
-.comments .comments-item .comment-info a:hover {
-    color: #474855;
-    text-decoration: none;
-}
 .comments .comments-item .comment-info a.comment-like:link,
 .comments .comments-item .comment-info a.comment-like:visited {
     color: #1d7690;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-like:hover,
 .comments .comments-item .comment-info a.comment-like.active {
     color: #114150;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-dislike:link,
 .comments .comments-item .comment-info a.comment-dislike:visited {
     color: #a41748;
+    text-decoration: none;
 }
 .comments .comments-item .comment-info a.comment-dislike:hover,
 .comments .comments-item .comment-info a.comment-dislike.active {
     color: #550e2a;
+    text-decoration: none;
 }
 .comments-view-more-wrapper {
     margin-bottom: 40px;

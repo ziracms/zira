@@ -83,6 +83,25 @@
                 setBackgroundStyle('body', background);
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
             });
+            
+            // body bg pattern
+            $('body').append('<div class="designer_patternpicker" id="body-designer-patternpicker" title="'+t('Background pattern')+'"></div>');
+            designer_positions['body_pattern'] = function() {
+                var body_px = colorpicker_size/2+2.5*colorpicker_size;
+                var body_py = $('header').offset().top+$('header').outerHeight()+1.25*colorpicker_size;
+                $('#body-designer-patternpicker').css({'left':body_px,'top':body_py});
+            };
+            $('#body-designer-patternpicker').tooltip();
+            designer_imagepicker($('#body-designer-patternpicker'), function(url){
+                var bg_color = $('body').css('backgroundColor');
+                var t = (new Date()).getTime();
+                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
+                $('body').css('background', background);
+                $('#main-container-wrapper').css('background', 'none');
+                $('#main-container').css('background', 'none');
+                setBackgroundStyle('body', background);
+                setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
+            });
         }
         
         // header
@@ -139,7 +158,28 @@
                 var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
+                if (bg_color != 'transparent') {
+                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
+                }
+            });
+            
+            // header bg pattern
+            $('body').append('<div class="designer_patternpicker" id="header-designer-patternpicker" title="'+t('Header pattern')+'"></div>');
+            designer_positions['header_pattern'] = function() {
+                var header_px = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2+1.5*colorpicker_size;
+                var header_py = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
+                $('#header-designer-patternpicker').css({'left':header_px,'top':header_py});
+            };
+            $('#header-designer-patternpicker').tooltip();
+            designer_imagepicker($('#header-designer-patternpicker'), function(url){
+                var bg_color = $('header').css('backgroundColor');
+                var t = (new Date()).getTime();
+                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
+                $('header').css('background', background);
+                setBackgroundStyle('header', background);
+                if (bg_color != 'transparent') {
+                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
+                }
             });
             
             // header logo
@@ -166,6 +206,12 @@
                 $('#logo-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#logo-designer-gradientpicker'), $('#logo-designer-gradientpicker-hidden'), logo_color1, logo_color2, function(color1, color2){
                     $('header #site-logo').css('color', color1);
+                    $('header #site-logo').stop(true, true).animate({'color':color2},1000,function(){
+                        $('header #site-logo').css('color', color2);
+                        $('header #site-logo').animate({'color':color1},1000,function(){
+                            $('header #site-logo').css('color', color1);
+                        });
+                    });
                     setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color1);
                     setColorStyle('#site-logo-wrapper a#site-logo:hover,#site-logo-wrapper a#site-logo.active', color2);
                 }, 'left', 'rgb');
@@ -511,9 +557,15 @@
                 $('#article-link-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#article-link-designer-gradientpicker'), $('#article-link-designer-gradientpicker-hidden'), article_link_color1, article_link_color2, function(color1, color2){
                     $('.article a,.article-info a,.zira-calendar-selector a,.comment-head a').css('color', color1);
+                    $('.article a').stop(true, true).animate({'color':color2},1000,function(){
+                        $('.article a').css('color', color2);
+                        $('.article a').animate({'color':color1},1000,function(){
+                            $('.article a').css('color', color1);
+                        });
+                    });
                     setColorStyle('a:link,a:visited,a.external-url', color1);
                     setColorStyle('a:hover,a:active,a.active', color2);
-                },'left');
+                },'left', 'rgb');
             }
 
             // subtitle text color
@@ -782,7 +834,265 @@
             }, 'right', 'rgb');
         }
         
-        $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_fontpicker, .designer_fontpicker_sign').show();
+        // information message background
+        var info_msg_gr = extractGradient($('.alert-warning'));
+        $('body').append('<div class="designer_gradientpicker" id="info-msg-designer-gradientpicker" title="'+t('Information message background')+'"></div><div class="designer_gradientpicker_hidden" id="info-msg-designer-gradientpicker-hidden"></div>');
+        designer_positions['info_msg_bg'] = function() {
+            var info_msg_bx = $('.alert-warning').offset().left+$('.alert-warning').outerWidth()-3*colorpicker_size;
+            var info_msg_by = $('.alert-warning').offset().top+($('.alert-warning').outerHeight()-colorpicker_size)/2;
+            $('#info-msg-designer-gradientpicker').css({'left':info_msg_bx,'top':info_msg_by});
+            $('#info-msg-designer-gradientpicker-hidden').css({'left':info_msg_bx+colorpicker_wnd_size,'top':info_msg_by});
+        };
+        $('#info-msg-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#info-msg-designer-gradientpicker'), $('#info-msg-designer-gradientpicker-hidden'), info_msg_gr[0], info_msg_gr[1], function(color1, color2){
+            $('.alert-warning').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+            $('.alert-warning').css('border-color', color2);
+            setBackgroundColorStyle('.alert-warning', hexColor(color1), true);
+            setBackgroundGradientStyle('.alert-warning', color1, color2);
+            setBorderColorStyle('.alert-warning', color2);
+        },'right', 'rgb');
+        
+        // information message text
+        var info_msg_color1 = $('.alert-warning a').css('color');
+        var info_msg_color2 = $('.alert-warning').css('color');
+        $('body').append('<div class="designer_colorpicker" id="info-msg-txt-designer-gradientpicker" title="'+t('Information message text color')+'"></div><div class="designer_gradientpicker_hidden" id="info-msg-txt-designer-gradientpicker-hidden"></div>');
+        designer_positions['info_msg_txt'] = function() {
+            var info_msg_tx = $('.alert-warning').offset().left+$('.alert-warning').outerWidth()-1.5*colorpicker_size;
+            var info_msg_ty = $('.alert-warning').offset().top+($('.alert-warning').outerHeight()-colorpicker_size)/2;
+            $('#info-msg-txt-designer-gradientpicker').css({'left':info_msg_tx,'top':info_msg_ty});
+            $('#info-msg-txt-designer-gradientpicker-hidden').css({'left':info_msg_tx+colorpicker_wnd_size,'top':info_msg_ty});
+        };
+        $('#info-msg-txt-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#info-msg-txt-designer-gradientpicker'), $('#info-msg-txt-designer-gradientpicker-hidden'), info_msg_color1, info_msg_color2, function(color1, color2){
+            $('.alert-warning').css('color', color2);
+            $('.alert-warning a').css('color', color1);
+            setColorStyle('.alert-warning', color2);
+            setColorStyle('.alert-warning a:link,.alert-warning a:visited', color1);
+            setColorStyle('.alert-warning a:hover,.alert-warning a:active', color2);
+        },'right', 'rgb');
+        
+        // error message background
+        var err_msg_gr = extractGradient($('.alert-danger'));
+        $('body').append('<div class="designer_gradientpicker" id="err-msg-designer-gradientpicker" title="'+t('Error message background')+'"></div><div class="designer_gradientpicker_hidden" id="err-msg-designer-gradientpicker-hidden"></div>');
+        designer_positions['err_msg_bg'] = function() {
+            var err_msg_bx = $('.alert-danger').offset().left+$('.alert-danger').outerWidth()-3*colorpicker_size;
+            var err_msg_by = $('.alert-danger').offset().top+($('.alert-danger').outerHeight()-colorpicker_size)/2;
+            $('#err-msg-designer-gradientpicker').css({'left':err_msg_bx,'top':err_msg_by});
+            $('#err-msg-designer-gradientpicker-hidden').css({'left':err_msg_bx+colorpicker_wnd_size,'top':err_msg_by});
+        };
+        $('#err-msg-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#err-msg-designer-gradientpicker'), $('#err-msg-designer-gradientpicker-hidden'), err_msg_gr[0], err_msg_gr[1], function(color1, color2){
+            $('.alert-danger').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+            $('.alert-danger').css('border-color', color2);
+            setBackgroundColorStyle('.alert-danger', hexColor(color1), true);
+            setBackgroundGradientStyle('.alert-danger', color1, color2);
+            setBorderColorStyle('.alert-danger', color2);
+        },'right', 'rgb');
+        
+        // error message text
+        var err_msg_color1 = $('.alert-danger a').css('color');
+        var err_msg_color2 = $('.alert-danger').css('color');
+        $('body').append('<div class="designer_colorpicker" id="err-msg-txt-designer-gradientpicker" title="'+t('Error message text color')+'"></div><div class="designer_gradientpicker_hidden" id="err-msg-txt-designer-gradientpicker-hidden"></div>');
+        designer_positions['err_msg_txt'] = function() {
+            var err_msg_tx = $('.alert-danger').offset().left+$('.alert-danger').outerWidth()-1.5*colorpicker_size;
+            var err_msg_ty = $('.alert-danger').offset().top+($('.alert-danger').outerHeight()-colorpicker_size)/2;
+            $('#err-msg-txt-designer-gradientpicker').css({'left':err_msg_tx,'top':err_msg_ty});
+            $('#err-msg-txt-designer-gradientpicker-hidden').css({'left':err_msg_tx+colorpicker_wnd_size,'top':err_msg_ty});
+        };
+        $('#err-msg-txt-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#err-msg-txt-designer-gradientpicker'), $('#err-msg-txt-designer-gradientpicker-hidden'), err_msg_color1, err_msg_color2, function(color1, color2){
+            $('.alert-danger').css('color', color2);
+            $('.alert-danger a').css('color', color1);
+            setColorStyle('.alert-danger', color2);
+            setColorStyle('.alert-danger a:link,.alert-danger a:visited', color1);
+            setColorStyle('.alert-danger a:hover,.alert-danger a:active', color2);
+        },'right', 'rgb');
+
+        // primary button background
+        var btn_pri_gr = extractGradient($('.comments-wrapper .btn-primary'));
+        $('body').append('<div class="designer_gradientpicker" id="btn-pri-designer-gradientpicker" title="'+t('Primary button background')+'"></div><div class="designer_gradientpicker_hidden" id="btn-pri-designer-gradientpicker-hidden"></div>');
+        designer_positions['btn_pri_bg'] = function() {
+            var btn_pri_bx = $('.comments-wrapper .btn-primary').offset().left-3*colorpicker_size;
+            var btn_pri_by = $('.comments-wrapper .btn-primary').offset().top+($('.comments-wrapper .btn-primary').outerHeight()-colorpicker_size)/2;
+            $('#btn-pri-designer-gradientpicker').css({'left':btn_pri_bx,'top':btn_pri_by});
+            $('#btn-pri-designer-gradientpicker-hidden').css({'left':btn_pri_bx+colorpicker_wnd_size,'top':btn_pri_by});
+        };
+        $('#btn-pri-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#btn-pri-designer-gradientpicker'), $('#btn-pri-designer-gradientpicker-hidden'), btn_pri_gr[0], btn_pri_gr[1], function(color1, color2){
+            $('#main-container .btn-primary').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+            $('#main-container .btn-primary').css('border-color', color2);
+            $('#main-container .btn-primary').css('textShadow', '0 1px 0 '+color1);
+            setBackgroundColorStyle('#main-container .btn-primary', hexColor(color1), true);
+            setBackgroundGradientStyle('#main-container .btn-primary', color1, color2);
+            setBorderColorStyle('#main-container .btn-primary', color2);
+            setBackgroundGradientStyle('#main-container .btn-primary:hover,#main-container .btn-primary:focus,#main-container .btn-primary.active,#main-container .btn-primary:active,#main-container .open .dropdown-toggle.btn-primary,#main-container .btn-primary.active.focus,#main-container .btn-primary.active:focus,#main-container .btn-primary.active:hover,#main-container .btn-primary:active.focus,#main-container .btn-primary:active:focus,#main-container .btn-primary:active:hover,#main-container .open .dropdown-toggle.btn-primary.focus,#main-container .open .dropdown-toggle.btn-primary:focus,#main-container .open .dropdown-toggle.btn-primary:hover', color2, color1);
+            setBorderColorStyle('#main-container .btn-primary:hover,#main-container .btn-primary:focus,#main-container .btn-primary.active,#main-container .btn-primary:active,#main-container .open .dropdown-toggle.btn-primary,#main-container .btn-primary.active.focus,#main-container .btn-primary.active:focus,#main-container .btn-primary.active:hover,#main-container .btn-primary:active.focus,#main-container .btn-primary:active:focus,#main-container .btn-primary:active:hover,#main-container .open .dropdown-toggle.btn-primary.focus,#main-container .open .dropdown-toggle.btn-primary:focus,#main-container .open .dropdown-toggle.btn-primary:hover', color1);
+            setTextShadowStyle('#main-container .btn-primary', '0 1px 0 '+color1);
+        },'right', 'rgb');
+        
+        // primary button text
+        var btn_pri_color = $('.comments-wrapper .btn-primary').css('color');
+        $('body').append('<div class="designer_colorpicker" id="btn-pri-txt-designer-colorpicker" title="'+t('Primary button text color')+'"></div>');
+        designer_positions['btn_pri_txt'] = function() {
+            var btn_pri_tx = $('.comments-wrapper .btn-primary').offset().left-1.5*colorpicker_size;
+            var btn_pri_ty = $('.comments-wrapper .btn-primary').offset().top+($('.comments-wrapper .btn-primary').outerHeight()-colorpicker_size)/2;
+            $('#btn-pri-txt-designer-colorpicker').css({'left':btn_pri_tx,'top':btn_pri_ty});
+        };
+        $('#btn-pri-txt-designer-colorpicker').tooltip();
+        designer_colorpicker($('#btn-pri-txt-designer-colorpicker'), btn_pri_color, function(color){
+            $('#main-container .btn-primary').css('color', color);
+            setColorStyle('#main-container .btn-primary', color);
+            setColorStyle('#main-container .btn-primary:hover,#main-container .btn-primary:focus,#main-container .btn-primary.active,#main-container .btn-primary:active,#main-container .open .dropdown-toggle.btn-primary,#main-container .btn-primary.active.focus,#main-container .btn-primary.active:focus,#main-container .btn-primary.active:hover,#main-container .btn-primary:active.focus,#main-container .btn-primary:active:focus,#main-container .btn-primary:active:hover,#main-container .open .dropdown-toggle.btn-primary.focus,#main-container .open .dropdown-toggle.btn-primary:focus,#main-container .open .dropdown-toggle.btn-primary:hover', color);
+        });
+        
+        // default button background
+        var btn_def_gr = extractGradient($('.comments-wrapper .btn-default'));
+        $('body').append('<div class="designer_gradientpicker" id="btn-def-designer-gradientpicker" title="'+t('Default button background')+'"></div><div class="designer_gradientpicker_hidden" id="btn-def-designer-gradientpicker-hidden"></div>');
+        designer_positions['btn_def_bg'] = function() {
+            var btn_def_bx = $('.comments-wrapper .btn-default').offset().left+$('.comments-wrapper .btn-default').outerWidth()+.5*colorpicker_size;
+            var btn_def_by = $('.comments-wrapper .btn-default').offset().top+($('.comments-wrapper .btn-default').outerHeight()-colorpicker_size)/2;
+            $('#btn-def-designer-gradientpicker').css({'left':btn_def_bx,'top':btn_def_by});
+            $('#btn-def-designer-gradientpicker-hidden').css({'left':btn_def_bx+colorpicker_wnd_size,'top':btn_def_by});
+        };
+        $('#btn-def-designer-gradientpicker').tooltip();
+        designer_gradientpicker($('#btn-def-designer-gradientpicker'), $('#btn-def-designer-gradientpicker-hidden'), btn_def_gr[0], btn_def_gr[1], function(color1, color2){
+            $('#main-container .btn-default').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+            $('#main-container .btn-default').css('border-color', color2);
+            $('#main-container .btn-default').css('textShadow', '0 1px 0 '+color1);
+            setBackgroundColorStyle('#main-container .btn-default', hexColor(color1), true);
+            setBackgroundGradientStyle('#main-container .btn-default', color1, color2);
+            setBorderColorStyle('#main-container .btn-default', color2);
+            setBackgroundGradientStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color2, color1);
+            setBorderColorStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color1);
+            setTextShadowStyle('#main-container .btn-default', '0 1px 0 '+color1);
+        },'right', 'rgb');
+        
+        // default button text
+        var btn_def_color = $('.comments-wrapper .btn-default').css('color');
+        $('body').append('<div class="designer_colorpicker" id="btn-def-txt-designer-colorpicker" title="'+t('Default button text color')+'"></div>');
+        designer_positions['btn_def_txt'] = function() {
+            var btn_def_tx = $('.comments-wrapper .btn-default').offset().left+$('.comments-wrapper .btn-default').outerWidth()+2*colorpicker_size;
+            var btn_def_ty = $('.comments-wrapper .btn-default').offset().top+($('.comments-wrapper .btn-default').outerHeight()-colorpicker_size)/2;
+            $('#btn-def-txt-designer-colorpicker').css({'left':btn_def_tx,'top':btn_def_ty});
+        };
+        $('#btn-def-txt-designer-colorpicker').tooltip();
+        designer_colorpicker($('#btn-def-txt-designer-colorpicker'), btn_def_color, function(color){
+            $('#main-container .btn-default').css('color', color);
+            setColorStyle('#main-container .btn-default', color);
+            setColorStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color);
+        });
+
+        // comments
+        if ($('.comments-wrapper').length>0) {
+            // comments text
+            var comments_color = $('.comments').css('color');
+            $('body').append('<div class="designer_colorpicker" id="comments-txt-designer-colorpicker" title="'+t('Comments color')+'"></div>');
+            designer_positions['comments_txt'] = function() {
+                var comments_tx = $('.comments .comments-item:first-child .comment-text').offset().left+($('.comments .comments-item:first-child .comment-text').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var comments_ty = $('.comments .comments-item:first-child .comment-text').offset().top+($('.comments .comments-item:first-child .comment-text').outerHeight()-colorpicker_size)/2;
+                $('#comments-txt-designer-colorpicker').css({'left':comments_tx,'top':comments_ty});
+            };
+            $('#comments-txt-designer-colorpicker').tooltip();
+            designer_colorpicker($('#comments-txt-designer-colorpicker'), comments_color, function(color){
+                var txt_color = $('body').css('color');
+                $('.comments').css('color', txt_color);
+                $('.comments .comments-item .comment-text').css('color', color);
+                setColorStyle('.comments', txt_color);
+                setColorStyle('.comments .comments-item .comment-text', color);
+            });
+            
+            // comments background
+            var comments_bg = $('.comments .comments-item .comment-text').css('backgroundColor');
+            $('body').append('<div class="designer_colorpicker" id="comments-bg-designer-colorpicker" title="'+t('Comments background')+'"></div>');
+            designer_positions['comments_bg'] = function() {
+                var comments_bx = $('.comments .comments-item:first-child .comment-text').offset().left+($('.comments .comments-item:first-child .comment-text').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var comments_by = $('.comments .comments-item:first-child .comment-text').offset().top+($('.comments .comments-item:first-child .comment-text').outerHeight()-colorpicker_size)/2;
+                $('#comments-bg-designer-colorpicker').css({'left':comments_bx,'top':comments_by});
+            };
+            $('#comments-bg-designer-colorpicker').tooltip();
+            designer_colorpicker($('#comments-bg-designer-colorpicker'), comments_bg, function(color){
+                $('.comments .comments-item .comment-text').css('backgroundColor', color);
+                $('.comments .comments-item .comment-text').css('borderColor', color);
+                setBackgroundColorStyle('.comments .comments-item .comment-text', color);
+                setBorderColorStyle('.comments .comments-item .comment-text', color);
+            }, 'left');
+            
+            // comments rating
+            var comments_like_color = $('.comments .comments-item .comment-info a.comment-like').css('color');
+            var comments_dislike_color = $('.comments .comments-item .comment-info a.comment-dislike').css('color');
+            $('body').append('<div class="designer_colorpicker" id="comments-rating-designer-gradientpicker" title="'+t('Comments rating')+'"></div><div class="designer_gradientpicker_hidden" id="comments-rating-designer-gradientpicker-hidden"></div>');
+            designer_positions['comments_rating'] = function() {
+                var comments_rx = $('.comments .comments-item .comment-info a.comment-dislike').offset().left+$('.comments .comments-item .comment-info a.comment-dislike').outerWidth()+.5*colorpicker_size;
+                var comments_ry = $('.comments .comments-item .comment-info').offset().top+($('.comments .comments-item .comment-info').outerHeight()-colorpicker_size)/2;
+                $('#comments-rating-designer-gradientpicker').css({'left':comments_rx,'top':comments_ry});
+                $('#comments-rating-designer-gradientpicker-hidden').css({'left':comments_rx+colorpicker_wnd_size,'top':comments_ry});
+            };
+            $('#comments-rating-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#comments-rating-designer-gradientpicker'), $('#comments-rating-designer-gradientpicker-hidden'), comments_like_color, comments_dislike_color, function(color1, color2){
+                $('.comments .comments-item .comment-info a.comment-like').css('color', color1);
+                $('.comments .comments-item .comment-info a.comment-dislike').css('color', color2);
+                setColorStyle('.comments .comments-item .comment-info a.comment-like:link,.comments .comments-item .comment-info a.comment-like:visited,.comments .comments-item .comment-info a.comment-like:hover', color1);
+                setColorStyle('.comments .comments-item .comment-info a.comment-dislike:link,.comments .comments-item .comment-info a.comment-dislike:visited,.comments .comments-item .comment-info a.comment-dislike:hover', color2);
+            }, 'right', 'rgb');
+        }
+
+        // forms
+        if ($('.panel').length>0) {
+            // forms text
+            var forms_color = $('.panel .panel-heading').css('color');
+            $('body').append('<div class="designer_colorpicker" id="forms-color-designer-colorpicker" title="'+t('Forms text color')+'"></div>');
+            designer_positions['forms_txt'] = function() {
+                var forms_tx = $('.panel .panel-heading').offset().left+($('.panel .panel-heading').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var forms_ty = $('.panel .panel-heading').offset().top+($('.panel .panel-heading').outerHeight()-colorpicker_size)/2;
+                $('#forms-color-designer-colorpicker').css({'left':forms_tx,'top':forms_ty});
+            };
+            $('#forms-color-designer-colorpicker').tooltip();
+            designer_colorpicker($('#forms-color-designer-colorpicker'), forms_color, function(color){
+                $('.panel,.panel .panel-heading,.panel .panel-footer,#main-container .input-group-addon a').css('color', color);
+                setColorStyle('.panel', color);
+                setColorStyle('.panel .panel-heading', color);
+                setColorStyle('.panel .panel-footer', color);
+                setColorStyle('#main-container .help-block', color);
+                setColorStyle('#main-container .form-control', color);
+                setColorStyle('.emoji-editable', color);
+                setColorStyle('#main-container .input-group-addon a', color);
+            });
+            
+            // forms background
+            var forms_gr = extractGradient($('.panel .panel-heading'));
+            $('body').append('<div class="designer_gradientpicker" id="forms-bg-designer-gradientpicker" title="'+t('Forms background')+'"></div><div class="designer_gradientpicker_hidden" id="forms-bg-designer-gradientpicker-hidden"></div>');
+            designer_positions['forms_bg'] = function() {
+                var forms_bx = $('.panel .panel-heading').offset().left+($('.panel .panel-heading').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var forms_by = $('.panel .panel-heading').offset().top+($('.panel .panel-heading').outerHeight()-colorpicker_size)/2;
+                $('#forms-bg-designer-gradientpicker').css({'left':forms_bx,'top':forms_by});
+                $('#forms-bg-designer-gradientpicker-hidden').css({'left':forms_bx+colorpicker_wnd_size,'top':forms_by});
+            };
+            $('#forms-bg-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#forms-bg-designer-gradientpicker'), $('#forms-bg-designer-gradientpicker-hidden'), forms_gr[0], forms_gr[1], function(color1, color2){
+                $('.panel .panel-heading').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                $('.panel,.panel .panel-heading,.panel .panel-footer').css('borderColor', color2);
+                $('.panel .panel-footer').css('background', color1);
+                $('.panel').css('background', color2);
+                $('#main-container .form-control,#main-container .input-group-addon').css('background', color2);
+                $('#main-container .form-control,#main-container .input-group-addon').css('borderColor', color1);
+                setBackgroundColorStyle('.panel .panel-heading', hexColor(color1), true);
+                setBackgroundGradientStyle('.panel .panel-heading', color1, color2);
+                setBorderColorStyle('.panel .panel-heading', color2);
+                setBackgroundStyle('.panel .panel-footer', color1);
+                setBorderColorStyle('.panel .panel-footer', color2);
+                setBorderColorStyle('.panel', color2);
+                setBackgroundColorStyle('.jumbotron', hexColor(color1));
+                setBackgroundColorStyle('.panel', color2);
+                setBackgroundStyle('#main-container .form-control', color2);
+                setBorderColorStyle('#main-container .form-control', color1);
+                setBackgroundStyle('#main-container .input-group-addon', color2);
+                setBorderColorStyle('#main-container .input-group-addon', color1);
+                setBackgroundStyle('.emoji-editable', color2);
+                setBorderColorStyle('.emoji-editable', color1);
+            }, 'right', 'rgb');
+        }
+        
+        $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_patternpicker, .designer_fontpicker, .designer_fontpicker_sign').show();
         $(window).trigger('resize');
     });
     

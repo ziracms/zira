@@ -76,6 +76,19 @@
     cursor: pointer;
     animation: colorpicker 20s linear infinite;
 }
+.designer_patternpicker {
+    display: none;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    box-shadow: 0px 0px 10px #0099ed;
+    background: #005599 url(../../images/designer/patternpicker.jpg);
+    z-index: 2499;
+    cursor: pointer;
+    animation: colorpicker 20s linear infinite;
+}
 .designer_fontpicker {
     display: none;
     position: absolute;
