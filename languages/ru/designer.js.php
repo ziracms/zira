@@ -55,6 +55,8 @@ return array(
     'Forms background' => 'Фон форм',
     'Forms text color' => 'Цвет текста форм',
     'Records background' => 'Фон записей',
-    'Records text color' => 'Цвет текста записей'
+    'Records text color' => 'Цвет текста записей',
+    'Secondary menu text color' => 'Цвет текста вторичного меню',
+    'Secondary menu background' => 'Фон вторичного меню'
 );
 

@@ -1120,7 +1120,7 @@
             $('body').append('<div class="designer_colorpicker" id="lists-color-designer-gradientpicker" title="'+t('Records text color')+'"></div><div class="designer_gradientpicker_hidden" id="lists-color-designer-gradientpicker-hidden"></div>');
             designer_positions['lists_txt'] = function() {
                 var lists_tx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
-                var lists_ty = $('.home-list').offset().top-colorpicker_size;
+                var lists_ty = $('.home-list').offset().top-3*colorpicker_size;
                 $('#lists-color-designer-gradientpicker').css({'left':lists_tx,'top':lists_ty});
                 $('#lists-color-designer-gradientpicker-hidden').css({'left':lists_tx+colorpicker_wnd_size,'top':lists_ty});
             };
@@ -1135,6 +1135,9 @@
                 $('.sidebar .widget-title').css('color', color1);
                 $('.zira-calendar-wrapper .zira-calendar-days li a').css('color', color1);
                 $('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day').css('color', color2);
+                $('.pagination > li > a,.pagination > li > span').css('color', color2);
+                $('.pagination > .active > a,.pagination > .active > span').css('color', color1);
+                
                 setColorStyle('.sidebar .block', color2);
                 setColorStyle('.list .list-item', color2);
                 setColorStyle('.list .list-item .list-title-wrapper', color1);
@@ -1150,7 +1153,7 @@
                 setColorStyle('.zira-calendar-wrapper', color2);
                 setColorStyle('.zira-calendar-wrapper .zira-calendar-days li a', color1);
                 setColorStyle('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day', color2);
-                setColorStyle('.image-wrapper .image-description', color1);
+                setColorStyle('.image-wrapper .image-description', color2);
                 
                 setColorStyle('.messages-panel .navbar-default .navbar-brand', color1);
                 setColorStyle('.messages-panel .navbar-default .navbar-nav li a', color1);
@@ -1166,6 +1169,10 @@
                 setColorStyle('#sitemap-wrapper ul', color1);
                 setColorStyle('#sitemap-wrapper ul li a:link, #sitemap-wrapper ul li a:visited', color1);
                 setColorStyle('#sitemap-wrapper ul li a:hover', color2);
+                
+                setColorStyle('.pagination > li > a,.pagination > li > span', color2);
+                setColorStyle('.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover', color2);
+                setColorStyle('.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover', color1);
             }, 'right', 'rgb');
             
             // lists background
@@ -1173,7 +1180,7 @@
             $('body').append('<div class="designer_gradientpicker" id="lists-bg-designer-gradientpicker" title="'+t('Records background')+'"></div><div class="designer_gradientpicker_hidden" id="lists-bg-designer-gradientpicker-hidden"></div>');
             designer_positions['lists_bg'] = function() {
                 var lists_bx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
-                var lists_by = $('.home-list').offset().top-colorpicker_size;
+                var lists_by = $('.home-list').offset().top-3*colorpicker_size;
                 $('#lists-bg-designer-gradientpicker').css({'left':lists_bx,'top':lists_by});
                 $('#lists-bg-designer-gradientpicker-hidden').css({'left':lists_bx+colorpicker_wnd_size,'top':lists_by});
             };
@@ -1201,6 +1208,11 @@
                 $('.zira-calendar-wrapper .zira-calendar-days li:hover').css('background', color2);
                 $('.zira-calendar-wrapper .zira-calendar-dows-wrapper').css('borderColor', color1);
                 $('.zira-calendar-wrapper .zira-calendar-days-wrapper').css('borderColor', color2);
+                $('.pagination > li > a,.pagination > li > span').css('background', color1);
+                $('.pagination > li > a,.pagination > li > span').css('borderColor', color1);
+                $('.pagination > .active > a,.pagination > .active > span').css('background', color2);
+                $('.pagination > .active > a,.pagination > .active > span').css('borderColor', color1);
+                
                 setBackgroundColorStyle('.list .list-item .list-title-wrapper', hexColor(color1), true);
                 setBackgroundGradientStyle('.list .list-item .list-title-wrapper', color1, color2);
                 setBorderColorStyle('.list .list-item', color1);
@@ -1254,6 +1266,55 @@
                 setBorderTopStyle('#sitemap-wrapper ul li', '1px solid '+color1);
                 setBorderBottomStyle('#sitemap-wrapper ul li', '1px solid '+color2);
                 setBorderColorStyle('#sitemap-wrapper ul', color1);
+                
+                setBackgroundStyle('.pagination > li > a,.pagination > li > span', color1);
+                setBorderColorStyle('.pagination > li > a,.pagination > li > span', color1);
+                setBackgroundStyle('.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover', color2);
+                setBorderColorStyle('.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover', color1);
+                setBackgroundStyle('.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover', color2);
+                setBorderColorStyle('.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover', color1);
+                setBackgroundStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
+                setBorderColorStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
+            }, 'right', 'rgb');
+        }
+        
+        // secondary menu
+        if ($('#secondary-menu-wrapper').length>0) {
+            // secondary menu text
+            var sec_menu_color1 = $('#secondary-menu-wrapper ul li a').css('color');
+            var sec_menu_color2 = $('#secondary-menu-wrapper ul li.active a').css('color');
+            $('body').append('<div class="designer_colorpicker" id="sec-menu-color-designer-gradientpicker" title="'+t('Secondary menu text color')+'"></div><div class="designer_gradientpicker_hidden" id="sec-menu-color-designer-gradientpicker-hidden"></div>');
+            designer_positions['sec_menu_txt'] = function() {
+                var sec_menu_tx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var sec_menu_ty = $('#secondary-menu-wrapper').offset().top+$('#secondary-menu-wrapper').outerHeight()-1.5*colorpicker_size;
+                $('#sec-menu-color-designer-gradientpicker').css({'left':sec_menu_tx,'top':sec_menu_ty});
+                $('#sec-menu-color-designer-gradientpicker-hidden').css({'left':sec_menu_tx+colorpicker_wnd_size,'top':sec_menu_ty});
+            };
+            $('#sec-menu-color-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#sec-menu-color-designer-gradientpicker'), $('#sec-menu-color-designer-gradientpicker-hidden'), sec_menu_color1, sec_menu_color2, function(color1, color2){
+                $('#secondary-menu-wrapper a').css('color', color1);
+                $('#secondary-menu-wrapper .active a').css('color', color2);
+                setColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
+                setColorStyle('#secondary-menu-wrapper ul li.active a:link,#secondary-menu-wrapper ul li.active a:visited', color2);
+                setColorStyle('#secondary-menu-wrapper ul li a:hover,#secondary-menu-wrapper ul li.active a:hover', color2);
+            }, 'right', 'rgb');
+            
+            // secondary menu background
+            var sec_menu_bg1 = $('#secondary-menu-wrapper ul li a').css('backgroundColor');
+            var sec_menu_bg2 = $('#secondary-menu-wrapper ul li.active a').css('backgroundColor');
+            $('body').append('<div class="designer_gradientpicker" id="sec-menu-bg-designer-gradientpicker" title="'+t('Secondary menu background')+'"></div><div class="designer_gradientpicker_hidden" id="sec-menu-bg-designer-gradientpicker-hidden"></div>');
+            designer_positions['sec_menu_bg'] = function() {
+                var sec_menu_bx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var sec_menu_by = $('#secondary-menu-wrapper').offset().top+$('#secondary-menu-wrapper').outerHeight()-1.5*colorpicker_size;
+                $('#sec-menu-bg-designer-gradientpicker').css({'left':sec_menu_bx,'top':sec_menu_by});
+                $('#sec-menu-bg-designer-gradientpicker-hidden').css({'left':sec_menu_bx+colorpicker_wnd_size,'top':sec_menu_by});
+            };
+            $('#sec-menu-bg-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#sec-menu-bg-designer-gradientpicker'), $('#sec-menu-bg-designer-gradientpicker-hidden'), sec_menu_bg1, sec_menu_bg2, function(color1, color2){
+                $('#secondary-menu-wrapper ul li a').css('background', color1);
+                $('#secondary-menu-wrapper ul li.active a').css('background', color2);
+                setBackgroundColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
+                setBackgroundColorStyle('#secondary-menu-wrapper ul li.active a:link,#secondary-menu-wrapper ul li.active a:visited,#secondary-menu-wrapper ul li a:hover', color2);
             }, 'right', 'rgb');
         }
         
