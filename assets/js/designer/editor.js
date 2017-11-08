@@ -1,9 +1,7 @@
 (function($){
     $(document).ready(function(){
         $('body').append('<div class="designer_overlay"></div>');
-    });
-    
-    $(window).load(function(){
+
         if ($('head style').length>0) {
             parseStyles($('head style').text());
         }
@@ -525,6 +523,7 @@
                         $('.page-header').css('borderBottom', '1px solid '+color);
                         setColorStyle('#content main article .article-info .datetime,#content main article .article-info .author', color);
                         setBorderBottomStyle('.page-header', '1px solid '+color);
+                        setBorderBottomStyle('.user-profile h2', '1px solid '+color);
                     });
 
                     // article info font size
@@ -709,30 +708,32 @@
             
             // breadcrumbs background color
             var breadcrumbs_bg_color = $('.breadcrumb').css('backgroundColor');
-            $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
-            designer_positions['breadcrumbs_bg_color'] = function() {
-                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
-                    $('#breadcrumbs-bg-designer-colorpicker').hide();
-                    return;
-                }
-                var breadcrumbs_bx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+3*colorpicker_size;
-                var breadcrumbs_by = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
-                $('#breadcrumbs-bg-designer-colorpicker').css({'left':breadcrumbs_bx,'top':breadcrumbs_by});
-                $('#breadcrumbs-bg-designer-colorpicker').show();
-            };
-            $('#breadcrumbs-bg-designer-colorpicker').tooltip();
-            designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
-                $('.breadcrumb').css('background-color', color);
-                $('.breadcrumb').css('padding', '10px 15px');
-                if (color.indexOf('rgba')==0) {
-                    setBackgroundColorStyle('.breadcrumb', hexColor(color));
-                    setBackgroundStyle('.breadcrumb', color, true);
-                    setFilterStyle('.breadcrumb', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
-                } else {
-                    setBackgroundStyle('.breadcrumb', color);
-                }
-                setPaddingStyle('.breadcrumb', '10px 15px');
-            }, 'right', false);
+            if (breadcrumbs_bg_color != 'transparent') {
+                $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
+                designer_positions['breadcrumbs_bg_color'] = function() {
+                    if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                        $('#breadcrumbs-bg-designer-colorpicker').hide();
+                        return;
+                    }
+                    var breadcrumbs_bx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+3*colorpicker_size;
+                    var breadcrumbs_by = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                    $('#breadcrumbs-bg-designer-colorpicker').css({'left':breadcrumbs_bx,'top':breadcrumbs_by});
+                    $('#breadcrumbs-bg-designer-colorpicker').show();
+                };
+                $('#breadcrumbs-bg-designer-colorpicker').tooltip();
+                designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
+                    $('.breadcrumb').css('background-color', color);
+                    //$('.breadcrumb').css('padding', '10px 15px');
+                    if (color.indexOf('rgba')==0) {
+                        setBackgroundColorStyle('.breadcrumb', hexColor(color));
+                        setBackgroundStyle('.breadcrumb', color, true);
+                        setFilterStyle('.breadcrumb', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                    } else {
+                        setBackgroundStyle('.breadcrumb', color);
+                    }
+                    //setPaddingStyle('.breadcrumb', '10px 15px');
+                }, 'right', false);
+            }
         }
 
         // gallery background color
@@ -755,6 +756,7 @@
                 $('.gallery, .gallery a').css('borderColor', color);
                 setBackgroundStyle('.gallery,.image-wrapper,.bx-wrapper .bx-viewport', color);
                 setBorderColorStyle('.gallery,.gallery li a:link,.gallery li a:visited,.image,.image-wrapper,.jplayer-video-wrapper,.jplayer-audio-wrapper,.bx-wrapper .bx-viewport', color);
+                setBorderColorStyle('#yandex-map,#google-map,.contact-image', color);
             }, 'left');
         }
 
@@ -1040,6 +1042,9 @@
                 $('.comments .comments-item .comment-info a.comment-dislike').css('color', color2);
                 setColorStyle('.comments .comments-item .comment-info a.comment-like:link,.comments .comments-item .comment-info a.comment-like:visited,.comments .comments-item .comment-info a.comment-like:hover', color1);
                 setColorStyle('.comments .comments-item .comment-info a.comment-dislike:link,.comments .comments-item .comment-info a.comment-dislike:visited,.comments .comments-item .comment-info a.comment-dislike:hover', color2);
+                
+                setColorStyle('.forum-list.list .list-item .list-info-wrapper a.forum-like:link,.forum-list.list .list-item .list-info-wrapper a.forum-like:visited,.forum-list.list .list-item .list-info-wrapper a.forum-like:hover', color1);
+                setColorStyle('.forum-list.list .list-item .list-info-wrapper a.forum-dislike:link,.forum-list.list .list-item .list-info-wrapper a.forum-dislike:visited,.forum-list.list .list-item .list-info-wrapper a.forum-dislike:hover', color2);
             }, 'right', 'rgb');
         }
 
@@ -1104,6 +1109,151 @@
                 setBorderColorStyle('.emoji-editable', color1);
                 setBackgroundStyle('#main-container .panel .dropdown-menu', color2);
                 setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
+            }, 'right', 'rgb');
+        }
+        
+        // lists
+        if ($('.home-list').length>0) {
+            // lists text
+            var lists_color1 = $('.home-list .list-title-wrapper a').css('color');
+            var lists_color2 = $('.home-list .list-item').css('color');
+            $('body').append('<div class="designer_colorpicker" id="lists-color-designer-gradientpicker" title="'+t('Records text color')+'"></div><div class="designer_gradientpicker_hidden" id="lists-color-designer-gradientpicker-hidden"></div>');
+            designer_positions['lists_txt'] = function() {
+                var lists_tx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var lists_ty = $('.home-list').offset().top-colorpicker_size;
+                $('#lists-color-designer-gradientpicker').css({'left':lists_tx,'top':lists_ty});
+                $('#lists-color-designer-gradientpicker-hidden').css({'left':lists_tx+colorpicker_wnd_size,'top':lists_ty});
+            };
+            $('#lists-color-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#lists-color-designer-gradientpicker'), $('#lists-color-designer-gradientpicker-hidden'), lists_color1, lists_color2, function(color1, color2){
+                $('.sidebar .block').css('color', color2);
+                $('.list .list-item').css('color', color2);
+                $('.list .list-item .list-title-wrapper').css('color', color1);
+                $('.list .list-item .list-title-wrapper a').css('color', color1);
+                $('.list .list-item .list-content-wrapper').css('color', color2);
+                $('.list .list-item .list-info,.list .list-item .list-info a').css('color', color1);
+                $('.sidebar .widget-title').css('color', color1);
+                $('.zira-calendar-wrapper .zira-calendar-days li a').css('color', color1);
+                $('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day').css('color', color2);
+                setColorStyle('.sidebar .block', color2);
+                setColorStyle('.list .list-item', color2);
+                setColorStyle('.list .list-item .list-title-wrapper', color1);
+                setColorStyle('.list .list-item .list-title-wrapper a:link,.list .list-item .list-title-wrapper a:visited', color1);
+                setColorStyle('.list .list-item .list-content-wrapper', color2);
+                setColorStyle('.list .list-item .list-info', color1);
+                setColorStyle('.list .list-item .list-info a:link,.list .list-item .list-info a:visited', color1);
+                setColorStyle('.list .list-item .list-title-wrapper a:hover', color2);
+                setColorStyle('.sidebar .widget-title,.sidebar .widget-title a:link,.sidebar .widget-title a:visited', color1);
+                setColorStyle('.sidebar .widget-title a:hover', color2);
+                setColorStyle('ul.vote-results li .vote-result', color1);
+                setBackgroundStyle('.vote-results-line', color1);
+                setColorStyle('.zira-calendar-wrapper', color2);
+                setColorStyle('.zira-calendar-wrapper .zira-calendar-days li a', color1);
+                setColorStyle('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day', color2);
+                setColorStyle('.image-wrapper .image-description', color1);
+                
+                setColorStyle('.messages-panel .navbar-default .navbar-brand', color1);
+                setColorStyle('.messages-panel .navbar-default .navbar-nav li a', color1);
+                setColorStyle('.messages-panel .navbar-default .navbar-nav li a:hover', color2);
+                setColorStyle('.messages-list li', color2);
+                setColorStyle('.messages-list li a:link, .messages-list li a:visited', color1);
+                setColorStyle('.messages-list li a:hover', color2);
+                
+                setColorStyle('.forum-list.list .list-item a.list-title:link,.forum-list.list .list-item a.list-title:visited,.forum-list.list .list-item .list-title-wrapper a:link,.forum-list.list .list-item .list-title-wrapper a:visited', color1);
+                setColorStyle('.forum-list.list .list-item a.list-title:hover', color2);
+                setColorStyle('.forum-list.list .list-item .list-info,.forum-list.list .list-item .list-info a:link,.forum-list.list .list-item .list-info a:visited', color1);
+                
+                setColorStyle('#sitemap-wrapper ul', color1);
+                setColorStyle('#sitemap-wrapper ul li a:link, #sitemap-wrapper ul li a:visited', color1);
+                setColorStyle('#sitemap-wrapper ul li a:hover', color2);
+            }, 'right', 'rgb');
+            
+            // lists background
+            var lists_gr = extractGradient($('.home-list .list-title-wrapper'));
+            $('body').append('<div class="designer_gradientpicker" id="lists-bg-designer-gradientpicker" title="'+t('Records background')+'"></div><div class="designer_gradientpicker_hidden" id="lists-bg-designer-gradientpicker-hidden"></div>');
+            designer_positions['lists_bg'] = function() {
+                var lists_bx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var lists_by = $('.home-list').offset().top-colorpicker_size;
+                $('#lists-bg-designer-gradientpicker').css({'left':lists_bx,'top':lists_by});
+                $('#lists-bg-designer-gradientpicker-hidden').css({'left':lists_bx+colorpicker_wnd_size,'top':lists_by});
+            };
+            $('#lists-bg-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#lists-bg-designer-gradientpicker'), $('#lists-bg-designer-gradientpicker-hidden'), lists_gr[0], lists_gr[1], function(color1, color2){
+                $('#main-container .list-item').each(function(){
+                    if ($(this).parents('.sidebar').length) return true;
+                    $(this).children('.list-title-wrapper').css('background', 'linear-gradient(to bottom,'+color1+','+color2+')');
+                    $(this).css('background', color1);
+                    $(this).css('borderColor', color1);
+                    $(this).children('.list-title-wrapper').css('borderColor', color1);
+                });
+                $('.list .list-item .list-title-wrapper a,.sidebar .widget-title').css('textShadow', '1px 1px 0px '+color2);
+                if ($('.sidebar .page-header').css('backgroundColor')!='transparent') {
+                    $('.sidebar .page-header').css('background', color2);
+                }
+                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent') {
+                    $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('background', color1);
+                }
+                $('.sidebar .page-header,.sidebar .list .list-item').css('borderColor', color2);
+                $('.sidebar .list .list-item a.list-thumb:link, .sidebar .list .list-item a.list-thumb:visited').css('borderColor', color2);
+                $('.sidebar .list .list-item a.list-thumb:link, .sidebar .list .list-item a.list-thumb:visited').css('background', color2);
+                $('.sidebar.col-sm-4 div.calendar-widget-wrapper,.zira-calendar-wrapper .zira-calendar-selector,.zira-calendar-wrapper .zira-calendar-dows-wrapper').css('background', color1);
+                $('.zira-calendar-wrapper .zira-calendar-days-wrapper').css('background', color2);
+                $('.zira-calendar-wrapper .zira-calendar-days li:hover').css('background', color2);
+                $('.zira-calendar-wrapper .zira-calendar-dows-wrapper').css('borderColor', color1);
+                $('.zira-calendar-wrapper .zira-calendar-days-wrapper').css('borderColor', color2);
+                setBackgroundColorStyle('.list .list-item .list-title-wrapper', hexColor(color1), true);
+                setBackgroundGradientStyle('.list .list-item .list-title-wrapper', color1, color2);
+                setBorderColorStyle('.list .list-item', color1);
+                setBackgroundStyle('.list .list-item', color1);
+                if ($('.sidebar .page-header').css('backgroundColor')!='transparent') {
+                    setBackgroundStyle('.sidebar .page-header', color2);
+                }
+                setBorderColorStyle('.list .list-item .list-title-wrapper', color1);
+                setTextShadowStyle('.list .list-item .list-title-wrapper a:link,.list .list-item .list-title-wrapper a:visited', '1px 1px 0px '+color2);
+                setTextShadowStyle('.sidebar .widget-title', '1px 1px 0px '+color2);
+                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent') {
+                    setBackgroundStyle('.sidebar.col-sm-4 > aside > div', color1);
+                }
+                setBorderColorStyle('.sidebar .page-header', color2);
+                setBorderColorStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color2);
+                setBackgroundStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color2);
+                setBackgroundStyle('.sidebar .forum-discussion-widget-wrapper .forum-widget-list.list .forum-widget-content-wrapper.list-content-wrapper', color2);
+                setBorderColorStyle('.sidebar .list .list-item', color2);
+                setBackgroundStyle('.sidebar.col-sm-4 div.calendar-widget-wrapper,.zira-calendar-wrapper .zira-calendar-selector,.zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
+                setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
+                setBorderColorStyle('.zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
+                setBorderColorStyle('.zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
+                setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-days li:hover', color1);
+                setBackgroundStyle('.image-wrapper', color1);
+                setBorderColorStyle('.image-wrapper', color1);
+                
+                setBackgroundStyle('.messages-panel .navbar', color2);
+                setFilterStyle('.messages-panel .navbar', 'none');
+                setBorderColorStyle('.messages-panel .navbar', color1);
+                setBackgroundStyle('.messages-list li.odd', color1);
+                setBackgroundStyle('.messages-list li.even', color2);
+                setBorderTopColorStyle('.messages-list li', color1);
+                setBorderBottomColorStyle('.messages-list li', color2);
+                setBorderColorStyle('.messages-list li.odd .message-head', color2);
+                setBorderColorStyle('.messages-list li.even .message-head', color1);
+                
+                setBackgroundStyle('.forum-messages-panel.messages-panel nav', color2);
+                setBackgroundStyle('.forum-list.list .list-item', color2);
+                setBackgroundStyle('.forum-list.list .list-item.even,.forum-list.list .list-item.even-b,.forum-list.list .list-item.odd-b', color1);
+                setBackgroundStyle('.forum-list.list .list-item .forum-message-attaches', color2);
+                setBorderColorStyle('.forum-list.list .list-item .forum-message-attaches', color1);
+                setBackgroundStyle('.forum-message-wrapper .forum-avatar-wrapper', color2);
+                setBorderColorStyle('.forum-message-wrapper .forum-avatar-wrapper', color1);
+                setBackgroundStyle('.forum-list.list .list-item .list-info-wrapper', color1);
+                setBackgroundStyle('.forum-list.list .list-item.even .list-info-wrapper,.forum-list.list .list-item.even-b .list-info-wrapper,.forum-list.list .list-item.odd-b .list-info-wrapper', color2);
+                setBackgroundStyle('.messages-panel .navbar-default .navbar-nav > .active > a,.messages-panel .navbar-default .navbar-nav > .open > a,.messages-panel .navbar-default .navbar-nav > .active > a:hover,.messages-panel .navbar-default .navbar-nav > .open > a:hover,.messages-panel .navbar-default .navbar-nav > .active > a:focus,.messages-panel .navbar-default .navbar-nav > .open > a:focus', color2);
+                setFilterStyle('.messages-panel .navbar-default .navbar-nav > .active > a,.messages-panel .navbar-default .navbar-nav > .open > a,.messages-panel .navbar-default .navbar-nav > .active > a:hover,.messages-panel .navbar-default .navbar-nav > .open > a:hover,.messages-panel .navbar-default .navbar-nav > .active > a:focus,.messages-panel .navbar-default .navbar-nav > .open > a:focus', 'none');
+                
+                setBackgroundStyle('#sitemap-wrapper ul li.odd', color1);
+                setBackgroundStyle('#sitemap-wrapper ul li.even', color2);
+                setBorderTopStyle('#sitemap-wrapper ul li', '1px solid '+color1);
+                setBorderBottomStyle('#sitemap-wrapper ul li', '1px solid '+color2);
+                setBorderColorStyle('#sitemap-wrapper ul', color1);
             }, 'right', 'rgb');
         }
         
@@ -1329,6 +1479,54 @@
         editorMap.remove(element, 'bordercolor');
     };
 
+    var setBorderTopColorStyle = function(element, value) {
+        editorMap.set(element, 'bordertopcolor', 'border-top-color:' + value + ';');
+    };
+    
+    var getBorderTopColorStyle = function(element) {
+        return editorMap.get(element, 'bordertopcolor');
+    };
+    
+    var removeBorderTopColorStyle = function(element) {
+        editorMap.remove(element, 'bordertopcolor');
+    };
+    
+    var setBorderBottomColorStyle = function(element, value) {
+        editorMap.set(element, 'borderbottomcolor', 'border-bottom-color:' + value + ';');
+    };
+    
+    var getBorderBottomColorStyle = function(element) {
+        return editorMap.get(element, 'borderbottomcolor');
+    };
+    
+    var removeBorderBottomColorStyle = function(element) {
+        editorMap.remove(element, 'borderbottomcolor');
+    };
+    
+    var setBorderLeftColorStyle = function(element, value) {
+        editorMap.set(element, 'borderleftcolor', 'border-left-color:' + value + ';');
+    };
+    
+    var getBorderLeftColorStyle = function(element) {
+        return editorMap.get(element, 'borderleftcolor');
+    };
+    
+    var removeBorderLeftColorStyle = function(element) {
+        editorMap.remove(element, 'borderleftcolor');
+    };
+    
+    var setBorderRightColorStyle = function(element, value) {
+        editorMap.set(element, 'borderrightcolor', 'border-right-color:' + value + ';');
+    };
+    
+    var getBorderRightColorStyle = function(element) {
+        return editorMap.get(element, 'borderrightcolor');
+    };
+    
+    var removeBorderRightColorStyle = function(element) {
+        editorMap.remove(element, 'borderrightcolor');
+    };
+
     var setBorderStyle = function(element, value) {
         editorMap.set(element, 'border', 'border:' + value + ';');
     };
@@ -1506,6 +1704,14 @@
                     setColorStyle(element, value);
                 } else if (prop == 'border-color') {
                     setBorderColorStyle(element, value);
+                } else if (prop == 'border-top-color') {
+                    setBorderTopColorStyle(element, value);
+                } else if (prop == 'border-bottom-color') {
+                    setBorderBottomColorStyle(element, value);
+                } else if (prop == 'border-left-color') {
+                    setBorderLeftColorStyle(element, value);
+                } else if (prop == 'border-right-color') {
+                    setBorderRightColorStyle(element, value);
                 } else if (prop == 'border-top') {
                     setBorderTopStyle(element, value);
                 } else if (prop == 'border-bottom') {

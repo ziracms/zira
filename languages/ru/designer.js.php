@@ -53,6 +53,8 @@ return array(
     'Comments background' => 'Фон комментариев',
     'Comments rating' => 'Рейтинг комментариев',
     'Forms background' => 'Фон форм',
-    'Forms text color' => 'Цвет текста форм'
+    'Forms text color' => 'Цвет текста форм',
+    'Records background' => 'Фон записей',
+    'Records text color' => 'Цвет текста записей'
 );
 

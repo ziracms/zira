@@ -1730,6 +1730,7 @@ a.scroll-top.visible:visited {
     border-radius: 0;
     background: #747B84;
     border-color: #5D646C;
+    filter: none;
 }
 .messages-panel .navbar-default .navbar-nav li a {
     color: #DDD;
