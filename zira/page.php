@@ -231,7 +231,6 @@ class Page {
             'total'=>Models\Comment::countComments($record->id, !$preview),
             'commenting_allowed'=>$commenting_allowed
         ), 'zira/comments');
-        View::preloadThemeLoader();
         View::addParser();
     }
 

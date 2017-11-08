@@ -956,9 +956,12 @@
         };
         $('#btn-def-designer-gradientpicker').tooltip();
         designer_gradientpicker($('#btn-def-designer-gradientpicker'), $('#btn-def-designer-gradientpicker-hidden'), btn_def_gr[0], btn_def_gr[1], function(color1, color2){
-            $('#main-container .btn-default').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
-            $('#main-container .btn-default').css('border-color', color2);
-            $('#main-container .btn-default').css('textShadow', '0 1px 0 '+color1);
+            $('#main-container .btn-default').each(function(){
+                if ($(this).parents('.search-simple-form').length) return true;
+                $(this).css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
+                $(this).css('border-color', color2);
+                $(this).css('textShadow', '0 1px 0 '+color1);
+            });
             setBackgroundColorStyle('#main-container .btn-default', hexColor(color1), true);
             setBackgroundGradientStyle('#main-container .btn-default', color1, color2);
             setBorderColorStyle('#main-container .btn-default', color2);
@@ -977,7 +980,10 @@
         };
         $('#btn-def-txt-designer-colorpicker').tooltip();
         designer_colorpicker($('#btn-def-txt-designer-colorpicker'), btn_def_color, function(color){
-            $('#main-container .btn-default').css('color', color);
+            $('#main-container .btn-default').each(function(){
+                if ($(this).parents('.search-simple-form').length) return true;
+                $(this).css('color', color);
+            });
             setColorStyle('#main-container .btn-default', color);
             setColorStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color);
         });
@@ -994,7 +1000,8 @@
             };
             $('#comments-txt-designer-colorpicker').tooltip();
             designer_colorpicker($('#comments-txt-designer-colorpicker'), comments_color, function(color){
-                var txt_color = $('body').css('color');
+                //var txt_color = $('body').css('color');
+                var txt_color = 'inherit';
                 $('.comments').css('color', txt_color);
                 $('.comments .comments-item .comment-text').css('color', color);
                 setColorStyle('.comments', txt_color);
@@ -1055,6 +1062,7 @@
                 setColorStyle('#main-container .help-block', color);
                 setColorStyle('#main-container .form-control', color);
                 setColorStyle('.emoji-editable', color);
+                setColorStyle('#main-container .input-group-addon', color);
                 setColorStyle('#main-container .input-group-addon a', color);
             });
             
@@ -1073,8 +1081,13 @@
                 $('.panel,.panel .panel-heading,.panel .panel-footer').css('borderColor', color2);
                 $('.panel .panel-footer').css('background', color1);
                 $('.panel').css('background', color2);
-                $('#main-container .form-control,#main-container .input-group-addon').css('background', color2);
-                $('#main-container .form-control,#main-container .input-group-addon').css('borderColor', color1);
+                $('#main-container .form-control').each(function(){
+                    if ($(this).parents('.search-simple-form').length) return true;
+                    $(this).css('background', color2);
+                    $(this).css('borderColor', color1);
+                });
+                $('#main-container .input-group-addon').css('background', color2);
+                $('#main-container .input-group-addon').css('borderColor', color1);
                 setBackgroundColorStyle('.panel .panel-heading', hexColor(color1), true);
                 setBackgroundGradientStyle('.panel .panel-heading', color1, color2);
                 setBorderColorStyle('.panel .panel-heading', color2);
@@ -1089,6 +1102,8 @@
                 setBorderColorStyle('#main-container .input-group-addon', color1);
                 setBackgroundStyle('.emoji-editable', color2);
                 setBorderColorStyle('.emoji-editable', color1);
+                setBackgroundStyle('#main-container .panel .dropdown-menu', color2);
+                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
             }, 'right', 'rgb');
         }
         

@@ -15,7 +15,7 @@
             });
 
             $(this).attr('disabled','disabled');
-            $(this).parent('.vote-options-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span></div>');
+            $(this).parent('.vote-options-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>');
 
             $.post(url, {
                 'vote_id': vote_id,

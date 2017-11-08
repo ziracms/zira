@@ -59,7 +59,6 @@ class View {
     protected static $_datepicker_assets_added = false;
     protected static $_datepicker_added = false;
     protected static $_loader_preloaded = false;
-    protected static $_theme_loader_preloaded = false;
     protected static $_autocomplete_added = false;
     protected static $_parser_added = false;
     protected static $_codemirror_assets_added = false;
@@ -951,19 +950,6 @@ class View {
         //View::addHTML($script, View::VAR_HEAD_BOTTOM);
         self::addBodyBottomScript($script);
         self::$_loader_preloaded = true;
-    }
-
-    public static function preloadThemeLoader() {
-        if (self::$_theme_loader_preloaded) return;
-        $script = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ ';
-        $script .= 'var loader = new Image();';
-        $script .= 'loader.src = \''.Helper::imgThemeUrl('zira-loader.gif').'\';';
-        $script .= ' });';
-        $script .= Helper::tag_close('script');
-        //View::addHTML($script, View::VAR_HEAD_BOTTOM);
-        self::addBodyBottomScript($script);
-        self::$_theme_loader_preloaded = true;
     }
 
     public static function addWidget($class) {

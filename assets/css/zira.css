@@ -211,3 +211,18 @@ textarea {
     background: rgba(45, 45, 45, .2);
     border-radius: 30px;
 }
+
+@keyframes loader {
+  0% { 
+      -webkit-transform: rotate(-360deg);
+      transform: rotate(-360deg);
+  },
+  50% { 
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+  },
+  100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+  }
+}

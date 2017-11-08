@@ -211,7 +211,7 @@
             }
 
             $(this).attr('disabled','disabled');
-            $(this).parent('.forum-search-results-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span> '+t('Please wait')+'...</div>');
+            $(this).parent('.forum-search-results-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
 
             $.get(url, {
                 'text': text,

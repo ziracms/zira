@@ -1213,11 +1213,8 @@ footer a.rss-link:visited {
     margin-left: 10px;
 }
 .zira-loader {
-    display: inline-block;
-    vertical-align: top;
-    width: 16px;
-    height: 16px;
-    background: url(../images/zira-loader.gif) no-repeat 0 0;
+    font-size: 16px;
+    animation: loader 1s linear infinite;
 }
 .search-simple-form .zira-loader {
     position: absolute;

@@ -785,7 +785,6 @@ class Index extends Zira\Controller {
 
                 if (!$is_ajax) {
                     Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'forum/search-results');
-                    Zira\View::preloadThemeLoader();
                     $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = ($forum ? $forum->title.' - ' : '').Zira\Locale::tm('Search results','forum');
                     $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
                 } else {

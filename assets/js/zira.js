@@ -276,7 +276,7 @@
             }
 
             $(this).attr('disabled','disabled');
-            $(this).parent('.list-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span> '+t('Please wait')+'...</div>');
+            $(this).parent('.list-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
 
             $.post(url, {
                 'category_id': category_id,
@@ -367,7 +367,7 @@
             }
 
             $(this).attr('disabled','disabled');
-            $(this).parent('.comments-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span> '+t('Please wait')+'...</div>');
+            $(this).parent('.comments-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
 
             $.post(url, {
                 'record_id': record_id,
@@ -453,7 +453,7 @@
             }
 
             $(this).attr('disabled','disabled');
-            $(this).parent('.search-results-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader"></span> '+t('Please wait')+'...</div>');
+            $(this).parent('.search-results-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
 
             $.get(url, {
                 'text': text,
@@ -541,7 +541,7 @@
         data['ajax'] = 1;
         data['simple'] = 1;
         $.get($(this).parents('form').attr('action'), data, zira_bind(this, zira_search_form_response));
-        $(this).parents('form').addClass('loading').append('<span class="zira-loader"></span>');
+        $(this).parents('form').addClass('loading').append('<span class="zira-loader glyphicon glyphicon-refresh"></span>');
 
         if (typeof(zira_init_search.submits)=="undefined") {
             zira_init_search.submits = 0;

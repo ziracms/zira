@@ -373,7 +373,7 @@ return array(
     'Left' => 'Слева',
     'Right' => 'Справа',
     'Maximize windows' => 'Разворачивать окна',
-    'Enable paginator' => 'Включить пагинатор',
+    'Enable paginator' => 'Включить постраничную навигацию',
     'Image quality' => 'Качество изображений',
     'Quality' => 'Качество',
     'Watermark margin' => 'Отступ водяного знака',

@@ -105,8 +105,6 @@ class Category extends Zira\Page {
 
         if (!$is_ajax) {
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
-            Zira\View::preloadThemeLoader();
-
             $_data = array(
                 static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
             );
@@ -255,7 +253,6 @@ class Category extends Zira\Page {
         }
 
         Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
-        Zira\View::preloadThemeLoader();
     }
 
     public static function record($category) {
