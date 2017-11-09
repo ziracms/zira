@@ -7,7 +7,7 @@ if (!empty($logo) || !empty($title) || !empty($slogan)) {
         if (!empty($title)) echo '<span>'.Zira\Helper::html($title).'</span>';
         echo '</a>';
     }
-    if (!empty($slogan)) echo '<p id="site-slogan">'.Zira\Helper::html($slogan).'</p>';
+    if (!empty($slogan)) echo '<p id="site-slogan"><span>'.Zira\Helper::html($slogan).'</span></p>';
     else echo '<p id="site-slogan">&nbsp;</p>';
     echo '</div>';
 }

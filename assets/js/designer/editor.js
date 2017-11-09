@@ -2,9 +2,7 @@
     $(document).ready(function(){
         $('body').append('<div class="designer_overlay"></div>');
 
-        if ($('head style').length>0) {
-            parseStyles($('head style').text());
-        }
+        window.editorInit();
         
         var colorpicker_size = 22;
         var colorpicker_wnd_size = 245;
@@ -181,7 +179,7 @@
             });
             
             // header logo
-            if ($('header #site-logo').length>0) {
+            if ($('header #site-logo span').length>0) {
                 // header logo color
                 var logo_color1 = $('header #site-logo').css('color');
                 $('header #site-logo').addClass('active');
@@ -235,7 +233,7 @@
             }
             
             // header slogan
-            if ($('header #site-slogan').length>0) {
+            if ($('header #site-slogan span').length>0) {
                 // header slogan color
                 var slogan_color = $('header #site-slogan').css('color');
                 $('body').append('<div class="designer_colorpicker" id="slogan-designer-colorpicker" title="'+t('Slogan color')+'"></div>');
@@ -1720,47 +1718,103 @@
         editorMap.remove(element, 'padding');
     };
     
-    var parseStyles = function(code) {
+    var setUnknownStyle = function(element, prop, value) {
+        if (typeof(setUnknownStyle.i)=="undefined") setUnknownStyle.i=0;
+        setUnknownStyle.i++;
+        editorMap.set(element, prop+setUnknownStyle.i, prop+':'+value+';');
+    };
+    
+    var prepareCode = function(code) {
+        code = code.replace(/^\s*(.+)\s*$/g,'$1');
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
-        var regexp = new RegExp('([^{]+)[{]([^}]+)[}]', 'gi');
-        var m, m2, m3, m4, element, regexp2, prop, value, regexp3, regexp4;
+        code = code.replace(/([\(])\s*/g,'$1');
+        code = code.replace(/\s*([\)])/g,'$1');
+        code = code.replace(/[\x20]+/g,' ');
+        return code;
+    };
+    
+    var extractMediaContent = function(code, rec) {
+        if (typeof(rec)=="undefined") rec = 0;
+        rec++;
+        if (extractMediaContent.rec>9) return code;
+        var m = null, m1 = null, m2 = null, s = null, s1 = null, s2 = null;
+        m = code.indexOf('@media');
+        if (m<0) return code;
+        var i = 0, iter = 0;
+        s = m;
+        do {
+            iter++;
+            if (iter>99) break;
+            s1 = code.indexOf('{', s);
+            s2 = code.indexOf('}', s);
+            if (s1<0) s1 = code.length-1;
+            if (s2<0) {
+                if (m1!==null) {
+                    m2 = m1;
+                } else {
+                    m1 = m2 = s1;
+                }
+                break;
+            }
+            if (m1===null) {
+                if (s1<s2) {
+                    m1 = s1;
+                    s = s1 + 1;
+                    continue;
+                } else {
+                    m1 = m2 = s2;
+                    break;
+                }
+            }
+            if (s1<s2) {
+                i++;
+                s = s1 + 1;
+                continue;
+            } else {
+                if (i===0) {
+                    m2 = s2;
+                    break;
+                } else {
+                    i--;
+                    s = s2 + 1;
+                    continue;
+                }
+            }
+        } while (true);
+        if (m1===null || m2===null) return code;
+        var media = code.substr(m,m1-m);
+        var content = code.substr(m1+1,m2-m1-1);
+        mediaMap.set(media, content);
+        code = code.substr(0, m) + code.substr(m2+1);
+        return extractMediaContent(code, rec);
+    };
+    
+    var parseStyles = function(code) {
+        var regexp = new RegExp('([^{]+)[{]([^}]*)[}]', 'gi');
+        var element, prop, value, m, m2, m3, m4, regexp2, regexp3;
         while (m = regexp.exec(code)) {
             element = m[1];
             regexp2 = new RegExp('([a-z\-]+)[:]([^;]+)[;]', 'gi');
             while(m2 = regexp2.exec(m[2])) {
                 prop = m2[1];
                 value = m2[2];
-                if (prop == 'background-color') {
-                    setBackgroundColorStyle(element, value, true);
-                } else if (prop == 'background-image' || prop == 'background') {
+                if (prop == 'background-image' || prop == 'background') {
                     regexp3 = new RegExp('^([a-z\-]+)[\(](.+)[\)][\x20]*$','gi');
-                    if (m3 = regexp3.exec(value)) {
-                        if (m3[1] == 'url') {
-                            setBackgroundImageStyle(element, m3[2], true);
-                        } else if (m3[1] == 'linear-gradient') {
-                            regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
-                            m4 = regexp4.exec(m3[2]);
-                            if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,](rgb[a]?[\(][^\)]+[\)])[^,]*[,]([a-z0-9#]+)','gi');
-                                m4 = regexp4.exec(m3[2]);
-                            }
-                            if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
-                                m4 = regexp4.exec(m3[2]);
-                            }
-                            if (!m4) {
-                                regexp4 = new RegExp('[^,]+[,]([a-z0-9#]+)[^,]*[,]([a-z0-9#]+)','gi');
-                                m4 = regexp4.exec(m3[2]);
-                            }
-                            if (m4) {
-                                setBackgroundGradientStyle(element, m4[1], m4[2], true);
-                            }
-                        } else {
-                            setBackgroundStyle(element, value, true);
-                        }
-                    } else {
+                    m3 = regexp3.exec(value);
+                    if (!m3) {
+                        setBackgroundStyle(element, value, true);
+                    } else if (m3[1] == 'url') {
+                        setBackgroundImageStyle(element, m3[2], true);
+                    } else if (m3[1] == 'linear-gradient' && (m4 = parseGradient(m3[2]))) {
+                        setBackgroundGradientStyle(element, m4[1], m4[2], true);
+                    } else if (m3[1] != '-webkit-linear-gradient' && 
+                                m3[1] != '-webkit-gradient' && 
+                                m3[1] != '-o-linear-gradient'
+                        ) {
                         setBackgroundStyle(element, value, true);
                     }
+                } else if (prop == 'background-color') {
+                    setBackgroundColorStyle(element, value, true);
                 } else if (prop == 'color') {
                     setColorStyle(element, value);
                 } else if (prop == 'border-color') {
@@ -1795,6 +1849,8 @@
                     setLineHeightStyle(element, value);
                 } else if (prop == 'padding') {
                     setPaddingStyle(element, value);
+                } else {
+                    setUnknownStyle(element, prop, value);
                 }
             }
         }
@@ -1806,25 +1862,10 @@
         value = value.replace(/\s*([,])\s*/g,'$1');
         if (value != 'none') {
             regexp = new RegExp('([a-z\-]+)[\(](.+)[\)]','gi');
-            if (m = regexp.exec(value)) {
-                if (m[1] == 'linear-gradient') {
-                    var regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
-                    var m2 = regexp2.exec(m[2]);
-                    if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,]([a-z0-9#]+)','gi');
-                        m2 = regexp2.exec(m[2]);
-                    }
-                    if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
-                        m2 = regexp2.exec(m[2]);
-                    }
-                    if (!m2) {
-                        regexp2 = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,]([a-z0-9#]+)','gi');
-                        m2 = regexp2.exec(m[2]);
-                    }
-                    if (m2) {
-                        gradient = [m2[1], m2[2]];
-                    }
+            if ((m = regexp.exec(value)) && m[1] == 'linear-gradient') {
+                m2 = parseGradient(m[2]);
+                if (m2) {
+                    gradient = [m2[1], m2[2]];
                 }
             }
         }
@@ -1833,6 +1874,24 @@
             gradient = [color, color];
         }
         return gradient;
+    };
+    
+    var parseGradient = function(value) {
+        var regexp = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
+        var m = regexp.exec(value);
+        if (!m) {
+            regexp = new RegExp('(?:[^,]+[,])?(rgb[a]?[\(][^\)]+[\)])[^,]*[,]([a-z0-9#]+)','gi');
+            m = regexp.exec(value);
+        }
+        if (!m) {
+            regexp = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,](rgb[a]?[\(][^\)]+[\)])','gi');
+            m = regexp.exec(value);
+        }
+        if (!m) {
+            regexp = new RegExp('(?:[^,]+[,])?([a-z0-9#]+)[^,]*[,]([a-z0-9#]+)','gi');
+            m = regexp.exec(value);
+        }
+        return m;
     };
     
     var digitToHex = function(c) {
@@ -1866,13 +1925,18 @@
         map: [],
         styles: {},
         indexes: {},
+        init: function() {
+            this.map = [];
+            this.styles = {};
+            this.indexes = {};
+        },
         set: function(element, prop, val) {
             if (typeof(this.styles[element])=="undefined") this.styles[element] = {};
             var i = 0;
             if (typeof(this.indexes[element])!="undefined") {
                 i = this.indexes[element] + 1;
             }
-            if (typeof(this.map[element]) == "undefined") this.map.push(element);
+            if ($.inArray(element, this.map)<0) this.map.push(element);
             this.styles[element][prop] = { index: i, value: val };
             this.indexes[element] = i;
         },
@@ -1886,8 +1950,9 @@
             if (typeof(this.styles[element][prop])=="undefined") return;
             this.styles[element][prop] = null;
         },
-        getContent: function() {
-            var content = {};
+        getContent: function(pretty) {
+            if (typeof(pretty)=="undefined") pretty = false;
+            var content = '';
             for (var i=0; i<this.map.length; i++) {
                 var element = this.map[i];
                 var props = [];
@@ -1898,7 +1963,46 @@
                 props.sort(function(a, b){
                     return a.index - b.index;
                 });
-                content[element] = props;
+                if (!pretty) {
+                    content += element + '{' + $.map(props, function(value, index) { return value.value; }).join('') + '}';
+                } else {
+                    content += element.split(',').join(','+"\r\n") + ' {' + "\r\n\t" + $.map(props, function(value, index) { return value.value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
+                }
+            }
+            return content;
+        }
+    };
+    
+    var mediaMap = {
+        map: [],
+        styles: {},
+        init: function() {
+            this.map = [];
+            this.styles = {};
+        },
+        set: function(media, val) {
+            if (typeof(this.styles[media])=="undefined") this.styles[media] = {};
+            if ($.inArray(media, this.map)<0) this.map.push(media);
+            this.styles[media] = val;
+        },
+        get: function(media) {
+            if (typeof(this.styles[media])=="undefined") return null;
+            return this.styles[media];
+        },
+        remove: function(element) {
+            if (typeof(this.styles[media])=="undefined") return;
+            this.styles[media] = null;
+        },
+        getContent: function(pretty) {
+            if (typeof(pretty)=="undefined") pretty = false;
+            var content = '';
+            for (var i=0; i<this.map.length; i++) {
+                var media = this.map[i];
+                if (!pretty) {
+                    content += media + '{' + this.styles[media] + '}';
+                } else {
+                    content += media + ' {' + "\r\n\t" + this.styles[media].split('}').join('}'+"\r\n\t").replace(/\s*$/g,'').split('{').join('{'+"\r\n\t\t").split(';').join(';'+"\r\n\t\t") + "\r\n" + '}' + "\r\n";
+                }
             }
             return content;
         }
@@ -1912,20 +2016,26 @@
         }
     });
     
-    window.editorStyle = function() {
-        var styles = editorMap.getContent();
-        var content = '';
-        for (var prop in styles) {
-            content += prop + '{' + $.map(styles[prop], function(value, index) { return value.value; }).join('') + '}';
+    window.editorInit = function(content) {
+        editorMap.init();
+        mediaMap.init();
+        if (typeof(content)=="undefined" && $('head style').length>0) {
+            content = $('head style').text();
         }
+        if (typeof(content)=="undefined") return;
+        content = prepareCode(content);
+        content = extractMediaContent(content);
+        parseStyles(content);
+    };
+    
+    window.editorStyle = function() {
+        var content = editorMap.getContent();
+        content += mediaMap.getContent();
         return content;
     };
     window.editorContent = function() {
-        var styles = editorMap.getContent();
-        var content = '';
-        for (var prop in styles) {
-            content += prop.split(',').join(','+"\r\n") + ' {' + "\r\n\t" + $.map(styles[prop], function(value, index) { return value.value; }).join("\r\n\t") + "\r\n" + '}' + "\r\n";
-        }
+        var content = editorMap.getContent(true);
+        content += mediaMap.getContent(true);
         return content;
     };
     parent.designerEditorWindow = window;

@@ -234,7 +234,11 @@ var designer_designer_onsave = function() {
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
     var code = designerEditorWindow.editorContent();
-    this.message(t('CSS code')+':' + '<textarea style="width:100%;white-space:pre" cols="20" rows="12" name="desifner-style-code-message" readonly="readonly">'+code+'</textarea>');
+    desk_message(t('CSS code')+':' + '<textarea style="width:100%;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea>', zira_bind(this, function(){
+        if (typeof(designerEditorWindow) == "undefined") return;
+        var content = $('textarea[name=desifner-style-code-message]').val();
+        if (typeof(content)!="undefined") designerEditorWindow.editorInit(content);
+    }));
 };
 
 var designer_designer_wnd = function() {

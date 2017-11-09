@@ -1,7 +1,8 @@
-var desk_message = function(message) {
+var desk_message = function(message, callback) {
     Desk.disableEvents();
     zira_message(message, function() {
         Desk.enableEvents();
+        if (typeof(callback)!="undefined" && callback!==null) callback.call();
     });
     $('.zira-modal').css('zIndex',Desk.z+9);
     $('.modal-backdrop').css('zIndex',Desk.z+8);
