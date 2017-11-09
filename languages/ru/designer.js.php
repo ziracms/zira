@@ -57,6 +57,12 @@ return array(
     'Records background' => 'Фон записей',
     'Records text color' => 'Цвет текста записей',
     'Secondary menu text color' => 'Цвет текста вторичного меню',
-    'Secondary menu background' => 'Фон вторичного меню'
+    'Secondary menu background' => 'Фон вторичного меню',
+    'Set wide container' => 'Установить широкий контейнер',
+    'Unset wide container' => 'Убрать широкий контейнер',
+    'Set wide column' => 'Установить широкую колонку',
+    'Unset wide column' => 'Убрать широкую колонку',
+    'Set body height = 100%' => 'Установить высоту body = 100%',
+    'Set body height = auto' => 'Установить высоту body = auto'
 );
 

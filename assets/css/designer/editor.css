@@ -1,3 +1,6 @@
+body {
+    overflow-x: hidden;
+}
 .tooltip {
     z-index: 2500;
 }
@@ -112,6 +115,43 @@
     box-shadow: 0px 0px 10px #ffffff;
     z-index: 2499;
     cursor: pointer;
+}
+.designer_radio_btn:link,
+.designer_radio_btn:visited {
+    display: none;
+    position: absolute;
+    font-size: 20px;
+    line-height: 100%;
+    width: 38px;
+    height: 38px;
+    color: #fff;
+    border-radius: 18px;
+    border: 4px solid #fff;
+    box-shadow: 0px 0px 10px #ffffff;
+    z-index: 2499;
+    cursor: pointer;
+    overflow: hidden;
+}
+.designer_radio_btn span {
+    position: absolute;
+    display: block;
+    top: 4.25px;
+    left: 5.5px;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+}
+.designer_radio_container:link,
+.designer_radio_container:visited {
+    background-color: #0b82f6;
+}
+.designer_radio_cols:link,
+.designer_radio_cols:visited {
+    background-color: #49f409;
+}
+.designer_radio_html:link,
+.designer_radio_html:visited {
+    background-color: #f5058d;
 }
 
 @keyframes colorpicker {

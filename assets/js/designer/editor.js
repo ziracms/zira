@@ -1316,7 +1316,101 @@
             }, 'right', 'rgb');
         }
         
-        $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_patternpicker, .designer_fontpicker, .designer_fontpicker_sign').show();
+        // container
+        if ($('.container').length>0) {
+            if (!isWideContainer()) {
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_container" id="container-designer-radio-btn" title="'+t('Set wide container')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
+            } else {
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_container" id="container-designer-radio-btn" title="'+t('Unset wide container')+'" data-placement="left"><span class="glyphicon glyphicon-check"></span></a>');
+            }
+            designer_positions['media_container'] = function() {
+                if ($(window).width()<1200) {
+                    $('#container-designer-radio-btn').hide();
+                    return;
+                }
+                var media_container_x = $(window).width()-2*colorpicker_size;
+                var media_container_y = $('#main-container > .container').offset().top+colorpicker_size;
+                $('#container-designer-radio-btn').css({'left':media_container_x,'top':media_container_y});
+                $('#container-designer-radio-btn').show();
+            };
+            $('#container-designer-radio-btn').tooltip();
+            $('#container-designer-radio-btn').click(function(){
+                if (!isWideContainer()) {
+                    $('.container').css({width:'100%',maxWidth:'1400px'});
+                    setWideContainer(true);
+                    $(this).children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    $(this).attr('title', t('Unset wide container')).tooltip('fixTitle').tooltip('hide');
+                } else {
+                    $('.container').css({width:'1170px',maxWidth:'inherit'});
+                    setWideContainer(false);
+                    $(this).children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                    $(this).attr('title', t('Set wide container')).tooltip('fixTitle').tooltip('hide');
+                }
+            });
+        }
+        
+        // cols
+        if ($('.col-sm-4').length>0) {
+            if (!isWideCols()) {
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_cols" id="cols-designer-radio-btn" title="'+t('Set wide column')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
+            } else {
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_cols" id="cols-designer-radio-btn" title="'+t('Unset wide column')+'" data-placement="left"><span class="glyphicon glyphicon-check"></span></a>');
+            }
+            designer_positions['media_cols'] = function() {
+                if ($(window).width()<768) {
+                    $('#cols-designer-radio-btn').hide();
+                    return;
+                }
+                var media_cols_x = $(window).width()-2*colorpicker_size;
+                var media_cols_y = $('#main-container > .container').offset().top+3*colorpicker_size;
+                $('#cols-designer-radio-btn').css({'left':media_cols_x,'top':media_cols_y});
+                $('#cols-designer-radio-btn').show();
+            };
+            $('#cols-designer-radio-btn').tooltip();
+            $('#cols-designer-radio-btn').click(function(){
+                if (!isWideCols()) {
+                    $('.col-sm-4.sidebar').css({width:'39.9999%'});
+                    $('.col-sm-8#content').css({width:'60%'});
+                    setWideCols(true);
+                    $(this).children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    $(this).attr('title', t('Unset wide column')).tooltip('fixTitle').tooltip('hide');
+                } else {
+                    $('.col-sm-4.sidebar').css({width:'33.3333%'});
+                    $('.col-sm-8#content').css({width:'66.6666%'});
+                    setWideCols(false);
+                    $(this).children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                    $(this).attr('title', t('Set wide column')).tooltip('fixTitle').tooltip('hide');
+                }
+            });
+        }
+        
+        // html
+        if ($('body').height() != $(window).height()) {
+            $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = 100%')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
+        } else {
+            $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = auto')+'" data-placement="left"><span class="glyphicon glyphicon-check"></span></a>');
+        }
+        designer_positions['html_height'] = function() {
+            var html_height_x = $(window).width()-2*colorpicker_size;
+            var html_height_y = $('#main-container > .container').offset().top+5*colorpicker_size;
+            $('#html-designer-radio-btn').css({'left':html_height_x,'top':html_height_y});
+        };
+        $('#html-designer-radio-btn').tooltip();
+        $('#html-designer-radio-btn').click(function(){
+            if ($('body').height() != $(window).height()) {
+                $('html,body').css('height','100%');
+                setHeightStyle('html,body','100%');
+                $(this).children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $(this).attr('title', t('Set body height = auto')).tooltip('fixTitle').tooltip('hide');
+            } else {
+                $('html,body').css('height','auto');
+                removeHeightStyle('html,body');
+                $(this).children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $(this).attr('title', t('Set body height = 100%')).tooltip('fixTitle').tooltip('hide');
+            }
+        });
+        
+        $('.designer_colorpicker, .designer_gradientpicker, .designer_imagepicker, .designer_patternpicker, .designer_fontpicker, .designer_fontpicker_sign, .designer_radio_btn').css('display', 'block');
         $(window).trigger('resize');
     });
     
@@ -1717,19 +1811,97 @@
     var removePaddingStyle = function(element) {
         editorMap.remove(element, 'padding');
     };
+
+    var setWidthStyle = function(element, value) {
+        editorMap.set(element, 'width', 'width:' + value + ';');
+    };
     
+    var getWidthStyle = function(element) {
+        return editorMap.get(element, 'width');
+    };
+    
+    var removeWidthStyle = function(element) {
+        editorMap.remove(element, 'width');
+    };
+    
+    var setHeightStyle = function(element, value) {
+        editorMap.set(element, 'height', 'height:' + value + ';');
+    };
+    
+    var getHeightStyle = function(element) {
+        return editorMap.get(element, 'height');
+    };
+    
+    var removeHeightStyle = function(element) {
+        editorMap.remove(element, 'height');
+    };
+
     var setUnknownStyle = function(element, prop, value) {
         if (typeof(setUnknownStyle.i)=="undefined") setUnknownStyle.i=0;
         setUnknownStyle.i++;
         editorMap.set(element, prop+setUnknownStyle.i, prop+':'+value+';');
     };
     
+    var set1200Media = function(prop, val) {
+        mediaMap.set('@media (min-width:1200px)', prop, val);
+    };
+    
+    var get1200Media = function(prop) {
+        return mediaMap.get('@media (min-width:1200px)', prop);
+    };
+    
+    var remove1200Media = function(prop) {
+        mediaMap.remove('@media (min-width:1200px)', prop);
+    };
+    
+    var set768Media = function(prop, val) {
+        mediaMap.set('@media (min-width:768px)', prop, val);
+    };
+    
+    var get768Media = function(prop) {
+        return mediaMap.get('@media (min-width:768px)', prop);
+    };
+    
+    var remove768Media = function(prop) {
+        mediaMap.remove('@media (min-width:768px)', prop);
+    };
+    
+    var setWideContainer = function(wide) {
+        if (wide) {
+            set1200Media(mediaWideStyles.container, mediaWideStyles.container);
+        } else {
+            remove1200Media(mediaWideStyles.container);
+        }
+    };
+    
+    var isWideContainer = function() {
+        var val = get1200Media(mediaWideStyles.container);
+        if (val && val.length>0) return true;
+        else return false;
+    };
+    
+    var setWideCols = function(wide) {
+        if (wide) {
+            set768Media(mediaWideStyles.cols, mediaWideStyles.cols);
+        } else {
+            remove768Media(mediaWideStyles.cols);
+        }
+    };
+    
+    var isWideCols = function() {
+        var val = get768Media(mediaWideStyles.cols);
+        if (val && val.length>0) return true;
+        else return false;
+    };
+
     var prepareCode = function(code) {
+        code = code.replace(/([^{};,\r\n\t][\x20\t]*[\r\n])/g,'$1;');
         code = code.replace(/^\s*(.+)\s*$/g,'$1');
         code = code.replace(/\s*([{};:,])\s*/g,'$1');
         code = code.replace(/([\(])\s*/g,'$1');
         code = code.replace(/\s*([\)])/g,'$1');
         code = code.replace(/[\x20]+/g,' ');
+        code = code.replace(/[;]+/g,';');
         return code;
     };
     
@@ -1784,7 +1956,8 @@
         if (m1===null || m2===null) return code;
         var media = code.substr(m,m1-m);
         var content = code.substr(m1+1,m2-m1-1);
-        mediaMap.set(media, content);
+        var prop = prepareCode(content);
+        mediaMap.set(media, prop, content);
         code = code.substr(0, m) + code.substr(m2+1);
         return extractMediaContent(code, rec);
     };
@@ -1849,6 +2022,10 @@
                     setLineHeightStyle(element, value);
                 } else if (prop == 'padding') {
                     setPaddingStyle(element, value);
+                } else if (prop == 'width') {
+                    setWidthStyle(element, value);
+                } else if (prop == 'height') {
+                    setHeightStyle(element, value);
                 } else {
                     setUnknownStyle(element, prop, value);
                 }
@@ -1942,7 +2119,7 @@
         },
         get: function(element, prop) {
             if (typeof(this.styles[element])=="undefined") return null;
-            if (typeof(this.styles[element][prop])=="undefined") return null;
+            if (typeof(this.styles[element][prop])=="undefined" || this.styles[element][prop]===null) return null;
             return this.styles[element][prop].value;
         },
         remove: function(element, prop) {
@@ -1960,6 +2137,7 @@
                     if (this.styles[element][prop]===null) continue;
                     props.push(this.styles[element][prop]);
                 }
+                if (props.length==0) continue;
                 props.sort(function(a, b){
                     return a.index - b.index;
                 });
@@ -1976,36 +2154,59 @@
     var mediaMap = {
         map: [],
         styles: {},
+        indexes: {},
         init: function() {
             this.map = [];
             this.styles = {};
+            this.indexes = {};
         },
-        set: function(media, val) {
+        set: function(media, prop, val) {
             if (typeof(this.styles[media])=="undefined") this.styles[media] = {};
+            var i = 0;
+            if (typeof(this.indexes[media])!="undefined") {
+                i = this.indexes[media] + 1;
+            }
             if ($.inArray(media, this.map)<0) this.map.push(media);
-            this.styles[media] = val;
+            this.styles[media][prop] = { index: i, value: val };
+            this.indexes[media] = i;
         },
-        get: function(media) {
+        get: function(media, prop) {
             if (typeof(this.styles[media])=="undefined") return null;
-            return this.styles[media];
+            if (typeof(this.styles[media][prop])=="undefined" || this.styles[media][prop]===null) return null;
+            return this.styles[media][prop].value;
         },
-        remove: function(element) {
+        remove: function(media, prop) {
             if (typeof(this.styles[media])=="undefined") return;
-            this.styles[media] = null;
+            if (typeof(this.styles[media][prop])=="undefined") return;
+            this.styles[media][prop] = null;
         },
         getContent: function(pretty) {
             if (typeof(pretty)=="undefined") pretty = false;
             var content = '';
             for (var i=0; i<this.map.length; i++) {
                 var media = this.map[i];
+                var props = [];
+                for (var prop in this.styles[media]) {
+                    if (this.styles[media][prop]===null) continue;
+                    props.push(this.styles[media][prop]);
+                }
+                if (props.length==0) continue;
+                props.sort(function(a, b){
+                    return a.index - b.index;
+                });
                 if (!pretty) {
-                    content += media + '{' + this.styles[media] + '}';
+                    content += media + '{' + $.map(props, function(value, index) { return value.value; }).join('') + '}';
                 } else {
-                    content += media + ' {' + "\r\n\t" + this.styles[media].split('}').join('}'+"\r\n\t").replace(/\s*$/g,'').split('{').join('{'+"\r\n\t\t").split(';').join(';'+"\r\n\t\t") + "\r\n" + '}' + "\r\n";
+                    content += media + ' {' + "\r\n\t" + $.map(props, function(value, index) { return value.value; }).join("\r\n\t").split('}').join('}'+"\r\n\t").replace(/\s*$/g,'').split('{').join('{'+"\r\n\t\t").split(';').join(';'+"\r\n\t\t") + "\r\n" + '}' + "\r\n";
                 }
             }
             return content;
         }
+    };
+    
+    var mediaWideStyles = {
+        'container': '.container{width:100%;max-width:1400px;}',
+        'cols': '.col-sm-8#content{width:60%;}.col-sm-4.sidebar{width:39.9999%;}.col-sm-2.sidebar{width:19.9999%;}'
     };
     
     $(window).keydown(function(e){
