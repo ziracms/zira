@@ -537,14 +537,18 @@ class View {
         self::addStyle('bootstrap-theme.min.css');
         self::addScript('bootstrap.min.js');
 
+        self::registerRenderHook(get_called_class(), 'addHTML5ForIE');
+
+        self::$_bootstrap_added = true;
+    }
+    
+    public static function addHTML5ForIE() {
         $ie = '<!--[if lt IE 9]>';
         $ie .= '<script src="'.Helper::jsUrl('html5shiv.min.js').'"></script>';
         $ie .= '<script src="'.Helper::jsUrl('respond.min.js').'"></script>';
         $ie .= '<![endif]-->';
 
         self::addHTML($ie, self::VAR_HEAD_BOTTOM);
-
-        self::$_bootstrap_added = true;
     }
 
     public static function addJquery() {

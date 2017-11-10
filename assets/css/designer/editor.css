@@ -119,39 +119,32 @@ body {
 .designer_radio_btn:link,
 .designer_radio_btn:visited {
     display: none;
-    position: absolute;
+    position: fixed;
     font-size: 20px;
-    line-height: 100%;
-    width: 38px;
-    height: 38px;
-    color: #fff;
-    border-radius: 18px;
-    border: 4px solid #fff;
-    box-shadow: 0px 0px 10px #ffffff;
+    box-shadow: 0px 0px 5px #212108, inset 0px 0px 30px #212108;
+    border-radius: 12px;
+    padding: 3px;
+    width: 26px;
+    height: 26px;
     z-index: 2499;
     cursor: pointer;
     overflow: hidden;
 }
 .designer_radio_btn span {
-    position: absolute;
-    display: block;
-    top: 4.25px;
-    left: 5.5px;
-    width: 20px;
-    height: 20px;
-    margin: 0;
+    top: -2px;
+    left: 1px;
 }
 .designer_radio_container:link,
 .designer_radio_container:visited {
-    background-color: #0b82f6;
+    color: #76b7f8;
 }
 .designer_radio_cols:link,
 .designer_radio_cols:visited {
-    background-color: #49f409;
+    color: #a9ec90;
 }
 .designer_radio_html:link,
 .designer_radio_html:visited {
-    background-color: #f5058d;
+    color: #f57ac0;
 }
 
 @keyframes colorpicker {

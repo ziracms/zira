@@ -167,4 +167,9 @@ class Helper {
             return FALSE;
         return 0;
     }
+    
+    public static function backtrace() {
+        $backtrace = debug_backtrace();
+        echo self::tag_open('pre').print_r(array_shift($backtrace), true).self::tag_close('pre');
+    }
 }

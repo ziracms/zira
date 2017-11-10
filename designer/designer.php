@@ -14,6 +14,8 @@ class Designer {
     private static $_instance;
     
     const CACHE_KEY = 'designer';
+    
+    protected static $_insert_inline = true;
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -21,6 +23,10 @@ class Designer {
         }
 
         return self::$_instance;
+    }
+    
+    public static function setInsertInline($inline) {
+        self::$_insert_inline = (bool) $inline;
     }
 
     public function bootstrap() {
@@ -33,12 +39,34 @@ class Designer {
             Dash\Dash::unloadDashLanguage();
         }
         
+        if (self::isIE8()) {
+            self::setInsertInline(false);
+        }
+        
         if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
-            Zira\View::registerRenderHook($this, 'applyStyle');
+            if (self::$_insert_inline) {
+                Zira\View::registerRenderHook($this, 'applyStyle');
+            } else {
+                $style = Zira\Helper::tag_short('link', array(
+                    'rel' => 'stylesheet',
+                    'type' => 'text/css',
+                    'href' => Zira\Helper::url('style')
+                ));
+                Zira\View::addHtml($style, Zira\View::VAR_HEAD_BOTTOM);
+            }
         }
     }
     
-    public static function applyStyle() {
+    public function beforeDispatch() {
+        Zira\Router::addRoute('style','designer/index/index');
+    }
+    
+    protected static function isIE8() {
+        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        return (preg_match('/msie\s([\d]+)/i', $ua, $m) && $m[1]<=8);
+    }
+    
+    public static function getStyle() {
         $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage());
         if (!$styles) {
             $styles = \Designer\Models\Style::getCollection()
@@ -112,8 +140,15 @@ class Designer {
         
         if (!$active_style) return;
         
+        return $active_style->content;
+    }
+    
+    public static function applyStyle() {
+        $content = self::getStyle();
+        if (empty($content)) return;
+        
         $html = Zira\Helper::tag_open('style');
-        $html .= $active_style->content;
+        $html .= $content;
         $html .= Zira\Helper::tag_close('style');
 
         Zira\View::addHTML($html, Zira\View::VAR_HEAD_BOTTOM);
