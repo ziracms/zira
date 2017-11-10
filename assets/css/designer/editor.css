@@ -1,6 +1,3 @@
-body {
-    overflow-x: hidden;
-}
 .tooltip {
     z-index: 2500;
 }
@@ -146,7 +143,9 @@ body {
 .designer_radio_html:visited {
     color: #f57ac0;
 }
-
+.freeze {
+    animation: none;
+}
 @keyframes colorpicker {
   0% { 
       -webkit-transform: rotate(-360deg);

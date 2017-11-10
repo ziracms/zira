@@ -12,7 +12,7 @@ use Zira;
 use Zira\Permission;
 
 class Recordtext extends Editor {
-    const DRAFT_INTERVAL = 10000;
+    const DRAFT_INTERVAL = 30000;
 
     protected $_help_url = 'zira/help/notepad';
 

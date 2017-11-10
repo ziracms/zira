@@ -290,6 +290,12 @@ DashWindow.prototype.focus = function() {
     if (!this.focused && this.options.onFocus !== null) {
         this.options.onFocus.call(this);
     }
+    if (!this.focused && this.maximized && 
+        this.window_left == this.options.edge_left && 
+        this.window_right == this.options.edge_right
+    ) {
+        $('body').css('overflow','hidden');
+    }
     this.focused = true;
     $(this.element).addClass(this.focused_window_class);
     if (this.focusedElement!==null) $(this.focusedElement).focus();
@@ -931,6 +937,10 @@ DashWindow.prototype.getFooter = function() {
 
 DashWindow.prototype.destroy = function() {
     if (!this.initialized) return;
+    
+    if (this.maximized) {
+        $('body').css('overflow','auto');
+    }
 
     if (this.options.onClose!==null) {
         this.options.onClose.call(this);
@@ -1003,6 +1013,11 @@ DashWindow.prototype.maximize = function(remember_position, disable_animation, c
         this.unmaximize_top = this.options.top;
         this.unmaximize_width = this.options.width;
         this.unmaximize_height = this.options.height;
+    }
+    
+    if (this.window_left == this.options.edge_left && this.window_right == this.options.edge_right) {
+        $('body').css('overflow','hidden');
+        this.setWindowRect();
     }
 
     this.options.left = this.window_left;
@@ -1086,6 +1101,7 @@ DashWindow.prototype.animateMaximizing = function(callback) {
 
 DashWindow.prototype.unmaximize = function(unmaximize_only) {
     if (!this.initialized) return;
+    $('body').css('overflow','auto');
     this.setWindowRect();
     this.maximized = false;
     $(this.element).removeClass(this.maximized_window_class);
