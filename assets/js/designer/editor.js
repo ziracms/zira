@@ -406,7 +406,7 @@
                         $('#usermenu-color-designer-gradientpicker-hidden').hide();
                         return;
                     }
-                    var usermenu_cx = $('header ul#user-menu').offset().left;
+                    var usermenu_cx = $('header ul#user-menu').offset().left+($('header ul#user-menu').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
                     var usermenu_cy = $('header ul#user-menu').offset().top+$('header ul#user-menu').outerHeight()+.5*colorpicker_size;
                     $('#usermenu-color-designer-gradientpicker').css({'left':usermenu_cx,'top':usermenu_cy});
                     $('#usermenu-color-designer-gradientpicker-hidden').css({'left':usermenu_cx-colorpicker_wnd_size,'top':usermenu_cy});
@@ -435,7 +435,7 @@
                         $('#usermenu-bg-designer-gradientpicker-hidden').hide();
                         return;
                     }
-                    var usermenu_bx = $('header ul#user-menu').offset().left+1.5*colorpicker_size;
+                    var usermenu_bx = $('header ul#user-menu').offset().left+($('header ul#user-menu').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
                     var usermenu_by = $('header ul#user-menu').offset().top+$('header ul#user-menu').outerHeight()+.5*colorpicker_size;
                     $('#usermenu-bg-designer-gradientpicker').css({'left':usermenu_bx,'top':usermenu_by});
                     $('#usermenu-bg-designer-gradientpicker-hidden').css({'left':usermenu_bx-gradientpicker_wnd_size,'top':usermenu_by});
@@ -1367,13 +1367,13 @@
             var sec_menu_color2 = $('#secondary-menu-wrapper ul li.active a').css('color');
             $('body').append('<div class="designer_colorpicker" id="sec-menu-color-designer-gradientpicker" title="'+t('Secondary menu text color')+'"></div><div class="designer_gradientpicker_hidden" id="sec-menu-color-designer-gradientpicker-hidden"></div>');
             designer_positions['sec_menu_txt'] = function() {
-                var sec_menu_tx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2-2.75*colorpicker_size;
+                var sec_menu_tx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
                 var sec_menu_ty = $('#secondary-menu-wrapper').offset().top+$('#secondary-menu-wrapper').outerHeight()-1.5*colorpicker_size;
                 $('#sec-menu-color-designer-gradientpicker').css({'left':sec_menu_tx,'top':sec_menu_ty});
-                $('#sec-menu-color-designer-gradientpicker-hidden').css({'left':sec_menu_tx+colorpicker_wnd_size,'top':sec_menu_ty});
+                $('#sec-menu-color-designer-gradientpicker-hidden').css({'left':sec_menu_tx-colorpicker_wnd_size,'top':sec_menu_ty});
             };
             $('#sec-menu-color-designer-gradientpicker').tooltip();
-            designer_gradientpicker($('#sec-menu-color-designer-gradientpicker'), $('#sec-menu-color-designer-gradientpicker-hidden'), sec_menu_color1, sec_menu_color2, function(color1, color2){
+            designer_gradientpicker($('#sec-menu-color-designer-gradientpicker'), $('#sec-menu-color-designer-gradientpicker-hidden'), sec_menu_color2, sec_menu_color1, function(color2, color1){
                 $('#secondary-menu-wrapper a').css('color', color1);
                 $('#secondary-menu-wrapper .active a').css('color', color2);
                 setColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
@@ -1386,13 +1386,13 @@
             var sec_menu_bg2 = $('#secondary-menu-wrapper ul li.active a').css('backgroundColor');
             $('body').append('<div class="designer_gradientpicker" id="sec-menu-bg-designer-gradientpicker" title="'+t('Secondary menu background')+'"></div><div class="designer_gradientpicker_hidden" id="sec-menu-bg-designer-gradientpicker-hidden"></div>');
             designer_positions['sec_menu_bg'] = function() {
-                var sec_menu_bx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2-1.25*colorpicker_size;
+                var sec_menu_bx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
                 var sec_menu_by = $('#secondary-menu-wrapper').offset().top+$('#secondary-menu-wrapper').outerHeight()-1.5*colorpicker_size;
                 $('#sec-menu-bg-designer-gradientpicker').css({'left':sec_menu_bx,'top':sec_menu_by});
-                $('#sec-menu-bg-designer-gradientpicker-hidden').css({'left':sec_menu_bx+colorpicker_wnd_size,'top':sec_menu_by});
+                $('#sec-menu-bg-designer-gradientpicker-hidden').css({'left':sec_menu_bx-colorpicker_wnd_size,'top':sec_menu_by});
             };
             $('#sec-menu-bg-designer-gradientpicker').tooltip();
-            designer_gradientpicker($('#sec-menu-bg-designer-gradientpicker'), $('#sec-menu-bg-designer-gradientpicker-hidden'), sec_menu_bg1, sec_menu_bg2, function(color1, color2){
+            designer_gradientpicker($('#sec-menu-bg-designer-gradientpicker'), $('#sec-menu-bg-designer-gradientpicker-hidden'), sec_menu_bg2, sec_menu_bg1, function(color2, color1){
                 $('#secondary-menu-wrapper ul li a').css('background', color1);
                 $('#secondary-menu-wrapper ul li.active a').css('background', color2);
                 setBackgroundColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
@@ -1999,13 +1999,14 @@
     };
 
     var prepareCode = function(code) {
-        code = code.replace(/([^{};,\r\n\t][\x20\t]*[\r\n])/g,'$1;');
-        code = code.replace(/^\s*(.+)\s*$/g,'$1');
-        code = code.replace(/\s*([{};:,])\s*/g,'$1');
-        code = code.replace(/([\(])\s*/g,'$1');
-        code = code.replace(/\s*([\)])/g,'$1');
-        code = code.replace(/[\x20]+/g,' ');
-        code = code.replace(/[;]+/g,';');
+        code = code.replace(/\/\*[\s\S]*?\*\//g,''); // removing comments
+        code = code.replace(/([^{};,\r\n\t][\x20\t]*[\r\n])/g,'$1;'); // adding semicolon
+        code = code.replace(/^\s*(.+)\s*$/g,'$1'); // trim whitespaces
+        code = code.replace(/\s*([{};:,])\s*/g,'$1'); // removing whitespaces
+        code = code.replace(/([\(])\s*/g,'$1'); // removing whitespaces after brackets
+        code = code.replace(/\s*([\)])/g,'$1'); // removing whitespaces before brackets
+        code = code.replace(/[\x20]+/g,' '); // removing multiple whitespaces
+        code = code.replace(/[;]+/g,';'); // removing multiple semicolons
         return code;
     };
     
