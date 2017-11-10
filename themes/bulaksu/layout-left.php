@@ -38,7 +38,7 @@
 </div>
 </div>
 </div></div><!--/main-container-wrapper-->
-<a href="javascript:void(0)" class="scroll-top" title="<?php echo t('Up') ?>"></a>
+<a href="javascript:void(0)" class="scroll-top" title="<?php echo t('Up') ?>"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
 <?php layout_body_bottom() ?>
 </body>
 </html>

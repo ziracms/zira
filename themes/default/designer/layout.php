@@ -27,7 +27,7 @@
 <div class="col-sm-4 sidebar">
 <aside>
 <?php Zira\View::renderView(array(), 'designer/sidebar'); ?>
-<?php layout_sidebar_right() ?>
+<?php //layout_sidebar_right() ?>
 </aside>
 </div>
 </div>
@@ -41,7 +41,7 @@
 </div>
 </footer>
 </div></div><!--/main-container-wrapper-->
-<a href="javascript:void(0)" class="scroll-top" title="<?php echo t('Up') ?>"></a>
+<a href="javascript:void(0)" class="scroll-top" title="<?php echo t('Up') ?>"><span class="glyphicon glyphicon-circle-arrow-up"></span></a>
 <?php layout_body_bottom() ?>
 </body>
 </html>

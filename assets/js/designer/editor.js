@@ -1,4 +1,29 @@
 (function($){
+    var mediaType = {
+        media768: '@media (min-width:768px)',
+        media1200: '@media (min-width:1200px)'
+    };
+
+    var mediaStyle = {
+        container: {
+            selector: '.container',
+            width: '100%',
+            maxWidth: '1400px'
+        },
+        colSm8: {
+            selector: '.col-sm-8#content',
+            width: '60%'
+        },
+        colSm4: {
+            selector: '.col-sm-4.sidebar',
+            width: '39.9999%'
+        },
+        colSm2: {
+            selector: '.col-sm-2.sidebar',
+            width: '19.9999%'
+        }
+    };
+        
     $(document).ready(function(){
         $('body').append('<div class="designer_overlay"></div>');
 
@@ -9,7 +34,7 @@
         var colorpicker_wnd_size = 245;
         var gradientpicker_wnd_size = 280;
         var container_x = $('#content').offset().left;
-        
+
         var designer_positions = [];
         $(window).resize(function(){
             for (var name in designer_positions) {
@@ -578,6 +603,7 @@
                 $('#article-link-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#article-link-designer-gradientpicker'), $('#article-link-designer-gradientpicker-hidden'), article_link_color1, article_link_color2, function(color1, color2){
                     $('.article a,.article-info a,.zira-calendar-selector a,.comment-head a').css('color', color1);
+                    $('.scroll-top').css('color', color1);
                     $('.article a').stop(true, true).animate({'color':color2},1000,function(){
                         $('.article a').css('color', color2);
                         $('.article a').animate({'color':color1},1000,function(){
@@ -1044,8 +1070,11 @@
             designer_colorpicker($('#comments-bg-designer-colorpicker'), comments_bg, function(color){
                 $('.comments .comments-item .comment-text').css('backgroundColor', color);
                 $('.comments .comments-item .comment-text').css('borderColor', color);
+                var boxShadow = 'inset 0px 0px 10px '+color;
+                $('.comments .comments-item .comment-text').css('box-shadow', boxShadow);
                 setBackgroundColorStyle('.comments .comments-item .comment-text', color);
                 setBorderColorStyle('.comments .comments-item .comment-text', color);
+                setBoxShadowStyle('.comments .comments-item .comment-text', boxShadow);
             }, 'left');
             
             // comments rating
@@ -1566,7 +1595,7 @@
         if (!addOnly) {
             removeBackgroundGradientStyle(element);
             removeBackgroundImageStyle(element);
-            removeBackgroundStyle(element, value);
+            removeBackgroundStyle(element);
         }
     };
     
@@ -1866,61 +1895,75 @@
         editorMap.remove(element, 'height');
     };
 
+    var setMaxWidthStyle = function(element, value) {
+        editorMap.set(element, 'maxwidth', 'max-width:' + value + ';');
+    };
+    
+    var getMaxWidthStyle = function(element) {
+        return editorMap.get(element, 'maxwidth');
+    };
+    
+    var removeMaxWidthStyle = function(element) {
+        editorMap.remove(element, 'maxwidth');
+    };
+    
+    var setMaxHeightStyle = function(element, value) {
+        editorMap.set(element, 'maxheight', 'max-height:' + value + ';');
+    };
+    
+    var getMaxHeightStyle = function(element) {
+        return editorMap.get(element, 'maxheight');
+    };
+    
+    var removeMaxHeightStyle = function(element) {
+        editorMap.remove(element, 'maxheight');
+    };
+
     var setUnknownStyle = function(element, prop, value) {
         if (typeof(setUnknownStyle.i)=="undefined") setUnknownStyle.i=0;
         setUnknownStyle.i++;
         editorMap.set(element, prop+setUnknownStyle.i, prop+':'+value+';');
     };
-    
-    var set1200Media = function(prop, val) {
-        mediaMap.set('@media (min-width:1200px)', prop, val);
-    };
-    
-    var get1200Media = function(prop) {
-        return mediaMap.get('@media (min-width:1200px)', prop);
-    };
-    
-    var remove1200Media = function(prop) {
-        mediaMap.remove('@media (min-width:1200px)', prop);
-    };
-    
-    var set768Media = function(prop, val) {
-        mediaMap.set('@media (min-width:768px)', prop, val);
-    };
-    
-    var get768Media = function(prop) {
-        return mediaMap.get('@media (min-width:768px)', prop);
-    };
-    
-    var remove768Media = function(prop) {
-        mediaMap.remove('@media (min-width:768px)', prop);
-    };
-    
+
     var setWideContainer = function(wide) {
+        editorMap.media = mediaType.media1200;
         if (wide) {
-            set1200Media(mediaWideStyles.container, mediaWideStyles.container);
+            setWidthStyle(mediaStyle.container.selector, mediaStyle.container.width);
+            setMaxWidthStyle(mediaStyle.container.selector, mediaStyle.container.maxWidth);
         } else {
-            remove1200Media(mediaWideStyles.container);
+            removeWidthStyle(mediaStyle.container.selector);
+            removeMaxWidthStyle(mediaStyle.container.selector);
         }
+        editorMap.media = null;
     };
     
     var isWideContainer = function() {
-        var val = get1200Media(mediaWideStyles.container);
-        if (val && val.length>0) return true;
+        editorMap.media = mediaType.media1200;
+        var val = getWidthStyle(mediaStyle.container.selector);
+        editorMap.media = null;
+        if (val && val=='width:'+mediaStyle.container.width+';') return true;
         else return false;
     };
     
     var setWideCols = function(wide) {
+        editorMap.media = mediaType.media768;
         if (wide) {
-            set768Media(mediaWideStyles.cols, mediaWideStyles.cols);
+            setWidthStyle(mediaStyle.colSm2.selector, mediaStyle.colSm2.width);
+            setWidthStyle(mediaStyle.colSm4.selector, mediaStyle.colSm4.width);
+            setWidthStyle(mediaStyle.colSm8.selector, mediaStyle.colSm8.width);
         } else {
-            remove768Media(mediaWideStyles.cols);
+            removeWidthStyle(mediaStyle.colSm2.selector);
+            removeWidthStyle(mediaStyle.colSm4.selector);
+            removeWidthStyle(mediaStyle.colSm8.selector);
         }
+        editorMap.media = null;
     };
     
     var isWideCols = function() {
-        var val = get768Media(mediaWideStyles.cols);
-        if (val && val.length>0) return true;
+        editorMap.media = mediaType.media768;
+        var val = getWidthStyle(mediaStyle.colSm4.selector);
+        editorMap.media = null;
+        if (val && val=='width:'+mediaStyle.colSm4.width+';') return true;
         else return false;
     };
 
@@ -1987,9 +2030,15 @@
         var media = code.substr(m,m1-m);
         var content = code.substr(m1+1,m2-m1-1);
         var prop = prepareCode(content);
-        mediaMap.set(media, prop, content);
+        parseMedia(media, content);
         code = code.substr(0, m) + code.substr(m2+1);
         return extractMediaContent(code, rec);
+    };
+    
+    var parseMedia = function(media, content) {
+        editorMap.media = media;
+        parseStyles(content);
+        editorMap.media = null;
     };
     
     var parseStyles = function(code) {
@@ -2056,6 +2105,10 @@
                     setWidthStyle(element, value);
                 } else if (prop == 'height') {
                     setHeightStyle(element, value);
+                } else if (prop == 'max-width') {
+                    setMaxWidthStyle(element, value);
+                } else if (prop == 'max-height') {
+                    setMaxHeightStyle(element, value);
                 } else {
                     setUnknownStyle(element, prop, value);
                 }
@@ -2132,12 +2185,17 @@
         map: [],
         styles: {},
         indexes: {},
+        media: null,
         init: function() {
             this.map = [];
             this.styles = {};
             this.indexes = {};
+            this.media = null;
         },
         set: function(element, prop, val) {
+            if (this.media) {
+                return mediaMap.set(this.media, element, prop, val);
+            }
             if (typeof(this.styles[element])=="undefined") this.styles[element] = {};
             var i = 0;
             if (typeof(this.indexes[element])!="undefined") {
@@ -2148,11 +2206,17 @@
             this.indexes[element] = i;
         },
         get: function(element, prop) {
+            if (this.media) {
+                return mediaMap.get(this.media, element, prop);
+            }
             if (typeof(this.styles[element])=="undefined") return null;
             if (typeof(this.styles[element][prop])=="undefined" || this.styles[element][prop]===null) return null;
             return this.styles[element][prop].value;
         },
         remove: function(element, prop) {
+            if (this.media) {
+                return mediaMap.remove(this.media, element, prop);
+            }
             if (typeof(this.styles[element])=="undefined") return;
             if (typeof(this.styles[element][prop])=="undefined") return;
             this.styles[element][prop] = null;
@@ -2183,62 +2247,75 @@
     
     var mediaMap = {
         map: [],
+        eMap: {},
         styles: {},
         indexes: {},
         init: function() {
             this.map = [];
+            this.eMap = {};
             this.styles = {};
             this.indexes = {};
         },
-        set: function(media, prop, val) {
+        set: function(media, element, prop, val) {
             if (typeof(this.styles[media])=="undefined") this.styles[media] = {};
+            if (typeof(this.styles[media][element])=="undefined") this.styles[media][element] = {};
+            if (typeof(this.indexes[media])=="undefined") this.indexes[media] = {};
+            if (typeof(this.eMap[media])=="undefined") this.eMap[media] = [];
             var i = 0;
-            if (typeof(this.indexes[media])!="undefined") {
-                i = this.indexes[media] + 1;
+            if (typeof(this.indexes[media][element])!="undefined") {
+                i = this.indexes[media][element] + 1;
             }
             if ($.inArray(media, this.map)<0) this.map.push(media);
-            this.styles[media][prop] = { index: i, value: val };
-            this.indexes[media] = i;
+            if ($.inArray(element, this.eMap[media])<0) this.eMap[media].push(element);
+            this.styles[media][element][prop] = { index: i, value: val };
+            this.indexes[media][element] = i;
         },
-        get: function(media, prop) {
+        get: function(media, element, prop) {
             if (typeof(this.styles[media])=="undefined") return null;
-            if (typeof(this.styles[media][prop])=="undefined" || this.styles[media][prop]===null) return null;
-            return this.styles[media][prop].value;
+            if (typeof(this.styles[media][element])=="undefined") return null;
+            if (typeof(this.styles[media][element][prop])=="undefined" || this.styles[media][element][prop]===null) return null;
+            return this.styles[media][element][prop].value;
         },
-        remove: function(media, prop) {
+        remove: function(media, element, prop) {
             if (typeof(this.styles[media])=="undefined") return;
-            if (typeof(this.styles[media][prop])=="undefined") return;
-            this.styles[media][prop] = null;
+            if (typeof(this.styles[media][element])=="undefined") return;
+            if (typeof(this.styles[media][element][prop])=="undefined") return;
+            this.styles[media][element][prop] = null;
         },
         getContent: function(pretty) {
             if (typeof(pretty)=="undefined") pretty = false;
             var content = '';
             for (var i=0; i<this.map.length; i++) {
+                var m_content = [];
                 var media = this.map[i];
-                var props = [];
-                for (var prop in this.styles[media]) {
-                    if (this.styles[media][prop]===null) continue;
-                    props.push(this.styles[media][prop]);
+                for (var y=0; y<this.eMap[media].length; y++) {
+                    var element = this.eMap[media][y];
+                    var props = [];
+                    for (var prop in this.styles[media][element]) {
+                        if (this.styles[media][element][prop]===null) continue;
+                        props.push(this.styles[media][element][prop]);
+                    }
+                    if (props.length==0) continue;
+                    props.sort(function(a, b){
+                        return a.index - b.index;
+                    });
+                    if (!pretty) {
+                        m_content.push(element + '{' + $.map(props, function(value, index) { return value.value; }).join('') + '}');
+                    } else {
+                        m_content.push(element.split(',').join(','+"\r\n\t") + ' {' + "\r\n\t\t" + $.map(props, function(value, index) { return value.value; }).join("\r\n\t\t") + "\r\n\t" + '}');
+                    }
                 }
-                if (props.length==0) continue;
-                props.sort(function(a, b){
-                    return a.index - b.index;
-                });
+                if (m_content.length===0) continue;
                 if (!pretty) {
-                    content += media + '{' + $.map(props, function(value, index) { return value.value; }).join('') + '}';
+                    content += media + '{' + m_content.join('') + '}';
                 } else {
-                    content += media + ' {' + "\r\n\t" + $.map(props, function(value, index) { return value.value; }).join("\r\n\t").split('}').join('}'+"\r\n\t").replace(/\s*$/g,'').split('{').join('{'+"\r\n\t\t").split(';').join(';'+"\r\n\t\t") + "\r\n" + '}' + "\r\n";
+                    content += media + ' {' + "\r\n\t" + m_content.join("\r\n\t") + "\r\n" + '}' + "\r\n";
                 }
             }
             return content;
         }
     };
-    
-    var mediaWideStyles = {
-        'container': '.container{width:100%;max-width:1400px;}',
-        'cols': '.col-sm-8#content{width:60%;}.col-sm-4.sidebar{width:39.9999%;}.col-sm-2.sidebar{width:19.9999%;}'
-    };
-    
+
     $(window).keydown(function(e){
         if (e.keyCode == 83 && e.ctrlKey) {
             e.preventDefault();
