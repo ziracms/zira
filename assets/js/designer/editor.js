@@ -2000,13 +2000,16 @@
 
     var prepareCode = function(code) {
         code = code.replace(/\/\*[\s\S]*?\*\//g,''); // removing comments
-        code = code.replace(/([^{};,\r\n\t][\x20\t]*[\r\n])/g,'$1;'); // adding semicolon
-        code = code.replace(/^\s*(.+)\s*$/g,'$1'); // trim whitespaces
+        code = ("\r\n"+code+"\r\n").replace(/\s[;]\s/g,''); // removing lines with semicolon only
+        code = code.replace(/\s*([{,])\s*/g,'$1'); // removing whitespaces
+        code = code.replace(/([^{};,\r\n\t])[\x20\t]*([\r\n]+)/g,'$1;'); // adding semicolon
         code = code.replace(/\s*([{};:,])\s*/g,'$1'); // removing whitespaces
         code = code.replace(/([\(])\s*/g,'$1'); // removing whitespaces after brackets
         code = code.replace(/\s*([\)])/g,'$1'); // removing whitespaces before brackets
         code = code.replace(/[\x20]+/g,' '); // removing multiple whitespaces
+        code = code.replace(/[;][\x20]+[;]/g,';'); // removing spaces between semicolons
         code = code.replace(/[;]+/g,';'); // removing multiple semicolons
+        code = code.replace(/^\s*(.+)\s*$/g,'$1'); // trim whitespaces
         return code;
     };
     

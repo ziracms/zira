@@ -257,3 +257,13 @@ var designer_designer_wnd = function() {
         });
     }
 };
+
+var designer_css_wnd = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        var data = {'items':[selected[0].data]};
+        desk_call(designer_css_editor_wnd, null, {
+            'data':data
+        });
+    }
+};

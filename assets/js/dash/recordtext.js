@@ -51,11 +51,6 @@ var dash_recordtext_load = function() {
             }));
         }));
     }
-    try {
-        this.cm.change = zira_bind(this, function(){
-            this.contentModified = true;
-        });
-    } catch(err) {}
     if (typeof(this.options.data.published)!="undefined" && this.options.data.published=='1') {
         this.enableItemsByProperty('typo','page');
     }

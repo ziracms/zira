@@ -32,10 +32,11 @@ class Designer {
     public function bootstrap() {
         if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             Dash\Dash::loadDashLanguage();
-            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-picture', Zira\Locale::tm('Themes designer', 'designer', null, Dash\Dash::getDashLanguage()), null, 'stylesWindow()');
-            Dash\Dash::getInstance()->registerModuleWindowClass('stylesWindow', 'Designer\Windows\Styles', 'Designer\Models\Styles');
-            Dash\Dash::getInstance()->registerModuleWindowClass('styleWindow', 'Designer\Windows\Style', 'Designer\Models\Styles');
-            Dash\Dash::getInstance()->registerModuleWindowClass('designerWindow', 'Designer\Windows\Designer', 'Designer\Models\Designer');
+            Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-picture', Zira\Locale::tm('Themes designer', 'designer', null, Dash\Dash::getDashLanguage()), null, 'designerStylesWindow()');
+            Dash\Dash::getInstance()->registerModuleWindowClass('designerStylesWindow', 'Designer\Windows\Styles', 'Designer\Models\Styles');
+            Dash\Dash::getInstance()->registerModuleWindowClass('designerStyleWindow', 'Designer\Windows\Style', 'Designer\Models\Styles');
+            Dash\Dash::getInstance()->registerModuleWindowClass('designerDesignerWindow', 'Designer\Windows\Designer', 'Designer\Models\Designer');
+            Dash\Dash::getInstance()->registerModuleWindowClass('designerCSSEditorWindow', 'Designer\Windows\Editor', 'Designer\Models\Designer');
             Dash\Dash::unloadDashLanguage();
         }
         

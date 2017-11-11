@@ -44,6 +44,9 @@ class Styles extends Dash\Windows\Window {
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Style editor'), 'glyphicon glyphicon-eye-open', 'desk_call(designer_designer_wnd, this);', 'edit', true)
         );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(designer_css_wnd, this);', 'edit', true)
+        );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuSeparator()
         );
@@ -56,6 +59,9 @@ class Styles extends Dash\Windows\Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Style editor'), 'glyphicon glyphicon-eye-open', 'desk_call(designer_designer_wnd, this);', 'edit', true)
         );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(designer_css_wnd, this);', 'edit', true)
+        );
         
         $this->addDefaultOnLoadScript('desk_call(designer_styles_load, this);');
         
@@ -67,7 +73,8 @@ class Styles extends Dash\Windows\Window {
         $this->addVariables(array(
             'designer_style_autocomplete_url' => Zira\Helper::url('designer/dash/autocompletepage'),
             'designer_layout_url' => Zira\Helper::url('designer/dash/layout?'.Dash\Dash::GET_FRAME_PARAM.'='.Dash\Dash::GET_FRAME_VALUE),
-            'designer_editor_wnd' => Dash\Dash::getInstance()->getWindowJSName(Designer\Windows\Designer::getClass())
+            'designer_editor_wnd' => Dash\Dash::getInstance()->getWindowJSName(Designer\Windows\Designer::getClass()),
+            'designer_css_editor_wnd' => Dash\Dash::getInstance()->getWindowJSName(Designer\Windows\Editor::getClass())
         ));
         
         $this->includeJS('designer/dash');

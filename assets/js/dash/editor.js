@@ -14,8 +14,17 @@ var dash_editor_text_load = function() {
     var val = $(this.content).find('textarea').eq(0).val();
     this.resetFooterContent();
     this.appendFooterContent(val.length);
-    
-    this.cm = zira_codemirror($(this.content).find('textarea'));
+    if (typeof(this.options.data)!="undefined" && typeof(this.options.data.highlight_mode)!="undefined") {
+        this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode);
+    } else {
+        this.cm = zira_codemirror($(this.content).find('textarea'));
+    }
+    this.cm.change = zira_bind(this, function(){
+        this.contentModified = true;
+        var val = this.cm.editor.getDoc().getValue();
+        this.resetFooterContent();
+        this.appendFooterContent(val.length);
+    });
 };
 
 var dash_editor_text_update = function() {
@@ -32,7 +41,11 @@ var dash_editor_text_resize = function() {
     } catch(err) {}
     this.timer = window.setTimeout(this.bind(this, function(){
         this.cm.editor.toTextArea();
-        this.cm = zira_codemirror($(this.content).find('textarea'));
+        if (typeof(this.options.data)!="undefined" && typeof(this.options.data.highlight_mode)!="undefined") {
+            this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode);
+        } else {
+            this.cm = zira_codemirror($(this.content).find('textarea'));
+        }
     }), 500);
 };
 

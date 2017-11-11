@@ -26,11 +26,26 @@ class Designer extends Dash\Models\Model {
         $style = new \Designer\Models\Style($id);
         if (!$style->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
         
-        $style->content = $content;
+        $style->content = $this->_prepareCode($content);
         $style->save();
         
         Zira\Cache::clear();
         
         return array('message'=>Zira\Locale::t('Successfully saved'));
+    }
+    
+    protected function _prepareCode($code) {
+        $code = preg_replace('/\/\*[\s\S]*?\*\//', '', $code); // removing comments
+        $code = preg_replace('/\s[;]\s/', '', "\r\n".$code."\r\n"); // removing lines with semicolon only
+        $code = preg_replace('/\s*([{,])\s*/','$1', $code); // removing whitespaces
+        $code = preg_replace('/([^{};,\r\n\t])[\x20\t]*([\r\n]+)/', '$1;', $code); // adding semicolon
+        $code = preg_replace('/\s*([{};:,])\s*/','$1', $code); // removing whitespaces
+        $code = preg_replace('/([\(])\s*/','$1', $code); // removing whitespaces after brackets
+        $code = preg_replace('/\s*([\)])/','$1', $code); // removing whitespaces before brackets
+        $code = preg_replace('/[\x20]+/',' ', $code); // removing multiple whitespaces
+        $code = preg_replace('/[;][\x20]+[;]/',';', $code); // removing spaces between semicolons
+        $code = preg_replace('/[;]+/',';', $code); // removing multiple semicolons
+        $code = trim($code);
+        return $code;
     }
 }
