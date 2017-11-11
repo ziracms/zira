@@ -20,7 +20,9 @@ var dash_editor_text_load = function() {
 
 var dash_editor_text_update = function() {
     if (typeof(this.cm)=="undefined") return;
-    this.cm.editor.save();
+    try {
+        this.cm.editor.save();
+    } catch(err) {}
 };
 
 var dash_editor_text_resize = function() {

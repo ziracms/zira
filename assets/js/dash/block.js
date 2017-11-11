@@ -7,7 +7,9 @@ var dash_block_load = function() {
 
 var dash_block_update = function() {
     if (typeof(this.cm)=="undefined") return;
-    this.cm.editor.save();
+    try {
+        this.cm.editor.save();
+    } catch(err) {}
 };
 
 var dash_block_resize = function() {

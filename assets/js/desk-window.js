@@ -58,6 +58,7 @@ var DashWindow = function(id, className, options) {
     this.disabled = false;
     this.touchesEnabled = false;
     this.loading = false;
+    this.scrollY = 0;
 
     var defaults = {
         'container':  'body',
@@ -564,9 +565,10 @@ DashWindow.prototype.onInitialize = function() {
     this.loadBody();
 };
 
-DashWindow.prototype.loadBody = function() {
+DashWindow.prototype.loadBody = function(rememberState) {
     if (this.options.load!==null) {
-        this.load(this.options.load);
+        var data = {};
+        this.load(this.options.load, data, rememberState);
     }
 };
 
@@ -2870,8 +2872,14 @@ DashWindow.prototype.setLoading = function(loading) {
     }
 };
 
-DashWindow.prototype.load = function(url, data) {
+DashWindow.prototype.load = function(url, data, rememberState) {
+    if (typeof(rememberState)=="undefined") rememberState = false;
     if (!url) return;
+    if (rememberState) {
+        this.scrollY = $(this.content).scrollTop();
+    } else {
+        this.scrollY = 0;
+    }
     this.unselectContentItems();
     this.setLoading(true);
 
@@ -3037,6 +3045,10 @@ DashWindow.prototype.onLoadSuccess = function(response) {
     }
     if (this.onLoadCallback !== null) {
         this.onLoadCallback.call(this);
+    }
+    
+    if (this.scrollY>0) {
+        $(this.content).scrollTop(this.scrollY);
     }
 };
 

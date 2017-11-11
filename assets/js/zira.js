@@ -786,13 +786,19 @@
         $('#'+id).modal('hide');
     };
 
-    zira_message = function(message, callback) {
-        message = '<div class="modal-success"><span class="glyphicon glyphicon-ok"></span> ' + message;
+    zira_message = function(message, callback, icon) {
+        if (typeof(icon)=="undefined") icon = true;
+        if (icon) {
+            message = '<div class="modal-success"><span class="glyphicon glyphicon-ok"></span> ' + message + '</div>';
+        }
         zira_modal(null, message, callback, false, 'zira-message-dialog');
     };
 
-    zira_error = function(message, callback) {
-        message = '<div class="modal-error"><span class="glyphicon glyphicon-warning-sign"></span> ' + message;
+    zira_error = function(message, callback, icon) {
+        if (typeof(icon)=="undefined") icon = true;
+        if (icon) {
+            message = '<div class="modal-error"><span class="glyphicon glyphicon-warning-sign"></span> ' + message + '</div>';
+        }
         zira_modal(null, message, callback, false, 'zira-error-dialog');
     };
 

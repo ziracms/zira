@@ -234,11 +234,18 @@ var designer_designer_onsave = function() {
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
     var code = designerEditorWindow.editorContent();
-    desk_message(t('CSS code')+':' + '<textarea style="width:100%;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea>', zira_bind(this, function(){
+    $('#zira-message-dialog').bind('shown.bs.modal', zira_bind(this, function() {
+        $('#zira-message-dialog').unbind('shown.bs.modal');
+        this.cm = zira_codemirror($('#zira-message-dialog').find('textarea[name=desifner-style-code-message]'), 'css');
+    }));
+    desk_message('<div style="width:100%;height:400px"><textarea style="width:100%;height:400px;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea></div>', zira_bind(this, function(){
         if (typeof(designerEditorWindow) == "undefined") return;
+        try {
+            this.cm.editor.save();
+        } catch(err) {}
         var content = $('textarea[name=desifner-style-code-message]').val();
         if (typeof(content)!="undefined") designerEditorWindow.editorInit(content);
-    }));
+    }), false);
 };
 
 var designer_designer_wnd = function() {

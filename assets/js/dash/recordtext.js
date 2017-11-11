@@ -16,6 +16,9 @@ var dash_recordtext_load = function() {
     this.draftContent = $(this.content).find('textarea[name=content]').val();
     this.saveDraft = function(){
         if (typeof(this.contentModified)!="undefined" && !this.contentModified) return;
+        try {
+            this.cm.editor.save();
+        } catch(err) {}
         var content = $(this.content).find('textarea[name=content]').val();
         if (content.length==0) return;
         if (content == this.draftContent) return;
@@ -41,10 +44,18 @@ var dash_recordtext_load = function() {
                 if (response && typeof(response.draft)!="undefined") {
                     $(this.content).find('textarea[name=content]').val(response.draft);
                     this.draftContent = response.draft;
+                    try {
+                        this.cm.editor.getDoc().setValue(response.draft);
+                    } catch(err) {}
                 }
             }));
         }));
     }
+    try {
+        this.cm.change = zira_bind(this, function(){
+            this.contentModified = true;
+        });
+    } catch(err) {}
     if (typeof(this.options.data.published)!="undefined" && this.options.data.published=='1') {
         this.enableItemsByProperty('typo','page');
     }

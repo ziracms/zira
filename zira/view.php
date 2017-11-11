@@ -706,12 +706,6 @@ class View {
     public static function addCodeMirrorAssets() {
         if (self::$_codemirror_assets_added) return;
         self::addStyle('codemirror.css');
-//        $script = 'codemirror/index.php';
-//        $mtime = filemtime(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $script));
-//        if (Config::get('clean_url')) {
-//            $script = 'cm';
-//        }
-//        self::addScript($script . '?t=' . (intval(Assets::isGzipEnabled())+1).$mtime);
         self::$_codemirror_assets_added = true;
     }
 
@@ -725,20 +719,23 @@ class View {
         }
         $script_url = $script . '?t=' . (intval(Assets::isGzipEnabled())+1).$mtime;
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
-        $script .= "zira_codemirror_init = function(element){";
-        $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: 'htmlmixed', inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple' });";
+        $script .= "zira_codemirror_init = function(element, cm_mode){";
+        $script .= "if (typeof(cm_mode)=='undefined') cm_mode = 'htmlmixed';";
+        $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: cm_mode, inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple' });";
         $script .= "};";
-        $script .= "zira_codemirror = function(element){";
+        $script .= "zira_codemirror = function(element, mode){";
         $script .= "var cm = {};";
         $script .= "if (typeof CodeMirror == 'undefined') {";
         $script .= "var script = document.createElement('script');";
         $script .= "script.onload = function() {";
-        $script .= "cm.editor = zira_codemirror_init(element);";
+        $script .= "cm.editor = zira_codemirror_init(element, mode);";
+        $script .= "cm.editor.on('change', function(){ if (typeof(cm.change)!='undefined') cm.change.call(); });";
         $script .= "};";
         $script .= "script.src = '".Helper::jsUrl($script_url)."';";
         $script .= "document.body.appendChild(script);";
         $script .= "} else {";
-        $script .= "cm.editor = zira_codemirror_init(element);";
+        $script .= "cm.editor = zira_codemirror_init(element, mode);";
+        $script .= "cm.editor.on('change', function(){ if (typeof(cm.change)!='undefined') cm.change.call(); });";
         $script .= "}";
         $script .= "return cm;";
         $script .= "};";

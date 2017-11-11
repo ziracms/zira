@@ -1,14 +1,14 @@
-var desk_message = function(message, callback) {
+var desk_message = function(message, callback, icon) {
     Desk.disableEvents();
     zira_message(message, function() {
         Desk.enableEvents();
         if (typeof(callback)!="undefined" && callback!==null) callback.call();
-    });
+    }, icon);
     $('.zira-modal').css('zIndex',Desk.z+9);
     $('.modal-backdrop').css('zIndex',Desk.z+8);
 };
 
-var desk_timeout_message = function(message) {
+var desk_timeout_message = function(message, icon) {
     Desk.disableEvents();
     zira_message(message, function() {
         Desk.enableEvents();
@@ -19,7 +19,7 @@ var desk_timeout_message = function(message) {
         try {
             window.clearTimeout(desk_timeout_message.timer);
         } catch (e) {}
-    });
+    }, icon);
     $('.zira-modal').css('zIndex',Desk.z+9);
     $('.modal-backdrop').css('zIndex',Desk.z+8);
     desk_timeout_message.timer = window.setTimeout(function(){
@@ -28,11 +28,11 @@ var desk_timeout_message = function(message) {
     },1500);
 };
 
-var desk_error = function(message) {
+var desk_error = function(message, icon) {
     Desk.disableEvents();
     zira_error(message, function() {
         Desk.enableEvents();
-    });
+    }, icon);
     $('.zira-modal').css('zIndex',Desk.z+9);
     $('.modal-backdrop').css('zIndex',Desk.z+8);
 };
@@ -172,17 +172,19 @@ var desk_get_all_windows = function(className) {
     return wnds;
 };
 
-var desk_window_reload = function(wnd) {
+var desk_window_reload = function(wnd, rememberState) {
+    if (typeof(rememberState)=="undefined") rememberState = false;
     wnd = desk_get_window(wnd);
     if (wnd===null) return;
-    wnd.loadBody();
+    wnd.loadBody(rememberState);
 };
 
-var desk_window_reload_all = function(window_class) {
+var desk_window_reload_all = function(window_class, rememberState) {
+    if (typeof(rememberState)=="undefined") rememberState = true;
     var wnds = desk_get_all_windows(window_class);
     if (wnds===null || wnds.length==0) return;
     for (var i=0; i<wnds.length; i++) {
-        wnds[i].loadBody();
+        wnds[i].loadBody(rememberState);
     }
 };
 
