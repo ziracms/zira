@@ -6,6 +6,16 @@ var designer_styles_load = function() {
     }
 };
 
+var designer_styles_select = function() {
+    var selected = this.getSelectedContentItems();
+    this.disableItemsByProperty('typo','activate');
+    if (selected && selected.length==1) {
+        if (typeof(selected[0].inactive)!="undefined" && selected[0].inactive) {
+            this.enableItemsByProperty('typo','activate');
+        }
+    }
+};
+
 var designer_styles_copy = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
@@ -14,6 +24,13 @@ var designer_styles_copy = function() {
             desk_window_request(this, url('designer/dash/copy'),{'title':name, 'item':selected[0].data});
         }));
         $('#zira-prompt-dialog input[name=modal-input]').val(selected[0].title);
+    }
+};
+
+var designer_styles_activate = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('designer/dash/activate'),{'item':selected[0].data});
     }
 };
 
@@ -238,13 +255,14 @@ var designer_designer_code = function() {
         $('#zira-message-dialog').unbind('shown.bs.modal');
         this.cm = zira_codemirror($('#zira-message-dialog').find('textarea[name=desifner-style-code-message]'), 'css');
     }));
-    desk_message('<div style="width:100%;height:400px"><textarea style="width:100%;height:400px;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea></div>', zira_bind(this, function(){
+    desk_message('<div style="width:100%;height:400px;font-size:14px;"><textarea style="width:100%;height:400px;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea></div>', zira_bind(this, function(){;
         if (typeof(designerEditorWindow) == "undefined") return;
         try {
             this.cm.editor.save();
         } catch(err) {}
         var content = $('textarea[name=desifner-style-code-message]').val();
         if (typeof(content)!="undefined") designerEditorWindow.editorInit(content);
+        designerEditorWindow.updateStyle(content);
     }), false);
 };
 

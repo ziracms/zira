@@ -67,7 +67,7 @@ class Style extends Dash\Windows\Window {
         } else {
             $form->setValues(array(
                 'category_id' => -1,
-                'active' => 1
+                'active' => 0
             ));
             $this->setTitle(Zira\Locale::tm('New style','designer'));
         }

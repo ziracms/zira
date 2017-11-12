@@ -108,6 +108,20 @@ class Styles extends Dash\Models\Model {
         return array('reload'=>$this->getJSClassName());
     }
     
+    public function activate($id) {
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error' => Zira\Locale::t('Permission denied'));
+        }
+
+        $style = new Designer\Models\Style($id);
+        if (!$style->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+            
+        $style->active = 1;
+        $style->save();
+        
+        return array('reload'=>$this->getJSClassName());
+    }
+    
     public function autoCompletePage($search) {
         if (empty($search))  return array();
         if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {

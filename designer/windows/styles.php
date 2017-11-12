@@ -36,6 +36,12 @@ class Styles extends Dash\Windows\Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok', 'desk_call(designer_styles_activate, this);', 'edit', true, array('typo'=>'activate'))
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(designer_styles_copy, this);', 'edit', true)
         );
         $this->addDefaultMenuDropdownItem(
@@ -46,6 +52,13 @@ class Styles extends Dash\Windows\Window {
         );
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(designer_css_wnd, this);', 'edit', true)
+        );
+        
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuSeparator()
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok', 'desk_call(designer_styles_activate, this);', 'edit', true, array('typo'=>'activate'))
         );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuSeparator()
@@ -61,6 +74,12 @@ class Styles extends Dash\Windows\Window {
         );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Edit code'), 'glyphicon glyphicon-list-alt', 'desk_call(designer_css_wnd, this);', 'edit', true)
+        );
+        
+        $this->setOnSelectJSCallback(
+            $this->createJSCallback(
+                'desk_call(designer_styles_select, this);'
+            )
         );
         
         $this->addDefaultOnLoadScript('desk_call(designer_styles_load, this);');

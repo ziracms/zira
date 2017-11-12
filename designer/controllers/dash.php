@@ -98,4 +98,14 @@ class Dash extends \Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function activate() {
+        if (Zira\Request::isPost()) {
+            $item = Zira\Request::post('item');
+            $window = new Designer\Windows\Styles();
+            $windowModel = new Designer\Models\Styles($window);
+            $response = $windowModel->activate($item);
+            Zira\Page::render($response);
+        }
+    }
 }

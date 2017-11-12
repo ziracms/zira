@@ -2376,10 +2376,47 @@
         content += mediaMap.getContent();
         return content;
     };
+    
     window.editorContent = function() {
         var content = editorMap.getContent(true);
         content += mediaMap.getContent(true);
         return content;
+    };
+    
+    window.updateStyle = function(code) {
+        $('head style').eq(0).html(code);
+        
+        if ($('#container-designer-radio-btn').length) {
+            if (isWideContainer()) {
+                $('#container-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $('#container-designer-radio-btn').attr('title', t('Unset wide container')).tooltip('fixTitle').tooltip('hide');
+            } else {
+                $('#container-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $('#container-designer-radio-btn').attr('title', t('Set wide container')).tooltip('fixTitle').tooltip('hide');
+            }
+        }
+        
+        if ($('#cols-designer-radio-btn').length) {
+            if (isWideCols()) {
+                $('#cols-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $('#cols-designer-radio-btn').attr('title', t('Unset wide column')).tooltip('fixTitle').tooltip('hide');
+            } else {
+                $('#cols-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $('#cols-designer-radio-btn').attr('title', t('Set wide column')).tooltip('fixTitle').tooltip('hide');
+            }
+        }
+        
+        if ($('#html-designer-radio-btn').length) {
+            if ($('body').height() == $(window).height()) {
+                $('#html-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $('#html-designer-radio-btn').attr('title', t('Set body height = auto')).tooltip('fixTitle').tooltip('hide');
+            } else {
+                $('#html-designer-radio-btn').children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                $('#html-designer-radio-btn').attr('title', t('Set body height = 100%')).tooltip('fixTitle').tooltip('hide');
+            }
+        }
+        
+        $(window).trigger('resize');
     };
     parent.designerEditorWindow = window;
 })(jQuery);
