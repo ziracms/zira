@@ -196,7 +196,7 @@ class Widgets extends Window {
             $category_id = $widget->category_id;
             if ($category_id === null) $category_id = -1;
             $suffix .= ' - '.$categories[$category_id];
-            $items[]=$this->createBodyItem($title, $title.$suffix, Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
+            $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
         }
         foreach ($other_widgets as $class=>$widget) {
             if (!$widget->isEditable() || $widget->isDynamic()) continue;

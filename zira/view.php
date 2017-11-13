@@ -844,7 +844,7 @@ class View {
     
             if (!in_array($format, $formats)) $formats []= $format;
             
-            $media_str .= $format.':\''. addcslashes($url,"'").'\'';
+            $media_str .= $format.':\''. Helper::urlencode($url).'\'';
             $media_str .= '}';
             $media []= $media_str;
         }

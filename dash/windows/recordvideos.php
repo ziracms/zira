@@ -149,9 +149,9 @@ class Recordvideos extends Window {
             }
             $inactive = isset($real_path) && !file_exists($real_path) ? 1 : 0;
             if (Files::is_video($name)) {
-                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
+                $items[]=$this->createBodyVideoItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             } else {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
+                $items[]=$this->createBodyFileItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'typo'=>$typo, 'editval'=>$edit_value, 'inactive'=>$inactive));
             }
         }
 

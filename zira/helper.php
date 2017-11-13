@@ -175,6 +175,12 @@ class Helper {
         return $path;
     }
     
+    public static function urlencode($url) {
+        $url = rawurlencode($url);
+        $url = str_replace('%2F', '/', $url);
+        return $url;
+    }
+    
     public static function backtrace() {
         $backtrace = debug_backtrace();
         echo self::tag_open('pre').print_r(array_shift($backtrace), true).self::tag_close('pre');

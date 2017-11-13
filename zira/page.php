@@ -235,9 +235,7 @@ class Page {
     }
 
     public static function encodeURL($url) {
-        $url = urlencode($url);
-        $url = str_replace('%2F','/',$url);
-        return $url;
+        return Helper::urlencode($url);
     }
 
     public static function generateCategoryUrl($category_name) {

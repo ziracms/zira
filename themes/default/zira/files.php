@@ -33,7 +33,7 @@
         $size = '';
     }
     ?>
-    <li><?php echo $description ?><a href="<?php echo Zira\Helper::html($url) ?>" title="<?php echo Zira\Helper::html($file->description) ?>" target="_blank" download="<?php echo Zira\Helper::html($filename) ?>"><?php echo Zira\Helper::html($filename) ?></a><?php echo $size; ?></li>
+    <li><?php echo $description ?><a href="<?php echo Zira\Helper::urlencode($url) ?>" title="<?php echo Zira\Helper::html($file->description) ?>" target="_blank" download="<?php echo Zira\Helper::html($filename) ?>"><?php echo Zira\Helper::html($filename) ?></a><?php echo $size; ?></li>
 <?php endforeach; ?>
 </ul>
 </div>

@@ -116,19 +116,19 @@ class Recordfiles extends Window {
             }
             $inactive = isset($real_path) && !file_exists($real_path) ? 1 : 0;
             if (isset($real_path) && !$inactive && ($size=Files::image_size(ROOT_DIR . DIRECTORY_SEPARATOR . $real_path))!=false) {
-                $items[]=$this->createBodyItem($name, $file->description, Zira\Helper::baseUrl($file->path), $file->id, null, false, array('type'=>'image', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyItem(Zira\Helper::html($name), Zira\Helper::html($file->description), Zira\Helper::urlencode(Zira\Helper::baseUrl($file->path)), $file->id, null, false, array('type'=>'image', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_audio($name)) {
-                $items[]=$this->createBodyAudioItem($name, $file->description, $file->id, null, false, array('type'=>'audio', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyAudioItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'audio', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_video($name)) {
-                $items[]=$this->createBodyVideoItem($name, $file->description, $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyVideoItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'video', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_archive($name)) {
-                $items[]=$this->createBodyArchiveItem($name, $file->description, $file->id, null, false, array('type'=>'archive', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyArchiveItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'archive', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_txt($name)) {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'txt', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyFileItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'txt', 'description'=>$file->description, 'inactive'=>$inactive));
             } else if (Files::is_html($name)) {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'html', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyFileItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'html', 'description'=>$file->description, 'inactive'=>$inactive));
             } else {
-                $items[]=$this->createBodyFileItem($name, $file->description, $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'inactive'=>$inactive));
+                $items[]=$this->createBodyFileItem(Zira\Helper::html($name), Zira\Helper::html($file->description), $file->id, null, false, array('type'=>'file', 'description'=>$file->description, 'inactive'=>$inactive));
             }
         }
 

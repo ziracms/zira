@@ -1,7 +1,7 @@
 <main>
 <article>
 <?php if (!empty($image)): ?>
-<img class="image zira-lightbox" src="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($image)) ?>" alt="<?php echo (!empty($title) ? Zira\Helper::html($title) : '') ?>" />
+<img class="image zira-lightbox" src="<?php echo Zira\Helper::urlencode(Zira\Helper::baseUrl($image)) ?>" alt="<?php echo (!empty($title) ? Zira\Helper::html($title) : '') ?>" />
 <?php endif; ?>
 <?php if (!empty($title)): ?>
 <div class="page-header">
