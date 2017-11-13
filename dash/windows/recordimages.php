@@ -90,7 +90,7 @@ class Recordimages extends Window {
 
         $items = array();
         foreach($images as $image) {
-            $name = basename($image->image);
+            $name = Zira\Helper::basename($image->image);
             $inactive = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->image)) ? 0 : 1;
             $items []= $this->createBodyItem($name, $image->description, Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description,'inactive'=>$inactive));
         }

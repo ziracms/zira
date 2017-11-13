@@ -168,6 +168,13 @@ class Helper {
         return 0;
     }
     
+    public static function basename($path) {
+        if (preg_match('#^.*[\\\\/]([^\\\\/]+)$#s', $path, $m)) {
+            return $m[1];
+        }
+        return $path;
+    }
+    
     public static function backtrace() {
         $backtrace = debug_backtrace();
         echo self::tag_open('pre').print_r(array_shift($backtrace), true).self::tag_close('pre');

@@ -26,6 +26,12 @@ class Designer extends Dash\Models\Model {
         $style = new \Designer\Models\Style($id);
         if (!$style->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
         
+        $bo = preg_replace('/[^{]/','', $content);
+        $bc = preg_replace('/[^}]/','', $content);
+        if (strlen($bo) != strlen($bc)) {
+            return array('error'=>Zira\Locale::t('Syntax error'));
+        }
+        
         $style->content = $this->_prepareCode($content);
         $style->save();
         

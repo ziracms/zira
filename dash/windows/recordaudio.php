@@ -128,7 +128,7 @@ class Recordaudio extends Window {
         foreach($files as $file) {
             if (!empty($file->path)) {
                 $real_path = str_replace('/', DIRECTORY_SEPARATOR, $file->path);
-                $name = basename($file->path);
+                $name = Zira\Helper::basename($file->path);
                 $typo = 'file';
                 $edit_value = '';
             } else if (!empty($file->url)) {

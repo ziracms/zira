@@ -11,7 +11,7 @@
     if (!empty($file->path)) {
         $url = Zira\Config::get('hide_file_path') ? $file->id : $file->path;
         $url = Zira\Helper::fileUrl($url);
-        $filename = basename($file->path);
+        $filename = Zira\Helper::basename($file->path);
         $real_path = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $file->path);
         if (file_exists($real_path)) $size = filesize($real_path);
         else $size = '';
@@ -29,7 +29,7 @@
         }
     } else {
         $url = $file->url;
-        $filename = basename($file->url);
+        $filename = Zira\Helper::basename($file->url);
         $size = '';
     }
     ?>

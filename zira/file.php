@@ -80,7 +80,7 @@ class File {
 
     public static function getFileArray($path) {
         return array(
-            'name' => basename($path),
+            'name' => Helper::basename($path),
             'tmp_name' => $path
         );
     }

@@ -11,6 +11,8 @@ class Assets {
     const CACHE_LIFETIME = 86400;
     const CSS_ASSETS_CACHE_FILE = '.css.cache';
     const JS_ASSETS_CACHE_FILE = '.js.cache';
+    const CSS_CONTENT_ASSETS_CACHE_FILE = '.css.content.cache';
+    const JS_CONTENT_ASSETS_CACHE_FILE = '.js.content.cache';
     const CSS_SCRIPT = 'assets/css/index.php';
     const JS_SCRIPT = 'assets/js/index.php';
     const CSS_SCRIPT_CLEAN = 'assets/css/cache';
@@ -51,6 +53,9 @@ class Assets {
     protected static $_js_assets_if_in_body = array(
         'lightbox.min.js'
     );
+    
+    protected static $_css_assets_contents = array();
+    protected static $_js_assets_contents = array();
 
     public static function getCSSAssets() {
         return self::$_css_assets;
@@ -66,6 +71,14 @@ class Assets {
 
     public static function registerJSAsset($asset) {
         self::$_js_assets []= $asset;
+    }
+    
+    public static function registerCSSAssetContent($content) {
+        self::$_css_assets_contents [] = $content;
+    }
+
+    public static function registerJSAssetContent($content) {
+        self::$_js_assets_contents []= $content;
     }
 
     public static function mergeCSS() {
@@ -93,6 +106,26 @@ class Assets {
         fwrite($f, $theme_css);
         
         fclose($f);
+        
+        View::registerRenderHook(get_called_class(), 'mergeCSSContent');
+    }
+    
+    public static function mergeCSSContent() {
+        if (count(self::$_css_assets_contents)>0) {
+            $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::CSS_CONTENT_ASSETS_CACHE_FILE;
+            $css_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
+
+            $cf=fopen($css_content_file,'wb');
+            if ($cf) {
+                foreach(self::$_css_assets_contents as $content) {
+                    $data = '/** extra css **/'."\r\n\r\n";
+                    $data .= $content;
+                    $data .= "\r\n\r\n";
+                    fwrite($cf, $data);
+                }
+                fclose($cf);
+            }
+        }
     }
     
     public static function getThemeCSS() {
@@ -125,7 +158,28 @@ class Assets {
             $data .= "\r\n\r\n";
             fwrite($f, $data);
         }
+        
         fclose($f);
+        
+        View::registerRenderHook(get_called_class(), 'mergeJSContent');
+    }
+    
+    public static function mergeJSContent() {
+        if (count(self::$_js_assets_contents)>0) {
+            $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::JS_CONTENT_ASSETS_CACHE_FILE;
+            $js_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
+
+            $cf=fopen($js_content_file,'wb');
+            if ($cf) {
+                foreach(self::$_js_assets_contents as $content) {
+                    $data = '/** extra js **/'."\r\n\r\n";
+                    $data .= $content;
+                    $data .= "\r\n\r\n";
+                    fwrite($cf, $data);
+                }
+                fclose($cf);
+            }
+        }
     }
 
     public static function merge() {

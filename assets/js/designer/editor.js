@@ -1569,7 +1569,7 @@
     
     var designer_imagepicker = function(element, callback) {
         $(element).click(zira_bind(element, function(){
-            parent.jQuery('body', parent.document).trigger('designerEditorFileSelector', [zira_bind(this, function(elements){
+            parent.jQuery('body', parent.document).trigger('designerEditorFileSelector', [window.getId(), zira_bind(this, function(elements){
                 if (!elements || elements.length==0) return;
                 var element = elements[0];
                 if (element instanceof FileList) return;
@@ -1581,7 +1581,7 @@
                 if (typeof(callback)!="undefined") {
                     callback.call(this, url);
                 }
-                parent.jQuery('body', parent.document).trigger('designerEditorFocus');
+                parent.jQuery('body', parent.document).trigger('designerEditorFocus', [window.getId()]);
             }), this]);
         }));
     };
@@ -2355,20 +2355,36 @@
         if (e.keyCode == 83 && e.ctrlKey) {
             e.preventDefault();
             e.stopPropagation();
-            parent.jQuery('body', parent.document).trigger('designerEditorSave');
+            parent.jQuery('body', parent.document).trigger('designerEditorSave', [window.getId()]);
         }
     });
     
+    window.getId = function() {
+        var h = window.location.hash;
+        if (typeof(h)!="undefined") {
+            h = h.replace('#','');
+        }
+        return h;
+    };
+    
     window.editorInit = function(content) {
-        editorMap.init();
-        mediaMap.init();
         if (typeof(content)=="undefined" && $('head style').length>0) {
             content = $('head style').text();
         }
         if (typeof(content)=="undefined") return;
+        // checking syntax
+        var bo = content.replace(/[^{]/g,'');
+        var bc = content.replace(/[^}]/g,'');
+        if (bo.length != bc.length) {
+            parent.jQuery('body', parent.document).trigger('designerEditorError', [window.getId(), t('Syntax error')]);
+            return false;
+        }
+        editorMap.init();
+        mediaMap.init();
         content = prepareCode(content);
         content = extractMediaContent(content);
         parseStyles(content);
+        return true;
     };
     
     window.editorStyle = function() {
@@ -2418,5 +2434,6 @@
         
         $(window).trigger('resize');
     };
-    parent.designerEditorWindow = window;
+    if (typeof(parent.designerEditorWindow)=="undefined") parent.designerEditorWindow = {};
+    parent.designerEditorWindow[window.getId()] = window;
 })(jQuery);

@@ -302,7 +302,7 @@ class Files extends Model {
         if (!file_exists($path) || !is_readable($path)) return array('error' => Zira\Locale::t('An error occurred'));
         if (!file_exists($root) || !is_dir($root)) return array('error' => Zira\Locale::t('Folder not found'));
         if ($root==$path || strpos($root, $path.DIRECTORY_SEPARATOR)===0)  return array('error' => Zira\Locale::t('An error occurred'));
-        $name = basename($file);
+        $name = Zira\Helper::basename($file);
         $new = $root.DIRECTORY_SEPARATOR.$name;
         $i=0;
         while (file_exists($new)) {
@@ -365,7 +365,7 @@ class Files extends Model {
         if (!file_exists($path) || !is_readable($path)) return array('error' => Zira\Locale::t('An error occurred'));
         if (!file_exists($root) || !is_dir($root)) return array('error' => Zira\Locale::t('Folder not found'));
         if ($root==$path || strpos($root, $path.DIRECTORY_SEPARATOR)===0)  return array('error' => Zira\Locale::t('An error occurred'));
-        $name = basename($file);
+        $name = Zira\Helper::basename($file);
         $new = $root.DIRECTORY_SEPARATOR.$name;
         if (file_exists($new)) return array('error' => Zira\Locale::t('File or directory already exists'));
         if (!@rename($path, $new)) {

@@ -13,9 +13,9 @@ use Dash;
 class Designer {
     private static $_instance;
     
+    protected static $_styles = array();
+
     const CACHE_KEY = 'designer';
-    
-    protected static $_insert_inline = true;
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -25,8 +25,8 @@ class Designer {
         return self::$_instance;
     }
     
-    public static function setInsertInline($inline) {
-        self::$_insert_inline = (bool) $inline;
+    public function beforeDispatch() {
+        Zira\Router::addRoute('style','designer/index/index');
     }
 
     public function bootstrap() {
@@ -40,34 +40,26 @@ class Designer {
             Dash\Dash::unloadDashLanguage();
         }
         
-        if (self::isIE8()) {
-            self::setInsertInline(false);
+        self::_loadStyles();
+        
+        if (Zira\Assets::isActive()) {
+            $style = self::getStyle(true);
+            Zira\Assets::registerCSSAssetContent($style);
+        } else if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
+            $style = Zira\Helper::tag_short('link', array(
+                'rel' => 'stylesheet',
+                'type' => 'text/css',
+                'href' => Zira\Helper::url('style')
+            ));
+            Zira\View::addHtml($style, Zira\View::VAR_HEAD_BOTTOM);
         }
         
         if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
-            if (self::$_insert_inline) {
-                Zira\View::registerRenderHook($this, 'applyStyle');
-            } else {
-                $style = Zira\Helper::tag_short('link', array(
-                    'rel' => 'stylesheet',
-                    'type' => 'text/css',
-                    'href' => Zira\Helper::url('style')
-                ));
-                Zira\View::addHtml($style, Zira\View::VAR_HEAD_BOTTOM);
-            }
+            Zira\View::registerRenderHook($this, 'applyStyle');
         }
     }
     
-    public function beforeDispatch() {
-        Zira\Router::addRoute('style','designer/index/index');
-    }
-    
-    protected static function isIE8() {
-        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-        return (preg_match('/msie\s([\d]+)/i', $ua, $m) && $m[1]<=8);
-    }
-    
-    public static function getStyle() {
+    protected static function _loadStyles() {
         $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage());
         if (!$styles) {
             $styles = \Designer\Models\Style::getCollection()
@@ -90,7 +82,10 @@ class Designer {
             
             Zira\Cache::setObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage(), $styles);
         }
-        
+        self::$_styles = $styles;
+    }
+
+    public static function getStyle($main=false) {
         $active_style = null;
         
         $category_id = null;
@@ -104,7 +99,13 @@ class Designer {
             }
         }
         
-        foreach ($styles as $style) {
+        foreach (self::$_styles as $style) {
+            if ($main && !$style->main) continue;
+            if (!$main && $style->main) continue;
+            if ($main && $style->main) {
+                $active_style = $style;
+                break;
+            }
             if ($style->category_id!==null) {
                 if (!is_array($category_id) && $style->category_id!=$category_id) continue;
                 else if (is_array($category_id) && !in_array($style->category_id,$category_id)) continue;
@@ -138,7 +139,7 @@ class Designer {
             $active_style = $style;
             break;
         }
-        
+
         if (!$active_style) return;
         
         return $active_style->content;

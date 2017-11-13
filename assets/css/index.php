@@ -11,12 +11,14 @@ require('..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .'const.php');
 
 const ASSETS_ROOT = 'cache';
 const ASSETS_CACHE_FILE = '.css.cache';
+const CONTENT_CACHE_FILE = '.css.content.cache';
 const ASSETS_GZIP_CACHE_FILE = '.css.gz.cache';
 
 $etag = isset($_GET['t']) ? intval($_GET['t']) : 0;
 $gzip = intval(substr($etag,0,1))>1;
 $assets_root = '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . ASSETS_ROOT;
 $path =  $assets_root . DIRECTORY_SEPARATOR . ASSETS_CACHE_FILE;
+$content_path =  $assets_root . DIRECTORY_SEPARATOR . CONTENT_CACHE_FILE;
 $gz_path = $assets_root . DIRECTORY_SEPARATOR . ASSETS_GZIP_CACHE_FILE;
 
 if (!file_exists($path)) exit('File not found');
@@ -46,6 +48,9 @@ if (empty($etag) || !isset($_SERVER['HTTP_IF_NONE_MATCH']) || $etag!=$_SERVER['H
             $output = file_get_contents($gz_path);
         } else {
             $output = file_get_contents($path);
+            if (file_exists($content_path) && is_readable($content_path)) {
+                $output .= file_get_contents($content_path);
+            }
             $output = gzencode($output, 9, FORCE_GZIP);
 
             if (is_writable($assets_root) && ($f=fopen($gz_path,'wb'))!==false) {
@@ -56,6 +61,9 @@ if (empty($etag) || !isset($_SERVER['HTTP_IF_NONE_MATCH']) || $etag!=$_SERVER['H
         }
     } else {
         $output = file_get_contents($path);
+        if (file_exists($content_path) && is_readable($content_path)) {
+            $output .= file_get_contents($content_path);
+        }
     }
 
     echo $output;

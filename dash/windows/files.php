@@ -236,7 +236,7 @@ class Files extends Window {
             $dir = substr($_rel_path, 0, $p);
             $save_path = Zira\File::getAbsolutePath(Dash\Windows\Files::THUMBS_FOLDER . DIRECTORY_SEPARATOR . $dir);
         }
-        $dst_path = $save_path . DIRECTORY_SEPARATOR . basename($_rel_path);
+        $dst_path = $save_path . DIRECTORY_SEPARATOR . Zira\Helper::basename($_rel_path);
         if (!Zira\Image::createThumb($src_path, $dst_path, 60, 60)) return $rel_path;
         return UPLOADS_DIR . '/' .Dash\Windows\Files::THUMBS_FOLDER . '/' . str_replace(DIRECTORY_SEPARATOR, '/',$_rel_path);
     }

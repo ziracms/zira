@@ -106,7 +106,7 @@ class Recordfiles extends Window {
         foreach($files as $file) {
             if (!empty($file->path)) {
                 $real_path = str_replace('/', DIRECTORY_SEPARATOR, $file->path);
-                $name = basename($file->path);
+                $name = Zira\Helper::basename($file->path);
                 if ($file->download_count>0) {
                     $name .= '&nbsp;&nbsp;&nbsp;('.Zira\Locale::t('%s downloads', $file->download_count).')';
                 }

@@ -32,15 +32,15 @@ class Widgets {
     public static function addDefaultDbWidgets() {
         $defaultDbWidgets = self::getDefaultDbWidgets();
 
-        View::addWidget($defaultDbWidgets['logo']);
-        View::addWidget($defaultDbWidgets['topmenu']);
-        View::addWidget($defaultDbWidgets['childmenu']);
-        View::addWidget($defaultDbWidgets['footermenu']);
-        if (count(Config::get('languages'))>1) {
-            View::addWidget($defaultDbWidgets['languages']);
+        if (count(Config::get('languages'))==1) {
+            unset($defaultDbWidgets['languages']);
         }
-        if (Config::get('user_signup_allow') || User::isAuthorized()) {
-            View::addWidget($defaultDbWidgets['usermenu']);
+        if (!Config::get('user_signup_allow') && !User::isAuthorized()) {
+            unset($defaultDbWidgets['usermenu']);
+        }
+        
+        foreach($defaultDbWidgets as $name=>$class) {
+            View::addWidget($class);
         }
     }
 

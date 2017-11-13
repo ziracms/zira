@@ -51,7 +51,8 @@ class Style extends Form
         $html = $this->open();
         $html .= $this->hidden('id');
         $html .= $this->input(Locale::t('Title') . '*', 'title');
-        $html .= $this->select(Locale::t('Page').' / '.Locale::t('Category').'*','category_id',$categories, array('class'=>'form-control dash_form_designer_record_select'));
+        $html .= $this->checkbox(Locale::tm('main style', 'designer'), 'main', array('class'=>'form-control dash_form_designer_main_style_checkbox'), false);
+        $html .= $this->select(Locale::t('Page').' / '.Locale::t('Category'),'category_id',$categories, array('class'=>'form-control dash_form_designer_record_select'));
         
         $html .= $this->hidden('record_id', array('class'=>'dash_form_designer_record_hidden'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'dash_form_designer_record_container'));
@@ -66,7 +67,7 @@ class Style extends Form
             $html .= $this->hidden('language');
         } else {
             $languagesArr = array_merge(array(''=>Locale::t('All languages')), Locale::getLanguagesArray());
-            $html .= $this->select(Locale::t('Language').'*','language',$languagesArr, array('class'=>'form-control language-select'));
+            $html .= $this->select(Locale::t('Language'),'language',$languagesArr, array('class'=>'form-control language-select'));
         }
         $html .= $this->select(Locale::t('Filter'),'filter',$filters, $filter_attr);
         $html .= $this->checkbox(Locale::t('active'), 'active', null, false);
@@ -80,7 +81,7 @@ class Style extends Form
         $validator->registerString('title', null, 255, true, Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerUtf8('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerCustom(array(get_class(), 'checkLanguage'), 'language', Locale::t('An error occurred'));
-        $validator->registerNumber('category_id',null,null,true, Locale::t('Invalid value "%s"',Locale::t('Page').' / '.Locale::t('Category')));
+        $validator->registerNumber('category_id',null,null,false, Locale::t('Invalid value "%s"',Locale::t('Page').' / '.Locale::t('Category')));
         $validator->registerCustom(array(get_class(), 'checkCategory'), 'category_id', Locale::t('Invalid value "%s"',Locale::t('Page').' / '.Locale::t('Category')));
         $validator->registerCustom(array(get_class(), 'checkFilter'), 'filter', Locale::t('Invalid value "%s"',Locale::t('Filter')));
         $validator->registerNumber('record_id',null,null,false, Locale::t('Invalid value "%s"',Locale::t('Page').' / '.Locale::t('Category')));
@@ -93,6 +94,7 @@ class Style extends Form
     }
 
     public static function checkCategory($category_id) {
+        if (empty($category_id)) return true;
         $category_id = intval($category_id);
         $categories = Zira\Models\Category::getArray();
         return $category_id===-1 || $category_id===-2 || $category_id===-3 || $category_id===0 || array_key_exists($category_id, $categories);

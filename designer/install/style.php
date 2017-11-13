@@ -30,6 +30,7 @@ class Style extends Table {
             'url' => Field::string(),
             'filter' => Field::string(),
             'date_created' => Field::datetime(true),
+            'main' => Field::tinyint(true, true, 0),
             'active' => Field::tinyint(true, true, 1)
         );
     }

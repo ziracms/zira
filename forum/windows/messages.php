@@ -118,7 +118,7 @@ class Messages extends Dash\Windows\Window {
             for ($i=1; $i<=\Forum\Models\File::MAX_FILES_COUNT; $i++) {
                 $field = 'file_path'.$i;
                 if ($message->{$field}) {
-                    $filename = basename($message->{$field});
+                    $filename = Zira\Helper::basename($message->{$field});
                     $files[$message->{$field}] = $filename;
                 }
             }

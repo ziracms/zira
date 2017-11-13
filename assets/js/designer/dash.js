@@ -38,6 +38,7 @@ var designer_style_load = function() {
     desk_window_form_init(this);
     
     $(this.element).find('.dash_form_designer_record_select').change(designer_style_page_input_select);
+    $(this.element).find('.dash_form_designer_main_style_checkbox').change(designer_style_page_input_select);
     
     var input = $(this.element).find('.dash_form_designer_record_input');
     var hidden = $(this.element).find('.dash_form_designer_record_hidden');
@@ -170,6 +171,29 @@ var designer_style_autocomplete_press = function(e) {
 };
 
 var designer_style_page_input_select = function() {
+    var main = $(this).parents('form').find('.dash_form_designer_main_style_checkbox').is(':checked');
+    
+    if (main) {
+        $(this).parents('form').find('.dash_form_designer_record_input').val('');
+        $(this).parents('form').find('.dash_form_designer_record_hidden').val('');
+        $(this).parents('form').find('.dash_form_designer_url_input').val('');
+        
+        $(this).parents('form').find('.language-select').attr('disabled','disabled'); 
+        $(this).parents('form').find('.filter-select').attr('disabled','disabled'); 
+        $(this).parents('form').find('.dash_form_designer_record_container').css('display', 'none');
+        $(this).parents('form').find('.dash_form_designer_url_container').css('display', 'none');
+        
+        $(this).parents('form').find('.dash_form_designer_record_select').attr('disabled','disabled');
+        
+        $(this).parents('form').find('.dash_form_designer_record_select').val(-1);
+        $(this).parents('form').find('.language-select').val('');
+        $(this).parents('form').find('.filter-select').val('');
+        
+        return;
+    } else {
+        $(this).parents('form').find('.dash_form_designer_record_select').removeAttr('disabled','disabled'); 
+    }
+    
     if ($(this).val()!='-2') {
         $(this).parents('form').find('.dash_form_designer_record_input').val('');
         $(this).parents('form').find('.dash_form_designer_record_hidden').val('');
@@ -204,21 +228,48 @@ var designer_style_page_input_select = function() {
 var designer_designer_open = function() {
     if (typeof(designerEditorCallbacks)=="undefined") designerEditorCallbacks = {};
     designerEditorCallbacks[this.getId()] = {};
-    designerEditorCallbacks[this.getId()]['designerEditorSave'] = zira_bind(this, function(){
+    designerEditorCallbacks[this.getId()]['designerEditorSave'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
         designer_designer_onsave.call(this);
         this.saveBody();
     });
     designerEditorCallbacks[this.getId()]['designerEditorFileSelector'] = (function(object, method) {
-        return function(arg1, arg2, arg3) {
-            method.call(object, arg1, arg2, arg3);
+        return function(arg1, arg2, arg3, arg4) {
+            method.call(object, arg1, arg2, arg3, arg4);
         };
-    })(this, function(e, callback, context){
+    })(this, function(e, wndId, callback, context){
+        if (this.getId() != wndId) return;
         context.desk_ds = desk_ds;
         context.baseUrl = baseUrl;
         desk_file_selector.call(this, callback);
     });
-    designerEditorCallbacks[this.getId()]['designerEditorFocus'] = zira_bind(this, function(){
+    designerEditorCallbacks[this.getId()]['designerEditorFocus'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
         this.focus();
+    });
+    designerEditorCallbacks[this.getId()]['designerEditorMessage'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, wndId, text){
+        if (this.getId() != wndId) return;
+        desk_message(text);
+    });
+    designerEditorCallbacks[this.getId()]['designerEditorError'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, wndId, text){
+        if (this.getId() != wndId) return;
+        desk_error(text);
     });
     for (var eventName in designerEditorCallbacks[this.getId()]) {
         $('body').on(eventName, designerEditorCallbacks[this.getId()][eventName]);
@@ -228,7 +279,7 @@ var designer_designer_open = function() {
 var designer_designer_load = function() {
     if (typeof(this.options.data.items)=="undefined" || this.options.data.items.length!=1) return;
     var item = this.options.data.items[0];
-    this.setBodyFullContent('<iframe src="'+designer_layout_url+'&id='+item+'" width="100%" height="100%" style="border:none;margin:0;padding:0"></iframe><form style="display:none"><textarea name="content"></textarea><input type="hidden" name="item" /></form>');
+    this.setBodyFullContent('<iframe src="'+designer_layout_url+'&id='+item+'#'+this.getId()+'" width="100%" height="100%" style="border:none;margin:0;padding:0"></iframe><form style="display:none"><textarea name="content"></textarea><input type="hidden" name="item" /></form>');
 };
 
 var designer_designer_close = function() {
@@ -237,11 +288,15 @@ var designer_designer_close = function() {
     for (var eventName in designerEditorCallbacks[this.getId()]) {
         $('body').off(eventName, designerEditorCallbacks[this.getId()][eventName]);
     }
+    if (typeof(designerEditorWindow) != "undefined" && typeof(designerEditorWindow[this.getId()]) != "undefined"){
+        designerEditorWindow[this.getId()] = null;
+    }
 };
 
 var designer_designer_onsave = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
-    $(this.content).find('form textarea').val(designerEditorWindow.editorStyle());
+    if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
+    $(this.content).find('form textarea').val(designerEditorWindow[this.getId()].editorStyle());
     if (typeof(this.options.data.items)!="undefined" && this.options.data.items.length==1) {
         var item = this.options.data.items[0];
         $(this.content).find('form input[type=hidden]').val(item);
@@ -250,19 +305,24 @@ var designer_designer_onsave = function() {
 
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
-    var code = designerEditorWindow.editorContent();
+    if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
+    var code = designerEditorWindow[this.getId()].editorContent();
     $('#zira-message-dialog').bind('shown.bs.modal', zira_bind(this, function() {
         $('#zira-message-dialog').unbind('shown.bs.modal');
         this.cm = zira_codemirror($('#zira-message-dialog').find('textarea[name=desifner-style-code-message]'), 'css');
     }));
     desk_message('<div style="width:100%;height:400px;font-size:14px;"><textarea style="width:100%;height:400px;white-space:pre" cols="20" rows="12" name="desifner-style-code-message">'+code+'</textarea></div>', zira_bind(this, function(){;
         if (typeof(designerEditorWindow) == "undefined") return;
+        if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
         try {
             this.cm.editor.save();
         } catch(err) {}
         var content = $('textarea[name=desifner-style-code-message]').val();
-        if (typeof(content)!="undefined") designerEditorWindow.editorInit(content);
-        designerEditorWindow.updateStyle(content);
+        if (typeof(content)!="undefined") {
+            if (designerEditorWindow[this.getId()].editorInit(content)) {
+                designerEditorWindow[this.getId()].updateStyle(content);
+            }
+        }
     }), false);
 };
 

@@ -13,6 +13,6 @@ use Designer;
 class Index extends Zira\Controller {
     public function index() {
         header('Content-Type: text/css');
-        echo Designer\Designer::getStyle();
+        echo Designer\Designer::getStyle(true);
     }
 }

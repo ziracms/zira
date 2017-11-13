@@ -810,9 +810,9 @@ class View {
             if (!empty($file->description)) {
                 $media_str .= 'title:\''.Helper::html($file->description).'\',';
             } else if (!empty($file->path)) {
-                $media_str .= 'title:\''.Helper::html(basename($file->path)).'\',';
+                $media_str .= 'title:\''.Helper::html(Helper::basename($file->path)).'\',';
             } else if (!empty($file->url)) {
-                $media_str .= 'title:\''.Helper::html(basename($file->url)).'\',';
+                $media_str .= 'title:\''.Helper::html(Helper::basename($file->url)).'\',';
             }
             
             if ($media_type == 'video' && !empty($poster)) {
@@ -844,7 +844,7 @@ class View {
     
             if (!in_array($format, $formats)) $formats []= $format;
             
-            $media_str .= $format.':\''.Helper::html($url).'\'';
+            $media_str .= $format.':\''. addcslashes($url,"'").'\'';
             $media_str .= '}';
             $media []= $media_str;
         }
