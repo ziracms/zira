@@ -279,6 +279,15 @@ var designer_designer_open = function() {
         if (this.getId() != wndId) return;
         designer_designer_color_pallete.call(this, color);
     });
+    designerEditorCallbacks[this.getId()]['designerChooseColor'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, wndId, color){
+        if (this.getId() != wndId) return;
+        $(this.toolbar).find('input[name=designer-user-color]').val(color);
+        $(this.toolbar).find('input[name=designer-user-color]').parent('.input-group').find('.glyphicon').css('color', color);
+    });
     designerEditorCallbacks[this.getId()]['designerColorPickerShow'] = (function(object, method) {
         return function(arg1, arg2) {
             method.call(object, arg1, arg2);
@@ -335,6 +344,8 @@ var designer_designer_open = function() {
     
     $(this.toolbar).on('click', '.colorpallete', function(){
         designer_designer_color_pallete_click.call(wnd, $(this).data('color'), $(this).data('picker'));
+        $(this.toolbar).find('input[name=designer-user-color]').val($(this).data('color'));
+        $(this.toolbar).find('input[name=designer-user-color]').parent('.input-group').find('.glyphicon').css('color', $(this).data('color'));
     });
 };
 
@@ -403,7 +414,7 @@ var designer_designer_color_pallete = function(color) {
     if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") designer_designer_color_pallete.colors[this.getId()] = [];
     if ($.inArray(color, designer_designer_color_pallete.colors[this.getId()])<0) {
         designer_designer_color_pallete.colors[this.getId()].push(color);
-        if (designer_designer_color_pallete.colors[this.getId()].length>10) {
+        if (designer_designer_color_pallete.colors[this.getId()].length>7) {
             designer_designer_color_pallete.colors[this.getId()] = designer_designer_color_pallete.colors[this.getId()].slice(1);
         }
     }

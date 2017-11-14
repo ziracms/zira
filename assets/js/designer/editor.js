@@ -1525,6 +1525,7 @@
             if (typeof(callback)!="undefined") {
                 callback.call(this, color);
             }
+            parent.jQuery('body', parent.document).trigger('designerChooseColor', [window.getId(), color]);
         })).on('hidePicker', zira_bind(element, function(){
             var color = $(this).colorpicker('getValue');
             parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
@@ -1554,6 +1555,7 @@
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
+            parent.jQuery('body', parent.document).trigger('designerChooseColor', [window.getId(), color1]);
         })).on('hidePicker', zira_bind(element, function(){
             var color = $(this).colorpicker('getValue');
             parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
@@ -1576,6 +1578,7 @@
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
+            parent.jQuery('body', parent.document).trigger('designerChooseColor', [window.getId(), color2]);
         })).on('hidePicker', zira_bind(child, function(){
             var color = $(this).colorpicker('getValue');
             parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
