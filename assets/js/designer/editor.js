@@ -835,6 +835,7 @@
                 setBackgroundStyle('.gallery,.image-wrapper,.bx-wrapper .bx-viewport', color);
                 setBorderColorStyle('.gallery,.gallery li a:link,.gallery li a:visited,.image,.image-wrapper,.jplayer-video-wrapper,.jplayer-audio-wrapper,.bx-wrapper .bx-viewport', color);
                 setBorderColorStyle('#yandex-map,#google-map,.contact-image', color);
+                setBorderColorStyle('.user-profile-photo', color);
             }, 'left');
         }
 
@@ -1498,7 +1499,7 @@
         
         $(designer_selectors).css('display', 'block');
         $(window).trigger('resize');
-        
+
         if ($('body').css('backgroundImage').indexOf('gradient')>0 && $('#html-designer-radio-btn').length>0) {
             $('#html-designer-radio-btn').hide();
         }
@@ -1517,11 +1518,17 @@
             color: init_color,
             align: position,
             format: color_format
-        }).on('changeColor', zira_bind($(element), function(e) {
+        }).on('showPicker', zira_bind(element, function(){
+            parent.jQuery('body', parent.document).trigger('designerColorPickerShow', [window.getId()]);
+        })).on('changeColor', zira_bind($(element), function(e) {
             var color = e.color.toString();
             if (typeof(callback)!="undefined") {
                 callback.call(this, color);
             }
+        })).on('hidePicker', zira_bind(element, function(){
+            var color = $(this).colorpicker('getValue');
+            parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
+            parent.jQuery('body', parent.document).trigger('designerColorPickerHide', [window.getId()]);
         }));
     };
     
@@ -1539,13 +1546,18 @@
             align: position,
             format: color_format
         }).on('showPicker', zira_bind($(child), function() {
-            $(this).colorpicker('show');    
+            $(this).colorpicker('show');   
+            parent.jQuery('body', parent.document).trigger('designerGradientPickerShow', [window.getId()]);
         })).on('changeColor', zira_bind($(child), function(e) {
             var color1 = e.color.toString();
             var color2 = $(this).data('colorpicker').color.toString();
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
+        })).on('hidePicker', zira_bind(element, function(){
+            var color = $(this).colorpicker('getValue');
+            parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
+            parent.jQuery('body', parent.document).trigger('designerGradientPickerHide', [window.getId()]);
         }));
         
         $(child).colorpicker({
@@ -1564,6 +1576,9 @@
             if (typeof(callback)!="undefined") {
                 callback.call(null, color1, color2);
             }
+        })).on('hidePicker', zira_bind(child, function(){
+            var color = $(this).colorpicker('getValue');
+            parent.jQuery('body', parent.document).trigger('designerChangeColor', [window.getId(), hexColor(color)]);
         }));
     };
     
@@ -2434,6 +2449,57 @@
         
         $(window).trigger('resize');
     };
+    
+    window.setColorPickerValue = function(color) {
+        $('.designer_colorpicker').each(function(){
+            var colorpicker = $(this).data('colorpicker');
+            if (typeof(colorpicker)=="undefined") return true;
+            if (!$(colorpicker.picker).hasClass('colorpicker-visible')) return true;
+            $(this).colorpicker('setValue',color);
+        });
+    };
+    
+    window.setLeftGradientPickerValue = function(color) {
+        var pickers = [];
+        $('.designer_colorpicker, .designer_gradientpicker, .designer_gradientpicker_hidden').each(function(){
+            var colorpicker = $(this).data('colorpicker');
+            if (typeof(colorpicker)=="undefined") return true;
+            if (!$(colorpicker.picker).hasClass('colorpicker-visible')) return true;
+            var left = $(colorpicker.picker).offset().left;
+            pickers.push({ pos: left, colorpicker: this});
+        });
+        
+        if (pickers.length==0) return;
+        
+        pickers.sort(function(a, b){
+            return a.pos - b.pos;
+        });
+
+        var colorpicker = pickers[0].colorpicker;
+        $(colorpicker).colorpicker('setValue',color);
+    };
+    
+    window.setRightGradientPickerValue = function(color) {
+        var pickers = [];
+        
+        $('.designer_colorpicker, .designer_gradientpicker, .designer_gradientpicker_hidden').each(function(){
+            var colorpicker = $(this).data('colorpicker');
+            if (typeof(colorpicker)=="undefined") return true;
+            if (!$(colorpicker.picker).hasClass('colorpicker-visible')) return true;
+            var left = $(colorpicker.picker).offset().left;
+            pickers.push({ pos: left, colorpicker: this});
+        });
+        
+        if (pickers.length==0) return;
+        
+        pickers.sort(function(a, b){
+            return a.pos - b.pos;
+        });
+        
+        var colorpicker = pickers[pickers.length-1].colorpicker;
+        $(colorpicker).colorpicker('setValue',color);
+    };
+    
     if (typeof(parent.designerEditorWindow)=="undefined") parent.designerEditorWindow = {};
     parent.designerEditorWindow[window.getId()] = window;
 })(jQuery);

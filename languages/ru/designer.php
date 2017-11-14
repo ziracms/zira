@@ -10,5 +10,6 @@ return array(
     'Code' => 'Код',
     'CSS code' => 'CSS код',
     'Syntax error' => 'Синтаксическая ошибка',
-    'main style' => 'основной стиль'
+    'main style' => 'основной стиль',
+    'Color' => 'Цвет'
 );

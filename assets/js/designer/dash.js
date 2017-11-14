@@ -271,9 +271,71 @@ var designer_designer_open = function() {
         if (this.getId() != wndId) return;
         desk_error(text);
     });
+    designerEditorCallbacks[this.getId()]['designerChangeColor'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, wndId, color){
+        if (this.getId() != wndId) return;
+        designer_designer_color_pallete.call(this, color);
+    });
+    designerEditorCallbacks[this.getId()]['designerColorPickerShow'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
+        designer_designer_color_pallete_show.call(this);
+    });
+    designerEditorCallbacks[this.getId()]['designerGradientPickerShow'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
+        designer_designer_gradient_pallete_show.call(this);
+    });
+    designerEditorCallbacks[this.getId()]['designerColorPickerHide'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
+        designer_designer_color_pallete_hide.call(this);
+    });
+    designerEditorCallbacks[this.getId()]['designerGradientPickerHide'] = (function(object, method) {
+        return function(arg1, arg2) {
+            method.call(object, arg1, arg2);
+        };
+    })(this, function(e, wndId){
+        if (this.getId() != wndId) return;
+        designer_designer_gradient_pallete_hide.call(this);
+    });
+    
     for (var eventName in designerEditorCallbacks[this.getId()]) {
         $('body').on(eventName, designerEditorCallbacks[this.getId()][eventName]);
     }
+    
+    var wnd = this;
+    
+    var input = '<div class="navbar-form navbar-left"><div class="form-group"><div class="input-group"><input type="text" class="form-control" name="designer-user-color" placeholder="'+t('Color')+'"><span class="input-group-addon" id="basic-addon3"><span class="glyphicon glyphicon-stop" style="cursor:pointer"></span></span></div></div></div>';
+    var container = $(this.toolbar).find('.navbar-default .container-fluid');
+    if ($(container).length) {
+        $(container).append(input);
+    }
+    
+    $(this.toolbar).find('input[name=designer-user-color]').keyup(zira_bind(this, function(){
+        var color = $(this.toolbar).find('input[name=designer-user-color]').val();
+        $(this.toolbar).find('input[name=designer-user-color]').parent('.input-group').find('.glyphicon').css('color', color);
+    }));
+    
+    $(this.toolbar).find('input[name=designer-user-color]').parent('.input-group').find('.glyphicon').click(function(){
+        designer_designer_user_color.call(wnd, $(this).css('color'));
+    });
+    
+    $(this.toolbar).on('click', '.colorpallete', function(){
+        designer_designer_color_pallete_click.call(wnd, $(this).data('color'), $(this).data('picker'));
+    });
 };
 
 var designer_designer_load = function() {
@@ -324,6 +386,82 @@ var designer_designer_code = function() {
             }
         }
     }), false);
+};
+
+var designer_designer_user_color = function(color) {
+    if (!color || !color.length || color=='transparent') return;
+    if (typeof(designerEditorWindow) == "undefined") return;
+    if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
+    designerEditorWindow[this.getId()].setColorPickerValue(color);
+    designerEditorWindow[this.getId()].setLeftGradientPickerValue(color);
+    designerEditorWindow[this.getId()].setRightGradientPickerValue(color);
+};
+
+var designer_designer_color_pallete = function(color) {
+    if (!color || !color.length || color=='transparent') return;
+    if (typeof(designer_designer_color_pallete.colors)=="undefined") designer_designer_color_pallete.colors = {};
+    if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") designer_designer_color_pallete.colors[this.getId()] = [];
+    if ($.inArray(color, designer_designer_color_pallete.colors[this.getId()])<0) {
+        designer_designer_color_pallete.colors[this.getId()].push(color);
+        if (designer_designer_color_pallete.colors[this.getId()].length>10) {
+            designer_designer_color_pallete.colors[this.getId()] = designer_designer_color_pallete.colors[this.getId()].slice(1);
+        }
+    }
+};
+
+var designer_designer_color_pallete_click = function(color, picker) {
+    if (typeof(designerEditorWindow) == "undefined") return;
+    if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
+    if (typeof(color)=="undefined" || typeof(picker)=="undefined") return;
+    if (picker == 'color') {
+        designerEditorWindow[this.getId()].setColorPickerValue(color);
+    } else if (picker == 'gradient-left') {
+        designerEditorWindow[this.getId()].setLeftGradientPickerValue(color);
+    } else if (picker == 'gradient-right') {
+        designerEditorWindow[this.getId()].setRightGradientPickerValue(color);
+    }
+};
+
+var designer_designer_color_pallete_show = function() {
+    designer_designer_color_pallete_hide.call(this);
+    designer_designer_gradient_pallete_hide.call(this);
+    if (typeof(designer_designer_color_pallete.colors)=="undefined") return;
+    if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") return;
+    var container = $(this.toolbar).find('.navbar-default .container-fluid');
+    var content = '';
+    for (var i=0; i<designer_designer_color_pallete.colors[this.getId()].length; i++) {
+        var color = designer_designer_color_pallete.colors[this.getId()][i];
+        content += '<div class="navbar-form navbar-left colorpicker-wrapper"><div class="form-group"><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="color"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button></div></div>';
+    }
+    if (!$(container).length || content.length==0) return;
+    $(container).append(content);
+};
+
+var designer_designer_color_pallete_hide = function() {
+    var container = $(this.toolbar).find('.navbar-default .container-fluid');
+    if (!$(container).length) return;
+    $(container).find('.colorpicker-wrapper').remove();
+};
+
+var designer_designer_gradient_pallete_show = function() {
+    designer_designer_color_pallete_hide.call(this);
+    designer_designer_gradient_pallete_hide.call(this);
+    if (typeof(designer_designer_color_pallete.colors)=="undefined") return;
+    if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") return;
+    var container = $(this.toolbar).find('.navbar-default .container-fluid');
+    var content = '';
+    for (var i=0; i<designer_designer_color_pallete.colors[this.getId()].length; i++) {
+        var color = designer_designer_color_pallete.colors[this.getId()][i];
+        content += '<div class="navbar-form navbar-left gradientpicker-wrapper"><div class="form-group"><div class="btn-group" role="group"><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="gradient-left"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="gradient-right"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button></div></div></div>';
+    }
+    if (!$(container).length || content.length==0) return;
+    $(container).append(content);
+};
+
+var designer_designer_gradient_pallete_hide = function() {
+    var container = $(this.toolbar).find('.navbar-default .container-fluid');
+    if (!$(container).length) return;
+    $(container).find('.gradientpicker-wrapper').remove();
 };
 
 var designer_designer_wnd = function() {

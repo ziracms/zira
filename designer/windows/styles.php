@@ -86,7 +86,8 @@ class Styles extends Dash\Windows\Window {
         
         $this->addStrings(array(
             'Enter title',
-            'CSS code'
+            'CSS code',
+            'Color'
         ));
         
         $this->addVariables(array(
