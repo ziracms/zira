@@ -25,7 +25,7 @@ var dash_user_drop = function(element) {
     if (!(element instanceof FileList) && typeof(element.parent)!="undefined" && element.parent=='files' && typeof(element.type)!="undefined" && element.type=='image') {
         var src = element.data;
         var regexp = new RegExp('\\'+desk_ds, 'g');
-        $(this.sidebar).find('.dashwindow-userthumb-selector').attr('src',encodeURIComponent(baseUrl(src.replace(regexp,'/'))).replace(/%2F/g,'/'));
+        $(this.sidebar).find('.dashwindow-userthumb-selector').attr('src',encodeURIComponent(baseUrl(src.replace(regexp,'/'))).replace(/%2F/gi,'/'));
         $(this.content).find('input.dashwindow-user-image').val(src);
         $(this.sidebar).find('.dashwindow-userthumb-delete').removeClass('disabled');
         this.enableItemsByProperty('action','noimage');
@@ -37,7 +37,7 @@ var dash_user_image_select = function() {
         if (selected && selected.length>0 && typeof(selected[0].type)!="undefined" && selected[0].type=='image') {
             var src = selected[0].data;
             var regexp = new RegExp('\\'+desk_ds, 'g');
-            $(this.element).find('.dashwindow-userthumb-selector').attr('src',encodeURIComponent(baseUrl(src.replace(regexp,'/')).replace(desk_ds,'/')).replace(/%2F/g,'/'));
+            $(this.element).find('.dashwindow-userthumb-selector').attr('src',encodeURIComponent(baseUrl(src.replace(regexp,'/')).replace(desk_ds,'/')).replace(/%2F/gi,'/'));
             $(this.content).find('input.dashwindow-user-image').val(src);
             $(this.sidebar).find('.dashwindow-userthumb-delete').removeClass('disabled');
             this.enableItemsByProperty('action','noimage');

@@ -177,7 +177,7 @@ class Helper {
     
     public static function urlencode($url) {
         $url = rawurlencode($url);
-        $url = str_replace('%2F', '/', $url);
+        $url = str_ireplace('%2F', '/', $url);
         return $url;
     }
     

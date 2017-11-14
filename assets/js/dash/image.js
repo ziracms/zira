@@ -35,7 +35,8 @@ var dash_image_open = function() {
             this.appendFooterContent(this.options.data.image_width+'x'+this.options.data.image_height+'px'+image_size);
         });
         var regexp = new RegExp('\\'+desk_ds, 'g');
-        this.options.data.image.src=baseUrl(this.options.data.file.replace(regexp,'/'))+'?t='+(new Date().getTime());
+        //this.options.data.image.src=baseUrl(this.options.data.file.replace(regexp,'/'))+'?t='+(new Date().getTime());
+        this.options.data.image.src=response.src;
         this.jpeg_quality = dash_image_jpeg_quality;
     }));
 };

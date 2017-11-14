@@ -104,7 +104,6 @@
     };
 
     zira_autocomplete_click = function(e) {
-        console.log(2)
         if (typeof(e.originalEvent)=="undefined" || typeof(e.originalEvent.target)=="undefined") return;
         if ($(e.originalEvent.target).parents('.zira-autocomplete-wnd').length==0 &&
             !$(e.originalEvent.target).is(zira_autocomplete_click.input)

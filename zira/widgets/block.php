@@ -68,7 +68,7 @@ class Block extends Zira\Widget {
                     echo '<img src="'.Zira\Helper::urlencode(Zira\Helper::baseUrl('').$m[1]).'" '.$size[3].' class="block block-image" />';
                 }
             } else {
-                echo $id;
+                //echo $id;
             }
         } else {
             $block = new Zira\Models\Block($id);

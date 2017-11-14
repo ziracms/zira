@@ -195,7 +195,7 @@ var dash_files_notepad = function() {
 var dash_files_show_image = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1 && typeof(selected[0].image_url)!="undefined" && selected[0].image_url.length>0) {
-        $('body').append('<a href="'+selected[0].image_url+'" data-lightbox="filemanager_zoomer" id="dashwindow-filemanager-zoomer-lightbox"></a>');
+        $('body').append('<a href="'+encodeURIComponent(selected[0].image_url).replace(/%2F/gi,'/')+'" data-lightbox="filemanager_zoomer" id="dashwindow-filemanager-zoomer-lightbox"></a>');
         $('#dashwindow-filemanager-zoomer-lightbox').trigger('click');
         $('#dashwindow-filemanager-zoomer-lightbox').remove();
     }

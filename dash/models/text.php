@@ -19,7 +19,7 @@ class Text extends Model {
             return array('error'=>Zira\Locale::t('An error occurred'));
         }
 
-        $file = $data['file'];
+        $file = html_entity_decode($data['file'], ENT_QUOTES);
         $content = $data['content'];
 
         if (strlen($content)>2 && substr($content,0,2)=='#!') {
