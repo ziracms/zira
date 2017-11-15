@@ -27,5 +27,6 @@ return array(
     'Maximum files count per upload:' => 'Максимальное число файлов для загрузки:',
     'Sorry, but it seems that your browser is not supported.' => 'Извините, но похоже, ваш браузер не поддерживается.',
     'Author' => 'Автор',
-    'Minimize all' => 'Свернуть всё'
+    'Minimize all' => 'Свернуть всё',
+    'Page reload required. Reload now ?' => 'Нужно перезагрузить страницу. Перезагрузить сейчас ?'
 );

@@ -33,14 +33,22 @@ var dash_modules_close = function() {
 var dash_modules_activate = function() {
     var selected = desk_window_selected(this);
     if (selected && typeof(selected.items)!="undefined" && selected.items.length==1) {
-        desk_window_request(this, url('dash/system/module'),{'module':selected.items[0], 'active': 1});
+        desk_window_request(this, url('dash/system/module'),{'module':selected.items[0], 'active': 1}, function(){
+            desk_confirm(t('Page reload required. Reload now ?'), function(){
+                window.location.reload();
+            });
+        });
     }
 };
 
 var dash_modules_deactivate = function() {
     var selected = desk_window_selected(this);
     if (selected && typeof(selected.items)!="undefined" && selected.items.length==1) {
-        desk_window_request(this, url('dash/system/module'),{'module':selected.items[0], 'active': 0});
+        desk_window_request(this, url('dash/system/module'),{'module':selected.items[0], 'active': 0}, function(){
+            desk_confirm(t('Page reload required. Reload now ?'), function(){
+                window.location.reload();
+            });
+        });
     }
 };
 

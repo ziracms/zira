@@ -15,6 +15,7 @@ class Router {
     protected static $action;
     protected static $param;
     protected static $available_routes = array('zira', 'user');
+    protected static $all_languages_routes = array('cron', 'sitemap.xml');
 
     protected static $_map = array();
 
@@ -88,6 +89,14 @@ class Router {
 
     public static function addAvailableRoute($route) {
         self::$available_routes []= $route;
+    }
+    
+    public static function addAllLanguagesRoute($route) {
+        self::$all_languages_routes []= $route;
+    }
+    
+    public static function isAllLanguagesRoute($route) {
+        return in_array($route, self::$all_languages_routes);
     }
 
     public static function dispatch() {
@@ -207,10 +216,9 @@ class Router {
 
         if (!self::$language && count(Config::get('languages'))>1 &&
             !empty(self::$request) &&
-            self::$request!='cron' &&
-            self::$request!='sitemap.xml' &&
             self::$module!='dash' &&
-            self::$controller!='dash'
+            self::$controller!='dash' && 
+            !in_array(self::$request, self::$all_languages_routes)
         ) {
             self::$language = Config::get('language');
             Response::redirect(self::$language.'/'.self::$request, true);

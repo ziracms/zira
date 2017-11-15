@@ -27,6 +27,7 @@ class Designer {
     
     public function beforeDispatch() {
         Zira\Router::addRoute('style','designer/index/index');
+        Zira\Router::addAllLanguagesRoute('style');
     }
 
     public function bootstrap() {

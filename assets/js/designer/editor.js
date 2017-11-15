@@ -1152,6 +1152,7 @@
                 setColorStyle('.emoji-editable', color);
                 setColorStyle('#main-container .input-group-addon', color);
                 setColorStyle('#main-container .input-group-addon a', color);
+                setColorStyle('.jumbotron', hexColor(color));
             });
             
             // forms background
@@ -1402,7 +1403,7 @@
         }
         
         // container
-        if ($('.container').length>0) {
+        if (typeof(designer_style_is_main)!="undefined" && designer_style_is_main && $('.container').length>0) {
             if (!isWideContainer()) {
                 $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_container" id="container-designer-radio-btn" title="'+t('Set wide container')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
             } else {
@@ -1436,7 +1437,7 @@
         }
         
         // cols
-        if ($('.col-sm-4').length>0) {
+        if (typeof(designer_style_is_main)!="undefined" && designer_style_is_main && $('.col-sm-4').length>0) {
             if (!isWideCols()) {
                 $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_cols" id="cols-designer-radio-btn" title="'+t('Set wide column')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
             } else {
@@ -1472,30 +1473,32 @@
         }
         
         // html
-        if ($('body').height() != $(window).height()) {
-            $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = 100%')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
-        } else {
-            $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = auto')+'" data-placement="left"><span class="glyphicon glyphicon-check"></span></a>');
-        }
-        designer_positions['html_height'] = function() {
-            var html_height_x = $(window).width()-1.75*radiobtn_size;
-            var html_height_y = $(window).height()-3*radiobtn_size;
-            $('#html-designer-radio-btn').css({'left':html_height_x,'top':html_height_y});
-        };
-        $('#html-designer-radio-btn').tooltip();
-        $('#html-designer-radio-btn').click(function(){
+        if (typeof(designer_style_is_main)!="undefined" && designer_style_is_main) {
             if ($('body').height() != $(window).height()) {
-                $('html,body').css('height','100%');
-                setHeightStyle('html,body','100%');
-                $(this).children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                $(this).attr('title', t('Set body height = auto')).tooltip('fixTitle').tooltip('hide');
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = 100%')+'" data-placement="left"><span class="glyphicon glyphicon-unchecked"></span></a>');
             } else {
-                $('html,body').css('height','auto');
-                removeHeightStyle('html,body');
-                $(this).children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-                $(this).attr('title', t('Set body height = 100%')).tooltip('fixTitle').tooltip('hide');
+                $('body').append('<a href="javascript:void(0)" class="designer_radio_btn designer_radio_html" id="html-designer-radio-btn" title="'+t('Set body height = auto')+'" data-placement="left"><span class="glyphicon glyphicon-check"></span></a>');
             }
-        });
+            designer_positions['html_height'] = function() {
+                var html_height_x = $(window).width()-1.75*radiobtn_size;
+                var html_height_y = $(window).height()-3*radiobtn_size;
+                $('#html-designer-radio-btn').css({'left':html_height_x,'top':html_height_y});
+            };
+            $('#html-designer-radio-btn').tooltip();
+            $('#html-designer-radio-btn').click(function(){
+                if ($('body').height() != $(window).height()) {
+                    $('html,body').css('height','100%');
+                    setHeightStyle('html,body','100%');
+                    $(this).children('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    $(this).attr('title', t('Set body height = auto')).tooltip('fixTitle').tooltip('hide');
+                } else {
+                    $('html,body').css('height','auto');
+                    removeHeightStyle('html,body');
+                    $(this).children('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                    $(this).attr('title', t('Set body height = 100%')).tooltip('fixTitle').tooltip('hide');
+                }
+            });
+        }
         
         $(designer_selectors).css('display', 'block');
         $(window).trigger('resize');

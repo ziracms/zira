@@ -31,6 +31,14 @@ class Dash extends \Dash\Controller {
         Zira\View::setAjax(false);
         Zira\View::setRenderDbWidgets(false);
         Zira\Assets::setActive(false);
+        if (!$style->main) {
+            $link = Zira\Helper::tag_short('link', array(
+                'rel' => 'stylesheet',
+                'type' => 'text/css',
+                'href' => Zira\Helper::url('style')
+            ));
+            Zira\View::addHtml($link, Zira\View::VAR_HEAD_BOTTOM);
+        }
         
         $block = new Zira\Widgets\Block();
         $block->setCaching(false);
@@ -68,6 +76,11 @@ class Dash extends \Dash\Controller {
         $css .= $style->content;
         $css .= Zira\Helper::tag_close('style');
         Zira\View::addHTML($css, Zira\View::VAR_HEAD_BOTTOM);
+        
+        $script = Zira\Helper::tag_open('script', array('type'=>'text/javascript'));
+        $script .= 'designer_style_is_main = '.($style->main ? 'true' : 'false').';';
+        $script .= Zira\Helper::tag_close('script');
+        Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
         
         Zira\Router::setModule(DEFAULT_MODULE);
         Zira\Router::setController(DEFAULT_CONTROLLER);

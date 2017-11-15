@@ -34,6 +34,7 @@ class Helper {
         $path=trim($path,'/');
 
         if (self::$_add_language_to_url &&
+            !Router::isAllLanguagesRoute($path) &&
             Locale::getLanguage() &&
             Config::get('languages') &&
             count(Config::get('languages'))>1 &&
