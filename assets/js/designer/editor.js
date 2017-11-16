@@ -67,6 +67,7 @@
                     setFilterStyle('body', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
                 } else {
                     setBackgroundStyle('body', 'none');
+                    setFilterStyle('body', 'none');
                     setBackgroundColorStyle('body', color, true);
                 }
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
@@ -156,28 +157,27 @@
         // header
         if ($('header').length>0) {
             // header bg color
-            var header_init_bg_color = $('header').css('backgroundImage');
-            if ((typeof(designer_style_is_main)!="undefined" && designer_style_is_main) || header_init_bg_color=='none') {
-                var header_bg = $('header').css('backgroundColor');
-                $('body').append('<div class="designer_colorpicker" id="header-designer-colorpicker" title="'+t('Header color')+'"></div>');
-                designer_positions['header_color'] = function() {
-                    var header_cx = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2-colorpicker_size;
-                    var header_cy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
-                    $('#header-designer-colorpicker').css({'left':header_cx,'top':header_cy});
-                };
-                $('#header-designer-colorpicker').tooltip();
-                designer_colorpicker($('#header-designer-colorpicker'), header_bg, function(color){
-                    $('header').css('background', color);
-                    if (color.indexOf('rgba')==0) {
-                        setBackgroundColorStyle('header', hexColor(color));
-                        setBackgroundStyle('header', color, true);
-                        setFilterStyle('header', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
-                    } else {
-                        setBackgroundColorStyle('header', color);
-                    }
-                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
-                }, 'right', false);
-            }
+            var header_bg = $('header').css('backgroundColor');
+            $('body').append('<div class="designer_colorpicker" id="header-designer-colorpicker" title="'+t('Header color')+'"></div>');
+            designer_positions['header_color'] = function() {
+                var header_cx = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2-colorpicker_size;
+                var header_cy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
+                $('#header-designer-colorpicker').css({'left':header_cx,'top':header_cy});
+            };
+            $('#header-designer-colorpicker').tooltip();
+            designer_colorpicker($('#header-designer-colorpicker'), header_bg, function(color){
+                $('header').css('background', color);
+                if (color.indexOf('rgba')==0) {
+                    setBackgroundColorStyle('header', hexColor(color));
+                    setBackgroundStyle('header', color, true);
+                    setFilterStyle('header', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                } else {
+                    setBackgroundStyle('header', 'none');
+                    setFilterStyle('header', 'none');
+                    setBackgroundColorStyle('header', color, true);
+                }
+                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
+            }, 'right', false);
             
             // header bg gradient
             var header_gr = extractGradient($('header'));
