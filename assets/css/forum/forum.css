@@ -89,6 +89,9 @@
     position: absolute;
     right: 14px;
     font-size: 16px;
+    margin-top: 13px;
+}
+.forum-list.list .list-item .list-title-wrapper .forum-right-item.forum-reply-inline {
     margin-top: 3px;
 }
 .forum-list.list .list-item .list-content-wrapper {

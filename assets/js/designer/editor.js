@@ -70,7 +70,7 @@
                     setBackgroundColorStyle('body', color, true);
                 }
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-                
+
                 // body height btn
                 if ($('#html-designer-radio-btn').length>0) {
                     $('#html-designer-radio-btn').show();
@@ -156,25 +156,28 @@
         // header
         if ($('header').length>0) {
             // header bg color
-            var header_bg = $('header').css('backgroundColor');
-            $('body').append('<div class="designer_colorpicker" id="header-designer-colorpicker" title="'+t('Header color')+'"></div>');
-            designer_positions['header_color'] = function() {
-                var header_cx = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2-colorpicker_size;
-                var header_cy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
-                $('#header-designer-colorpicker').css({'left':header_cx,'top':header_cy});
-            };
-            $('#header-designer-colorpicker').tooltip();
-            designer_colorpicker($('#header-designer-colorpicker'), header_bg, function(color){
-                $('header').css('background', color);
-                if (color.indexOf('rgba')==0) {
-                    setBackgroundColorStyle('header', hexColor(color));
-                    setBackgroundStyle('header', color, true);
-                    setFilterStyle('header', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
-                } else {
-                    setBackgroundColorStyle('header', color);
-                }
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
-            }, 'right', false);
+            var header_init_bg_color = $('header').css('backgroundImage');
+            if ((typeof(designer_style_is_main)!="undefined" && designer_style_is_main) || header_init_bg_color=='none') {
+                var header_bg = $('header').css('backgroundColor');
+                $('body').append('<div class="designer_colorpicker" id="header-designer-colorpicker" title="'+t('Header color')+'"></div>');
+                designer_positions['header_color'] = function() {
+                    var header_cx = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2-colorpicker_size;
+                    var header_cy = $('header').offset().top+($('header').outerHeight()-colorpicker_size)/2-.75*colorpicker_size;
+                    $('#header-designer-colorpicker').css({'left':header_cx,'top':header_cy});
+                };
+                $('#header-designer-colorpicker').tooltip();
+                designer_colorpicker($('#header-designer-colorpicker'), header_bg, function(color){
+                    $('header').css('background', color);
+                    if (color.indexOf('rgba')==0) {
+                        setBackgroundColorStyle('header', hexColor(color));
+                        setBackgroundStyle('header', color, true);
+                        setFilterStyle('header', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                    } else {
+                        setBackgroundColorStyle('header', color);
+                    }
+                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
+                }, 'right', false);
+            }
             
             // header bg gradient
             var header_gr = extractGradient($('header'));
@@ -725,9 +728,10 @@
                     $('#footer-link-designer-gradientpicker-hidden').css({'left':footer_link_cx+colorpicker_wnd_size,'top':footer_link_cy});
                 };
                 $('#footer-link-designer-gradientpicker').tooltip();
-                designer_gradientpicker($('#footer-link-designer-gradientpicker'), $('#footer-link-designer-gradientpicker-hidden'), footer_link_color1, footer_link_color2, function(color1, color2){
+                designer_gradientpicker($('#footer-link-designer-gradientpicker'), $('#footer-link-designer-gradientpicker-hidden'), footer_link_color2, footer_link_color1, function(color2, color1){
                     $('#main-container footer ul.menu li').not('.active').children('a').css('color', color1);
                     $('#main-container footer ul.menu li.active a').css('color', color2);
+                    $('#main-container footer p a').css('color', color1);
                     setColorStyle('footer a:link,footer a:visited,footer p a:link,footer p a:visited,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:link,#footer-menu-wrapper ul.menu li.menu-item a.menu-link:visited,#main-container footer ul.dropdown-menu li a', color1);
                     setColorStyle('#footer-menu-wrapper ul.menu li.menu-item a.menu-link:hover,#footer-menu-wrapper ul.menu li.menu-item.active a.menu-link,#main-container footer ul.dropdown-menu li a:hover,#main-container footer ul.dropdown-menu li a:focus', color2);
                     setColorStyle('#footer-menu-wrapper ul.menu li.menu-item-separator::after', color1);
@@ -786,7 +790,7 @@
             
             // breadcrumbs background color
             var breadcrumbs_bg_color = $('.breadcrumb').css('backgroundColor');
-            if (breadcrumbs_bg_color != 'transparent') {
+            if (breadcrumbs_bg_color != 'transparent' && breadcrumbs_bg_color.replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
                 $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
                 designer_positions['breadcrumbs_bg_color'] = function() {
                     if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
@@ -1217,19 +1221,40 @@
                 $('.list .list-item .list-content-wrapper').css('color', color2);
                 $('.list .list-item .list-info,.list .list-item .list-info a').css('color', color1);
                 $('.sidebar .widget-title').css('color', color1);
+                $('.sidebar .zira-calendar-wrapper').css('color', color2);
                 $('.zira-calendar-wrapper .zira-calendar-days li a').css('color', color1);
                 $('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day').css('color', color2);
                 $('.pagination > li > a,.pagination > li > span').css('color', color2);
                 $('.pagination > .active > a,.pagination > .active > span').css('color', color1);
                 
+                removeColorStyle('.sidebar .block');
+                removeColorStyle('.sidebar .list .list-item');
+                removeColorStyle('.sidebar .list .list-item .list-title-wrapper');
+                removeColorStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited');
+                removeColorStyle('.sidebar .list .list-item .list-content-wrapper');
+                removeColorStyle('.sidebar .list .list-item .list-info');
+                removeColorStyle('.sidebar .list .list-item .list-info a:link,.sidebar .list .list-item .list-info a:visited');
+                removeColorStyle('.sidebar .list .list-item .list-title-wrapper a:hover');
+                removeColorStyle('.sidebar .widget-title,.sidebar .widget-title a:link,.sidebar .widget-title a:visited');
+                removeColorStyle('.sidebar .widget-title a:hover');
+                removeColorStyle('.sidebar ul.vote-results li .vote-result');
+                removeBackgroundStyle('.sidebar .vote-results-line');
+                removeColorStyle('.sidebar .zira-calendar-wrapper');
+                removeColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li a');
+                removeColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.sidebar .zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day');
+                removeTextShadowStyle('.sidebar .widget-title');
+                removeTextShadowStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited');
+                
                 setColorStyle('.sidebar .block', color2);
                 setColorStyle('.list .list-item', color2);
                 setColorStyle('.list .list-item .list-title-wrapper', color1);
                 setColorStyle('.list .list-item .list-title-wrapper a:link,.list .list-item .list-title-wrapper a:visited', color1);
+                setColorStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited', color1);
                 setColorStyle('.list .list-item .list-content-wrapper', color2);
                 setColorStyle('.list .list-item .list-info', color1);
                 setColorStyle('.list .list-item .list-info a:link,.list .list-item .list-info a:visited', color1);
                 setColorStyle('.list .list-item .list-title-wrapper a:hover', color2);
+                setColorStyle('.sidebar .list .list-item .list-title-wrapper a:hover', color2);
                 setColorStyle('.sidebar .widget-title,.sidebar .widget-title a:link,.sidebar .widget-title a:visited', color1);
                 setColorStyle('.sidebar .widget-title a:hover', color2);
                 setColorStyle('ul.vote-results li .vote-result', color1);
@@ -1278,10 +1303,10 @@
                     $(this).children('.list-title-wrapper').css('borderColor', color1);
                 });
                 $('.list .list-item .list-title-wrapper a,.sidebar .widget-title').css('textShadow', '1px 1px 0px '+color2);
-                if ($('.sidebar .page-header').css('backgroundColor')!='transparent') {
+                if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
                     $('.sidebar .page-header').css('background', color2);
                 }
-                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent') {
+                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
                     $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('background', color1);
                 }
                 $('.sidebar .page-header,.sidebar .list .list-item').css('borderColor', color2);
@@ -1297,17 +1322,33 @@
                 $('.pagination > .active > a,.pagination > .active > span').css('background', color2);
                 $('.pagination > .active > a,.pagination > .active > span').css('borderColor', color1);
                 
+                removeBorderColorStyle('.sidebar .list .list-item');
+                removeBackgroundStyle('.sidebar .page-header');
+                removeBorderColorStyle('.sidebar .list .list-item .list-title-wrapper');
+                removeBackgroundStyle('.sidebar.col-sm-4 > aside > div');
+                removeBorderColorStyle('.sidebar .page-header');
+                removeBorderColorStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited');
+                removeBackgroundStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited');
+                removeBackgroundStyle('.sidebar .forum-discussion-widget-wrapper .forum-widget-list.list .forum-widget-content-wrapper.list-content-wrapper');
+                removeBorderColorStyle('.sidebar .list .list-item');
+                removeBackgroundStyle('.sidebar.col-sm-4 div.calendar-widget-wrapper');
+                removeBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-selector,.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper');
+                removeBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper');
+                removeBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper');
+                removeBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper');
+                removeBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li:hover');
+                    
                 setBackgroundColorStyle('.list .list-item .list-title-wrapper', hexColor(color1), true);
                 setBackgroundGradientStyle('.list .list-item .list-title-wrapper', color1, color2);
                 setBorderColorStyle('.list .list-item', color1);
                 setBackgroundStyle('.list .list-item', color1);
-                if ($('.sidebar .page-header').css('backgroundColor')!='transparent') {
+                if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
                     setBackgroundStyle('.sidebar .page-header', color2);
                 }
                 setBorderColorStyle('.list .list-item .list-title-wrapper', color1);
                 setTextShadowStyle('.list .list-item .list-title-wrapper a:link,.list .list-item .list-title-wrapper a:visited', '1px 1px 0px '+color2);
                 setTextShadowStyle('.sidebar .widget-title', '1px 1px 0px '+color2);
-                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent') {
+                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
                     setBackgroundStyle('.sidebar.col-sm-4 > aside > div', color1);
                 }
                 setBorderColorStyle('.sidebar .page-header', color2);
@@ -1315,13 +1356,16 @@
                 setBackgroundStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color2);
                 setBackgroundStyle('.sidebar .forum-discussion-widget-wrapper .forum-widget-list.list .forum-widget-content-wrapper.list-content-wrapper', color2);
                 setBorderColorStyle('.sidebar .list .list-item', color2);
-                setBackgroundStyle('.sidebar.col-sm-4 div.calendar-widget-wrapper,.zira-calendar-wrapper .zira-calendar-selector,.zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
+                setBackgroundStyle('.sidebar.col-sm-4 div.calendar-widget-wrapper', color1);
+                setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-selector,.zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
                 setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
                 setBorderColorStyle('.zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
                 setBorderColorStyle('.zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
                 setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-days li:hover', color1);
                 setBackgroundStyle('.image-wrapper', color1);
                 setBorderColorStyle('.image-wrapper', color1);
+                setBackgroundStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
+                setFilterStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
                 
                 setBackgroundStyle('.messages-panel .navbar', color2);
                 setFilterStyle('.messages-panel .navbar', 'none');
@@ -1360,6 +1404,101 @@
                 setBackgroundStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
                 setBorderColorStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
             }, 'right', 'rgb');
+        }
+
+        // sidebar lists
+        if ($('.sidebar .list').length>0) {
+            // sidebar lists text
+            var slists_color1 = $('.sidebar .list .list-title-wrapper a').css('color');
+            var slists_color2 = $('.sidebar .list .list-item').css('color');
+            $('body').append('<div class="designer_colorpicker" id="slists-color-designer-gradientpicker" title="'+t('Widgets text color')+'"></div><div class="designer_gradientpicker_hidden" id="slists-color-designer-gradientpicker-hidden"></div>');
+            designer_positions['slists_txt'] = function() {
+                var slists_tx = $('.sidebar .list').offset().left+($('.sidebar .list').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var slists_ty = $('.sidebar .list').offset().top+.5*colorpicker_size;
+                $('#slists-color-designer-gradientpicker').css({'left':slists_tx,'top':slists_ty});
+                $('#slists-color-designer-gradientpicker-hidden').css({'left':slists_tx-colorpicker_wnd_size,'top':slists_ty});
+            };
+            $('#slists-color-designer-gradientpicker').tooltip();
+            designer_gradientpicker($('#slists-color-designer-gradientpicker'), $('#slists-color-designer-gradientpicker-hidden'), slists_color2, slists_color1, function(color2, color1){
+                $('.sidebar .block').css('color', color2);
+                $('.sidebar .list .list-item').css('color', color2);
+                $('.sidebar .list .list-item .list-title-wrapper').css('color', color1);
+                $('.sidebar .list .list-item .list-title-wrapper a').css('color', color1);
+                $('.sidebar .list .list-item .list-content-wrapper').css('color', color2);
+                $('.sidebar .list .list-item .list-info,.sidebar .list .list-item .list-info a').css('color', color1);
+                $('.sidebar .widget-title').css('color', color2);
+                $('.sidebar .zira-calendar-wrapper').css('color', color1);
+                $('.sidebar .zira-calendar-wrapper .zira-calendar-days li a').css('color', color2);
+                $('.sidebar .zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.sidebar .zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day').css('color', color1);
+                $('.sidebar .widget-title').css('textShadow', 'none');
+                $('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited').css('textShadow', 'none');
+
+                setColorStyle('.sidebar .block', color2);
+                setColorStyle('.sidebar .list .list-item', color2);
+                setColorStyle('.sidebar .list .list-item .list-title-wrapper', color1);
+                setColorStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited', color1);
+                setColorStyle('.sidebar .list .list-item .list-content-wrapper', color2);
+                setColorStyle('.sidebar .list .list-item .list-info', color1);
+                setColorStyle('.sidebar .list .list-item .list-info a:link,.sidebar .list .list-item .list-info a:visited', color1);
+                setColorStyle('.sidebar .list .list-item .list-title-wrapper a:hover', color2);
+                setColorStyle('.sidebar .widget-title,.sidebar .widget-title a:link,.sidebar .widget-title a:visited', color2);
+                setColorStyle('.sidebar .widget-title a:hover', color1);
+                setColorStyle('.sidebar ul.vote-results li .vote-result', color1);
+                setBackgroundStyle('.sidebar .vote-results-line', color1);
+                setColorStyle('.sidebar .zira-calendar-wrapper', color1);
+                setColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li a', color2);
+                setColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.sidebar .zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day', color1);
+                setTextShadowStyle('.sidebar .widget-title', 'none');
+                setTextShadowStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited', 'none');
+            }, 'right', 'rgb');
+            
+            // sidebar lists background
+            if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && 
+                $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)' && 
+                $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && 
+                $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)'
+                ){
+                var slists_bg1 = $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor');
+                var slists_bg2 = $('.sidebar .page-header').css('backgroundColor');
+                $('body').append('<div class="designer_gradientpicker" id="slists-bg-designer-gradientpicker" title="'+t('Widgets background')+'"></div><div class="designer_gradientpicker_hidden" id="slists-bg-designer-gradientpicker-hidden"></div>');
+                designer_positions['slists_bg'] = function() {
+                    var slists_bx = $('.sidebar .list').offset().left+($('.sidebar .list').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                    var slists_by = $('.sidebar .list').offset().top+.5*colorpicker_size;
+                    $('#slists-bg-designer-gradientpicker').css({'left':slists_bx,'top':slists_by});
+                    $('#slists-bg-designer-gradientpicker-hidden').css({'left':slists_bx-colorpicker_wnd_size,'top':slists_by});
+                };
+                $('#slists-bg-designer-gradientpicker').tooltip();
+                designer_gradientpicker($('#slists-bg-designer-gradientpicker'), $('#slists-bg-designer-gradientpicker-hidden'), slists_bg2, slists_bg1, function(color2, color1){
+                    $('.sidebar .page-header').css('background', color2);
+                    $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('background', color1);
+                    $('.sidebar .page-header,.sidebar .list .list-item').css('borderColor', color2);
+                    $('.sidebar .list .list-item a.list-thumb:link, .sidebar .list .list-item a.list-thumb:visited').css('borderColor', color2);
+                    $('.sidebar .list .list-item a.list-thumb:link, .sidebar .list .list-item a.list-thumb:visited').css('background', color2);
+                    $('.sidebar.col-sm-4 div.calendar-widget-wrapper,.sidebar .zira-calendar-wrapper .zira-calendar-selector,.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper').css('background', color1);
+                    $('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper').css('background', color2);
+                    $('.sidebar .zira-calendar-wrapper .zira-calendar-days li:hover').css('background', color2);
+                    $('.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper').css('borderColor', color1);
+                    $('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper').css('borderColor', color2);
+                    
+                    setBorderColorStyle('.sidebar .list .list-item', color1);
+                    setBackgroundStyle('.sidebar .page-header', color2);
+                    setBorderColorStyle('.sidebar .list .list-item .list-title-wrapper', color1);
+                    setBackgroundStyle('.sidebar.col-sm-4 > aside > div', color1);
+                    setBorderColorStyle('.sidebar .page-header', color2);
+                    setBorderColorStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color2);
+                    setBackgroundStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color2);
+                    setBackgroundStyle('.sidebar .forum-discussion-widget-wrapper .forum-widget-list.list .forum-widget-content-wrapper.list-content-wrapper', color2);
+                    setBorderColorStyle('.sidebar .list .list-item', color2);
+                    setBackgroundStyle('.sidebar.col-sm-4 div.calendar-widget-wrapper', color1);
+                    setBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-selector,.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
+                    setBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
+                    setBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper', color1);
+                    setBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper', color2);
+                    setBackgroundStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li:hover', color1);
+                    setBackgroundStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
+                    setFilterStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
+                }, 'right', 'rgb');
+            }
         }
         
         // secondary menu
@@ -1506,6 +1645,9 @@
         if ($('body').css('backgroundImage').indexOf('gradient')>0 && $('#html-designer-radio-btn').length>0) {
             $('#html-designer-radio-btn').hide();
         }
+        
+        var bodyFont = getFontFamilyStyle('body');
+        parent.jQuery('body', parent.document).trigger('designerReady', [window.getId(), bodyFont]);
     });
     
     var designer_colorpicker = function(element, init_color, callback, position, color_format) {
@@ -1971,6 +2113,18 @@
         editorMap.remove(element, 'maxheight');
     };
 
+    var setFontFamilyStyle = function(element, value) {
+        editorMap.set(element, 'fontfamily', 'font-family:' + value + ';');
+    };
+    
+    var getFontFamilyStyle = function(element) {
+        return editorMap.get(element, 'fontfamily');
+    };
+    
+    var removeFontFamilyStyle = function(element) {
+        editorMap.remove(element, 'fontfamily');
+    };
+
     var setUnknownStyle = function(element, prop, value) {
         if (typeof(setUnknownStyle.i)=="undefined") setUnknownStyle.i=0;
         setUnknownStyle.i++;
@@ -2165,6 +2319,8 @@
                     setMaxWidthStyle(element, value);
                 } else if (prop == 'max-height') {
                     setMaxHeightStyle(element, value);
+                } else if (prop == 'font-family') {
+                    setFontFamilyStyle(element, value);
                 } else {
                     setUnknownStyle(element, prop, value);
                 }
@@ -2187,6 +2343,7 @@
         }
         if (!gradient) {
             var color = $(element).css('backgroundColor');
+            if (color.replace(/[\x20]/g,'')=='rgba(0,0,0,0)') color = 'transparent';
             gradient = [color, color];
         }
         return gradient;
@@ -2504,6 +2661,15 @@
         
         var colorpicker = pickers[pickers.length-1].colorpicker;
         $(colorpicker).colorpicker('setValue',color);
+    };
+    
+    window.setFontFamily = function(font) {
+        if (typeof(font)=="undefined") return;
+        removeFontFamilyStyle('body');
+        if (font.length>0) {
+            setFontFamilyStyle('body', '\''+font+'\',sans-serif');
+        }
+        window.updateStyle(window.editorStyle());
     };
     
     if (typeof(parent.designerEditorWindow)=="undefined") parent.designerEditorWindow = {};

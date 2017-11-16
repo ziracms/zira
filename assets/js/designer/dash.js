@@ -320,6 +320,21 @@ var designer_designer_open = function() {
         if (this.getId() != wndId) return;
         designer_designer_gradient_pallete_hide.call(this);
     });
+    designerEditorCallbacks[this.getId()]['designerReady'] = (function(object, method) {
+        return function(arg1, arg2, arg3) {
+            method.call(object, arg1, arg2, arg3);
+        };
+    })(this, function(e, wndId, bodyFont){
+        if (this.getId() != wndId) return;
+        designer_designer_hide_overlay.call(this);
+        designer_designer_hide_loader.call(this);
+        if (typeof(bodyFont)!="undefined" && bodyFont && bodyFont.length>0) {
+            bodyFont = bodyFont.replace(/^.+?[:](.+)$/g,'$1').split(',')[0].replace(/['"]/g,'');
+            $(this.toolbar).find('select[name=designer-user-font]').val(bodyFont);
+        } else {
+            $(this.toolbar).find('select[name=designer-user-font]').val('');
+        }
+    });
     
     for (var eventName in designerEditorCallbacks[this.getId()]) {
         $('body').on(eventName, designerEditorCallbacks[this.getId()][eventName]);
@@ -327,11 +342,35 @@ var designer_designer_open = function() {
     
     var wnd = this;
     
+    var fonts = [
+        {name: '', value: t('Theme font')},
+        {name: 'Arial', value: 'Arial'},
+        {name: 'Times New Roman', value: 'Times New Roman'},
+        {name: 'Verdana', value: 'Verdana'},
+        {name: 'Georgia', value: 'Georgia'},
+        {name: 'Helvetica', value: 'Helvetica'},
+        {name: 'Courier', value: 'Courier'},
+        {name: 'Garamond', value: 'Garamond'},
+        {name: 'Trebuchet MS', value: 'Trebuchet MS'},
+        {name: 'Impact', value: 'Impact'},
+        {name: 'Tahoma', value: 'Tahoma'}
+    ];
+    var select_options = '';
+    for (var i=0; i<fonts.length; i++) {
+        select_options += '<option value="'+fonts[i].name+'">'+fonts[i].value+'</option>';
+    }
+    var select = '<div class="navbar-form navbar-left"><div class="form-group"><div class="input-group"><select class="form-control" name="designer-user-font">'+select_options+'</select></div></div></div>';
     var input = '<div class="navbar-form navbar-left"><div class="form-group"><div class="input-group"><input type="text" class="form-control" name="designer-user-color" placeholder="'+t('Color')+'"><span class="input-group-addon" id="basic-addon3"><span class="glyphicon glyphicon-stop" style="cursor:pointer"></span></span></div></div></div>';
     var container = $(this.toolbar).find('.navbar-default .container-fluid');
     if ($(container).length) {
+        $(container).append(select);
         $(container).append(input);
     }
+    
+    $(this.toolbar).find('select[name=designer-user-font]').change(zira_bind(this, function(){
+        var font = $(this.toolbar).find('select[name=designer-user-font]').val();
+        designer_designer_user_font.call(this, font);
+    }));
     
     $(this.toolbar).find('input[name=designer-user-color]').keyup(zira_bind(this, function(){
         var color = $(this.toolbar).find('input[name=designer-user-color]').val();
@@ -353,6 +392,8 @@ var designer_designer_load = function() {
     if (typeof(this.options.data.items)=="undefined" || this.options.data.items.length!=1) return;
     var item = this.options.data.items[0];
     this.setBodyFullContent('<iframe src="'+designer_layout_url+'&id='+item+'#'+this.getId()+'" width="100%" height="100%" style="border:none;margin:0;padding:0"></iframe><form style="display:none"><textarea name="content"></textarea><input type="hidden" name="item" /></form>');
+    designer_designer_show_overlay.call(this);
+    designer_designer_show_loader.call(this);
 };
 
 var designer_designer_close = function() {
@@ -376,6 +417,34 @@ var designer_designer_onsave = function() {
     }
 };
 
+var designer_designer_focus = function() {
+    designer_designer_hide_overlay.call(this);
+};
+
+var designer_designer_blur = function() {
+    designer_designer_show_overlay.call(this);
+};
+
+var designer_designer_show_overlay = function() {
+    $(this.content).append('<div class="designer-designer-overlay" style="position:absolute;width:100%;height:100%;left:0;top:0;background:rgba(101,36,171,0.17);"></div>');
+};
+
+var designer_designer_hide_overlay = function() {
+    $(this.content).find('.designer-designer-overlay').remove();
+};
+
+var designer_designer_show_loader = function() {
+    $(this.content).append('<span class="zira-loader glyphicon glyphicon-refresh" style="position:absolute;"></span>');
+    $(this.content).find('.zira-loader').css({
+        'left': ($(this.content).width()-$(this.content).find('.zira-loader').width())/2,
+        'top': ($(this.content).height()-$(this.content).find('.zira-loader').height())/2
+    });
+};
+
+var designer_designer_hide_loader = function() {
+    $(this.content).find('.zira-loader').remove();
+};
+
 var designer_designer_code = function() {
     if (typeof(designerEditorWindow) == "undefined") return;
     if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
@@ -397,6 +466,13 @@ var designer_designer_code = function() {
             }
         }
     }), false);
+};
+
+var designer_designer_user_font = function(font) {
+    if (typeof(font)=="undefined") return;
+    if (typeof(designerEditorWindow) == "undefined") return;
+    if (typeof(designerEditorWindow[this.getId()]) == "undefined" || !designerEditorWindow[this.getId()]) return;
+    designerEditorWindow[this.getId()].setFontFamily(font);
 };
 
 var designer_designer_user_color = function(color) {
@@ -440,7 +516,7 @@ var designer_designer_color_pallete_show = function() {
     if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") return;
     var container = $(this.toolbar).find('.navbar-default .container-fluid');
     var content = '';
-    for (var i=0; i<designer_designer_color_pallete.colors[this.getId()].length; i++) {
+    for (var i=designer_designer_color_pallete.colors[this.getId()].length-1; i>=0; i--) {
         var color = designer_designer_color_pallete.colors[this.getId()][i];
         content += '<div class="navbar-form navbar-left colorpicker-wrapper"><div class="form-group"><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="color"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button></div></div>';
     }
@@ -461,7 +537,7 @@ var designer_designer_gradient_pallete_show = function() {
     if (typeof(designer_designer_color_pallete.colors[this.getId()])=="undefined") return;
     var container = $(this.toolbar).find('.navbar-default .container-fluid');
     var content = '';
-    for (var i=0; i<designer_designer_color_pallete.colors[this.getId()].length; i++) {
+    for (var i=designer_designer_color_pallete.colors[this.getId()].length-1; i>=0; i--) {
         var color = designer_designer_color_pallete.colors[this.getId()][i];
         content += '<div class="navbar-form navbar-left gradientpicker-wrapper"><div class="form-group"><div class="btn-group" role="group"><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="gradient-left"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button><button class="btn btn-default colorpallete" data-color="'+color+'" data-picker="gradient-right"><span class="glyphicon glyphicon-stop" style="color:'+color+';"></span></button></div></div></div>';
     }

@@ -11,5 +11,6 @@ return array(
     'CSS code' => 'CSS код',
     'Syntax error' => 'Синтаксическая ошибка',
     'main style' => 'основной стиль',
-    'Color' => 'Цвет'
+    'Color' => 'Цвет',
+    'Theme font' => 'Шрифт темы'
 );

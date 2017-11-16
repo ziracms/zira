@@ -55,6 +55,18 @@ class Designer extends Dash\Windows\Window {
                 'desk_call(designer_designer_close, this);'
             )
         );
+        
+        $this->setOnFocusJSCallback(
+            $this->createJSCallback(
+                'desk_call(designer_designer_focus, this);'
+            )
+        );
+        
+        $this->setOnBlurJSCallback(
+            $this->createJSCallback(
+                'desk_call(designer_designer_blur, this);'
+            )
+        );
     }
 
     public function load() {

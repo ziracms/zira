@@ -64,6 +64,8 @@ return array(
     'Unset wide column' => 'Убрать широкую колонку',
     'Set body height = 100%' => 'Установить высоту body = 100%',
     'Set body height = auto' => 'Установить высоту body = auto',
-    'Syntax error' => 'Синтаксическая ошибка'
+    'Syntax error' => 'Синтаксическая ошибка',
+    'Widgets text color' => 'Цвет текста виджетов',
+    'Widgets background' => 'Фон виджетов'
 );
 
