@@ -197,8 +197,6 @@ var Desk = {
                         this.dragging = true;
                         this.dragX = e.pageX;
                         this.dragY = e.pageY;
-                        e.stopPropagation();
-                        e.preventDefault();
                         $('body').addClass(this.body_on_resize_class);
                     } else if (this.windows[id].isSidebarResizerHovered(e.pageX, e.pageY)) {
                         this.windows[id].setMoving(false);
@@ -208,8 +206,6 @@ var Desk = {
                         this.dragging = true;
                         this.dragX = e.pageX;
                         this.dragY = e.pageY;
-                        e.stopPropagation();
-                        e.preventDefault();
                         $('body').addClass(this.body_on_sidebar_resize_class);
                     } else if (this.windows[id].isMovingHovered(e.pageX, e.pageY)) {
                         this.windows[id].setMoving(true);
@@ -219,8 +215,6 @@ var Desk = {
                         this.dragging = true;
                         this.dragX = e.pageX;
                         this.dragY = e.pageY;
-                        e.stopPropagation();
-                        e.preventDefault();
                     } else if (this.windows[id].isContentHovered(e.pageX, e.pageY)) {
                         this.windows[id].setMoving(false);
                         this.windows[id].setWindowResizing(false);
@@ -250,6 +244,10 @@ var Desk = {
             this.activateOverlay();
             this.raiseZ(this.active);
             this.active.focus();
+            if (this.active.isWindowResizing() || this.active.isSidebarResizing() || this.active.isMoving()) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
         } else {
             this.deactivateOverlay();
         }

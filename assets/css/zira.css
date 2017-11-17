@@ -60,6 +60,9 @@ select.form-control option {
 .modal-body {
     word-wrap: break-word;
 }
+.modal-content {
+    color: #333;
+}
 .error-page {
     margin-top: 40px;
 }

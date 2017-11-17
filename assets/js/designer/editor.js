@@ -49,7 +49,7 @@
         // body
         if ($('body').length>0 && $('#main-container-wrapper').length>0 && $('#main-container').length>0) {
             // body bg color
-            var body_bg = $('body').css('backgroundColor');
+            var body_bg = extractBgColor($('body'));
             $('body').append('<div class="designer_colorpicker" id="body-designer-colorpicker" title="'+t('Background color')+'"></div>');
             designer_positions['body_color'] = function() {
                 var body_cx = colorpicker_size/2;
@@ -114,7 +114,7 @@
             };
             $('#body-designer-imagepicker').tooltip();
             designer_imagepicker($('#body-designer-imagepicker'), function(url){
-                var bg_color = $('body').css('backgroundColor');
+                var bg_color = extractBgColor($('body'));
                 var t = (new Date()).getTime();
                 var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
                 $('body').css('background', background);
@@ -138,7 +138,7 @@
             };
             $('#body-designer-patternpicker').tooltip();
             designer_imagepicker($('#body-designer-patternpicker'), function(url){
-                var bg_color = $('body').css('backgroundColor');
+                var bg_color = extractBgColor($('body'));
                 var t = (new Date()).getTime();
                 var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
                 $('body').css('background', background);
@@ -157,7 +157,7 @@
         // header
         if ($('header').length>0) {
             // header bg color
-            var header_bg = $('header').css('backgroundColor');
+            var header_bg = extractBgColor($('header'));
             $('body').append('<div class="designer_colorpicker" id="header-designer-colorpicker" title="'+t('Header color')+'"></div>');
             designer_positions['header_color'] = function() {
                 var header_cx = $('header').offset().left+($('header').outerWidth()-colorpicker_size)/2-colorpicker_size;
@@ -205,7 +205,7 @@
             };
             $('#header-designer-imagepicker').tooltip();
             designer_imagepicker($('#header-designer-imagepicker'), function(url){
-                var bg_color = $('header').css('backgroundColor');
+                var bg_color = extractBgColor($('header'));
                 var t = (new Date()).getTime();
                 var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
                 $('header').css('background', background);
@@ -224,7 +224,7 @@
             };
             $('#header-designer-patternpicker').tooltip();
             designer_imagepicker($('#header-designer-patternpicker'), function(url){
-                var bg_color = $('header').css('backgroundColor');
+                var bg_color = extractBgColor($('header'));
                 var t = (new Date()).getTime();
                 var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
                 $('header').css('background', background);
@@ -370,7 +370,7 @@
                 });
                 
                 // header language switcher background
-                var lang_bg = $('header ul#language-switcher li a.active').css('backgroundColor');
+                var lang_bg = extractBgColor($('header ul#language-switcher li a.active'));
                 $('body').append('<div class="designer_colorpicker" id="lang-bg-designer-colorpicker" title="'+t('Language background')+'"></div>');
                 designer_positions['lang_bg'] = function() {
                     if ($('header ul#language-switcher').css('display')=='none' || $('header ul#language-switcher').css('visibility')=='hidden') {
@@ -789,8 +789,8 @@
             });
             
             // breadcrumbs background color
-            var breadcrumbs_bg_color = $('.breadcrumb').css('backgroundColor');
-            if (breadcrumbs_bg_color != 'transparent' && breadcrumbs_bg_color.replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
+            var breadcrumbs_bg_color = extractBgColor($('.breadcrumb'));
+            if (breadcrumbs_bg_color != 'transparent') {
                 $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
                 designer_positions['breadcrumbs_bg_color'] = function() {
                     if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
@@ -820,7 +820,7 @@
 
         // gallery background color
         if ($('.gallery').length>0) {
-            var gallery_color = $('.gallery').css('backgroundColor');
+            var gallery_color = extractBgColor($('.gallery'));
             $('body').append('<div class="designer_colorpicker" id="gallery-designer-colorpicker" title="'+t('Gallery background')+'"></div>');
             designer_positions['gallery_bg'] = function() {
                 if ($('.gallery').css('display')=='none' || $('.gallery').css('visibility')=='hidden') {
@@ -892,8 +892,8 @@
             });
             
             // files background
-            var files_bg1 = $('.files-wrapper ul li').eq(0).css('backgroundColor');
-            var files_bg2 = $('.files-wrapper ul li').eq(1).css('backgroundColor');
+            var files_bg1 = extractBgColor($('.files-wrapper ul li').eq(0));
+            var files_bg2 = extractBgColor($('.files-wrapper ul li').eq(1));
             $('body').append('<div class="designer_colorpicker" id="files-bg-designer-gradientpicker" title="'+t('Files background')+'"></div><div class="designer_gradientpicker_hidden" id="files-bg-designer-gradientpicker-hidden"></div>');
             designer_positions['files_bg_color'] = function() {
                 if ($('.files-wrapper').css('display')=='none' || $('.files-wrapper').css('visibility')=='hidden') {
@@ -1095,7 +1095,7 @@
             });
             
             // comments background
-            var comments_bg = $('.comments .comments-item .comment-text').css('backgroundColor');
+            var comments_bg = extractBgColor($('.comments .comments-item .comment-text'));
             $('body').append('<div class="designer_colorpicker" id="comments-bg-designer-colorpicker" title="'+t('Comments background')+'"></div>');
             designer_positions['comments_bg'] = function() {
                 var comments_bx = $('.comments .comments-item:first-child .comment-text').offset().left+($('.comments .comments-item:first-child .comment-text').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
@@ -1226,7 +1226,9 @@
                 $('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day').css('color', color2);
                 $('.pagination > li > a,.pagination > li > span').css('color', color2);
                 $('.pagination > .active > a,.pagination > .active > span').css('color', color1);
-                
+                $('.sidebar .widget-title').css('textShadow', 'none');
+                $('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited').css('textShadow', 'none');
+
                 removeColorStyle('.sidebar .block');
                 removeColorStyle('.sidebar .list .list-item');
                 removeColorStyle('.sidebar .list .list-item .list-title-wrapper');
@@ -1263,6 +1265,8 @@
                 setColorStyle('.zira-calendar-wrapper .zira-calendar-days li a', color1);
                 setColorStyle('.zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day', color2);
                 setColorStyle('.image-wrapper .image-description', color2);
+                setTextShadowStyle('.sidebar .widget-title', 'none');
+                setTextShadowStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited', 'none');
                 
                 setColorStyle('.messages-panel .navbar-default .navbar-brand', color1);
                 setColorStyle('.messages-panel .navbar-default .navbar-nav li a', color1);
@@ -1303,10 +1307,10 @@
                     $(this).children('.list-title-wrapper').css('borderColor', color1);
                 });
                 $('.list .list-item .list-title-wrapper a,.sidebar .widget-title').css('textShadow', '1px 1px 0px '+color2);
-                if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
+                if (extractBgColor($('.sidebar .page-header'))!='transparent') {
                     $('.sidebar .page-header').css('background', color2);
                 }
-                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
+                if (extractBgColor($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper'))!='transparent') {
                     $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('background', color1);
                 }
                 $('.sidebar .page-header,.sidebar .list .list-item').css('borderColor', color2);
@@ -1342,13 +1346,13 @@
                 setBackgroundGradientStyle('.list .list-item .list-title-wrapper', color1, color2);
                 setBorderColorStyle('.list .list-item', color1);
                 setBackgroundStyle('.list .list-item', color1);
-                if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
+                if (extractBgColor($('.sidebar .page-header'))!='transparent') {
                     setBackgroundStyle('.sidebar .page-header', color2);
                 }
                 setBorderColorStyle('.list .list-item .list-title-wrapper', color1);
                 setTextShadowStyle('.list .list-item .list-title-wrapper a:link,.list .list-item .list-title-wrapper a:visited', '1px 1px 0px '+color2);
                 setTextShadowStyle('.sidebar .widget-title', '1px 1px 0px '+color2);
-                if ($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)') {
+                if (extractBgColor($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper'))!='transparent') {
                     setBackgroundStyle('.sidebar.col-sm-4 > aside > div', color1);
                 }
                 setBorderColorStyle('.sidebar .page-header', color2);
@@ -1453,13 +1457,11 @@
             }, 'right', 'rgb');
             
             // sidebar lists background
-            if ($('.sidebar .page-header').css('backgroundColor')!='transparent' && 
-                $('.sidebar .page-header').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)' && 
-                $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor')!='transparent' && 
-                $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor').replace(/[\x20]/g,'') != 'rgba(0,0,0,0)'
+            if (extractBgColor($('.sidebar .page-header'))!='transparent' &&
+                extractBgColor($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper'))!='transparent'
                 ){
-                var slists_bg1 = $('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper').css('backgroundColor');
-                var slists_bg2 = $('.sidebar .page-header').css('backgroundColor');
+                var slists_bg1 = extractBgColor($('.sidebar.col-sm-4 > aside > div').not('.noframe,#secondary-menu-wrapper'));
+                var slists_bg2 = extractBgColor($('.sidebar .page-header'));
                 $('body').append('<div class="designer_gradientpicker" id="slists-bg-designer-gradientpicker" title="'+t('Widgets background')+'"></div><div class="designer_gradientpicker_hidden" id="slists-bg-designer-gradientpicker-hidden"></div>');
                 designer_positions['slists_bg'] = function() {
                     var slists_bx = $('.sidebar .list').offset().left+($('.sidebar .list').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
@@ -1523,8 +1525,8 @@
             }, 'right', 'rgb');
             
             // secondary menu background
-            var sec_menu_bg1 = $('#secondary-menu-wrapper ul li a').css('backgroundColor');
-            var sec_menu_bg2 = $('#secondary-menu-wrapper ul li.active a').css('backgroundColor');
+            var sec_menu_bg1 = extractBgColor($('#secondary-menu-wrapper ul li a'));
+            var sec_menu_bg2 = extractBgColor($('#secondary-menu-wrapper ul li.active a'));
             $('body').append('<div class="designer_gradientpicker" id="sec-menu-bg-designer-gradientpicker" title="'+t('Secondary menu background')+'"></div><div class="designer_gradientpicker_hidden" id="sec-menu-bg-designer-gradientpicker-hidden"></div>');
             designer_positions['sec_menu_bg'] = function() {
                 var sec_menu_bx = $('#secondary-menu-wrapper').offset().left+($('#secondary-menu-wrapper').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
@@ -1648,6 +1650,11 @@
         
         var bodyFont = getFontFamilyStyle('body');
         parent.jQuery('body', parent.document).trigger('designerReady', [window.getId(), bodyFont]);
+        if (typeof(designer_current_theme_is_supported)=="undefined" || !designer_current_theme_is_supported) {
+            parent.jQuery('body', parent.document).trigger('designerEditorError', [window.getId(), t('Sorry, your current theme is not supported.')]);
+        } else if (typeof(designer_current_theme)=="undefined" || typeof(designer_style_theme)=="undefined" || designer_style_theme!=designer_current_theme) {
+            parent.jQuery('body', parent.document).trigger('designerEditorError', [window.getId(), t('This style belongs to another theme.')]);
+        }
     });
     
     var designer_colorpicker = function(element, init_color, callback, position, color_format) {
@@ -2328,6 +2335,12 @@
         }
     };
     
+    var extractBgColor = function(element) {
+        var color = $(element).css('backgroundColor');
+        if (color.replace(/[\x20]/g,'')=='rgba(0,0,0,0)') color = 'transparent';
+        return color;
+    };
+    
     var extractGradient = function(element) {
         var gradient = null;
         var value = $(element).css('backgroundImage');
@@ -2342,8 +2355,7 @@
             }
         }
         if (!gradient) {
-            var color = $(element).css('backgroundColor');
-            if (color.replace(/[\x20]/g,'')=='rgba(0,0,0,0)') color = 'transparent';
+            var color = extractBgColor($(element));
             gradient = [color, color];
         }
         return gradient;

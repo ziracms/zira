@@ -66,6 +66,8 @@ return array(
     'Set body height = auto' => 'Установить высоту body = auto',
     'Syntax error' => 'Синтаксическая ошибка',
     'Widgets text color' => 'Цвет текста виджетов',
-    'Widgets background' => 'Фон виджетов'
+    'Widgets background' => 'Фон виджетов',
+    'This style belongs to another theme.' => 'Этот стиль принадлежит другой теме.',
+    'Sorry, your current theme is not supported.' => 'Извините, ваша текущая тема не поддерживается.'
 );
 

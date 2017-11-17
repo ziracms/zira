@@ -77,8 +77,21 @@ class Dash extends \Dash\Controller {
         $css .= Zira\Helper::tag_close('style');
         Zira\View::addHTML($css, Zira\View::VAR_HEAD_BOTTOM);
         
+        // extracting current theme meta data
+        $metadata = array();
+        $metapath = ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . 'theme.meta';
+        if (file_exists($metapath)) {
+            $meta = @parse_ini_file($metapath, true);
+            if (!empty($meta) && is_array($meta) && array_key_exists('meta', $meta)) {
+                $metadata = $meta['meta'];
+            }
+        }
+        
         $script = Zira\Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'designer_style_is_main = '.($style->main ? 'true' : 'false').';';
+        $script .= 'designer_current_theme = \''.Zira\View::getTheme().'\';';
+        $script .= 'designer_style_theme = \''.$style->theme.'\';';
+        $script .= 'designer_current_theme_is_supported = '.(array_key_exists('editable', $metadata) && $metadata['editable'] ? 'true' : 'false').';';
         $script .= Zira\Helper::tag_close('script');
         Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
         
