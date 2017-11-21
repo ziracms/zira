@@ -101,6 +101,9 @@
 <?php if ($item->modified_by): ?>
 <span class="list-info note" title="<?php echo $item->modified_by==$item->creator_id ? tm('Edited by user', 'forum') : tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>
 <?php endif; ?>
+<?php if (!empty($editableMessageId) && $editableMessageId==$item->id): ?>
+<a href="javascript:void(0)" data-editid="<?php echo intval($item->id) ?>" class="list-info link forum-edit-inline"><span class="glyphicon glyphicon-pencil"></span> <?php echo t('Edit') ?></a>
+<?php endif; ?>
 <span class="list-info date"><span class="glyphicon glyphicon-time"></span> <?php echo date(Zira\Config::get('date_format'), strtotime($item->date_modified)) ?></span>
 <a href="javascript:void(0)" class="list-info forum-rating forum-like" data-value="1" data-type="forum_message" data-id="<?php echo intval($item->id) ?>" data-token="<?php echo Zira\User::getToken() ?>" data-url="<?php echo Zira\Helper::url('forum/poll') ?>">
 <span class="glyphicon glyphicon-thumbs-up"></span>

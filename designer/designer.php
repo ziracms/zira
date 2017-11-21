@@ -114,10 +114,6 @@ class Designer {
             if ($style->record_id && $style->record_id!=Zira\Page::getRecordId()) continue;
             if ($style->url && strlen($style->url)>0) {
                 $request = urldecode(Zira\Router::getRequest());
-                if ($style->url != $request && (
-                    strlen($style->url)<=2 || 
-                    substr($style->url, -2) != '/*' 
-                )) continue;
                 if ($style->url != $request && ( 
                     strlen($style->url)<=2 ||
                     substr($style->url, -2) != '/*' ||

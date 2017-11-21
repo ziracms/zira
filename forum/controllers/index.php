@@ -328,19 +328,29 @@ class Index extends Zira\Controller {
                     Forum\Models\File::parseContentFiles($file_refs, $content);
                 }
             }
-            // creating new message
-            if (!($message=Forum\Models\Message::createNewMessage($topic->forum_id, $topic->id, $content, ++$topic->messages, $topic->forum_topics))) {
-                $form->setError(Zira\Locale::t('An error occurred'));
+            $editid = intval($form->getValue('editid'));
+            if ($editid) {
+                // edit existing message
+                $message=Forum\Models\Message::editMessage($topic->id, $editid, $content);
+                if (!$message) $form->setError(Zira\Locale::t('Sorry, this message cannot be edited'));
             } else {
+                // creating new message
+                $message=Forum\Models\Message::createNewMessage($topic->forum_id, $topic->id, $content, ++$topic->messages, $topic->forum_topics);
+                if (!$message) $form->setError(Zira\Locale::t('An error occurred'));
+            }
+            
+            if ($message) {
                 // saving files
                 if (Zira\Config::get('forum_file_uploads') && !empty($files)) {
                     Forum\Models\File::saveFiles($files, $message->id);
                 }
                 // sending notification message
-                try {
-                    Forum\Models\Message::notify($topic, $message);
-                } catch (\Exception $e) {
-                    Zira\Log::exception($e);
+                if (!$editid) {
+                    try {
+                        Forum\Models\Message::notify($topic, $message);
+                    } catch (\Exception $e) {
+                        Zira\Log::exception($e);
+                    }
                 }
 
                 if ($message->published != Forum\Models\Message::STATUS_PUBLISHED) {
@@ -458,7 +468,8 @@ class Index extends Zira\Controller {
                                                                 'topic_active' => $topic->active,
                                                                 'topic_url' => Forum\Models\Topic::generateUrl($topic),
                                                                 'topic_page' => $page,
-                                                                'searchForm' => $searchForm
+                                                                'searchForm' => $searchForm,
+                                                                'editableMessageId' => Forum\Models\Message::getEditableMessageId($topic->id)
                                                             ), 'forum/thread');
 
         Zira\Page::render(array(

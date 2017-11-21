@@ -119,6 +119,7 @@
     background: #e9e9ff;
     border-left: 2px solid #b2b5fd;
     padding-left: 4px;
+    color: #333;
 }
 .contenteditable q:before,
 .contenteditable q:after {

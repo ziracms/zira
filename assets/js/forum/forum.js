@@ -12,11 +12,17 @@
         if ($('.container #content .forum-list a.forum-rating').length>0) {
             zira_init_forum_rating();
         }
+        if ($('.container #content .messages-panel .reply-btn').length>0) {
+            zira_init_forum_reply_btn();
+        }
         if ($('.container #content .forum-list a.forum-reply-inline').length>0) {
             zira_init_forum_reply();
         }
         if ($('.container #content .forum-search-results-view-more-wrapper').length>0) {
             zira_init_forum_search_more();
+        }
+        if ($('.container #content .forum-list a.forum-edit-inline').length>0) {
+            zira_init_forum_edit();
         }
     });
 
@@ -167,6 +173,14 @@
         });
     };
 
+    zira_init_forum_reply_btn = function() {
+        $('.container #content .messages-panel .reply-btn').click(function(){
+            var form = $('.container #content form#form-forum-message-form');
+            $(form).find('input[type=hidden].forum-edit-inline-id').val('');
+            $(form).parents('.form-panel').find('.panel-title').text(t('Reply'));
+        });
+    };
+
     zira_init_forum_reply = function() {
         $('.container #content .forum-list a.forum-reply-inline').unbind('click').click(function (e) {
             e.stopPropagation();
@@ -183,9 +197,43 @@
                 $(editable).html('<q><b>@'+user+':</b><br />'+content+'</q>'+'<span>&#x200c;</span>');
                 focusEditable($(editable).get(0));
             } else {
-                $(textarea).val('[quote][b]@'+user+':[/b]'+"\r\n"+content.replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '')+'[/quote]'+"\r\n");
+                $(textarea).val('[quote][b]@'+user+':[/b]'+"\r\n"+content.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '')+'[/quote]'+"\r\n");
                 $(textarea).get(0).focus();
             }
+            
+            $(form).find('input[type=hidden].forum-edit-inline-id').val('');
+            $(form).parents('.form-panel').find('.panel-title').text(t('Reply'));
+            
+            var top = $(form).parents('.form-panel').offset().top;
+            $('html, body').animate({'scrollTop': top}, 500);
+        });
+    };
+    
+    zira_init_forum_edit = function() {
+        $('.container #content .forum-list a.forum-edit-inline').unbind('click').click(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            var editid = $(this).data('editid');
+            if (typeof(editid)=="undefined") return;
+            
+            var user = $(this).parent('.list-title-wrapper').children('a[rel=author]').text();
+            var content = $(this).parents('.list-item').find('.forum-message').html();
+
+            var form = $('.container #content form#form-forum-message-form');
+            var textarea = $(form).find('#message');
+            var editable = $(form).find('#message-editable');
+
+            if ($(editable).length>0) {
+                $(editable).html(content);
+                focusEditable($(editable).get(0));
+            } else {
+                $(textarea).val(content.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, ''));
+                $(textarea).get(0).focus();
+            }
+            
+            $(form).find('input[type=hidden].forum-edit-inline-id').val(editid);
+            $(form).parents('.form-panel').find('.panel-title').text(t('Edit message'));
 
             var top = $(form).parents('.form-panel').offset().top;
             $('html, body').animate({'scrollTop': top}, 500);

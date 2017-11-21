@@ -60,4 +60,11 @@ class Widget extends Orm {
             self::STATUS_FILTER_CATEGORY_AND_RECORD => Locale::t('Display on category and record pages only')
         );
     }
+    
+    public function save() {
+        $result = parent::save();
+        $co = self::getCollection()->count()->get('co');
+        Option::write('db_widgets_count', $co);
+        return $result;
+    }
 }

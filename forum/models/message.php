@@ -22,6 +22,8 @@ class Message extends Orm {
 
     const STATUS_PUBLISHED = 1;
     const STATUS_NOT_PUBLISHED = 0;
+    
+    const MESSAGE_EDIT_INTERVAL = 300;
 
     public static function getFields() {
         return array(
@@ -114,6 +116,28 @@ class Message extends Orm {
 
         return $message;
     }
+    
+    public static function editMessage($topic_id, $message_id, $content, $status=null) {
+        if (!Zira\User::isAuthorized()) return false;
+        $editable_id = self::getEditableMessageId($topic_id);
+        if (!$editable_id || $editable_id!=$message_id) return false;
+
+        $message = new self($message_id);
+        if (!$message->loaded()) return false;
+        
+        $message->content = Zira\Helper::utf8Entity(html_entity_decode($content));
+        $message->date_modified = date('Y-m-d H:i:s');
+        $message->modified_by = Zira\User::getCurrent()->id;
+        if ($status!==null) $message->status = $status;
+
+        try {
+            $message->save();
+        } catch(\Exception $err) {
+            return false;
+        }
+
+        return $message;
+    }
 
     public static function deleteMessage($message_id) {
         $message = new self($message_id);
@@ -199,5 +223,22 @@ class Message extends Orm {
                                 ->count()
                                 ->where('published','=',self::STATUS_PUBLISHED)
                                 ->get('co');
+    }
+    
+    public static function getEditableMessageId($topic_id) {
+        if (!Zira\User::isAuthorized()) return false;
+        $user = Zira\User::getCurrent();
+        
+        $message = self::getCollection()
+                    ->where('topic_id', '=', $topic_id)
+                    ->and_where('published','=',self::STATUS_PUBLISHED)
+                    ->order_by('id', 'DESC')
+                    ->limit(1)
+                    ->get(0);
+                    
+        if (!$message) return false;
+        if ($message->creator_id != $user->id) return false;
+        if (strtotime($message->date_created) < time()-self::MESSAGE_EDIT_INTERVAL) return false;
+        return $message->id;
     }
 }

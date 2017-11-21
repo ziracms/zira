@@ -25,7 +25,7 @@
 <?php $co = 0; ?>
 <?php foreach($top_items as $item): ?>
 <li class="list-item no-thumb <?php echo ($co%2==0 ? 'odd-b' : 'even-b') ?>">
-<?php $ticon = $item->active && date('Y-m-d', strtotime($item->date_modified)) == date('Y-m-d') ? '<span class="glyphicon glyphicon-flag"></span> ' : ''; ?>
+<?php $ticon = $item->active && strtotime($item->date_modified) > time()-43200 ? '<span class="glyphicon glyphicon-flag"></span> ' : ''; ?>
 <h3 class="list-title-wrapper">
 <span class="glyphicon glyphicon-pushpin forum-right-item"></span>
 <?php $title_ico = $item->active ? 'thread-open' : 'glyphicon glyphicon-lock'; ?>
@@ -50,7 +50,7 @@
 <?php $co = 0; ?>
 <?php foreach($items as $item): ?>
 <li class="list-item no-thumb <?php echo ($co%2==0 ? 'odd-b' : 'even-b') ?>">
-<?php $ticon = $item->active && date('Y-m-d', strtotime($item->date_modified)) == date('Y-m-d') ? '<span class="glyphicon glyphicon-flag"></span> ' : ''; ?>
+<?php $ticon = $item->active && strtotime($item->date_modified) > time()-43200 ? '<span class="glyphicon glyphicon-flag"></span> ' : ''; ?>
 <h3 class="list-title-wrapper">
 <?php $title_ico = $item->active ? 'thread-open' : 'glyphicon glyphicon-lock'; ?>
 <?php $status = $item->status ? '['.Forum\Models\Topic::getStatus($item->status).'] ' : '' ?>

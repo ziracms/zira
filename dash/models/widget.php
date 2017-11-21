@@ -59,19 +59,38 @@ class Widget extends Model {
             $record_id = intval($form->getValue('record_id'));
             if ($record_id<=0) $record_id = null;
             $widget->record_id = $record_id;
-            $url = trim($form->getValue('url'));
-            if (strlen($url)>0) {
-                $url = preg_replace('/(.+?)([?].*)?/','$1',$url);
-                if (strpos($url, 'http')===0) {
-                    $url = preg_replace('/^http(?:[s])?:\/\/[^\/]+(.*?)/','$1',$url);
+            if ($widget->record_id) {
+                $url = '';
+                $record = new Zira\Models\Record($widget->record_id);
+                if (!$record->loaded()) {
+                    $widget->record_id = null;
+                } else {
+                    if ($record->category_id) {
+                        $category = new Zira\Models\Category($record->category_id);
+                        if (!$category->loaded()) {
+                            $widget->record_id = null;
+                        } else {
+                            $url = Zira\Page::generateRecordUrl($category->name, $record->name);
+                        }
+                    } else {
+                        $url = Zira\Page::generateRecordUrl('', $record->name);
+                    }
                 }
-                $url = trim($url,'/');
-                if (count(Zira\Config::get('languages'))>1) {
-                    $url = preg_replace('/^(?:'.implode('|',Zira\Config::get('languages')).')\/(.+?)/','$1',$url);
+            } else {
+                $url = trim($form->getValue('url'));
+                if (strlen($url)>0) {
+                    $url = preg_replace('/(.+?)([?].*)?/','$1',$url);
+                    if (strpos($url, 'http')===0) {
+                        $url = preg_replace('/^http(?:[s])?:\/\/[^\/]+(.*?)/','$1',$url);
+                    }
+                    $url = trim($url,'/');
+                    if (count(Zira\Config::get('languages'))>1) {
+                        $url = preg_replace('/^(?:'.implode('|',Zira\Config::get('languages')).')\/(.+?)/','$1',$url);
+                    }
                 }
             }
             if (strlen($url)==0) $url = null;
-            $widget->url = $url;
+            $widget->url = urldecode($url);
             $widget->placeholder = $form->getValue('placeholder');
             $widget->active = intval($form->getValue('active')) ? Zira\Models\Widget::STATUS_ACTIVE : Zira\Models\Widget::STATUS_NOT_ACTIVE;
             $widget->filter = $form->getValue('filter') ? $form->getValue('filter') : null;

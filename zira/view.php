@@ -1027,10 +1027,6 @@ class View {
                 if ($_widget->record_id && $_widget->record_id!=Page::getRecordId()) continue;
                 if ($_widget->url && strlen($_widget->url)>0) {
                     $request = urldecode(Router::getRequest());
-                    if ($_widget->url != $request && (
-                        strlen($_widget->url)<=2 || 
-                        substr($_widget->url, -2) != '/*' 
-                    )) continue;
                     if ($_widget->url != $request && ( 
                         strlen($_widget->url)<=2 ||
                         substr($_widget->url, -2) != '/*' ||

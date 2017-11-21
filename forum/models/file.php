@@ -78,17 +78,30 @@ class File extends Orm {
     public static function saveFiles($files, $message_id) {
         if (empty($files) || !is_array($files)) return false;
         if (!Zira\User::isAuthorized()) return false;
-        $row = new self();
-        $row->message_id = $message_id;
-        $row->owner_id = Zira\User::getCurrent()->id;
-        $row->date_created = date('Y-m-d H:i:s');
-
+        $existing = self::getCollection()->where('message_id', '=', $message_id)->get(0);
+        
+        if ($existing) {
+            $row = new self($existing->id);
+        } else {
+            $row = new self();
+            $row->message_id = $message_id;
+            $row->owner_id = Zira\User::getCurrent()->id;
+            $row->date_created = date('Y-m-d H:i:s');
+        }
+        
         $folder = self::getFileFolder();
         $co=1;
-        foreach($files as $path=>$name) {
-            $row->{'path'.$co} = $folder . DIRECTORY_SEPARATOR . $name;
-            $co++;
-            if ($co>self::MAX_FILES_COUNT) break;
+        if ($existing) {
+            for ($z=1; $z<=self::MAX_FILES_COUNT; $z++) {
+                if (!empty($existing->{'path'.$z})) $co=$z+1;
+            }
+        }
+        if ($co<=self::MAX_FILES_COUNT) {
+            foreach($files as $path=>$name) {
+                $row->{'path'.$co} = $folder . DIRECTORY_SEPARATOR . $name;
+                $co++;
+                if ($co>self::MAX_FILES_COUNT) break;
+            }
         }
         $row->save();
     }

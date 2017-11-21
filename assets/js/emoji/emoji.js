@@ -303,8 +303,8 @@
             val = val.replace(/[\u200c]/g,'');
             val = val.replace(/&nbsp;/gi,' ');
             val = val.replace(/<br[\x20\/]*?>/gi, "\r\n");
-            val = val.replace(/<div(?:[\x20][^>]+)?>(.*?)<\/div>/gi, "\r\n$1");
-            val = val.replace(/<p(?:[\x20][^>]+)?>(.*?)<\/p>/gi, "\r\n$1");
+            val = val.replace(/<div(?:[\x20][^>]+)?>([\S\s]*?)<\/div>/gi, "\r\n$1");
+            val = val.replace(/<p(?:[\x20][^>]+)?>([\S\s]*?)<\/p>/gi, "\r\n$1");
             val = val.replace(/([\r][\n]){3,}/g,"\r\n\r\n");
             val = val.replace(/^[\s]+/,'').replace(/[\s]+$/,'');
             val = val.replace(/<[a-z\/].*?>/gi, "");

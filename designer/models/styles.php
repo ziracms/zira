@@ -54,7 +54,7 @@ class Styles extends Dash\Models\Model {
                 }
             }
             if (strlen($url)==0) $url = null;
-            $style->url = $url;
+            $style->url = urldecode($url);
             $style->filter = $form->getValue('filter') ? $form->getValue('filter') : null;
             $style->active = (int)$form->getValue('active') ? 1 : 0;
             $style->main = (int)$form->getValue('main') ? 1 : 0;
