@@ -46,6 +46,7 @@ class Meta extends Window {
         if (!array_key_exists('widget_records_limit', $configs)) $configs['widget_records_limit'] = 5;
         if (!array_key_exists('category_childs_list', $configs)) $configs['category_childs_list'] = true;
         if (!array_key_exists('comments_enabled', $configs)) $configs['comments_enabled'] = 1;
+        if (!array_key_exists('site_favicon', $configs)) $configs['site_favicon'] = 'favicon.ico';
         $form->setValues($configs);
 
         $this->setBodyContent($form);

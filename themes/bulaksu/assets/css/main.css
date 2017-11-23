@@ -427,8 +427,9 @@ ul#language-switcher li a.active {
     max-height: 80px;
 }
 #site-logo-wrapper a#site-logo span {
-    font-size: 30px;
+    font-size: 28px;
     vertical-align: middle;
+    font-weight: normal;
 }
 #site-logo-wrapper #site-slogan {
     display: inline-block;

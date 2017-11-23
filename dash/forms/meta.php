@@ -37,7 +37,8 @@ class Meta extends Form
         $html .= $this->select(Locale::t('Default layout').'*','layout',Zira\View::getLayouts());
         $html .= $this->input(Locale::t('Website title'), 'site_name', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Website slogan'), 'site_slogan', array('placeholder'=>Locale::t('max. %s characters', 255)));
-        $html .= $this->input(Locale::t('Website logo'), 'site_logo', array('class'=>'form-control logo_option'));
+        $html .= $this->input(Locale::t('Website logo'), 'site_logo', array('class'=>'form-control logo_option','style'=>'padding-right:40px'));
+        $html .= $this->input(Locale::t('Website icon'), 'site_favicon', array('class'=>'form-control favicon_option','style'=>'padding-right:40px'));
         $html .= $this->input(Locale::t('Records limit'), 'records_limit');
         $html .= $this->input(Locale::t('Records limit for widgets'), 'widget_records_limit');
         $html .= $this->checkbox(Locale::t('Enable comments'), 'comments_enabled', null, false);
@@ -83,6 +84,8 @@ class Meta extends Form
         $validator->registerUtf8('site_slogan',Locale::t('Invalid value "%s"',Locale::t('Website slogan')));
         $validator->registerString('site_logo',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website logo')));
         $validator->registerCustom(array(get_class(), 'checkLogo'), 'site_logo',Locale::t('Invalid value "%s"',Locale::t('Website logo')));
+        $validator->registerString('site_favicon',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Website icon')));
+        $validator->registerCustom(array(get_class(), 'checkIcon'), 'site_favicon',Locale::t('Invalid value "%s"',Locale::t('Website icon')));
         $validator->registerNumber('records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit')));
         $validator->registerNumber('widget_records_limit',1,null,true,Locale::t('Invalid value "%s"',Locale::t('Records limit for widgets')));
         $validator->registerString('site_title',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Window title')));
@@ -102,10 +105,17 @@ class Meta extends Form
         $logo = $this->getValue('site_logo');
         if (!empty($logo)) {
             $logo = trim($logo,'/');
-            $this->updateValues(array(
-                'site_logo' => $logo
-            ));
         }
+        $icon = $this->getValue('site_favicon');
+        if (!empty($icon)) {
+            $icon = trim($icon,'/');
+        } else {
+            $icon = 'favicon.ico';
+        }
+        $this->updateValues(array(
+            'site_logo' => $logo,
+            'site_favicon' => $icon
+        ));
     }
 
     public static function checkLogo($logo) {
@@ -121,6 +131,20 @@ class Meta extends Form
 
         $size = @getimagesize(ROOT_DIR . DIRECTORY_SEPARATOR . $logo);
         if (!$size) return false;
+
+        return true;
+    }
+    
+    public static function checkIcon($icon) {
+        if (empty($icon)) return true;
+        if (strpos($icon,'..')!==false) return false;
+
+        $p = strrpos($icon, '.');
+        if ($p===false) return false;
+        $ext = substr($icon, $p+1);
+        if (!in_array(strtolower($ext), array('jpg','jpeg','gif','png','ico'))) return false;
+
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $icon)) return false;
 
         return true;
     }

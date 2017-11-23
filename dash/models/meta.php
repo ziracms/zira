@@ -23,6 +23,7 @@ class Meta extends Model {
                 'site_name' => 'string',
                 'site_slogan' => 'string',
                 'site_logo' => 'string',
+                'site_favicon' => 'string',
                 'site_logo_width' => 'int',
                 'site_logo_height' => 'int',
                 'records_limit' => 'int',

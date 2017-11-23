@@ -175,6 +175,7 @@ return array(
     'Website title' => 'Название сайта',
     'Website slogan' => 'Слоган сайта',
     'Website logo' => 'Логотип сайта',
+    'Website icon' => 'Иконка сайта',
     'Copyright string' => 'Строка авторских прав',
     'Show website name in window title' => 'Показывать название сайта в заголовке окна',
     'Open' => 'Открыть',
