@@ -238,4 +238,54 @@ class Languages extends Model {
 
         return array('reload'=>$this->getJSClassName());
     }
+    
+    public function drag($languages, $orders) {
+        if (!Permission::check(Permission::TO_CHANGE_OPTIONS)) {
+            return array('error' => Zira\Locale::t('Permission denied'));
+        }
+        if (!is_array($languages) || !is_array($orders) || count($languages)<2 || count($orders)<2 || count($languages)!=count($orders)) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $available_languages = $this->getWindow()->getAvailableLanguages();
+        $active_languages = $this->getWindow()->getActiveLanguages();
+
+        foreach($languages as $language) {
+            if (!in_array($language, $active_languages)) return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $_sort_orders = array();
+        $sort_order = 0;
+        foreach($active_languages as $active_language) {
+            $sort_order++;
+            $_sort_orders[$active_language] = $sort_order;
+        }
+        
+        foreach($languages as $index=>$language) {
+            $_sort_orders[$language] = $orders[$index];
+        }
+        
+        asort($_sort_orders);
+        $sorted = array_keys($_sort_orders);
+
+        if (count($sorted)!=count($active_languages)) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $option = Zira\Models\Option::getCollection()
+                                            ->select('id')
+                                            ->where('name','=','languages')
+                                            ->get(0);
+
+        if (!$option) {
+            $optionObj = new Zira\Models\Option();
+        } else {
+            $optionObj = new Zira\Models\Option($option->id);
+        }
+
+        $optionObj->name = 'languages';
+        $optionObj->value = Zira\Models\Option::convertArrayToString($sorted);
+        $optionObj->module = 'zira';
+        $optionObj->save();
+
+        Zira\Models\Option::raiseVersion();
+
+        return array('reload'=>$this->getJSClassName());
+    }
 }

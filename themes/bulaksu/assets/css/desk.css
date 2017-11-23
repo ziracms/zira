@@ -834,6 +834,7 @@ body.dashboard .dashboard-notification {
     box-shadow: 0px 0px 2px #7F6A8F;
     cursor: pointer;
     text-shadow: 1px 1px 0px #3E354E;
+    transition: top .5s ease;
 }
 body.dashboard .dashboard-notification .dashboard-notification-close {
     float: right;

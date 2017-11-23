@@ -110,6 +110,24 @@
                 $(this).bind(jQuery.jPlayer.event.play, zira_bind(this, zira_resize_jplayer));
             });
         }
+
+        if ($('header').css('backgroundImage').indexOf('url(')==0 && $('header').css('backgroundPosition')=='50% 0%' && navigator.userAgent.toLowerCase().indexOf('msie')<0) {
+            var headerImage = new Image();
+            var headerImageSrc = $('header').css('backgroundImage').replace(/^url[\(]['"]?(.*?)['"]?[\)]/, '$1');
+            headerImage.onload = function() {
+                var headerHeight = $('header').height();
+                if (headerImage.height<=headerHeight+100) return;
+                $(window).scroll(function(){
+                    var top = $(window).scrollTop();
+                    var height = headerImage.height;
+                    if (top>height) top = height;
+                    var percent = -1*(top / height * 100);
+                    $('header').css('backgroundPosition', '50% '+percent+'%');
+                });
+                $(window).trigger('scroll');
+            };
+            headerImage.src = headerImageSrc;
+        }
     });
 
     zira_resize_jplayer = function() {

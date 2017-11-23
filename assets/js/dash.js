@@ -234,6 +234,7 @@
             e.preventDefault();
             $(this).parent('.dashboard-notification').fadeOut(200, function(){
                 $(this).remove();
+                dashboard_notification_update_position();
             });
         });
 
@@ -241,9 +242,13 @@
     };
 
     dashboard_notification_update_position = function() {
-        $('.dashboard-notification').css({
-            'left': ($(window).width() - $('.dashboard-notification').outerWidth()) / 2
-            //'left': $(window).width() - $('.dashboard-notification').outerWidth() - $('#dashboard-sidebar').outerWidth() - 20
+        var t = 60;
+        $('.dashboard-notification').each(function(){
+            $(this).css({
+                'top': t,
+                'left': ($(window).width() - $('.dashboard-notification').outerWidth()) / 2
+            });
+            t += $(this).outerHeight() + 10;
         });
     };
 

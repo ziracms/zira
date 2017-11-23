@@ -51,6 +51,12 @@ class Languages extends Window {
             $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Custom translates'), 'glyphicon glyphicon-text-color', 'desk_call(dash_languages_translates, this);', 'edit', true, array('typo'=>'translates')),
         ));
+        
+        $this->setOnOpenJSCallback(
+            $this->createJSCallback(
+                'desk_call(dash_languages_drag, this);'
+            )
+        );
 
         $this->setOnEditItemJSCallback(
             $this->createJSCallback(
@@ -75,7 +81,8 @@ class Languages extends Window {
         ));
 
         $this->addVariables(array(
-            'dash_languages_translates_wnd' => Dash::getInstance()->getWindowJSName(Translates::getClass())
+            'dash_languages_translates_wnd' => Dash::getInstance()->getWindowJSName(Translates::getClass()),
+            'dash_languages_blank_src' => Zira\Helper::imgUrl('blank.png')
         ));
 
         $this->includeJS('dash/languages');
@@ -113,11 +120,13 @@ class Languages extends Window {
         $dash_language = Zira\Config::get('dash_language');
 
         $items = array();
+        $sort_order = 0;
         foreach ($active_languages as $language_key) {
             if (!array_key_exists($language_key, $available_languages)) continue;
+            $sort_order++;
             $language_name = $available_languages[$language_key];
             if ($language_key==$default_language) $language_name.=' *';
-            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language),'is_panel_default'=>($language_key==$dash_language)));
+            $items[]=$this->createBodyArchiveItem($language_name, $language_name, $language_key, null, false, array('activated'=>in_array($language_key, $active_languages),'is_default'=>($language_key==$default_language),'is_panel_default'=>($language_key==$dash_language),'sort_order'=>$sort_order));
         }
         foreach ($available_languages as $language_key=>$language_name) {
             if (in_array($language_key, $active_languages)) continue;

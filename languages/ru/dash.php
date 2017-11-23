@@ -403,5 +403,6 @@ return array(
     'Choose page...' => 'Выбрать страницу...',
     'Choose page' => 'Выберите страницу',
     'Set URL...' => ' Задать URL...',
-    'Enter page title or system name' => 'Введите название страницы или системное имя'
+    'Enter page title or system name' => 'Введите название страницы или системное имя',
+    'Create thumbnails' => 'Создавать миниатюры'
 );

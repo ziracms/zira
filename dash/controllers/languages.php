@@ -73,6 +73,15 @@ class Languages extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function drag() {
+        if (Zira\Request::isPost()) {
+            $languages = Zira\Request::post('languages');
+            $orders = Zira\Request::post('orders');
+            $response = $this->getWindowModel()->drag($languages, $orders);
+            Zira\Page::render($response);
+        }
+    }
 
     public function addstring() {
         if (Zira\Request::isPost()) {

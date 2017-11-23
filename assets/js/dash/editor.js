@@ -94,7 +94,7 @@ var dash_editor_html_drop = function(element) {
         if (typeof(element.image_width)!="undefined") width=element.image_width;
         if (typeof(element.image_height)!="undefined") height=element.image_height;
         var regexp = new RegExp('\\'+desk_ds, 'g');
-        html='<img class="image" src="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" alt="'+element.title+'" width="'+width+'" height="'+height+'" />';
+        html='<img class="image" src="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" alt="" width="'+width+'" height="'+height+'" />';
     } else if (element.parent=='files' && element.type!='folder') {
         var regexp = new RegExp('\\'+desk_ds, 'g');
         html='<a href="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" title="'+element.title+'" download="'+element.title+'">'+element.title+'</a>';
@@ -188,7 +188,7 @@ var dash_editor_html_load = function() {
                         if (typeof(element.image_width)!="undefined") width=element.image_width;
                         if (typeof(element.image_height)!="undefined") height=element.image_height;
                         var regexp = new RegExp('\\'+desk_ds, 'g');
-                        html+='<img src="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" alt="'+element.title+'" width="'+width+'" height="'+height+'" class="image" />';
+                        html+='<img src="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" alt="" width="'+width+'" height="'+height+'" class="image" />';
                     } else if (element.type!='folder') {
                         var regexp = new RegExp('\\'+desk_ds, 'g');
                         html+='<a href="'+encodeURIComponent(baseUrl(element.data.replace(regexp,'/'))).replace(/%2F/gi,'/')+'" title="'+element.title+'" download="'+element.title+'">'+element.title+'</a>';

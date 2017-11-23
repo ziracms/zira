@@ -164,7 +164,8 @@ class Category {
         foreach($categories as $category) {
             $co = Models\Record::getCollection()
                                 ->count()
-                                ->where('category_id','=',$category->id)
+                                ->where('category_id', '=', $category->id)
+                                ->and_where('language', '=', Locale::getLanguage())
                                 ->get('co');
             if ($co==0) continue;
 

@@ -29,7 +29,8 @@ class Recordsettings extends Model {
                 'rating_enabled'=>'int',
                 'display_author'=>'int',
                 'display_date'=>'int',
-                'jpeg_quality'=>'int'
+                'jpeg_quality'=>'int',
+                'create_thumbnails'=>'int'
             );
 
             $config_ids = array();
