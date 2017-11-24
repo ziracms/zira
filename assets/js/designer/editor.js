@@ -116,7 +116,7 @@
             designer_imagepicker($('#body-designer-imagepicker'), function(url){
                 var bg_color = extractBgColor($('body'));
                 var t = (new Date()).getTime();
-                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
+                var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') no-repeat 50% 0%';
                 $('body').css('background', background);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
@@ -140,7 +140,7 @@
             designer_imagepicker($('#body-designer-patternpicker'), function(url){
                 var bg_color = extractBgColor($('body'));
                 var t = (new Date()).getTime();
-                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
+                var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') repeat 0 0';
                 $('body').css('background', background);
                 $('#main-container-wrapper').css('background', 'none');
                 $('#main-container').css('background', 'none');
@@ -207,7 +207,7 @@
             designer_imagepicker($('#header-designer-imagepicker'), function(url){
                 var bg_color = extractBgColor($('header'));
                 var t = (new Date()).getTime();
-                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') no-repeat 50% 0%';
+                var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
                 if (bg_color != 'transparent') {
@@ -226,7 +226,7 @@
             designer_imagepicker($('#header-designer-patternpicker'), function(url){
                 var bg_color = extractBgColor($('header'));
                 var t = (new Date()).getTime();
-                var background = hexColor(bg_color) + ' url(' + url + '?t=' + t + ') repeat 0 0';
+                var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') repeat 0 0';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
                 if (bg_color != 'transparent') {
