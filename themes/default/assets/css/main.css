@@ -1666,6 +1666,23 @@ a.scroll-top.visible span {
     min-height: 300px;
     padding: 100px 0px 0px 30px;
 }
+.widget-online-wrapper .widget-online-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.widget-online-wrapper .widget-online-list li {
+    display: inline-block;
+    vertical-align: top;
+    margin: 7px 5px;
+}
+.widget-online-wrapper .widget-online-list .user-online {
+    max-width: 50px;
+    height: auto;
+    width: 50px\9;  /** ie8 hack **/
+    display: block;
+    border-radius: 25px;
+}
 
 /** mobile **/
 @media (max-width: 1199px) {

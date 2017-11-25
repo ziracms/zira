@@ -47,6 +47,8 @@ class User {
 
     const REMEMBER_ME_LIFETIME = 1209600; // two weeks
     const REMEMBER_ANONYMOUS_ID = 31536000; // one year
+    const ACCESS_LOG_INTERVAL = 150;
+    const ONLINE_INTERVAL = 300;
 
     protected static $_current;
 
@@ -277,7 +279,7 @@ class User {
             }
         }
         $user = self::getCurrent();
-        if (!$user || !($user instanceof Models\User)) {
+        if (!$user || !($user instanceof Models\User) || $user->id!=$user_id) {
             $user = new Models\User($user_id);
             if (!$user->loaded()) $user = null;
         }
@@ -291,6 +293,10 @@ class User {
             return;
         }
         self::setCurrent($user);
+        if (!$user->last_access || strtotime($user->last_access)<time()-self::ACCESS_LOG_INTERVAL) {
+            $user->last_access = date('Y-m-d H:i:s');
+            $user->save();
+        }
     }
 
     public static function isAuthorized() {
@@ -382,6 +388,13 @@ class User {
             self::onUserLogin(true);
             return $user->id;
         }
+    }
+    
+    public static function setUserLanguage($language, $user=null) {
+        if ($user===null) $user = self::getCurrent();
+        if (!$user) return;
+        $user->language = $language;
+        $user->save();
     }
 
     public static function setUserPasswordChecked() {
@@ -812,5 +825,39 @@ class User {
         if (!$row) return false;
         if (!$return_found_row) return true;
         else return $row;
+    }
+    
+    public static function getOnlineUsersCount() {
+        return Models\User::getCollection()
+                        ->count()
+                        ->where('last_access','>',date('Y-m-d H:i:s', time()-self::ONLINE_INTERVAL))
+                        ->get('co');
+    }
+    
+    public static function getOnlineUsers($limit=10) {
+        return Models\User::getCollection()
+                        ->select(Models\User::getFields())
+                        ->join(Models\Group::getClass(), array('group_name'=>'name'))
+                        ->where('last_access','>',date('Y-m-d H:i:s', time()-self::ONLINE_INTERVAL))
+                        ->order_by('last_access', 'DESC')
+                        ->limit($limit)
+                        ->get();
+    }
+    
+    public static function getUsersCountByLanguage($language) {
+        return Models\User::getCollection()
+                        ->count()
+                        ->where('language','=',$language)
+                        ->get('co');
+    }
+    
+    public static function getUsersByLanguage($language, $limit=10, $offset=null) {
+        return Models\User::getCollection()
+                        ->select(Models\User::getFields())
+                        ->join(Models\Group::getClass(), array('group_name'=>'name'))
+                        ->where('language','=',$language)
+                        ->order_by('id', 'ASC')
+                        ->limit($limit, $offset)
+                        ->get();
     }
 }

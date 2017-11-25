@@ -52,6 +52,9 @@ class Locale {
         if (Request::isAjax() || Router::getModule()=='dash') return;
         if (count(Config::get('languages'))>1) {
             Cookie::set(self::COOKIE_NAME, self::getLanguage(), self::COOKIE_TIME);
+            if (User::isAuthorized() && User::getCurrent()->language!=self::getLanguage()) {
+                User::setUserLanguage(self::getLanguage());
+            }
         }
     }
 

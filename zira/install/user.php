@@ -32,8 +32,10 @@ class User extends Table {
             'country' => Field::string(false),
             'city' => Field::string(false),
             'address' => Field::string(false),
+            'language' => Field::string(false),
             'date_created' => Field::datetime(true),
             'date_logged' => Field::datetime(true),
+            'last_access' => Field::datetime(false),
             'verified' => Field::tinyint(true, true, 0),
             'active' => Field::tinyint(true, true, 0),
             'messages' => Field::int(true, true, 0),
@@ -49,7 +51,9 @@ class User extends Table {
     public function getKeys() {
         return array(
             'group_id' => array('group_id'),
-            'enabled' => array('verified', 'active')
+            'enabled' => array('verified', 'active'),
+            'language' => array('language'),
+            'last_access' => array('last_access')
         );
     }
 

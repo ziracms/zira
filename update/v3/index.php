@@ -5,3 +5,8 @@ if (!defined('ZIRA_UPDATE') || !ZIRA_UPDATE) exit;
 $alterWidgets = new \Update\V3\Widget();
 $alterWidgets->execute();
 Zira\Log::write('Updated widgets table');
+
+// adding new fields to users table
+$alterUsers = new \Update\V3\User();
+$alterUsers->execute();
+Zira\Log::write('Updated users table');
