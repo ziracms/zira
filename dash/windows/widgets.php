@@ -194,8 +194,17 @@ class Widgets extends Window {
             $suffix = '';
             if (!$placeholder) $suffix .= ' - '.$placeholders[$widget->placeholder];
             $category_id = $widget->category_id;
-            if ($category_id === null) $category_id = -1;
-            $suffix .= ' - '.$categories[$category_id];
+            if ($category_id!==null) {
+                $suffix .= ' - '.$categories[$category_id];
+            } else if ($category_id === null && !$widget->record_id && !$widget->url) {
+                $suffix .= ' - '.$categories[-1];
+            }
+            if ($widget->record_id) {
+                $record = new Zira\Models\Record($widget->record_id);
+                if ($record->loaded()) $suffix .= ' - '.$record->title;
+            } else if ($widget->url) {
+                $suffix .= ' - '.$widget->url;
+            }
             $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
         }
         foreach ($other_widgets as $class=>$widget) {
@@ -204,8 +213,8 @@ class Widgets extends Window {
             $module = strtolower(substr($class, 1, strpos($class, '\\', 1)-1));
             $title = Zira\Locale::tm($widget->getTitle(),$module);
             $suffix = '';
-            if (!$placeholder) $suffix .= ' - '.$placeholders[$widget->getPlaceholder()];
-            $suffix .= ' - '.$categories[-1];
+            //if (!$placeholder) $suffix .= ' - '.$placeholders[$widget->getPlaceholder()];
+            //$suffix .= ' - '.$categories[-1];
             $items[]=$this->createBodyItem($title, $title.$suffix, Zira\Helper::imgUrl('drag.png'), $class, null, false, array('activated'=>Zira\Models\Widget::STATUS_NOT_ACTIVE,'installed'=>false));
         }
 
