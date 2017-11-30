@@ -43,7 +43,8 @@ class Mailing extends Window {
         $this->setData(array(
             'users' => 0,
             'subscribers' => 0,
-            'offset' => 0
+            'offset' => 0,
+            'language' => ''
         ));
 
         $this->addStrings(array(
@@ -77,10 +78,47 @@ class Mailing extends Window {
         $form->setValues(array('type'=>'email'));
         $this->setBodyContent($form);
 
+        $lang_users = array();
+        $lang_subscribers = array();
+        if (count(Zira\Config::get('languages'))>1) {
+            $menu = array(
+                //$this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown())
+            );
+
+            $langMenu = array();
+            foreach(Zira\Locale::getLanguagesArray() as $lang_key=>$lang_name) {
+                if (!empty($language) && $language==$lang_key) $icon = 'glyphicon glyphicon-ok';
+                else $icon = 'glyphicon glyphicon-filter';
+                $langMenu []= $this->createMenuDropdownItem($lang_name, $icon, 'desk_call(dash_mailing_language, this, element);', 'language', false, array('language'=>$lang_key));
+
+                $lang_users[$lang_key] = Zira\Models\User::getCollection()
+                                ->count()
+                                ->where('active','=',Zira\Models\User::STATUS_ACTIVE)
+                                ->and_where('language', '=', $lang_key)
+                                ->get('co');
+
+                $lang_subscribers[$lang_key] = Zira\Models\User::getCollection()
+                                ->count()
+                                ->where('verified','=',Zira\Models\User::STATUS_VERIFIED)
+                                ->and_where('active','=',Zira\Models\User::STATUS_ACTIVE)
+                                ->and_where('subscribed','=',Zira\Models\User::STATUS_SUBSCRIBED)
+                                ->and_where('language', '=', $lang_key)
+                                ->get('co');
+            
+            }
+            $menu []= $this->createMenuItem(Zira\Locale::t('Languages'), $langMenu);
+
+            $this->setMenuItems($menu);
+        }
+        
+
         $this->setData(array(
             'users' => $users,
             'subscribers' => $subscribers,
-            'offset' => 0
+            'lang_users' => $lang_users,
+            'lang_subscribers' => $lang_subscribers,
+            'offset' => 0,
+            'language' => ''
         ));
     }
 }

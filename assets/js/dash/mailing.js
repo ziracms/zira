@@ -35,6 +35,7 @@ var dash_mailing_load = function() {
     }));
     this.mail = function(){
         $(this.content).find('.dash-mailing-offset').eq(0).val(this.options.data.offset);
+        $(this.content).find('.dash-mailing-language').eq(0).val(this.options.data.language);
         var data = desk_window_content(this);
         desk_window_request(this, url('dash/system/mailing'), data, this.bind(this, function(response){
             if (!response || typeof(response.error)!="undefined") {
@@ -76,5 +77,39 @@ var dash_mialing_send = function() {
     if (subject.length>0 && message.length>0) {
         desk_modal_progress();
         this.mail();
+    }
+};
+
+var dash_mailing_language = function(element) {
+    var language = this.options.data.language;
+    var id = $(element).attr('id');
+    var item = this.findMenuItemByProperty('id',id);
+    if (item && typeof(item.language)!="undefined") {
+        if (item.language!=language) {
+            this.options.data.language=item.language;
+            $(element).parents('ul').find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-filter');
+            $(element).find('.glyphicon').removeClass('glyphicon-filter').addClass('glyphicon-ok');
+
+            var users = this.findToolbarItemByProperty('action','users');
+            if (users && typeof(this.options.data.lang_users[item.language])!="undefined") {
+                $(users.element).text(t('Message')+' ('+this.options.data.lang_users[item.language]+')');
+            }
+            var subscribers = this.findToolbarItemByProperty('action','subscribers');
+            if (subscribers && typeof(this.options.data.lang_subscribers[item.language])!="undefined") {
+                $(subscribers.element).text(t('Email')+' ('+this.options.data.lang_subscribers[item.language]+')');
+            }
+        } else {
+            this.options.data.language='';
+            $(element).parents('ul').find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-filter');
+
+            var users = this.findToolbarItemByProperty('action','users');
+            if (users) {
+                $(users.element).text(t('Message')+' ('+this.options.data.users+')');
+            }
+            var subscribers = this.findToolbarItemByProperty('action','subscribers');
+            if (subscribers) {
+                $(subscribers.element).text(t('Email')+' ('+this.options.data.subscribers+')');
+            }
+        }
     }
 };

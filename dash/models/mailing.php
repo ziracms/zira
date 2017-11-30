@@ -20,10 +20,11 @@ class Mailing extends Model {
         if ($form->isValid()) {
             $type = $form->getValue('type');
             $offset = (int)$form->getValue('offset');
+            $language = $form->getValue('language');
             if ($type == 'email') {
-                return $this->send_emails($form->getValue('subject'), $form->getValue('message'), $offset);
+                return $this->send_emails($form->getValue('subject'), $form->getValue('message'), $offset, $language);
             } else if ($type == 'message') {
-                return $this->send_messages($form->getValue('subject'), $form->getValue('message'), $offset);
+                return $this->send_messages($form->getValue('subject'), $form->getValue('message'), $offset, $language);
             } else {
                 return array('error'=>Zira\Locale::t('An error occurred'));
             }
@@ -32,26 +33,38 @@ class Mailing extends Model {
         }
     }
 
-    protected function send_emails($subject, $content, $page) {
-        $total = Zira\Models\User::getCollection()
+    protected function send_emails($subject, $content, $page, $language='') {
+        $total_q = Zira\Models\User::getCollection()
                                 ->count()
                                 ->where('verified','=',Zira\Models\User::STATUS_VERIFIED)
                                 ->and_where('active','=',Zira\Models\User::STATUS_ACTIVE)
                                 ->and_where('subscribed','=',Zira\Models\User::STATUS_SUBSCRIBED)
-                                ->get('co');
+                                ;
+
+        if (!empty($language)) {
+            $total_q->and_where('language', '=', $language);
+        }
+
+        $total = $total_q->get('co');
 
         $offset = Dash\Windows\Mailing::LIMIT * ($page);
         $left = 0;
         $sent = 0;
 
         if ($offset<$total) {
-            $subscribers = Zira\Models\User::getCollection()
+            $subscribers_q = Zira\Models\User::getCollection()
                                 ->where('verified','=',Zira\Models\User::STATUS_VERIFIED)
                                 ->and_where('active','=',Zira\Models\User::STATUS_ACTIVE)
                                 ->and_where('subscribed','=',Zira\Models\User::STATUS_SUBSCRIBED)
-                                ->limit(Dash\Windows\Mailing::LIMIT, $offset)
-                                ->order_by('id','asc')
-                                ->get();
+                                ;
+
+            if (!empty($language)) {
+                $subscribers_q->and_where('language', '=', $language);
+            }
+
+            $subscribers = $subscribers_q->limit(Dash\Windows\Mailing::LIMIT, $offset)
+                                        ->order_by('id','asc')
+                                        ->get();
 
             foreach ($subscribers as $recipient) {
                 try {
@@ -75,22 +88,34 @@ class Mailing extends Model {
         );
     }
 
-    protected function send_messages($subject, $content, $page) {
-        $total = Zira\Models\User::getCollection()
+    protected function send_messages($subject, $content, $page, $language='') {
+        $total_q = Zira\Models\User::getCollection()
                                 ->count()
                                 ->where('active','=',Zira\Models\User::STATUS_ACTIVE)
-                                ->get('co');
+                                ;
+
+        if (!empty($language)) {
+            $total_q->and_where('language', '=', $language);
+        }
+        
+        $total = $total_q->get('co');
 
         $offset = Dash\Windows\Mailing::LIMIT * ($page);
         $left = 0;
         $sent = 0;
 
         if ($offset<$total) {
-            $subscribers = Zira\Models\User::getCollection()
+            $subscribers_q = Zira\Models\User::getCollection()
                                 ->where('active','=',Zira\Models\User::STATUS_ACTIVE)
-                                ->limit(Dash\Windows\Mailing::LIMIT, $offset)
-                                ->order_by('id','asc')
-                                ->get(null, true);
+                                ;
+
+            if (!empty($language)) {
+                $subscribers_q->and_where('language', '=', $language);
+            }
+
+            $subscribers = $subscribers_q->limit(Dash\Windows\Mailing::LIMIT, $offset)
+                                        ->order_by('id','asc')
+                                        ->get(null, true);
 
             Zira\Locale::load(null, 'zira');
 

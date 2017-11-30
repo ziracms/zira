@@ -35,6 +35,7 @@ class Mailing extends Form
         $html = $this->open();
         $html .= $this->hidden('offset', array('class'=>'dash-mailing-offset'));
         $html .= $this->hidden('type', array('class'=>'dash-mailing-type'));
+        $html .= $this->hidden('language', array('class'=>'dash-mailing-language'));
         $html .= $this->input(Locale::t('Subject') . '*', 'subject', array('class'=>'form-control dash-mailing-subject','placeholder'=>Locale::t('max. length: %s chars', 255)));
         $html .= $this->textarea(Locale::t('Message') . '*', 'message', array('class'=>'form-control dash-mailing-message','rows'=>8,'title'=>Locale::t('Supported variables: %s','$user')));
         $html .= $this->close();
