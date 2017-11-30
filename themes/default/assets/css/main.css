@@ -485,7 +485,8 @@ ul#language-switcher li a.active {
     top: 0;
     margin: 0;
     z-index: 999;
-    box-shadow: 0px 0px 10px #000;
+    box-shadow: 0px -3px 10px #000;
+    border-bottom: 1px solid #eee;
 }
 #top-menu-wrapper.fixed nav {
     border-radius: 0;
@@ -1672,16 +1673,22 @@ a.scroll-top.visible span {
     padding: 0;
 }
 .widget-online-wrapper .widget-online-list li {
+    width: 50px;
     display: inline-block;
     vertical-align: top;
     margin: 7px 5px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
 }
 .widget-online-wrapper .widget-online-list .user-online {
-    max-width: 50px;
+    width: 40px;
     height: auto;
-    width: 50px\9;  /** ie8 hack **/
     display: block;
     border-radius: 25px;
+    margin: 0px auto 2px;
 }
 
 /** mobile **/

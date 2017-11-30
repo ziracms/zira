@@ -473,7 +473,7 @@
                     var topmenu_cy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size)/2;
                     $('#topmenu-color-designer-gradientpicker').css({'left':topmenu_cx,'top':topmenu_cy});
                     $('#topmenu-color-designer-gradientpicker-hidden').css({'left':topmenu_cx+colorpicker_wnd_size,'top':topmenu_cy});
-                    $('#toprmenu-color-designer-gradientpicker').show();
+                    $('#topmenu-color-designer-gradientpicker').show();
                     $('#topmenu-color-designer-gradientpicker-hidden').show();
                 };
                 $('#topmenu-color-designer-gradientpicker').tooltip();
@@ -513,9 +513,13 @@
                     setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', hexColor(color2));
                     setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', hexColor(color1));
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color1), true);
-                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item:last-child,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', hexColor(color1));
+                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper,header #top-menu-wrapper.fixed', hexColor(color1));
+                    setBorderColorStyle('header .zira-search-preview-wnd .list .list-item:last-child', hexColor(color1));                    
                     setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
                     setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
+                    setBackgroundColorStyle('::-webkit-scrollbar,::-webkit-scrollbar-button,::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece', 'transparent');
+                    setBackgroundColorStyle('::-webkit-scrollbar-thumb,::-webkit-scrollbar-corner,::-webkit-resizer', color2);                    
+                    setWidthStyle('::-webkit-scrollbar','10px');
                 });
             }
         }
@@ -1196,7 +1200,8 @@
                 setBackgroundStyle('.emoji-editable', color2);
                 setBorderColorStyle('.emoji-editable', color1);
                 setBackgroundStyle('#main-container .panel .dropdown-menu', color2);
-                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
+                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color1);                
+                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
             }, 'right', 'rgb');
         }
         

@@ -8,7 +8,10 @@
 <?php if (!empty($users) && !empty($count)): ?>
 <ul class="widget-online-list">
 <?php foreach($users as $user): ?>
-<li><?php echo Zira\User::generateUserProfileThumbLink($user->id, $user->firstname, $user->secondname, $user->username, null, $user->image, null, array('class'=>'user-online')) ?></li>
+<li>
+    <?php echo Zira\User::generateUserProfileThumbLink($user->id, $user->firstname, $user->secondname, $user->username, null, $user->image, null, array('class'=>'user-online')) ?>
+    <?php echo Zira\User::generateUserProfileLink($user->id, $user->firstname, $user->secondname, $user->username); ?>
+</li>
 <?php endforeach; ?>
 </ul>
 <?php else: ?>
