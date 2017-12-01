@@ -46,15 +46,39 @@ class Index extends Zira\Controller {
         $this->_renderPlaceholderCategory();
 
         $categories = Forum\Models\Category::getCollection()
+                                ->open_query()
+                                ->where('language', 'is', null)
+                                ->order_by('sort_order', 'asc')
+                                ->close_query()
+                                ->union()
+                                ->open_query()
+                                ->where('language', '=', Zira\Locale::getLanguage())
+                                ->order_by('sort_order', 'asc')
+                                ->close_query()
+                                ->merge()
                                 ->order_by('sort_order', 'asc')
                                 ->get();
 
         foreach($categories as $category) {
             $category->forums = Forum\Models\Forum::getCollection()
+                                    ->open_query()
                                     ->select(Forum\Models\Forum::getFields())
                                     ->left_join(Zira\Models\User::getClass(), array('user_firstname' => 'firstname', 'user_secondname' => 'secondname', 'user_username' => 'username'))
-                                    ->where('category_id', '=', $category->id)
+                                    ->where('language', 'is', null)
+                                    ->and_where('category_id', '=', $category->id)
                                     ->and_where('active', '=', 1)
+                                    ->order_by('sort_order', 'asc')
+                                    ->close_query()
+                                    ->union()
+                                    ->open_query()
+                                    ->select(Forum\Models\Forum::getFields())
+                                    ->left_join(Zira\Models\User::getClass(), array('user_firstname' => 'firstname', 'user_secondname' => 'secondname', 'user_username' => 'username'))
+                                    ->where('language', '=', Zira\Locale::getLanguage())
+                                    ->and_where('category_id', '=', $category->id)
+                                    ->and_where('active', '=', 1)
+                                    ->order_by('sort_order', 'asc')
+                                    ->close_query()
+                                    ->merge()
                                     ->order_by('sort_order', 'asc')
                                     ->get();
         }
@@ -105,6 +129,7 @@ class Index extends Zira\Controller {
                                 ->get(0);
 
         if (!$category) Zira\Response::notFound();
+        if ($category->language && $category->language!=Zira\Locale::getLanguage()) Zira\Response::notFound();
 
         // checking permission
         if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
@@ -116,17 +141,31 @@ class Index extends Zira\Controller {
         }
 
         $rows = Forum\Models\Forum::getCollection()
+                            ->open_query()
                             ->select(Forum\Models\Forum::getFields())
                             ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
-                            ->where('category_id','=',$category->id)
+                            ->where('language', 'is', null)
+                            ->and_where('category_id','=',$category->id)
                             ->and_where('active','=',1)
+                            ->order_by('sort_order','asc')
+                            ->close_query()
+                            ->union()
+                            ->open_query()
+                            ->select(Forum\Models\Forum::getFields())
+                            ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
+                            ->where('language', '=', Zira\Locale::getLanguage())
+                            ->and_where('category_id','=',$category->id)
+                            ->and_where('active','=',1)
+                            ->order_by('sort_order','asc')
+                            ->close_query()
+                            ->merge()
                             ->order_by('sort_order','asc')
                             ->get();
 
         $title = Zira\Locale::t($category->title);
         $meta_title = $category->meta_title ? Zira\Locale::t($category->meta_title) : $title;
-        $description = $category->description ? Zira\Locale::t($category->description) : '';
-        $meta_description = $category->meta_description ? Zira\Locale::t($category->meta_description) : $description;
+        $description = $category->description ? Zira\Locale::t(str_replace("\r\n", "\n", $category->description)) : '';
+        $meta_description = $category->meta_description ? Zira\Locale::t(str_replace("\r\n", "\n", $category->meta_description)) : $description;
         $keywords = $category->meta_keywords ? Zira\Locale::t($category->meta_keywords) : '';
 
         Zira\Page::addTitle($meta_title);
@@ -181,6 +220,7 @@ class Index extends Zira\Controller {
                                 ->get(0);
 
         if (!$forum || !$forum->active) Zira\Response::notFound();
+        if ($forum->language && $forum->language!=Zira\Locale::getLanguage()) Zira\Response::notFound();
 
         // checking permission
         if (($forum->access_check || $forum->category_access_check) && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
@@ -192,22 +232,50 @@ class Index extends Zira\Controller {
         }
 
         $sticky = Forum\Models\Topic::getCollection()
+                            ->open_query()
                             ->select(Forum\Models\Topic::getFields())
                             ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
-                            ->where('category_id','=',$forum->category_id)
+                            ->where('language', 'is', null)
+                            ->and_where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',1)
                             ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
                             ->order_by('id','desc')
+                            ->close_query()
+                            ->union()
+                            ->open_query()
+                            ->select(Forum\Models\Topic::getFields())
+                            ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
+                            ->where('language', '=', Zira\Locale::getLanguage())
+                            ->and_where('category_id','=',$forum->category_id)
+                            ->and_where('forum_id','=',$forum->id)
+                            ->and_where('sticky','=',1)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
+                            ->order_by('id','desc')
+                            ->close_query()
+                            ->merge()
+                            ->order_by('id','desc')
                             ->get();
 
-        $total = Forum\Models\Topic::getCollection()
+        $total1 = Forum\Models\Topic::getCollection()
                             ->count()
-                            ->where('category_id','=',$forum->category_id)
+                            ->where('language', 'is', null)
+                            ->and_where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',0)
                             ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
                             ->get('co');
+
+        $total2 = Forum\Models\Topic::getCollection()
+                            ->count()
+                            ->where('language', '=', Zira\Locale::getLanguage())
+                            ->and_where('category_id','=',$forum->category_id)
+                            ->and_where('forum_id','=',$forum->id)
+                            ->and_where('sticky','=',0)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
+                            ->get('co');
+
+        $total = $total1+$total2;
 
         $limit = Zira\Config::get('forum_limit') ? intval(Zira\Config::get('forum_limit')) : 10;
         $page = (int)Zira\Request::get('page');
@@ -216,20 +284,38 @@ class Index extends Zira\Controller {
         if ($page<1) $page = 1;
 
         $topics = Forum\Models\Topic::getCollection()
+                            ->open_query()
                             ->select(Forum\Models\Topic::getFields())
                             ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
-                            ->where('category_id','=',$forum->category_id)
+                            ->where('language', 'is', null)
+                            ->and_where('category_id','=',$forum->category_id)
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',0)
                             ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
+                            ->order_by('id','desc')
+                            ->limit($limit*$page)
+                            ->close_query()
+                            ->union()
+                            ->open_query()
+                            ->select(Forum\Models\Topic::getFields())
+                            ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
+                            ->where('language', '=', Zira\Locale::getLanguage())
+                            ->and_where('category_id','=',$forum->category_id)
+                            ->and_where('forum_id','=',$forum->id)
+                            ->and_where('sticky','=',0)
+                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
+                            ->order_by('id','desc')
+                            ->limit($limit*$page)
+                            ->close_query()
+                            ->merge()
                             ->order_by('id','desc')
                             ->limit($limit, ($page-1)*$limit)
                             ->get();
 
         $title = Zira\Locale::t($forum->title);
         $meta_title = $forum->meta_title ? Zira\Locale::t($forum->meta_title) : $title;
-        $description = $forum->description ? Zira\Locale::t($forum->description) : '';
-        $meta_description = $forum->meta_description ? Zira\Locale::t($forum->meta_description) : $description;
+        $description = $forum->description ? Zira\Locale::t(str_replace("\r\n", "\n", $forum->description)) : '';
+        $meta_description = $forum->meta_description ? Zira\Locale::t(str_replace("\r\n", "\n", $forum->meta_description)) : $description;
         $keywords = $forum->meta_keywords ? Zira\Locale::t($forum->meta_keywords) : '';
 
         Zira\Page::addTitle($meta_title);
@@ -303,6 +389,7 @@ class Index extends Zira\Controller {
                                 ->get(0);
 
         if (!$topic || !$topic->forum_active || $topic->published != Forum\Models\Topic::STATUS_PUBLISHED) Zira\Response::notFound();
+        if ($topic->language && $topic->language!=Zira\Locale::getLanguage()) Zira\Response::notFound();
 
         // checking permission
         if (($topic->forum_access_check || $topic->category_access_check) && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
@@ -426,8 +513,8 @@ class Index extends Zira\Controller {
 
         $title = Zira\Locale::t($topic->title);
         $meta_title = $topic->meta_title ? Zira\Locale::t($topic->meta_title) : $title;
-        $description = $topic->description ? Zira\Locale::t($topic->description) : '';
-        $meta_description = $topic->meta_description ? Zira\Locale::t($topic->meta_description) : $description;
+        $description = $topic->description ? Zira\Locale::t(str_replace("\r\n", "\n", $topic->description)) : '';
+        $meta_description = $topic->meta_description ? Zira\Locale::t(str_replace("\r\n", "\n", $topic->meta_description)) : $description;
         $keywords = $topic->meta_keywords ? Zira\Locale::t($topic->meta_keywords) : '';
 
         Zira\Page::addTitle($_status.$meta_title);
@@ -500,6 +587,7 @@ class Index extends Zira\Controller {
                                 ->get(0);
 
         if (!$forum || !$forum->active) Zira\Response::notFound();
+        if ($forum->language && $forum->language!=Zira\Locale::getLanguage()) Zira\Response::notFound();
 
         // checking permission
         if (($forum->access_check || $forum->category_access_check) && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {

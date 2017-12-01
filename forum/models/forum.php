@@ -31,7 +31,8 @@ class Forum extends Orm {
             'topics',
             'last_user_id',
             'sort_order',
-            'active'
+            'active',
+            'language'
         );
     }
 

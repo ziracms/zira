@@ -34,13 +34,14 @@ class Forum extends Table {
             'topics' => Field::int(true, true, 0),
             'last_user_id' => Field::int(),
             'sort_order' => Field::int(true, false, 0),
+            'language' => Field::string(),
             'active' => Field::tinyint(true, true, 1)
         );
     }
 
     public function getKeys() {
         return array(
-            'forum' => array('category_id', 'active', 'sort_order')
+            'forum' => array('language', 'category_id', 'active', 'sort_order')
         );
     }
 

@@ -41,7 +41,8 @@ class Topic extends Orm {
             'active',
             'status',
             'sticky',
-            'published'
+            'published',
+            'language'
         );
     }
 
@@ -68,6 +69,19 @@ class Topic extends Orm {
     public static function generateUrl($topic) {
         $id = is_numeric($topic) ? intval($topic) : $topic->id;
         return \Forum\Forum::ROUTE . '/thread/' . $id;
+    }
+
+    public static function url($topic_id, $language=null) {
+        $url = self::generateUrl($topic_id);
+        if (count(Zira\Config::get('languages'))>1) {
+            if (!$language) $language = Zira\Locale::getLanguage();
+            Zira\Helper::setAddingLanguageToUrl(false);
+            $url = Zira\Helper::url($language.'/'.$url);
+            Zira\Helper::setAddingLanguageToUrl(true);
+        } else {
+            $url = Zira\Helper::url($url);
+        }
+        return $url;
     }
 
     public static function getStatuses() {
@@ -101,6 +115,10 @@ class Topic extends Orm {
             $topic->published = self::STATUS_PUBLISHED;
         } else {
             $topic->published = self::STATUS_NOT_PUBLISHED;
+        }
+
+        if (count(Zira\Config::get('languages'))>1) {
+            $topic->language = Zira\Locale::getLanguage();
         }
 
         try {

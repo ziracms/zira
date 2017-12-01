@@ -42,6 +42,25 @@ class Categories extends Dash\Windows\Window {
         $this->addDefaultToolbarItem(
             $this->createToolbarButton(Zira\Locale::t('New category'), Zira\Locale::t('New category'), 'glyphicon glyphicon-plus-sign', 'desk_call(desk_window_create_item, this, this);', 'create')
         );
+
+        if (count(Zira\Config::get('languages'))>1) {
+            $menu = array(
+                $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown())
+            );
+
+            $langMenu = array();
+            foreach(Zira\Locale::getLanguagesArray() as $lang_key=>$lang_name) {
+                $icon = 'glyphicon glyphicon-filter';
+                $langMenu []= $this->createMenuDropdownItem($lang_name, $icon, 'desk_call(dash_forum_categories_language, this, element);', 'language', false, array('language'=>$lang_key));
+            }
+            $menu []= $this->createMenuItem(Zira\Locale::t('Languages'), $langMenu);
+
+            $this->setMenuItems($menu);
+        }
+
+        $this->setData(array(
+            'language' => ''
+        ));
     }
 
     public function load() {
@@ -50,9 +69,15 @@ class Categories extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $categories = Forum\Models\Category::getCollection()
-                                            ->order_by('sort_order', 'asc')
-                                            ->get();
+        $categories_q = Forum\Models\Category::getCollection();
+
+        $language = Zira\Request::post('language');
+        if (!empty($language)) {
+            $categories_q->where('language', '=', $language);
+        }
+
+        $categories = $categories_q->order_by('sort_order', 'asc')
+                                    ->get();
 
         $items = array();
         foreach($categories as $category) {

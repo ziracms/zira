@@ -58,7 +58,9 @@
 <?php if ($item->status == Forum\Models\Message::STATUS_MESSAGE) $micon = '<span class="glyphicon glyphicon-info-sign"></span> '; ?>
 <?php if ($item->status == Forum\Models\Message::STATUS_INFO) $micon = '<span class="glyphicon glyphicon-exclamation-sign"></span> '; ?>
 <?php if ($item->status == Forum\Models\Message::STATUS_WARNING) $micon = '<span class="glyphicon glyphicon-warning-sign"></span> '; ?>
-<p class="parse-content forum-message<?php echo $mclass ?>"><?php echo $micon ?><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
+<div class="forum-message">
+<p class="parse-content<?php echo $mclass ?>"><?php echo $micon ?><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($item->content))) ?></p>
+</div>
 <?php $images = Forum\Models\File::extractItemFiles($item, 'file_', 'images'); ?>
 <?php $files = Forum\Models\File::extractItemFiles($item, 'file_', 'files'); ?>
 <?php if (!empty($images) || !empty($files)): ?>
@@ -91,7 +93,7 @@
 </div>
 <div class="list-info-wrapper forum-info-wrapper">
 <?php if ($item->topic_title): ?>
-<a class="list-info link" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item->topic_id))) ?>" title="<?php echo Zira\Helper::html($item->topic_title) ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+<a class="list-info link" href="<?php echo Zira\Helper::html(Forum\Models\Topic::url($item->topic_id, $item->topic_language)) ?>" title="<?php echo Zira\Helper::html($item->topic_title) ?>"><span class="glyphicon glyphicon-new-window"></span></a>
 <?php endif; ?>
 <?php if ($item->modified_by): ?>
 <span class="list-info note" title="<?php echo tm('Edited by moderator', 'forum') ?>"><span class="glyphicon glyphicon-warning-sign"></span></span>

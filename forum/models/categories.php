@@ -42,6 +42,10 @@ class Categories extends Dash\Models\Model {
             $meta_keywords = $form->getValue('meta_keywords');
             $category->meta_keywords = !empty($meta_keywords) ? $meta_keywords : null;
             $category->access_check = (int)$form->getValue('access_check') ? 1 : 0;
+            
+            $language = $form->getValue('language');
+            if (empty($language)) $language = null;
+            $category->language = $language;
 
             $category->save();
 

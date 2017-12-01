@@ -29,13 +29,14 @@ class Category extends Table {
             'meta_description' => Field::string(),
             'access_check' => Field::tinyint(true, true, 0),
             'sort_order' => Field::int(true, false, 0),
+            'language' => Field::string(),
             'tpl' => Field::string()
         );
     }
 
     public function getKeys() {
         return array(
-            'sort_order' => array('sort_order')
+            'sort_order' => array('language', 'sort_order')
         );
     }
 

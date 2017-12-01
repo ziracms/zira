@@ -6,7 +6,7 @@
 <h3 class="list-title-wrapper">
 <?php $title_ico = $item->active ? 'thread-open' : 'glyphicon glyphicon-lock'; ?>
 <?php $status = $item->status ? '['.Forum\Models\Topic::getStatus($item->status).'] ' : '' ?>
-<a class="list-title" href="<?php echo Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item))) ?>" title="<?php echo Zira\Helper::html($item->title) ?>"><span class="<?php echo $title_ico ?>"></span> <?php echo Zira\Helper::html($status.$item->title) ?></a>
+<a class="list-title" href="<?php echo Zira\Helper::html(Forum\Models\Topic::url($item->id, $item->language)) ?>" title="<?php echo Zira\Helper::html(t($item->title)) ?>"><span class="<?php echo $title_ico ?>"></span> <?php echo Zira\Helper::html($status.t($item->title)) ?></a>
 </h3>
 <div class="list-info-wrapper">
 <span class="list-info date"><span class="glyphicon glyphicon-time"></span> <?php echo date(Zira\Config::get('date_format'), strtotime($item->date_modified)) ?></span>

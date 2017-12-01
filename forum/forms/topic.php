@@ -35,6 +35,11 @@ class Topic extends Form
     {
         $html = $this->open();
         $html .= $this->hidden('id');
+        if (count(Zira\Config::get('languages'))<2) {
+            $html .= $this->hidden('language');
+        } else {
+            $html .= $this->selectDropdown(Locale::t('Language').'*','language',array_merge(array(''=>Locale::t('All languages')), Locale::getLanguagesArray()));
+        }
         $html .= $this->hidden('category_id');
         $html .= $this->input(Locale::t('Title').'*', 'title');
         $html .= $this->textarea(Locale::t('Description'), 'description');
@@ -88,6 +93,7 @@ class Topic extends Form
         $validator->registerCustom(array(get_class(), 'checkStatus'), 'status', Locale::t('An error occurred'));
 
         $validator->registerCustom(array(get_class(), 'checkForum'), array('category_id', 'forum_id'), Locale::t('An error occurred'));
+        $validator->registerCustom(array(get_class(), 'checkLanguage'), 'language', Locale::t('An error occurred'));                
     }
 
     public static function checkStatus($status) {
@@ -98,5 +104,10 @@ class Topic extends Form
     public static function checkForum($category_id, $forum_id) {
         $forum = new \Forum\Models\Forum($forum_id);
         return ($forum->loaded() && $forum->category_id == $category_id);
+    }
+
+    public static function checkLanguage($language) {
+        if (empty($language)) return true;
+        return in_array($language , Zira\Config::get('languages'));
     }
 }

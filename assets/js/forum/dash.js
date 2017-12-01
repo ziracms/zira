@@ -453,3 +453,29 @@ var dash_forum_message_preview = function() {
         }));
     }
 };
+
+var dash_forum_categories_language = function(element) {
+    var language = this.options.data.language;
+    var id = $(element).attr('id');
+    var item = this.findMenuItemByProperty('id',id);
+    if (item && typeof(item.language)!="undefined") {
+        if (item.language!=language) {
+            this.options.data.language=item.language;
+            desk_window_reload(this);
+            $(element).parents('ul').find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-filter');
+            $(element).find('.glyphicon').removeClass('glyphicon-filter').addClass('glyphicon-ok');
+        } else {
+            this.options.data.language='';
+            desk_window_reload(this);
+            $(element).parents('ul').find('.glyphicon-ok').removeClass('glyphicon-ok').addClass('glyphicon-filter');
+        }
+    }
+};
+
+var dash_forum_forums_language = function(element) {
+    return dash_forum_categories_language.call(this, element);
+};
+
+var dash_forum_topics_language = function(element) {
+    return dash_forum_categories_language.call(this, element);
+};

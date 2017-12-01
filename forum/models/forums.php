@@ -66,6 +66,10 @@ class Forums extends Dash\Models\Model {
             $forum->access_check = (int)$form->getValue('access_check') ? 1 : 0;
             $forum->active = (int)$form->getValue('active') ? 1 : 0;
 
+            $language = $form->getValue('language');
+            if (empty($language)) $language = null;
+            $forum->language = $language;
+
             $forum->save();
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);

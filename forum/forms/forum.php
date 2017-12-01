@@ -35,6 +35,11 @@ class Forum extends Form
     {
         $html = $this->open();
         $html .= $this->hidden('id');
+        if (count(Zira\Config::get('languages'))<2) {
+            $html .= $this->hidden('language');
+        } else {
+            $html .= $this->selectDropdown(Locale::t('Language').'*','language',array_merge(array(''=>Locale::t('All languages')), Locale::getLanguagesArray()));
+        }
         $html .= $this->input(Locale::t('Title').'*', 'title');
         $html .= $this->textarea(Locale::t('Description'), 'description');
         $html .= $this->input(Locale::t('Window title'), 'meta_title');
@@ -85,10 +90,16 @@ class Forum extends Form
         $validator->registerUtf8('info', Locale::t('Invalid value "%s"',Locale::t('Information message')));
 
         $validator->registerCustom(array(get_class(), 'checkCategory'), 'category_id', Locale::t('An error occurred'));
+        $validator->registerCustom(array(get_class(), 'checkLanguage'), 'language', Locale::t('An error occurred'));        
     }
 
     public static function checkCategory($category_id) {
         $category = new \Forum\Models\Category($category_id);
         return $category->loaded();
+    }
+
+    public static function checkLanguage($language) {
+        if (empty($language)) return true;
+        return in_array($language , Zira\Config::get('languages'));
     }
 }

@@ -34,6 +34,11 @@ class Category extends Form
     {
         $html = $this->open();
         $html .= $this->hidden('id');
+        if (count(Zira\Config::get('languages'))<2) {
+            $html .= $this->hidden('language');
+        } else {
+            $html .= $this->selectDropdown(Locale::t('Language').'*','language',array_merge(array(''=>Locale::t('All languages')), Locale::getLanguagesArray()));
+        }
         $html .= $this->input(Locale::t('Title').'*', 'title');
         $html .= $this->selectDropdown(Locale::t('Layout'),'layout',array_merge(array(Locale::t('Default layout')),Zira\View::getLayouts()));
         $html .= $this->textarea(Locale::t('Description'), 'description');
@@ -69,11 +74,17 @@ class Category extends Form
         $validator->registerUtf8('meta_description', Locale::t('Invalid value "%s"',Locale::tm('Meta description', 'forum')));
 
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'layout', Locale::t('Invalid value "%s"',Locale::t('Layout')));
+        $validator->registerCustom(array(get_class(), 'checkLanguage'), 'language', Locale::t('An error occurred'));
     }
 
     public static function checkLayout($layout) {
         if (empty($layout)) return true;
         $layouts = Zira\View::getLayouts();
         return array_key_exists($layout, $layouts);
+    }
+
+    public static function checkLanguage($language) {
+        if (empty($language)) return true;
+        return in_array($language , Zira\Config::get('languages'));
     }
 }

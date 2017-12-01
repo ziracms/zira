@@ -106,6 +106,9 @@ abstract class Alter implements \Zira\Db\Implement\Alter {
     }
 
     public function execute() {
+        // checking if table is exists
+        $tables = Db::getTables();
+        if (!in_array($this->_table, $tables)) return false;
         // dropping indexes
         $this->dropIndexes();
         // adding fields
@@ -128,5 +131,6 @@ abstract class Alter implements \Zira\Db\Implement\Alter {
             $query = 'INSERT INTO '.Db::escapeIdentifier($this->_table).' ('.implode(', ',$fields).') VALUES ('.implode(', ',$values).')';
             Db::query($query, $data);
         }
+        return true;
     }
 }

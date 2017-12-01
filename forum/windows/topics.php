@@ -109,6 +109,21 @@ class Topics extends Dash\Windows\Window {
             $this->createContextMenuItem(Zira\Locale::tm('Open thread page', 'forum'), 'glyphicon glyphicon-new-window', 'desk_call(dash_forum_page, this);', 'edit', true, array('typo'=>'page'))
         );
 
+        if (count(Zira\Config::get('languages'))>1) {
+            $menu = array(
+                $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown())
+            );
+
+            $langMenu = array();
+            foreach(Zira\Locale::getLanguagesArray() as $lang_key=>$lang_name) {
+                $icon = 'glyphicon glyphicon-filter';
+                $langMenu []= $this->createMenuDropdownItem($lang_name, $icon, 'desk_call(dash_forum_topics_language, this, element);', 'language', false, array('language'=>$lang_key));
+            }
+            $menu []= $this->createMenuItem(Zira\Locale::t('Languages'), $langMenu);
+
+            $this->setMenuItems($menu);
+        }
+
         $this->setSidebarContent('<div class="topics-infobar" style="white-space:nowrap;text-overflow: ellipsis;width:100%;overflow:hidden"></div>');
 
         $this->setOnSelectJSCallback(
@@ -124,7 +139,8 @@ class Topics extends Dash\Windows\Window {
             'page'=>$this->page,
             'pages'=>$this->pages,
             'order'=>$this->order,
-            'category_id'=>0
+            'category_id'=>0,
+            'language' => ''
         ));
     }
 
@@ -136,40 +152,67 @@ class Topics extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $language = Zira\Request::post('language');
+
         $forum = new \Forum\Models\Forum($this->item);
         if (!$forum->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
 
-        $this->total = \Forum\Models\Topic::getCollection()
-                                    ->count()
-                                    ->where('category_id','=',$forum->category_id)
-                                    ->and_where('forum_id','=',$forum->id)
-                                    ->get('co');
+        $total_q = \Forum\Models\Topic::getCollection()
+                                    ->count();
+
+        if (!empty($language)) {
+            $total_q->where('language', '=', $language)
+                    ->and_where('category_id','=',$forum->category_id)
+                    ->and_where('forum_id','=',$forum->id);
+        } else {
+            $total_q->where('category_id','=',$forum->category_id)
+                    ->and_where('forum_id','=',$forum->id);
+        }
+                
+        $this->total = $total_q->get('co');
 
         $this->pages = ceil($this->total / $this->limit);
         if ($this->page > $this->pages) $this->page = $this->pages;
         if ($this->page < 1) $this->page = 1;
 
         $unpublished = array();
-        $rows = \Forum\Models\Message::getCollection()
+        $rows_q = \Forum\Models\Message::getCollection()
                                     ->count()
                                     ->select('topic_id')
-                                    ->join(\Forum\Models\Topic::getClass())
-                                    ->where('category_id','=',$forum->category_id, \Forum\Models\Topic::getAlias())
-                                    ->and_where('forum_id','=',$forum->id, \Forum\Models\Topic::getAlias())
-                                    ->and_where('published','=',\Forum\Models\Message::STATUS_NOT_PUBLISHED)
-                                    ->group_by('topic_id')
-                                    ->get();
+                                    ->join(\Forum\Models\Topic::getClass());
+
+        if (!empty($language)) {
+            $rows_q->where('language', '=', $language, \Forum\Models\Topic::getAlias())
+                    ->and_where('category_id','=',$forum->category_id, \Forum\Models\Topic::getAlias())
+                    ->and_where('forum_id','=',$forum->id, \Forum\Models\Topic::getAlias())
+                    ->and_where('published','=',\Forum\Models\Message::STATUS_NOT_PUBLISHED);
+        } else {
+            $rows_q->where('category_id','=',$forum->category_id, \Forum\Models\Topic::getAlias())
+                    ->and_where('forum_id','=',$forum->id, \Forum\Models\Topic::getAlias())
+                    ->and_where('published','=',\Forum\Models\Message::STATUS_NOT_PUBLISHED);
+        }
+                                              
+        $rows = $rows_q->group_by('topic_id')
+                       ->get();
 
         foreach($rows as $row) {
             $unpublished[$row->topic_id] = $row->co;
         }
 
-        $threads = \Forum\Models\Topic::getCollection()
-                                    ->where('category_id','=',$forum->category_id)
-                                    ->and_where('forum_id','=',$forum->id)
-                                    ->order_by('id', $this->order)
-                                    ->limit($this->limit, ($this->page - 1) * $this->limit)
-                                    ->get();
+        $threads_q = \Forum\Models\Topic::getCollection();
+
+        if (!empty($language)) {
+            $threads_q->where('language', '=', $language)
+                    ->and_where('category_id','=',$forum->category_id)
+                    ->and_where('forum_id','=',$forum->id);
+        } else {
+            $threads_q->where('category_id','=',$forum->category_id)
+                    ->and_where('forum_id','=',$forum->id);
+        }
+                                    
+        $threads = $threads_q->order_by('id', $this->order)
+                            ->limit($this->limit, ($this->page - 1) * $this->limit)
+                            ->get();
 
         $items = array();
         foreach($threads as $thread) {
@@ -188,7 +231,8 @@ class Topics extends Dash\Windows\Window {
             'page'=>$this->page,
             'pages'=>$this->pages,
             'order'=>$this->order,
-            'category_id'=>$forum->category_id
+            'category_id'=>$forum->category_id,
+            'language' => $language
         ));
     }
 }

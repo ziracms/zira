@@ -26,7 +26,8 @@ class Category extends Orm {
             'meta_description',
             'access_check',
             'sort_order',
-            'tpl'
+            'tpl',
+            'language'
         );
     }
 

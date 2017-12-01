@@ -82,10 +82,12 @@ class Forums extends Dash\Windows\Window {
             $this->createMenuDropdownItem(Zira\Locale::t('Edit'), 'glyphicon glyphicon-pencil', 'desk_call(dash_forum_categories, this);', 'create')
         );
 
-        $this->setMenuItems(array(
+        $menu = array(
             $this->createMenuItem($this->_default_menu_title, $this->getDefaultMenuDropdown()),
             $this->createMenuItem(Zira\Locale::t('Categories'), $category_menu)
-        ));
+        );
+
+        $this->setMenuItems($menu);
 
         $this->addDefaultToolbarItem(
             $this->createToolbarButton(null, Zira\Locale::tm('Forum settings', 'forum'), 'glyphicon glyphicon-cog', 'desk_call(dash_forum_settings, this);', 'settings', false, true)
@@ -113,7 +115,8 @@ class Forums extends Dash\Windows\Window {
         $this->includeJS('forum/dash');
 
         $this->setData(array(
-            'category_id' => 0
+            'category_id' => 0,
+            'language' => ''
         ));
     }
 
@@ -126,6 +129,7 @@ class Forums extends Dash\Windows\Window {
         $category_id = 0;
         $category_title = '';
         $_category_id = (int)Zira\Request::post('category_id');
+        $language = Zira\Request::post('language');
 
         $category_menu = array(
             $this->createMenuDropdownItem(Zira\Locale::t('Edit'), 'glyphicon glyphicon-pencil', 'desk_call(dash_forum_categories, this);', 'create'),
@@ -145,6 +149,11 @@ class Forums extends Dash\Windows\Window {
             $category_menu []= $this->createMenuDropdownItem($category->title, 'glyphicon '.$class, 'desk_call(dash_forum_category_filter, this, '.$category->id.');', 'categories', false, array('category_id'=>$category->id));
         }
 
+        $menu = array(
+            $this->createMenuItem($this->_default_menu_title, $this->getDefaultMenuDropdown()),
+            $this->createMenuItem(Zira\Locale::t('Categories'), $category_menu)
+        );
+
         $this->setSidebarItems($this->getDefaultSidebar());
 
         $unpublished = array();
@@ -160,10 +169,17 @@ class Forums extends Dash\Windows\Window {
             $unpublished[$row->forum_id] = $row->co;
         }
 
-        $forums = Forum\Models\Forum::getCollection()
-                                    ->where('category_id','=',$category_id)
-                                    ->order_by('sort_order', 'asc')
-                                    ->get();
+        $forums_q = Forum\Models\Forum::getCollection();
+
+        if (!empty($language)) {
+            $forums_q->where('language', '=', $language)
+                    ->and_where('category_id','=',$category_id);
+        } else {
+            $forums_q->where('category_id','=',$category_id);
+        }
+
+        $forums = $forums_q->order_by('sort_order', 'asc')
+                            ->get();
 
         $items = array();
         foreach($forums as $forum) {
@@ -173,17 +189,25 @@ class Forums extends Dash\Windows\Window {
         }
         $this->setBodyItems($items);
 
-        $this->setMenuItems(array(
-            $this->createMenuItem($this->_default_menu_title, $this->getDefaultMenuDropdown()),
-            $this->createMenuItem(Zira\Locale::t('Categories'), $category_menu)
-        ));
+        if (count(Zira\Config::get('languages'))>1) {
+            $langMenu = array();
+            foreach(Zira\Locale::getLanguagesArray() as $lang_key=>$lang_name) {
+                if (!empty($language) && $language==$lang_key) $icon = 'glyphicon glyphicon-ok';
+                else $icon = 'glyphicon glyphicon-filter';
+                $langMenu []= $this->createMenuDropdownItem($lang_name, $icon, 'desk_call(dash_forum_forums_language, this, element);', 'language', false, array('language'=>$lang_key));
+            }
+            $menu []= $this->createMenuItem(Zira\Locale::t('Languages'), $langMenu);
+        }
+
+        $this->setMenuItems($menu);
 
         if (!empty($category_title)) {
             $this->setTitle(Zira\Locale::t(self::$_title).' - '.$category_title);
         }
 
         $this->setData(array(
-            'category_id' => $category_id
+            'category_id' => $category_id,
+            'language' => $language
         ));
     }
 }

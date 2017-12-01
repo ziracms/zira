@@ -33,6 +33,7 @@ class Topic extends Table {
             'date_modified' => Field::datetime(true),
             'messages' => Field::int(true, true, 0),
             'last_user_id' => Field::int(),
+            'language' => Field::string(),
             'active' => Field::tinyint(true, true, 1),
             'status' => Field::tinyint(true, true, 0),
             'sticky' => Field::tinyint(true, true, 0),
@@ -42,7 +43,7 @@ class Topic extends Table {
 
     public function getKeys() {
         return array(
-            'forum' => array('category_id','forum_id','sticky','published')
+            'forum' => array('language', 'category_id','forum_id','sticky','published')
         );
     }
 

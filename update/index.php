@@ -131,6 +131,7 @@ if ($step>0) {
             $response = array('error' => $e->getMessage());
             Zira\Log::write($e->getMessage());
         }
+        Zira\Cache::clear();
     } else {
         $response = array('error' => Zira\Locale::t('An error occurred.'));
     }

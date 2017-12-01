@@ -79,6 +79,10 @@ class Topics extends Dash\Models\Model {
             $thread->sticky = (int)$form->getValue('sticky') ? 1 : 0;
             $thread->date_modified = date('Y-m-d H:i:s');
 
+            $language = $form->getValue('language');
+            if (empty($language)) $language = null;
+            $thread->language = $language;
+
             $thread->save();
 
             if ($thread->published == Forum\Models\Topic::STATUS_PUBLISHED) {
