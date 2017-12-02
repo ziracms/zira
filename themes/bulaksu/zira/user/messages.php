@@ -3,7 +3,7 @@
 <h1><?php echo t('Subject'); ?>: <?php echo Zira\Helper::html($conversation->subject); ?></h1>
 </div>
 <?php if (isset($form) && !empty($items)): ?>
-<ul class="user-messages-resipients-list">
+<ul id="conversation-<?php echo $conversation->id ?>" class="user-messages-resipients-list">
 <?php if (!empty($users) && count($users)>0): ?>
 <li><span class="glyphicon glyphicon-share-alt"></span> &nbsp;</li>
 <?php foreach($users as $index=>$user): ?>
@@ -38,7 +38,7 @@
 <?php if (!empty($items)): ?>
 <ul class="list messages-list">
 <?php foreach($items as $index=>$item): ?>
-<li class="<?php echo $index%2==0 ? 'odd' : 'even' ?>">
+<li id="conversation-msg-<?php echo $item->id ?>" class="<?php echo $index%2==0 ? 'odd' : 'even' ?>">
 <div class="message-head">
 <?php if ($item->username): ?>
 <?php echo Zira\User::generateUserProfileLink($item->user_id, $item->firstname, $item->secondname, $item->username); ?>

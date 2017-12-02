@@ -437,6 +437,14 @@ a.label-info:visited {
 .bootstrap-datetimepicker-widget.dropdown-menu.top::after {
     border-top: 6px solid #505562;
 }
+.bootstrap-datetimepicker-widget.dropdown-menu.bottom::before {
+    border-bottom: 7px solid #505562;
+}
+.bootstrap-datetimepicker-widget.dropdown-menu.bottom::after {
+    border-bottom: 6px solid #505562;
+}
+.bootstrap-datetimepicker-widget table td span:hover,
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover,
 .bootstrap-datetimepicker-widget table td.day:hover,
 .bootstrap-datetimepicker-widget table td.hour:hover,
 .bootstrap-datetimepicker-widget table td.minute:hover,
@@ -1887,6 +1895,9 @@ ul.vote-results li .vote-result {
 .forum-list.list .list-item .list-info-wrapper {
     background: #51545D none repeat scroll 0% 0%;
 }
+.forum-list.forum-top-list.list .list-item .list-info-wrapper {
+    background: rgb(66, 69, 75) none repeat scroll 0% 0%;
+}
 .forum-list.list .list-item .list-info,
 .forum-list.list .list-item .list-info a:link,
 .forum-list.list .list-item .list-info a:visited {
@@ -1932,7 +1943,22 @@ ul.vote-results li .vote-result {
     background: #646975;
     box-shadow: 0px 0px 4px #444554 inset;
 }
-
+.zira-autocomplete-wnd {
+    background: #646975;
+    border: 1px solid #4d515a;
+    box-shadow: 0px 0px 4px #646975;
+}
+.zira-autocomplete-wnd li a:link,
+.zira-autocomplete-wnd li a:visited {
+    border-top: 1px solid #646975;
+    color: #fff;
+}
+.zira-autocomplete-wnd li a:hover,
+.zira-autocomplete-wnd li a.active {
+    color: #fff;
+    background-color: #2a2d35;
+    text-decoration: none;
+}
 .widget-search-wrapper .form-group {
     margin: 0;
 }

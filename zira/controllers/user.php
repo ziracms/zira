@@ -685,6 +685,13 @@ class User extends Zira\Controller {
         Zira\Page::addBreadcrumb('user/profile',Zira\Locale::t('Profile'));
         Zira\Page::addBreadcrumb('user/messages',Zira\Locale::t('Messages'));
 
+        if (Zira\Request::isPost() && Zira\View::isAjax() && isset($message)) {
+            Zira\Page::render(array(
+                'redirect' => Zira\Helper::url('user/messages/'.$message->conversation_id.'?t='.time().'#conversation-msg-'.$message->id)
+            ));
+            return;
+        }
+        
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_CONTENT=>$form
         ));
@@ -743,6 +750,13 @@ class User extends Zira\Controller {
         Zira\Page::addTitle(Zira\Locale::t('New message'));
         Zira\Page::addBreadcrumb('user/profile',Zira\Locale::t('Profile'));
         Zira\Page::addBreadcrumb('user/messages',Zira\Locale::t('Messages'));
+
+        if (Zira\Request::isPost() && Zira\View::isAjax() && isset($message)) {
+            Zira\Page::render(array(
+                'redirect' => Zira\Helper::url('user/messages/'.$message->conversation_id.'?t='.time().'#conversation-msg-'.$message->id)
+            ));
+            return;
+        }
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_CONTENT=>$form
@@ -849,9 +863,15 @@ class User extends Zira\Controller {
             }
 
             if (Zira\Request::isPost() && Zira\View::isAjax()) {
-                Zira\Page::render(array(
-                    Zira\Page::VIEW_PLACEHOLDER_CONTENT => $form
-                ));
+                if (!isset($message)) {
+                    Zira\Page::render(array(
+                        Zira\Page::VIEW_PLACEHOLDER_CONTENT => $form
+                    ));
+                } else {
+                    Zira\Page::render(array(
+                        'redirect' => Zira\Helper::url('user/messages/'.$message->conversation_id.'?t='.time().'#conversation-msg-'.$message->id)
+                    ));
+                }
                 return;
             }
 

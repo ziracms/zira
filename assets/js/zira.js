@@ -64,7 +64,7 @@
         /**
          * more comments
          */
-        if ($('.container #content .comments-view-more-wrapper').length>0) {
+        if ($('.container #content .comments-wrapper').length>0) {
             zira_init_comments_more();
         }
         /**
@@ -129,6 +129,15 @@
                 }
             });
             $(window).trigger('scroll');
+            $(document).ready(function(){
+                if (window.location.hash.length==0) return;
+                setTimeout(function(){
+                    var scrollTop = $(document).scrollTop();
+                    if (scrollTop>0 && $('#top-menu-wrapper').hasClass('fixed')) {
+                        $('html, body').animate({'scrollTop':scrollTop-$('#top-menu-wrapper').height()},400);
+                    }
+                },500);
+            });
         }
         /**
          * Header parallax
@@ -527,14 +536,14 @@
             var next, _next, __next;
             while(true) {
                 next = $(target).next('li');
-                if ($(next).length>0 && $(next).offset().left>offset_left) {
+                if ($(next).length>0 && $(next).offset().left>=offset_left) {
                     target = next;
                 } else {
                     if ($(next).length==0) {
                         _next = $(target).parent('ul').next('ul');
                         if ($(_next).length>0) {
                             __next = $(_next).children('li').first();
-                            if ($(__next).length>0 && $(__next).offset().left>offset_left) {
+                            if ($(__next).length>0 && $(__next).offset().left>=offset_left) {
                                 target = __next;
                                 continue;
                             }
@@ -546,8 +555,10 @@
             $(target).after(response.content.replace(/<ul[^>]*>([\s\S]+?)<\/ul>/g, '$1'));
         } else if (response.parent>0 && $(parent).length>0) {
             $(parent).after(response.content.replace(/<ul[^>]*>([\s\S]+?)<\/ul>/g, '$1'));
-        } else {
+        } else if ($('ul.comments').length>0) {
             $('ul.comments').eq(0).before(response.content);
+        } else {
+            $('.comment-form-wrapper').eq(0).before(response.content);
         }
         zira_init_comments_rating();
         try {
@@ -757,6 +768,12 @@
             }
         }),'json');
         zira_black_list_user.inprogress = true;
+    };
+
+    zira_user_message_sent_success = function(response) {
+        if (typeof(response.redirect)=="undefined") return;
+        if (response.redirect.indexOf('http')>=0) return;
+        window.location.href = response.redirect;
     };
 
     zira_init_scroll_to_top = function() {

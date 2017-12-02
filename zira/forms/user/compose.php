@@ -34,8 +34,8 @@ class Compose extends Form {
         $this->setDescription(Locale::t('Please enter user login, full name or ID'));
         $script = Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){';
-        $script .= 'jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(){';
-        $script .= 'jQuery(\'#'.$this->getId().'\').get(0).reset();';
+        $script .= 'jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(evnt, response){';
+        $script .= 'jQuery(\'#'.$this->getId().'\').get(0).reset(); zira_user_message_sent_success(response);';
         $script .= '});';
         $script .= 'jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-error\', function(){';
         $script .= 'jQuery(\'.zira_form_compose_add_recipient_input\').each(function(){';

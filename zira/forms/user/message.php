@@ -25,7 +25,7 @@ class Message extends Form {
         $this->setTitle(Locale::t('Reply'));
         $this->setDescription(Locale::t('Message should contain at least %s characters', \Zira\Models\Message::MIN_CHARS));
         $script = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(){ jQuery(\'#'.$this->getId().'\').get(0).reset(); }); });';
+        $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(evnt, response){ jQuery(\'#'.$this->getId().'\').get(0).reset(); zira_user_message_sent_success(response); }); });';
         $script .= Helper::tag_close('script');
         //View::addHTML($script, View::VAR_BODY_BOTTOM);
         View::addBodyBottomScript($script);

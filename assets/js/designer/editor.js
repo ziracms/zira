@@ -1158,6 +1158,7 @@
                 setColorStyle('#main-container .input-group-addon', color);
                 setColorStyle('#main-container .input-group-addon a', color);
                 setColorStyle('.jumbotron', hexColor(color));
+                setColorStyle('#main-container .panel .bootstrap-datetimepicker-widget,#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color);
             });
             
             // forms background
@@ -1197,7 +1198,9 @@
                 setBackgroundStyle('.emoji-editable', color2);
                 setBorderColorStyle('.emoji-editable', color1);
                 setBackgroundStyle('#main-container .panel .dropdown-menu', color2);
-                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color1);                
+                setBorderTopColorStyle('#main-container .panel .dropdown-menu.top::before,#main-container .panel .dropdown-menu.top::after', color2);
+                setBorderBottomColorStyle('#main-container .panel .dropdown-menu.bottom::before,#main-container .panel .dropdown-menu.bottom::after', color2);                
+                setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color1);                
                 setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
             }, 'right', 'rgb');
         }
@@ -1391,6 +1394,7 @@
                 setBackgroundStyle('.forum-message-wrapper .forum-avatar-wrapper', color2);
                 setBorderColorStyle('.forum-message-wrapper .forum-avatar-wrapper', color1);
                 setBackgroundStyle('.forum-list.list .list-item .list-info-wrapper', color1);
+                setBackgroundStyle('.forum-list.forum-top-list.list .list-item .list-info-wrapper', color1);
                 setBackgroundStyle('.forum-list.list .list-item.even .list-info-wrapper,.forum-list.list .list-item.even-b .list-info-wrapper,.forum-list.list .list-item.odd-b .list-info-wrapper', color2);
                 setBackgroundStyle('.messages-panel .navbar-default .navbar-nav > .active > a,.messages-panel .navbar-default .navbar-nav > .open > a,.messages-panel .navbar-default .navbar-nav > .active > a:hover,.messages-panel .navbar-default .navbar-nav > .open > a:hover,.messages-panel .navbar-default .navbar-nav > .active > a:focus,.messages-panel .navbar-default .navbar-nav > .open > a:focus', color2);
                 setFilterStyle('.messages-panel .navbar-default .navbar-nav > .active > a,.messages-panel .navbar-default .navbar-nav > .open > a,.messages-panel .navbar-default .navbar-nav > .active > a:hover,.messages-panel .navbar-default .navbar-nav > .open > a:hover,.messages-panel .navbar-default .navbar-nav > .active > a:focus,.messages-panel .navbar-default .navbar-nav > .open > a:focus', 'none');
