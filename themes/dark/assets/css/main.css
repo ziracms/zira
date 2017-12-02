@@ -86,29 +86,6 @@ a.btn-primary {
 dt {
     font-weight: normal;
 }
-::-webkit-scrollbar {
-    width: 10px;
-    background-color: transparent;
-}
-::-webkit-scrollbar-button {
-    background-color: transparent;
-}
-::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-::-webkit-scrollbar-track-piece {
-    background-color: transparent;
-}
-::-webkit-scrollbar-thumb {
-    background-color: #848894;
-    border-radius: 4px;
-}
-::-webkit-scrollbar-corner {
-    background-color: #484F57;
-}
-::-webkit-resizer {
-    background-color: #484F57;
-}
 #main-container-wrapper {
     min-height: 100%;
 }

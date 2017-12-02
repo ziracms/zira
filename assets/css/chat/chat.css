@@ -37,3 +37,26 @@
     font-style: italic;
     margin-bottom: 0;
 }
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar-button {
+    background-color: transparent;
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.1);
+    border-radius: 4px;
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar-corner {
+    background-color: rgba(0,0,0,.1);
+}
+.widget-chat-wrapper .widget-chat-messages::-webkit-resizer {
+    background-color: rgba(0,0,0,.1);
+}

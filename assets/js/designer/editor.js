@@ -517,9 +517,6 @@
                     setBorderColorStyle('header .zira-search-preview-wnd .list .list-item:last-child', hexColor(color1));                    
                     setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
                     setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
-                    setBackgroundColorStyle('::-webkit-scrollbar,::-webkit-scrollbar-button,::-webkit-scrollbar-track,::-webkit-scrollbar-track-piece', 'transparent');
-                    setBackgroundColorStyle('::-webkit-scrollbar-thumb,::-webkit-scrollbar-corner,::-webkit-resizer', color2);                    
-                    setWidthStyle('::-webkit-scrollbar','10px');
                 });
             }
         }
