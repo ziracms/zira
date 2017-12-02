@@ -30,7 +30,7 @@ class Comment extends Form {
         $this->setTitle(Locale::t('Leave a comment'));
         $this->setDescription(Locale::t('Message should contain at least %s characters', Config::get('comment_min_chars', 10)));
         $script = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(){ zira_reset_comments_form(true); }); });';
+        $script .= 'jQuery(document).ready(function(){ jQuery(\'#'.$this->getId().'\').bind(\'xhr-submit-success\', function(evnt, response){ zira_reset_comments_form(true); zira_insert_comment_response(response); }); });';
         $script .= Helper::tag_close('script');
         //View::addHTML($script, View::VAR_BODY_BOTTOM);
         View::addBodyBottomScript($script);

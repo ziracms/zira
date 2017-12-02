@@ -18,7 +18,7 @@
 <?php $comment_offset_class = ''; ?>
 <?php $comment_offset = count(explode(Zira\Models\Comment::PATH_DELIMITER, $comment->sort_path)) - 1; ?>
 <?php if ($comment_offset>0) $comment_offset_class = ' comments-item-nested-'.($comment_offset < Zira\Config::get('comments_max_nesting', 5) ? $comment_offset : Zira\Config::get('comments_max_nesting', 5)); ?>
-<li class="comments-item<?php echo $comment_offset_class ?><?php if (!$comment->published) echo ' disabled'; ?>">
+<li data-comment_id="<?php echo $comment->id; ?>" data-comment_parent="<?php echo $comment->parent_id; ?>" class="comments-item<?php echo $comment_offset_class ?><?php if (!$comment->published) echo ' disabled'; ?>">
 <?php if ($comment->author_id > 0 && $comment->author_username !== null && $comment->author_firstname !== null && $comment->author_secondname !== null): ?>
 <?php echo Zira\User::generateUserProfileThumbLink($comment->author_id, $comment->author_firstname, $comment->author_secondname, $comment->author_username, null, $comment->author_image, null, array('class'=>'comment-avatar')) ?>
 <?php else: ?>

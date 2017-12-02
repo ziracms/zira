@@ -444,6 +444,7 @@
                 'record_id': record_id,
                 'page': page
             }, zira_bind(this, function(response){
+                zira_comments_remove_duplicates(response);
                 $(this).parent('.comments-view-more-wrapper').replaceWith(response);
                 zira_init_comments_rating();
                 try {
@@ -456,6 +457,14 @@
                 }
             }),'html');
         });
+    };
+
+    zira_comments_remove_duplicates = function(response) {
+        var regexp = new RegExp('data-comment_id=["]([^"]+)["]', 'g');
+        var m;
+        while(m = regexp.exec(response)) {
+            $('ul.comments li[data-comment_id='+m[1]+']').remove();
+        }
     };
 
     zira_init_comments_reload = function() {
@@ -505,6 +514,49 @@
                 }),'html');
             }), 500);
         });
+    };
+
+    zira_insert_comment_response = function(response) {
+        if (typeof(response.content)=="undefined" || typeof(response.id)=="undefined" || typeof(response.parent)=="undefined") return;
+        if (response.content.lenght==0) return;
+        var parent = $('ul.comments li[data-comment_id='+response.parent+']');
+        var last_child = $('ul.comments li[data-comment_parent='+response.parent+']').last();
+        if (response.parent>0 && $(last_child).length>0) {
+            var offset_left = $(last_child).offset().left;
+            var target = $(last_child);
+            var next, _next, __next;
+            while(true) {
+                next = $(target).next('li');
+                if ($(next).length>0 && $(next).offset().left>offset_left) {
+                    target = next;
+                } else {
+                    if ($(next).length==0) {
+                        _next = $(target).parent('ul').next('ul');
+                        if ($(_next).length>0) {
+                            __next = $(_next).children('li').first();
+                            if ($(__next).length>0 && $(__next).offset().left>offset_left) {
+                                target = __next;
+                                continue;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            $(target).after(response.content.replace(/<ul[^>]*>([\s\S]+?)<\/ul>/g, '$1'));
+        } else if (response.parent>0 && $(parent).length>0) {
+            $(parent).after(response.content.replace(/<ul[^>]*>([\s\S]+?)<\/ul>/g, '$1'));
+        } else {
+            $('ul.comments').eq(0).before(response.content);
+        }
+        zira_init_comments_rating();
+        try {
+            zira_parse_content();
+        } catch(err) {}
+        $('.container #content .xhr-list').removeClass('xhr-list');
+        $('html, body').animate({
+            'scrollTop': $('ul.comments li[data-comment_id='+response.id+']').offset().top-$(window).height()+$('ul.comments li[data-comment_id='+response.id+']').height()+20
+        }, 400);
     };
 
     zira_init_search_more = function() {

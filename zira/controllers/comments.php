@@ -56,6 +56,7 @@ class Comments extends Zira\Controller {
         ) {
             $commenting_allowed = false;
         }
+        $createdComment = null;
         if (Zira\Request::isPost() && $commenting_allowed) {
             if ($form->isValid()) {
                 $record = new Zira\Models\Record($form->getValue('record_id'));
@@ -126,14 +127,41 @@ class Comments extends Zira\Controller {
                         } catch (\Exception $e) {
                             Zira\Log::exception($e);
                         }
+                        $createdComment = $comment;
                     } catch(\Exception $err) {
                         $form->setError(Zira\Locale::t('An error occurred'));
                     }
                 }
             }
         }
-        Zira\Page::render(array(
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT => $form
-        ));
+        if (!$createdComment || $createdComment->published != Zira\Models\Comment::STATUS_PUBLISHED) {
+            Zira\Page::render(array(
+                Zira\Page::VIEW_PLACEHOLDER_CONTENT => $form
+            ));
+        } else {
+            if (Zira\User::isAuthorized()) {
+                $createdComment->author_firstname = Zira\User::getCurrent()->firstname;
+                $createdComment->author_secondname = Zira\User::getCurrent()->secondname;
+                $createdComment->author_username = Zira\User::getCurrent()->username;
+                $createdComment->author_image = Zira\User::getCurrent()->image;
+            }
+            ob_start();
+            Zira\View::renderView(array(
+                'record_id'=>$createdComment->record_id,
+                'comments'=>array($createdComment),
+                'limit'=>1,
+                'page'=>1,
+                'total'=>1,
+                'ajax'=>true,
+                'commenting_allowed'=>false
+            ), 'zira/comments');
+            $content = ob_get_clean();
+            Zira\Page::render(array(
+                'content' => $content,
+                'id' => $createdComment->id,
+                'parent' => $createdComment->parent_id,
+                'message' => $form->getMessage()
+            ));
+        }
     }
 }
