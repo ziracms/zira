@@ -13,10 +13,14 @@ class Assets {
     const JS_ASSETS_CACHE_FILE = '.js.cache';
     const CSS_CONTENT_ASSETS_CACHE_FILE = '.css.content.cache';
     const JS_CONTENT_ASSETS_CACHE_FILE = '.js.content.cache';
+    const CSS_ASSETS_GZIP_CACHE_FILE = '.css.gz.cache';
+    const JS_ASSETS_GZIP_CACHE_FILE = '.js.gz.cache';
     const CSS_SCRIPT = 'assets/css/index.php';
     const JS_SCRIPT = 'assets/js/index.php';
     const CSS_SCRIPT_CLEAN = 'assets/css/cache';
     const JS_SCRIPT_CLEAN = 'assets/js/cache';
+    const LOCK_FILE = 'assetlock';
+    protected static $_lock_handler;
 
     protected static $_active = false;
     protected static $_gzip = null;
@@ -112,6 +116,8 @@ class Assets {
     
     public static function mergeCSSContent() {
         if (count(self::$_css_assets_contents)>0) {
+            if (!self::lock(true)) return false;
+
             $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::CSS_CONTENT_ASSETS_CACHE_FILE;
             $css_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
 
@@ -125,6 +131,13 @@ class Assets {
                 }
                 fclose($cf);
             }
+
+            $gzip_cache = ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . self::CSS_ASSETS_GZIP_CACHE_FILE;
+            if (file_exists($gzip_cache)) {
+                @unlink($gzip_cache);
+            }
+
+            self::unlock();
         }
     }
     
@@ -166,6 +179,8 @@ class Assets {
     
     public static function mergeJSContent() {
         if (count(self::$_js_assets_contents)>0) {
+            if (!self::lock(true)) return false;
+
             $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::JS_CONTENT_ASSETS_CACHE_FILE;
             $js_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
 
@@ -179,13 +194,22 @@ class Assets {
                 }
                 fclose($cf);
             }
+
+            $gzip_cache = ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . self::JS_ASSETS_GZIP_CACHE_FILE;
+            if (file_exists($gzip_cache)) {
+                @unlink($gzip_cache);
+            }
+
+            self::unlock();
         }
     }
 
     public static function merge() {
         try {
+            if (!self::lock(true)) return false;
             self::mergeCSS();
             self::mergeJS();
+            self::unlock();
             return self::isCached();
         } catch(\Exception $e) {
             return false;
@@ -322,5 +346,33 @@ class Assets {
             self::$_gzip = false;
         }
         return self::$_gzip;
+    }
+
+    public static function lock($write=false) {
+        $cache_file = ROOT_DIR . DIRECTORY_SEPARATOR .
+                CACHE_DIR . DIRECTORY_SEPARATOR .
+                '.' . self::LOCK_FILE . '.cache';
+
+        self::$_lock_handler=@fopen($cache_file,'wb');
+
+        $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
+
+        return flock(self::$_lock_handler, $lock);
+    }
+
+    public static function unlock() {
+        $cache_file = ROOT_DIR . DIRECTORY_SEPARATOR .
+                CACHE_DIR . DIRECTORY_SEPARATOR .
+                '.' . self::LOCK_FILE . '.cache';
+
+        if (!file_exists($cache_file)) return false;
+        if (!self::$_lock_handler) return false;
+
+        $result = flock(self::$_lock_handler, LOCK_UN);
+
+        fclose(self::$_lock_handler);
+        @unlink($cache_file);
+
+        return $result;
     }
 }
