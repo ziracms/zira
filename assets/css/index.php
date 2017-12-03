@@ -13,6 +13,7 @@ const ASSETS_ROOT = 'cache';
 const ASSETS_CACHE_FILE = '.css.cache';
 const CONTENT_CACHE_FILE = '.css.content.cache';
 const ASSETS_GZIP_CACHE_FILE = '.css.gz.cache';
+const LOCK_FILE = '.assetlock.cache';
 
 $etag = isset($_GET['t']) ? intval($_GET['t']) : 0;
 $gzip = intval(substr($etag,0,1))>1;
@@ -20,9 +21,16 @@ $assets_root = '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . ASSETS_
 $path =  $assets_root . DIRECTORY_SEPARATOR . ASSETS_CACHE_FILE;
 $content_path =  $assets_root . DIRECTORY_SEPARATOR . CONTENT_CACHE_FILE;
 $gz_path = $assets_root . DIRECTORY_SEPARATOR . ASSETS_GZIP_CACHE_FILE;
+$lock = $assets_root . DIRECTORY_SEPARATOR . LOCK_FILE;
 
-if (!file_exists($path)) exit('File not found');
-if (!is_readable($path)) exit('File is not readable');
+$lock_handler=@fopen($lock,'wb');
+flock($lock_handler, LOCK_SH);
+
+if (!file_exists($path) || !is_readable($path)) {
+    flock($lock_handler, LOCK_UN);
+    fclose($lock_handler);
+    exit('File not found');
+}
 
 header_remove('X-Powered-By');
 header_remove('Pragma');
@@ -70,3 +78,6 @@ if (empty($etag) || !isset($_SERVER['HTTP_IF_NONE_MATCH']) || $etag!=$_SERVER['H
 } else {
     header('HTTP/1.1 304 Not Modified');
 }
+
+flock($lock_handler, LOCK_UN);
+fclose($lock_handler);

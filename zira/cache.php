@@ -76,14 +76,18 @@ class Cache {
         return $data;
     }
 
-    public static function lock($write=false) {
+    public static function lock($write=false,$block=false) {
         $cache_file = ROOT_DIR . DIRECTORY_SEPARATOR .
                 CACHE_DIR . DIRECTORY_SEPARATOR .
                 '.' . self::LOCK_FILE . '.cache';
 
         self::$_lock_handler=@fopen($cache_file,'wb');
 
-        $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
+        if (!$block) {
+            $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
+        } else {
+            $lock = $write ? LOCK_EX : LOCK_SH;
+        }
 
         return flock(self::$_lock_handler, $lock);
     }
@@ -113,6 +117,8 @@ class Cache {
 
     public static function clear($force=false) {
         if (!Config::get('caching') && !$force) return;
+        self::lock(true, true);
+        Assets::lock(true, true);
         $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
         if (!$d) return;
         while(($f=readdir($d))!==false) {
@@ -122,5 +128,12 @@ class Cache {
             @unlink(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f);
         }
         closedir($d);
+        if (Config::get('caching')) {
+            Assets::merge(false);
+            Assets::mergeCSSContent(false);
+            Assets::mergeJSContent(false);
+        }
+        self::unlock();
+        Assets::unlock();
     }
 }

@@ -114,9 +114,9 @@ class Assets {
         View::registerRenderHook(get_called_class(), 'mergeCSSContent');
     }
     
-    public static function mergeCSSContent() {
+    public static function mergeCSSContent($lock=true) {
         if (count(self::$_css_assets_contents)>0) {
-            if (!self::lock(true)) return false;
+            if ($lock && !self::lock(true)) return false;
 
             $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::CSS_CONTENT_ASSETS_CACHE_FILE;
             $css_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
@@ -137,7 +137,7 @@ class Assets {
                 @unlink($gzip_cache);
             }
 
-            self::unlock();
+            if($lock) self::unlock();
         }
     }
     
@@ -177,9 +177,9 @@ class Assets {
         View::registerRenderHook(get_called_class(), 'mergeJSContent');
     }
     
-    public static function mergeJSContent() {
+    public static function mergeJSContent($lock=true) {
         if (count(self::$_js_assets_contents)>0) {
-            if (!self::lock(true)) return false;
+            if ($lock && !self::lock(true)) return false;
 
             $content_url = CACHE_DIR . DIRECTORY_SEPARATOR . self::JS_CONTENT_ASSETS_CACHE_FILE;
             $js_content_file = ROOT_DIR . DIRECTORY_SEPARATOR . $content_url;
@@ -200,16 +200,16 @@ class Assets {
                 @unlink($gzip_cache);
             }
 
-            self::unlock();
+            if ($lock) self::unlock();
         }
     }
 
-    public static function merge() {
+    public static function merge($lock=true) {
         try {
-            if (!self::lock(true)) return false;
+            if ($lock && !self::lock(true)) return false;
             self::mergeCSS();
             self::mergeJS();
-            self::unlock();
+            if ($lock) self::unlock();
             return self::isCached();
         } catch(\Exception $e) {
             return false;
@@ -260,7 +260,10 @@ class Assets {
 
     public static function isCachedAndNotExpired() {
         if (defined('DEBUG') && DEBUG) return false;
-        return self::isCached() && !self::isCSSExpired() && !self::isJSExpired();
+        if (!self::lock()) return false;
+        $isActive = self::isCached() && !self::isCSSExpired() && !self::isJSExpired();
+        self::unlock();
+        return $isActive;
     }
 
     public static function setActive($active) {
@@ -316,7 +319,7 @@ class Assets {
     }
 
     public static function init() {
-        if (Request::isAjax()) return;
+        // must be called even on ajax requests
         if (INSERT_SCRIPTS_TO_BODY) {
             self::$_js_assets = array_merge(self::$_js_assets, self::$_js_assets_if_in_body);
         }
@@ -327,7 +330,7 @@ class Assets {
         } else {
             self::setActive(false);
         }
-        if (self::isActive()) {
+        if (self::isActive() && !Request::isAjax()) {
             self::addStyle();
             self::addScript();
         }
@@ -348,14 +351,18 @@ class Assets {
         return self::$_gzip;
     }
 
-    public static function lock($write=false) {
+    public static function lock($write=false,$block=false) {
         $cache_file = ROOT_DIR . DIRECTORY_SEPARATOR .
                 CACHE_DIR . DIRECTORY_SEPARATOR .
                 '.' . self::LOCK_FILE . '.cache';
 
         self::$_lock_handler=@fopen($cache_file,'wb');
 
-        $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
+        if (!$block) {
+            $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
+        } else {
+            $lock = $write ? LOCK_EX : LOCK_SH;
+        }
 
         return flock(self::$_lock_handler, $lock);
     }
@@ -371,7 +378,6 @@ class Assets {
         $result = flock(self::$_lock_handler, LOCK_UN);
 
         fclose(self::$_lock_handler);
-        @unlink($cache_file);
 
         return $result;
     }
