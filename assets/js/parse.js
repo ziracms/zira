@@ -133,6 +133,7 @@
     };
 
     zira_parse_images = function(content) {
+        if (typeof(zira_show_images_description)=="undefined" || !zira_show_images_description) return content;
         var p = new RegExp('<img ([^>]*)alt=(?:["])?([^">]+)(?:["])?([\x20][^>]*)?>','gi');
         var m;
         var i=0;

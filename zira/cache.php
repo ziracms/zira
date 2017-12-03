@@ -21,7 +21,7 @@ class Cache {
 
         if (file_exists($cache_file)) chmod($cache_file, 0660);
 
-        $f=fopen($cache_file,'wb');
+        $f=@fopen($cache_file,'wb');
         if (!$f) return false;
         fwrite($f, $data);
         fclose($f);
@@ -54,9 +54,11 @@ class Cache {
         if (!file_exists($cache_file)) return false;
         if (self::isExpired($cache_file)) return false;
 
-        chmod($cache_file, 0440);
-        $data = file_get_contents($cache_file);
-        chmod($cache_file, 0000);
+        @chmod($cache_file, 0440);
+        $data = @file_get_contents($cache_file);
+        @chmod($cache_file, 0000);
+
+        if (empty($data)) return false;
 
         if ($unserialize) {
             $data = unserialize($data);
@@ -75,7 +77,7 @@ class Cache {
 
     public static function clear($force=false) {
         if (!Config::get('caching') && !$force) return;
-        $d = opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
+        $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
         if (!$d) return;
         while(($f=readdir($d))!==false) {
             if ($f=='.' || $f=='..' || !is_file(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f)) continue;

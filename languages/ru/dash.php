@@ -404,5 +404,7 @@ return array(
     'Choose page' => 'Выберите страницу',
     'Set URL...' => ' Задать URL...',
     'Enter page title or system name' => 'Введите название страницы или системное имя',
-    'Create thumbnails' => 'Создавать миниатюры'
+    'Create thumbnails' => 'Создавать миниатюры',
+    'Enable scroll effects' => 'Включить эффекты прокрутки',
+    'Show image descriptions' => 'Показывать описание изображений'
 );

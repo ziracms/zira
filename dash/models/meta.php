@@ -39,7 +39,9 @@ class Meta extends Model {
                 'files_check' => 'int',
                 'audio_check' => 'int',
                 'video_check' => 'int',
-                'comments_enabled'=>'int'
+                'comments_enabled'=>'int',
+                'site_scroll_effects'=>'int',
+                'site_parse_images'=>'int'
             );
 
             $config_ids = array();

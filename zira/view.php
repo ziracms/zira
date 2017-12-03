@@ -327,6 +327,8 @@ class View {
         if (self::$_render_js_strings) {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
             $js_scripts .= 'zira_base = \''.Helper::baseUrl('').'\';';
+            $js_scripts .= 'zira_scroll_effects_enabled = '.(Config::get('site_scroll_effects',1) ? 'true' : 'false').';';
+            $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';
             $js_scripts .= Helper::tag_close('script')."\r\n";
             
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
@@ -340,7 +342,7 @@ class View {
             $js_scripts .= ' };';
             $js_scripts .= Helper::tag_close('script')."\r\n";
         }
-        
+
         if (!INSERT_SCRIPTS_TO_BODY) {
             self::addHTML($js_scripts, self::VAR_HEAD_BOTTOM);
         } else {
