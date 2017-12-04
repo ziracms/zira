@@ -23,8 +23,11 @@ $content_path =  $assets_root . DIRECTORY_SEPARATOR . CONTENT_CACHE_FILE;
 $gz_path = $assets_root . DIRECTORY_SEPARATOR . ASSETS_GZIP_CACHE_FILE;
 $lock = $assets_root . DIRECTORY_SEPARATOR . LOCK_FILE;
 
+$noCache = false;
 $lock_handler=@fopen($lock,'wb');
-flock($lock_handler, LOCK_SH);
+if (!$lock_handler || !flock($lock_handler, LOCK_SH)) {
+    $noCache = true;
+}
 
 if (!file_exists($path) || !is_readable($path)) {
     flock($lock_handler, LOCK_UN);
@@ -32,12 +35,14 @@ if (!file_exists($path) || !is_readable($path)) {
     exit('File not found');
 }
 
-header_remove('X-Powered-By');
-header_remove('Pragma');
-header_remove('Set-Cookie');
-header("Content-Type: text/css; charset=utf-8");
-header('Cache-Control: public');
-header("Expires: ".date('r',time()+3600*24*30));
+if (!$noCache) {
+    header_remove('X-Powered-By');
+    header_remove('Pragma');
+    header_remove('Set-Cookie');
+    header("Content-Type: text/css; charset=utf-8");
+    header('Cache-Control: public');
+    header("Expires: ".date('r',time()+3600*24*30));
+}
 
 if (!empty($etag)) header('ETag: '.$etag);
 if (empty($etag) || !isset($_SERVER['HTTP_IF_NONE_MATCH']) || $etag!=$_SERVER['HTTP_IF_NONE_MATCH']) {

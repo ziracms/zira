@@ -32,6 +32,7 @@ class Zira {
 
         self::beforeDispatch();
         Router::dispatch();
+        if (strpos(Router::getRequest(),UPLOADS_DIR.'/')===0) return; // removed image ?
 
         Dash::setDashLanguage(Config::get('dash_language', Config::get('language')));
         if (Router::getModule()!='dash') {

@@ -182,8 +182,12 @@ class Helper {
         return $url;
     }
     
-    public static function backtrace() {
+    public static function backtrace($return=false) {
         $backtrace = debug_backtrace();
-        echo self::tag_open('pre').print_r(array_shift($backtrace), true).self::tag_close('pre');
+        if (!$return) {
+            echo self::tag_open('pre').print_r(array_shift($backtrace), true).self::tag_close('pre');
+        } else {
+            return print_r(array_shift($backtrace), true);
+        }
     }
 }

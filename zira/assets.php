@@ -226,6 +226,7 @@ class Assets {
             if ($lock) self::unlock();
             return self::isCached();
         } catch(\Exception $e) {
+            if ($lock) self::unlock();
             return false;
         }
     }
@@ -277,7 +278,7 @@ class Assets {
     }
 
     public static function isCachedAndNotExpired() {
-        if (defined('DEBUG') && DEBUG) return false;
+        if (defined('DEBUG') && DEBUG && !View::isAjax()) return false;
         if (!self::lock()) return false;
         $isActive = self::isCached() && !self::isCSSExpired() && !self::isJSExpired();
         self::unlock();
@@ -375,6 +376,7 @@ class Assets {
                 '.' . self::LOCK_FILE . '.cache';
 
         self::$_lock_handler=@fopen($cache_file,'wb');
+        if (!self::$_lock_handler) return false;
 
         if (!$block) {
             $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);

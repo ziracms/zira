@@ -30,7 +30,10 @@ class Cache {
         if (file_exists($cache_file)) @chmod($cache_file, 0660);
 
         $f=@fopen($cache_file,'wb');
-        if (!$f) return false;
+        if (!$f) {
+            self::unlock();
+            return false;
+        }
         fwrite($f, $data);
         fclose($f);
 
@@ -63,14 +66,21 @@ class Cache {
                         CACHE_DIR . DIRECTORY_SEPARATOR .
                         '.' . $key . '.cache';
 
-        if (!file_exists($cache_file)) return false;
-        if (self::isExpired($cache_file)) return false;
+        if (!file_exists($cache_file) || 
+            self::isExpired($cache_file) 
+        ) {
+            self::unlock();
+            return false;
+        }
 
-        if (!@chmod($cache_file, 0440)) return false;
+        @chmod($cache_file, 0440);
         $data = @file_get_contents($cache_file);
         //@chmod($cache_file, 0000);
 
-        if (empty($data)) return false;
+        if (empty($data)) {
+            self::unlock();
+            return false;
+        }
 
         if ($unserialize) {
             $data = unserialize($data);
@@ -87,6 +97,7 @@ class Cache {
                 '.' . self::LOCK_FILE . '.cache';
 
         self::$_lock_handler=@fopen($cache_file,'wb');
+        if (!self::$_lock_handler) return false;
 
         if (!$block) {
             $lock = $write ? (LOCK_EX | LOCK_NB) : (LOCK_SH | LOCK_NB);
@@ -121,11 +132,18 @@ class Cache {
     }
 
     public static function clear($force=false) {
-        if (!Config::get('caching') && !$force) return;
-        self::lock(true, true);
-        if ($force) Assets::lock(true, true);
+        if (!Config::get('caching') && !$force) return false;
+        if (!self::lock(true, true)) return false;
+        if ($force && !Assets::lock(true, true)) {
+            self::unlock();
+            return false;
+        } 
         $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
-        if (!$d) return;
+        if (!$d) {
+            self::unlock();
+            if ($force) Assets::unlock();
+            return false;
+        }
         while(($f=readdir($d))!==false) {
             if ($f=='.' || $f=='..' || !is_file(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f)) continue;
             if (substr($f,-6)!='.cache') continue;
@@ -142,5 +160,6 @@ class Cache {
         }
         self::unlock();
         if ($force) Assets::unlock();
+        return true;
     }
 }

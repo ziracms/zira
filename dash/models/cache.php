@@ -82,7 +82,7 @@ class Cache extends Model {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        Zira\Cache::clear(true);
+        if (!Zira\Cache::clear(true)) return array('error' => Zira\Locale::t('An error occurred'));
 
         return array('reload' => $this->getJSClassName());
     }
