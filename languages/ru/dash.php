@@ -406,5 +406,8 @@ return array(
     'Enter page title or system name' => 'Введите название страницы или системное имя',
     'Create thumbnails' => 'Создавать миниатюры',
     'Enable scroll effects' => 'Включить эффекты прокрутки',
-    'Show image descriptions' => 'Показывать описание изображений'
+    'Show image descriptions' => 'Показывать описание изображений',
+    'Add collapsible block' => 'Вставить скрываемый блок',
+    'Collapsible block' => 'Скрываемый блок',
+    'Hidden text' => 'Скрытый текст'
 );

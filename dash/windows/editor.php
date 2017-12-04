@@ -39,12 +39,15 @@ abstract class Editor extends Window {
         $editor_css = Zira\Helper::cssThemeUrl('main.css');
         $editor_css_file = 'editor.css';
         if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$editor_css_file)) {
-            $editor_css = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$editor_css_file;
+            $editor_css = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' . $editor_css_file . '?t=' . time();
         }
 
         $this->addStrings(array(
             'Save',
-            'File manager'
+            'File manager',
+            'Add collapsible block',
+            'Hidden text',
+            'Collapsible block'
         ));
 
         $this->addVariables(array(

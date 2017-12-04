@@ -115,7 +115,7 @@ var dash_editor_html_load = function() {
     tinymce.init({
         selector:'#'+$(this.content).find('.editable').attr('id') ,
         plugins: 'paste, advlist, link, image, media, table, hr, pagebreak, code, contextmenu, textcolor',
-        toolbar: ['desk_save | undo redo | table | bullist numlist | desk_file_selector  image media link | outdent indent | hr pagebreak | code', 'styleselect | bold italic underline | forecolor backcolor | removeformat |  aligncenter alignleft alignright alignjustify '],
+        toolbar: ['desk_save | undo redo | table | bullist numlist | desk_file_selector  image media link | outdent indent | hr pagebreak | code', 'styleselect | bold italic underline | forecolor backcolor | removeformat |  aligncenter alignleft alignright alignjustify | desk_collapse_block '],
         menubar: false,
         language: dash_editor_language,
         paste_word_valid_elements: 'b,strong,i,em,h1,h2,h3,h4,h5,h6,p,ul,ol,li,hr,br,table,tr,td',
@@ -198,6 +198,15 @@ var dash_editor_html_load = function() {
                     }
                 }
                 }));
+            })});
+            editor.addButton('desk_collapse_block',{ 'icon': 'template', 'title':t('Add collapsible block'), 'onclick': this.bind(this,function(){
+                var text='<p>'+t('Collapsible block')+'</p>';
+                var selection = this.editor.selection.getContent({format: 'html'});
+                if (selection && selection.length>0) text = selection;
+                var id = (new Date()).getTime();
+                var html = '<div class="zira-collapse-toggle" data-toggle="collapse" data-target=".collapse-block-'+id+'">'+t('Hidden text')+'</div>';
+                html += '<div class="collapse zira-collapse-block collapse-block-'+id+'">'+text+'</div>';
+                this.editor.execCommand('mceInsertContent', false, html);
             })});
         })
     });

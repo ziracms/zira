@@ -73,3 +73,21 @@ q {
     background-color: #F8F8F8;
     border-radius: 0px;
 }
+.zira-collapse-toggle {
+    display: block;
+    color: #606A72;
+    padding: 2px 0px 2px 10px;
+    margin: 0px;
+    border-left: 3px solid #8A97A1;
+    background-color: #E4EEF3;
+    border-radius: 0px;
+}
+.zira-collapse-block {
+    display: block;
+    color: #606A72;
+    padding: 2px 0px 2px 10px;
+    margin: 0px;
+    border-left: 3px solid #C5D8C9;
+    background-color: #EDF8F2;
+    border-radius: 0px;
+}
