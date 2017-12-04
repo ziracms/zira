@@ -91,12 +91,12 @@ class Assets {
         self::$_js_assets []= $asset;
     }
     
-    public static function registerCSSAssetContent($content) {
-        self::$_css_assets_contents [] = $content;
+    public static function registerCSSAssetContent($content, $module='zira') {
+        self::$_css_assets_contents[$module] = $content;
     }
 
-    public static function registerJSAssetContent($content) {
-        self::$_js_assets_contents []= $content;
+    public static function registerJSAssetContent($content, $module='zira') {
+        self::$_js_assets_contents[$module]= $content;
     }
 
     public static function mergeCSS() {
@@ -137,7 +137,8 @@ class Assets {
 
             $cf=fopen($css_content_file,'wb');
             if ($cf) {
-                foreach(self::$_css_assets_contents as $content) {
+                foreach(self::$_css_assets_contents as $module=>$content) {
+                    if (!in_array($module, Config::get('modules'))) continue;
                     $data = '/** extra css **/'."\r\n\r\n";
                     $data .= $content;
                     $data .= "\r\n\r\n";
@@ -200,7 +201,8 @@ class Assets {
 
             $cf=fopen($js_content_file,'wb');
             if ($cf) {
-                foreach(self::$_js_assets_contents as $content) {
+                foreach(self::$_js_assets_contents as $module=>$content) {
+                    if (!in_array($module, Config::get('modules'))) continue;
                     $data = '/** extra js **/'."\r\n\r\n";
                     $data .= $content;
                     $data .= "\r\n\r\n";
@@ -235,7 +237,7 @@ class Assets {
         if (self::$_css_mtime!==null) return self::$_css_mtime;
         $url = CACHE_DIR . DIRECTORY_SEPARATOR . self::CSS_ASSETS_CACHE_FILE;
         $file = ROOT_DIR . DIRECTORY_SEPARATOR . $url;
-        $mtime = filemtime($file);
+        $mtime = @filemtime($file);
         self::$_css_mtime = $mtime;
         return $mtime;
     }
@@ -244,7 +246,7 @@ class Assets {
         if (self::$_js_mtime!==null) return self::$_js_mtime;
         $url = CACHE_DIR . DIRECTORY_SEPARATOR . self::JS_ASSETS_CACHE_FILE;
         $file = ROOT_DIR . DIRECTORY_SEPARATOR . $url;
-        $mtime = filemtime($file);
+        $mtime = @filemtime($file);
         self::$_js_mtime = $mtime;
         return $mtime;
     }
@@ -307,8 +309,9 @@ class Assets {
         } else {
             $url = Helper::baseUrl(self::CSS_SCRIPT);
         }
-        $q = '?';
-        $q .= 't='.(intval(self::isGzipEnabled())+1).self::getCSSMTime();
+        $t = self::getCSSMTime();
+        if (!$t) $t = time();
+        $q = '?t='.(intval(self::isGzipEnabled())+1).$t;
         return $url.$q;
     }
 
@@ -318,8 +321,9 @@ class Assets {
         } else {
             $url = Helper::baseUrl(self::JS_SCRIPT);
         }
-        $q = '?';
-        $q .= 't='.(intval(self::isGzipEnabled())+1).self::getJSMTime();
+        $t = self::getJSMTime();
+        if (!$t) $t = time();
+        $q = '?t='.(intval(self::isGzipEnabled())+1).$t;
         return $url.$q;
     }
 

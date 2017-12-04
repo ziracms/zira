@@ -99,6 +99,8 @@ class Modules extends Model {
             $optionObj->module = 'zira';
             $optionObj->save();
 
+            Zira\Config::set('modules', $active_modules);
+
             Zira\Models\Option::raiseVersion();
         }
 
@@ -134,6 +136,8 @@ class Modules extends Model {
             $optionObj->module = 'zira';
             $optionObj->save();
             
+            Zira\Config::set('modules', $active_modules);
+
             Zira\Models\Option::raiseVersion();
         }
 

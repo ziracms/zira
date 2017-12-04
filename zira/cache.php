@@ -53,7 +53,7 @@ class Cache {
     }
 
     protected static function isExpired($cache_file) {
-        $mtime = filemtime($cache_file);
+        $mtime = @filemtime($cache_file);
         if (!$mtime) return true;
         return (time()-$mtime>Config::get('cache_lifetime'));
     }

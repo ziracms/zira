@@ -45,7 +45,7 @@ class Designer {
         
         if (Zira\Assets::isActive()) {
             $style = self::getStyle(true);
-            Zira\Assets::registerCSSAssetContent($style);
+            Zira\Assets::registerCSSAssetContent($style, 'designer');
         } else if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
             $style = Zira\Helper::tag_short('link', array(
                 'rel' => 'stylesheet',
