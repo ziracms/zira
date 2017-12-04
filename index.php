@@ -25,7 +25,9 @@ function error_handler($severity, $message, $file, $line) {
     if (LOG_ERRORS) {
         Zira\Log::write(Zira\Log::getErrorType($severity).': '.$message.' in '.$file.':'.$line);
     }
-    throw new ErrorException(Zira\Log::getErrorType($severity).': '.$message, 0, $severity, $file, $line);
+    if (defined('DEBUG') && DEBUG) {
+        throw new ErrorException(Zira\Log::getErrorType($severity).': '.$message, 0, $severity, $file, $line);
+    }
 }
 set_error_handler('error_handler', E_ALL);
 

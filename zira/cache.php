@@ -11,6 +11,10 @@ class Cache {
     const LOCK_FILE = 'lock';
     protected static $_lock_handler;
 
+    public static function isLockFile($file) {
+        return $file == '.' . self::LOCK_FILE . '.cache';
+    }
+
     public static function set($key, $data, $serialize=false) {
         if (!Config::get('caching')) return false;
         if (!self::lock(true)) return false;
@@ -47,6 +51,7 @@ class Cache {
 
     protected static function isExpired($cache_file) {
         $mtime = filemtime($cache_file);
+        if (!$mtime) return true;
         return (time()-$mtime>Config::get('cache_lifetime'));
     }
 
@@ -118,22 +123,24 @@ class Cache {
     public static function clear($force=false) {
         if (!Config::get('caching') && !$force) return;
         self::lock(true, true);
-        Assets::lock(true, true);
+        if ($force) Assets::lock(true, true);
         $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
         if (!$d) return;
         while(($f=readdir($d))!==false) {
             if ($f=='.' || $f=='..' || !is_file(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f)) continue;
             if (substr($f,-6)!='.cache') continue;
+            if (self::isLockFile($f) || Assets::isAssetsLockFile($f)) continue;
+            if (!$force && Assets::isAssetsCacheFile($f)) continue;
             @chmod(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f, 0660);
             @unlink(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f);
         }
         closedir($d);
-        if (Config::get('caching')) {
+        if (Config::get('caching') && $force) {
             Assets::merge(false);
             Assets::mergeCSSContent(false);
             Assets::mergeJSContent(false);
         }
         self::unlock();
-        Assets::unlock();
+        if ($force) Assets::unlock();
     }
 }

@@ -63,6 +63,8 @@ class Options extends Model {
                 $optionObj->value = $value;
                 $optionObj->module = 'zira';
                 $optionObj->save();
+
+                if ($option=='caching') Zira\Config::set($option, $value);
             }
 
             Zira\Models\Option::raiseVersion();

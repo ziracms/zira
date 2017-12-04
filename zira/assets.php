@@ -61,6 +61,20 @@ class Assets {
     protected static $_css_assets_contents = array();
     protected static $_js_assets_contents = array();
 
+    public static function isAssetsCacheFile($file) {
+        if ($file == self::CSS_ASSETS_CACHE_FILE) return true;
+        if ($file == self::JS_ASSETS_CACHE_FILE) return true;
+        if ($file == self::CSS_CONTENT_ASSETS_CACHE_FILE) return true;
+        if ($file == self::JS_CONTENT_ASSETS_CACHE_FILE) return true;
+        if ($file == self::CSS_ASSETS_GZIP_CACHE_FILE) return true;
+        if ($file == self::JS_ASSETS_GZIP_CACHE_FILE) return true;
+        return false;
+    }
+
+    public static function isAssetsLockFile($file) {
+        return $file == '.' . self::LOCK_FILE . '.cache';
+    }
+
     public static function getCSSAssets() {
         return self::$_css_assets;
     }
@@ -235,11 +249,15 @@ class Assets {
     }
 
     public static function isCSSExpired() {
-        return time()-self::getCSSMTime()>self::CACHE_LIFETIME;
+        $mtime = self::getCSSMTime();
+        if (!$mtime) return true;
+        return time()-$mtime>self::CACHE_LIFETIME;
     }
 
     public static function isJSExpired() {
-        return time()-self::getJSMTime()>self::CACHE_LIFETIME;
+        $mtime = self::getJSMTime();
+        if (!$mtime) return true;
+        return time()-$mtime>self::CACHE_LIFETIME;
     }
 
     public static function isCSSCached() {
