@@ -1084,6 +1084,7 @@ pre {
     z-index: 99;
     background-color: #f9f9f9;
     box-shadow: 0px 5px 10px rgba(113, 113, 113, 0.52);
+    color: #333;
 }
 .zira-search-preview-wnd .list {
     margin: 0px;

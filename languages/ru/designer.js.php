@@ -58,6 +58,8 @@ return array(
     'Records text color' => 'Цвет текста записей',
     'Secondary menu text color' => 'Цвет текста вторичного меню',
     'Secondary menu background' => 'Фон вторичного меню',
+    'Search color' => 'Цвет текста поиска',
+    'Search background' => 'Фон поиска',
     'Set wide container' => 'Установить широкий контейнер',
     'Unset wide container' => 'Убрать широкий контейнер',
     'Set wide column' => 'Установить широкую колонку',
@@ -68,6 +70,7 @@ return array(
     'Widgets text color' => 'Цвет текста виджетов',
     'Widgets background' => 'Фон виджетов',
     'This style belongs to another theme.' => 'Этот стиль принадлежит другой теме.',
-    'Sorry, your current theme is not supported.' => 'Извините, ваша текущая тема не поддерживается.'
+    'Sorry, your current theme is not supported.' => 'Извините, ваша текущая тема не поддерживается.',
+    'Search' => 'Поиск'
 );
 

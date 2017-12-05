@@ -71,6 +71,7 @@
                     setBackgroundColorStyle('body', color, true);
                 }
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
+                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
 
                 // body height btn
                 if ($('#html-designer-radio-btn').length>0) {
@@ -95,7 +96,8 @@
                 setBackgroundColorStyle('body', hexColor(color1), true);
                 setBackgroundGradientStyle('body', color1, color2);
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-                
+                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color1), true);
+
                 // removing body height = 100%
                 if ($('#html-designer-radio-btn').length>0) {
                     if ($('body').height() == $(window).height()) {
@@ -122,7 +124,10 @@
                 $('#main-container').css('background', 'none');
                 setBackgroundStyle('body', background);
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-                
+                if (bg_color != 'transparent') {
+                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
+                }
+
                 // body height btn
                 if ($('#html-designer-radio-btn').length>0) {
                     $('#html-designer-radio-btn').show();
@@ -146,7 +151,10 @@
                 $('#main-container').css('background', 'none');
                 setBackgroundStyle('body', background);
                 setBackgroundStyle('#main-container-wrapper,#main-container', 'none');
-                
+                if (bg_color != 'transparent') {
+                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
+                }
+
                 // body height btn
                 if ($('#html-designer-radio-btn').length>0) {
                     $('#html-designer-radio-btn').show();
@@ -176,7 +184,6 @@
                     setFilterStyle('header', 'none');
                     setBackgroundColorStyle('header', color, true);
                 }
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color));
             }, 'right', false);
             
             // header bg gradient
@@ -193,7 +200,6 @@
                 $('header').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                 setBackgroundColorStyle('header', hexColor(color1), true);
                 setBackgroundGradientStyle('header', color1, color2);
-                setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', hexColor(color1), true);
             });
             
             // header bg image
@@ -210,9 +216,6 @@
                 var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
-                if (bg_color != 'transparent') {
-                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
-                }
             });
             
             // header bg pattern
@@ -229,9 +232,6 @@
                 var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') repeat 0 0';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
-                if (bg_color != 'transparent') {
-                    setBackgroundColorStyle('header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover', bg_color, true);
-                }
             });
             
             // header logo
@@ -344,7 +344,6 @@
                 designer_colorpicker($('#header-text-designer-colorpicker'), header_text_color, function(color){
                     $('header #header-text-example').css('color', color);
                     setColorStyle('header', color);
-                    setColorStyle('header .zira-search-preview-wnd .list .list-item .list-content-wrapper', color);
                 }, 'left');
             }
             
@@ -479,9 +478,11 @@
                 $('#topmenu-color-designer-gradientpicker').tooltip();
                 designer_gradientpicker($('#topmenu-color-designer-gradientpicker'), $('#topmenu-color-designer-gradientpicker-hidden'), topmenu_color1, topmenu_color2, function(color1, color2){
                     $('header #top-menu-wrapper nav a, header #top-menu-wrapper .form-control, header #top-menu-wrapper .form-control::placeholder, header #top-menu-wrapper .btn-default').css('color', color2);
-                    $('header #top-menu-wrapper nav .active a').css('color', color1);
-                    setColorStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper .form-control,header #top-menu-wrapper .btn-default,header .navbar-default .navbar-toggle', color2);
-                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open > a,header #top-menu-wrapper .navbar-default .navbar-nav > li > a:hover', color1);
+                    $('header #top-menu-wrapper nav .active a, header #top-menu-wrapper .glyphicon-remove-circle').css('color', color1);
+                    setColorStyle('header #top-menu-wrapper #form-search-form', color1);
+                    setColorStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item a.list-title:link,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item a.list-title:visited', color2);
+                    setColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle', color2);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open > a,header #top-menu-wrapper .navbar-default .navbar-nav > li > a:hover,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item:hover a.list-title', color1);
                     setColorStyle('header #top-menu-wrapper .form-control::placeholder', color2);
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
                 }, 'right', 'rgb');
@@ -510,13 +511,68 @@
                     $('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color2);
                     setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default', hexColor(color1), true);
                     setBackgroundGradientStyle('header #top-menu-wrapper nav.navbar-default', color1, color2);
-                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', hexColor(color2));
+                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', hexColor(color2));
+                    setBackgroundStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default', hexColor(color2));
                     setBackgroundStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper', hexColor(color1));
-                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color1), true);
-                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper,header #top-menu-wrapper.fixed', hexColor(color1));
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color1), true);
+                    setBorderColorStyle('header #top-menu-wrapper nav.navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper nav ul.dropdown-menu,header .zira-search-preview-wnd,header .zira-search-preview-wnd .list .list-item,header .zira-search-preview-wnd .list .list-item:hover,header .zira-search-preview-wnd .list .list-item .list-title-wrapper,header #top-menu-wrapper.fixed', hexColor(color1));
+                    setBorderColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form', hexColor(color1));
                     setBorderColorStyle('header .zira-search-preview-wnd .list .list-item:last-child', hexColor(color1));                    
-                    setTextShadowStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
-                    setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a,#top-menu-wrapper nav .btn-default', 'none');
+                    setTextShadowStyle('header #top-menu-wrapper nav a:link', '0 1px 0 '+hexColor(color2));
+                    setTextShadowStyle('header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
+                    setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a', 'none');
+                    setFilterStyle('#top-menu-wrapper nav .btn-default', 'none');
+                    
+                });
+            }
+
+            // header search
+            if ($('header #top-menu-wrapper #form-search-form').length>0) {
+                // header search color
+                var search_color = $('header #top-menu-wrapper #form-search-form .form-control').css('color');
+                $('body').append('<div class="designer_colorpicker" id="search-color-designer-colorpicker" title="'+t('Search color')+'"></div>');
+                designer_positions['search_color'] = function() {
+                    if ($('header #top-menu-wrapper #form-search-form').css('display')=='none' || $('header #top-menu-wrapper #form-search-form').css('visibility')=='hidden') {
+                        $('#search-color-designer-colorpicker').hide();
+                        return;
+                    }
+                    var search_cx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                    var search_cy = $('header #top-menu-wrapper #form-search-form').offset().top+($('header #top-menu-wrapper #form-search-form').outerHeight()-colorpicker_size)/2;
+                    $('#search-color-designer-colorpicker').css({'left':search_cx,'top':search_cy});
+                    $('#search-color-designer-colorpicker').show();
+                };
+                $('#search-color-designer-colorpicker').tooltip();
+                designer_colorpicker($('#search-color-designer-colorpicker'), search_color, function(color){
+                    $('header #top-menu-wrapper .form-control, header #top-menu-wrapper .form-control::placeholder, header #top-menu-wrapper .btn-default, header #top-menu-wrapper .glyphicon-remove-circle').css('color', color);
+                    setColorStyle('header #top-menu-wrapper #form-search-form', color);
+                    setColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle', color);
+                    setColorStyle('header #top-menu-wrapper .form-control::placeholder', color);
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color);
+                }, 'right', 'rgb');
+                
+                // header search background
+                var search_bg = extractBgColor($('header #top-menu-wrapper .form-control'));
+                $('body').append('<div class="designer_colorpicker" id="search-bg-designer-colorpicker" title="'+t('Search background')+'"></div>');
+                designer_positions['search_bg'] = function() {
+                    if ($('header #top-menu-wrapper #form-search-form').css('display')=='none' || $('header #top-menu-wrapper #form-search-form').css('visibility')=='hidden') {
+                        $('#search-bg-designer-colorpicker').hide();
+                        return;
+                    }
+                    var search_gx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                    var search_gy = $('header #top-menu-wrapper #form-search-form').offset().top+($('header #top-menu-wrapper #form-search-form').outerHeight()-colorpicker_size)/2;
+                    $('#search-bg-designer-colorpicker').css({'left':search_gx,'top':search_gy});
+                    $('#search-bg-designer-colorpicker').show();
+                };
+                $('#search-bg-designer-colorpicker').tooltip();
+                designer_colorpicker($('#search-bg-designer-colorpicker'), search_bg, function(color){
+                    $('header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('background', color);
+                    $('header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color);
+                    $('header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color);
+                    setBackgroundStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default', hexColor(color));
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle:focus,header #top-menu-wrapper .navbar-default .navbar-toggle,header #top-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color), true);
+                    setBorderColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form', hexColor(color));
+                    setTextShadowStyle('header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color));
+                    setFilterStyle('#top-menu-wrapper nav .btn-default', 'none');
                 });
             }
         }
@@ -537,6 +593,7 @@
                 designer_colorpicker($('#article-designer-colorpicker'), article_color, function(color){
                     $('body').css('color', color);
                     setColorStyle('body', color);
+                    setColorStyle('header .zira-search-preview-wnd .list .list-item .list-content-wrapper', color);
                 });
                 
                 // article font size
@@ -1661,6 +1718,8 @@
         } else if (typeof(designer_current_theme)=="undefined" || typeof(designer_style_theme)=="undefined" || designer_style_theme!=designer_current_theme) {
             parent.jQuery('body', parent.document).trigger('designerEditorError', [window.getId(), t('This style belongs to another theme.')]);
         }
+
+        $('header #top-menu-wrapper #form-search-form .form-control').val(t('Search'));
     });
     
     var designer_colorpicker = function(element, init_color, callback, position, color_format) {

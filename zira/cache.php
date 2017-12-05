@@ -161,7 +161,9 @@ class Cache {
             Assets::mergeCSSContent(false);
             Assets::mergeJSContent(false);
         }
-        self::_execOnClearCallbacks();
+        if (Config::get('caching')) {
+            self::_execOnClearCallbacks();
+        }
         self::unlock();
         if ($force) Assets::unlock();
         return true;
