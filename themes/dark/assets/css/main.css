@@ -822,6 +822,7 @@ article .article-info {
 }
 article .article {
     margin: 30px 0px;
+    overflow: hidden;
 }
 article .rating {
     color: #888888;

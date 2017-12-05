@@ -237,6 +237,7 @@
             $('.sidebar').length==1 && 
             $('#content').length==1 && 
             $('#top-menu-wrapper').length>0 &&
+            $('.sidebar').height()>$(window).height() && 
             navigator.userAgent.toLowerCase().indexOf('msie')<0 && 
             typeof(window.orientation) == "undefined" && 
             typeof(designer_style_theme)=="undefined"

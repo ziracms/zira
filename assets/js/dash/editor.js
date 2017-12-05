@@ -205,7 +205,7 @@ var dash_editor_html_load = function() {
                 if (selection && selection.length>0) text = selection;
                 var id = (new Date()).getTime();
                 var html = '<div class="zira-collapse-toggle" data-toggle="collapse" data-target=".collapse-block-'+id+'">'+t('Hidden text')+'</div>';
-                html += '<div class="collapse zira-collapse-block collapse-block-'+id+'">'+text+'</div>';
+                html += '<div class="collapse zira-collapse-block collapse-block-'+id+'">'+text+'</div>&nbsp;';
                 this.editor.execCommand('mceInsertContent', false, html);
             })});
         })

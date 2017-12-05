@@ -533,6 +533,7 @@ article .article-info {
 }
 article .article {
     margin: 30px 0px;
+    overflow: hidden;
 }
 article .article p {
     line-height: 26px;

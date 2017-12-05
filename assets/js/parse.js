@@ -149,10 +149,21 @@
             var _p = new RegExp('style=(?:["])?([^">]+)(?:["])?', 'i');
             var _m = _p.exec(m[0]);
             if (_m && typeof(_m[0]) != "undefined" && typeof(_m[1]) != "undefined") {
-                s = ' ' + _m[0];
-                m[1] = m[1].replace(_m[0], ' ');
-                m[3] = m[3].replace(_m[0], ' ');
+                s += _m[1];
+                if (s.indexOf('width')<0) {
+                    m[1] = m[1].replace(_m[0], ' ');
+                    m[3] = m[3].replace(_m[0], ' ');
+                }
             }
+            if (s.indexOf('width')<0) {
+                var __p = new RegExp('width=(?:["])?([^">]+)(?:["])?', 'i');
+                var __m = __p.exec(m[0]);
+                if (__m && typeof(__m[0]) != "undefined" && typeof(__m[1]) != "undefined") {
+                    s += 'width:'+__m[1];
+                    if (__m[1].indexOf('%')<0) s += 'px;';
+                }
+            }
+            if (s.length > 0) s = ' style="' + s + '"';
             content = content.replace(m[0], '<div class="image-wrapper"'+s+'>'+
                                             '<img class="image parsed-image" '+m[1]+'alt="'+m[2]+'"'+m[3]+'>'+
                                             '<div class="image-description">'+m[2]+
