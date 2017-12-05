@@ -44,8 +44,8 @@ class Designer {
         self::_loadStyles();
         
         if (Zira\Assets::isActive()) {
-            $style = self::getStyle(true);
-            Zira\Assets::registerCSSAssetContent($style, 'designer');
+            self::registerMainStyle();
+            Zira\Cache::addOnForceClearCallback($this, 'reloadMainStyle');
         } else if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
             $style = Zira\Helper::tag_short('link', array(
                 'rel' => 'stylesheet',
@@ -60,9 +60,11 @@ class Designer {
         }
     }
     
-    protected static function _loadStyles() {
-        $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage());
-        if (!$styles) {
+    protected static function _loadStyles($useCache=true) {
+        if ($useCache) {
+            $styles = Zira\Cache::getObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage());
+        }
+        if (!$useCache || !$styles) {
             $styles = \Designer\Models\Style::getCollection()
                         ->open_query()
                         ->where('theme', '=', Zira\View::getTheme())
@@ -81,7 +83,9 @@ class Designer {
                         ->order_by('date_created', 'DESC')
                         ->get();
             
-            Zira\Cache::setObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage(), $styles);
+            if ($useCache) {
+                Zira\Cache::setObject(self::CACHE_KEY.'.'.Zira\View::getTheme().'.'.Zira\Locale::getLanguage(), $styles);
+            }
         }
         self::$_styles = $styles;
     }
@@ -140,6 +144,16 @@ class Designer {
         if (!$active_style) return;
         
         return $active_style->content;
+    }
+
+    public static function registerMainStyle() {
+        $style = self::getStyle(true);
+        Zira\Assets::registerCSSAssetContent($style, 'designer');
+    }
+
+    public static function reloadMainStyle() {
+        self::_loadStyles(false);
+        self::registerMainStyle();
     }
     
     public static function applyStyle() {

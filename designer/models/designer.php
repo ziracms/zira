@@ -35,7 +35,7 @@ class Designer extends Dash\Models\Model {
         $style->content = $this->_prepareCode($content);
         $style->save();
         
-        Zira\Cache::clear();
+        Zira\Models\Option::raiseVersion();
         
         return array('message'=>Zira\Locale::t('Successfully saved'));
     }

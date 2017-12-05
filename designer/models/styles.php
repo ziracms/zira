@@ -61,7 +61,7 @@ class Styles extends Dash\Models\Model {
 
             $style->save();
             
-            Zira\Cache::clear();
+            Zira\Models\Option::raiseVersion();
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
@@ -83,7 +83,7 @@ class Styles extends Dash\Models\Model {
             $style->delete();
         }
         
-        Zira\Cache::clear();
+        Zira\Models\Option::raiseVersion();
 
         return array('reload' => $this->getJSClassName());
     }
@@ -120,7 +120,7 @@ class Styles extends Dash\Models\Model {
         $style->active = 1;
         $style->save();
         
-        Zira\Cache::clear();
+        Zira\Models\Option::raiseVersion();
         
         return array('reload'=>$this->getJSClassName());
     }

@@ -10,6 +10,8 @@ namespace Zira;
 class Cache {
     const LOCK_FILE = 'lock';
     protected static $_lock_handler;
+    protected static $_on_clear_callbacks = array();
+    protected static $_on_force_clear_callbacks = array();
 
     public static function isLockFile($file) {
         return $file == '.' . self::LOCK_FILE . '.cache';
@@ -154,12 +156,42 @@ class Cache {
         }
         closedir($d);
         if (Config::get('caching') && $force) {
+            self::_execOnForceClearCallbacks();
             Assets::merge(false);
             Assets::mergeCSSContent(false);
             Assets::mergeJSContent(false);
         }
+        self::_execOnClearCallbacks();
         self::unlock();
         if ($force) Assets::unlock();
         return true;
+    }
+
+    public static function addOnClearCallback($object, $method) {
+        self::$_on_clear_callbacks []= array($object, $method);
+    }
+
+    public static function addOnForceClearCallback($object, $method) {
+        self::$_on_force_clear_callbacks []= array($object, $method);
+    }
+
+    protected static function _execOnClearCallbacks() {
+        foreach(self::$_on_clear_callbacks as $callable) {
+            try {
+                call_user_func($callable);
+            } catch(\Exception $e) {
+                // ignore
+            }
+        }
+    }
+
+    protected static function _execOnForceClearCallbacks() {
+        foreach(self::$_on_force_clear_callbacks as $callable) {
+            try {
+                call_user_func($callable);
+            } catch(\Exception $e) {
+                // ignore
+            }
+        }
     }
 }

@@ -37,6 +37,9 @@ class Themes extends Model {
             $optionObj->module = 'zira';
             $optionObj->save();
 
+            Zira\Config::set('theme', $theme);
+            Zira\View::setTheme($theme);
+
             Zira\Models\Option::raiseVersion();
         }
 
