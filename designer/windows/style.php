@@ -15,7 +15,7 @@ class Style extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-picture';
     protected static $_title = 'Style';
 
-    //protected $_help_url = 'zira/help/style';
+    protected $_help_url = 'zira/help/style';
 
     public $item;
 

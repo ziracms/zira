@@ -15,7 +15,7 @@ class Designer extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-picture';
     protected static $_title = 'Style editor';
 
-    //protected $_help_url = 'zira/help/designer';
+    protected $_help_url = 'zira/help/designer';
 
     public $item;
 
