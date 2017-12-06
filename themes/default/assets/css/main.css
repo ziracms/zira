@@ -1062,6 +1062,7 @@ pre {
 .search-simple-form {
     display: none;
     position: relative;
+    color: #333;
 }
 .search-simple-form .search-text-clear {
     position: absolute;
