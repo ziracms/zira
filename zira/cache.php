@@ -169,16 +169,25 @@ class Cache {
         return true;
     }
 
-    public static function addOnClearCallback($object, $method) {
-        self::$_on_clear_callbacks []= array($object, $method);
+    public static function addOnClearCallback($object, $method, $module='zira') {
+        self::$_on_clear_callbacks[$module] = array($object, $method);
     }
 
-    public static function addOnForceClearCallback($object, $method) {
-        self::$_on_force_clear_callbacks []= array($object, $method);
+    public static function addOnForceClearCallback($object, $method, $module='zira') {
+        self::$_on_force_clear_callbacks[$module] = array($object, $method);
+    }
+
+    public static function removeOnClearCallback($module) {
+        self::$_on_clear_callbacks[$module] = null;
+    }
+
+    public static function removeOnForceClearCallback($module) {
+        self::$_on_force_clear_callbacks[$module] = null;
     }
 
     protected static function _execOnClearCallbacks() {
-        foreach(self::$_on_clear_callbacks as $callable) {
+        foreach(self::$_on_clear_callbacks as $module=>$callable) {
+            if (!$callable || !is_callable($callable)) continue;
             try {
                 call_user_func($callable);
             } catch(\Exception $e) {
@@ -188,7 +197,8 @@ class Cache {
     }
 
     protected static function _execOnForceClearCallbacks() {
-        foreach(self::$_on_force_clear_callbacks as $callable) {
+        foreach(self::$_on_force_clear_callbacks as $module=>$callable) {
+            if (!$callable || !is_callable($callable)) continue;
             try {
                 call_user_func($callable);
             } catch(\Exception $e) {

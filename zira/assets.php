@@ -99,6 +99,24 @@ class Assets {
         self::$_js_assets_contents[$module]= $content;
     }
 
+    public static function unregisterCSSAsset($asset) {
+        $index = array_search($asset, self::$_css_assets);
+        unset(self::$_css_assets[$index]);
+    }
+
+    public static function unregisterJSAsset($asset) {
+        $index = array_search($asset, self::$_js_assets);
+        unset(self::$_js_assets[$index]);
+    }
+    
+    public static function unregisterCSSAssetContent($module) {
+        self::$_css_assets_contents[$module] = null;
+    }
+
+    public static function unregisterJSAssetContent($module) {
+        self::$_js_assets_contents[$module]= null;
+    }
+
     public static function mergeCSS() {
         self::$_css_mtime = null;
         if (!is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR)) throw new \Exception('Cache dir is not writable');
@@ -138,7 +156,7 @@ class Assets {
             $cf=fopen($css_content_file,'wb');
             if ($cf) {
                 foreach(self::$_css_assets_contents as $module=>$content) {
-                    if (!in_array($module, Config::get('modules'))) continue;
+                    if (!in_array($module, Config::get('modules')) || !$content) continue;
                     $data = '/** extra css **/'."\r\n\r\n";
                     $data .= $content;
                     $data .= "\r\n\r\n";
@@ -202,7 +220,7 @@ class Assets {
             $cf=fopen($js_content_file,'wb');
             if ($cf) {
                 foreach(self::$_js_assets_contents as $module=>$content) {
-                    if (!in_array($module, Config::get('modules'))) continue;
+                    if (!in_array($module, Config::get('modules')) || !$content) continue;
                     $data = '/** extra js **/'."\r\n\r\n";
                     $data .= $content;
                     $data .= "\r\n\r\n";

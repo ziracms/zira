@@ -28,6 +28,16 @@ class Chat {
         return self::$_instance;
     }
 
+    public function onActivate() {
+        Zira\Assets::registerCSSAsset('chat/chat.css');
+        Zira\Assets::registerJSAsset('chat/chat.js');
+    }
+
+    public function onDeactivate() {
+        Zira\Assets::unregisterCSSAsset('chat/chat.css');
+        Zira\Assets::unregisterJSAsset('chat/chat.js');
+    }
+
     public function beforeDispatch() {
         Zira\Assets::registerCSSAsset('chat/chat.css');
         Zira\Assets::registerJSAsset('chat/chat.js');

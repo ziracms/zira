@@ -25,6 +25,16 @@ class Forum {
         return self::$_instance;
     }
 
+    public function onActivate() {
+        Zira\Assets::registerCSSAsset('forum/forum.css');
+        Zira\Assets::registerJSAsset('forum/forum.js');
+    }
+
+    public function onDeactivate() {
+        Zira\Assets::unregisterCSSAsset('forum/forum.css');
+        Zira\Assets::unregisterJSAsset('forum/forum.js');
+    }
+
     public function beforeDispatch() {
         Zira\Router::addRoute(self::ROUTE,'forum/index/index');
         Zira\Router::addRoute(self::ROUTE.'/group','forum/index/group');

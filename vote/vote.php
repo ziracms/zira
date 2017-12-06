@@ -21,6 +21,16 @@ class Vote {
         return self::$_instance;
     }
 
+    public function onActivate() {
+        Zira\Assets::registerCSSAsset('vote/vote.css');
+        Zira\Assets::registerJSAsset('vote/vote.js');
+    }
+
+    public function onDeactivate() {
+        Zira\Assets::unregisterCSSAsset('vote/vote.css');
+        Zira\Assets::unregisterJSAsset('vote/vote.js');
+    }
+
     public function beforeDispatch() {
         Zira\Assets::registerCSSAsset('vote/vote.css');
         Zira\Assets::registerJSAsset('vote/vote.js');

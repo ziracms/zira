@@ -100,11 +100,29 @@ class Modules extends Model {
             $optionObj->save();
 
             Zira\Config::set('modules', $active_modules);
+            $this->_execOnActivateCallbacks($module);
 
             Zira\Models\Option::raiseVersion();
         }
 
         return array('reload'=>$this->getJSClassName());
+    }
+
+    protected function _execOnActivateCallbacks($module) {
+        if ($module == 'zira' || $module == 'dash') return;
+        $class = '\\'.ucfirst($module).'\\'.ucfirst($module);
+        try {
+            if (method_exists($class, 'getInstance')) {
+                $obj = call_user_func($class . '::getInstance');
+            } else {
+                $obj = new $class;
+            }
+        } catch(\Exception $e) {
+            return;
+        }
+        if (method_exists($obj,'onActivate')) {
+            call_user_func(array($obj,'onActivate'));
+        }
     }
 
     public function deactivate($module) {
@@ -137,10 +155,28 @@ class Modules extends Model {
             $optionObj->save();
             
             Zira\Config::set('modules', $active_modules);
+            $this->_execOnDeactivateCallbacks($module);
 
             Zira\Models\Option::raiseVersion();
         }
 
         return array('reload'=>$this->getJSClassName());
+    }
+
+    protected function _execOnDeactivateCallbacks($module) {
+        if ($module == 'zira' || $module == 'dash') return;
+        $class = '\\'.ucfirst($module).'\\'.ucfirst($module);
+        try {
+            if (method_exists($class, 'getInstance')) {
+                $obj = call_user_func($class . '::getInstance');
+            } else {
+                $obj = new $class;
+            }
+        } catch(\Exception $e) {
+            return;
+        }
+        if (method_exists($obj,'onDeactivate')) {
+            call_user_func(array($obj,'onDeactivate'));
+        }
     }
 }

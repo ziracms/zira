@@ -20,6 +20,16 @@ class Emoji {
         return self::$_instance;
     }
 
+    public function onActivate() {
+        Zira\Assets::registerCSSAsset('emoji/emoji.css');
+        Zira\Assets::registerJSAsset('emoji/emoji.js');
+    }
+
+    public function onDeactivate() {
+        Zira\Assets::unregisterCSSAsset('emoji/emoji.css');
+        Zira\Assets::unregisterJSAsset('emoji/emoji.js');
+    }
+
     public function beforeDispatch() {
         Zira\Assets::registerCSSAsset('emoji/emoji.css');
         Zira\Assets::registerJSAsset('emoji/emoji.js');

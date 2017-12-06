@@ -30,6 +30,14 @@ class Designer {
         Zira\Router::addAllLanguagesRoute('style');
     }
 
+    public function onActivate() {
+        Zira\Cache::addOnForceClearCallback($this, 'reloadMainStyle', 'designer');
+    }
+
+    public function onDeactivate() {
+        Zira\Cache::removeOnForceClearCallback('designer');
+    }
+
     public function bootstrap() {
         if (ENABLE_CONFIG_DATABASE && Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_CHANGE_LAYOUT)) {
             Dash\Dash::loadDashLanguage();
@@ -45,7 +53,6 @@ class Designer {
         
         if (Zira\Assets::isActive()) {
             self::registerMainStyle();
-            Zira\Cache::addOnForceClearCallback($this, 'reloadMainStyle');
         } else if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
             $style = Zira\Helper::tag_short('link', array(
                 'rel' => 'stylesheet',
@@ -58,6 +65,8 @@ class Designer {
         if (Zira\Router::getModule() != 'designer' && Zira\Router::getModule() != 'dash') {
             Zira\View::registerRenderHook($this, 'applyStyle');
         }
+
+        Zira\Cache::addOnForceClearCallback($this, 'reloadMainStyle', 'designer');
     }
     
     protected static function _loadStyles($useCache=true) {
