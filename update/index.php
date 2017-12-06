@@ -131,7 +131,21 @@ if ($step>0) {
             $response = array('error' => $e->getMessage());
             Zira\Log::write($e->getMessage());
         }
-        Zira\Models\Option::raiseVersion();
+        // clearing cache
+        try {
+            $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
+            if ($d) {
+                while(($f=readdir($d))!==false) {
+                    if ($f=='.' || $f=='..' || !is_file(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f)) continue;
+                    if (substr($f,-6)!='.cache') continue;
+                    @chmod(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f, 0660);
+                    @unlink(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f);
+                }
+                closedir($d);
+            }
+        } catch(\Exception $e) {
+            // ignore
+        }
     } else {
         $response = array('error' => Zira\Locale::t('An error occurred.'));
     }
