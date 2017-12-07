@@ -2322,6 +2322,69 @@
         parseStyles(content);
         editorMap.media = null;
     };
+
+    var extractKeyframesContent = function(code, rec) {
+        if (typeof(rec)=="undefined") rec = 0;
+        rec++;
+        if (extractKeyframesContent.rec>9) return code;
+        var m = null, m1 = null, m2 = null, s = null, s1 = null, s2 = null;
+        m = code.indexOf('@keyframes');
+        if (m<0) return code;
+        var i = 0, iter = 0;
+        s = m;
+        do {
+            iter++;
+            if (iter>99) break;
+            s1 = code.indexOf('{', s);
+            s2 = code.indexOf('}', s);
+            if (s1<0) s1 = code.length-1;
+            if (s2<0) {
+                if (m1!==null) {
+                    m2 = m1;
+                } else {
+                    m1 = m2 = s1;
+                }
+                break;
+            }
+            if (m1===null) {
+                if (s1<s2) {
+                    m1 = s1;
+                    s = s1 + 1;
+                    continue;
+                } else {
+                    m1 = m2 = s2;
+                    break;
+                }
+            }
+            if (s1<s2) {
+                i++;
+                s = s1 + 1;
+                continue;
+            } else {
+                if (i===0) {
+                    m2 = s2;
+                    break;
+                } else {
+                    i--;
+                    s = s2 + 1;
+                    continue;
+                }
+            }
+        } while (true);
+        if (m1===null || m2===null) return code;
+        var keyframes = code.substr(m,m1-m);
+        var content = code.substr(m1+1,m2-m1-1);
+        var prop = prepareCode(content);
+        parseKeyframes(keyframes, content);
+        code = code.substr(0, m) + code.substr(m2+1);
+        return extractKeyframesContent(code, rec);
+    };
+    
+    var parseKeyframes = function(keyframes, content) {
+        editorMap.keyframes = keyframes;
+        parseStyles(content);
+        editorMap.keyframes = null;
+    };
     
     var parseStyles = function(code) {
         var regexp = new RegExp('([^{]+)[{]([^}]*)[}]', 'gi');
@@ -2476,15 +2539,20 @@
         styles: {},
         indexes: {},
         media: null,
+        keyframes: null,
         init: function() {
             this.map = [];
             this.styles = {};
             this.indexes = {};
             this.media = null;
+            this.keyframes = null;
         },
         set: function(element, prop, val) {
             if (this.media) {
                 return mediaMap.set(this.media, element, prop, val);
+            }
+            if (this.keyframes) {
+                return keyframesMap.set(this.keyframes, element, prop, val);
             }
             if (typeof(this.styles[element])=="undefined") this.styles[element] = {};
             var i = 0;
@@ -2499,6 +2567,9 @@
             if (this.media) {
                 return mediaMap.get(this.media, element, prop);
             }
+            if (this.keyframes) {
+                return keyframesMap.get(this.keyframes, element, prop);
+            }
             if (typeof(this.styles[element])=="undefined") return null;
             if (typeof(this.styles[element][prop])=="undefined" || this.styles[element][prop]===null) return null;
             return this.styles[element][prop].value;
@@ -2506,6 +2577,9 @@
         remove: function(element, prop) {
             if (this.media) {
                 return mediaMap.remove(this.media, element, prop);
+            }
+            if (this.keyframes) {
+                return keyframesMap.remove(this.keyframes, element, prop);
             }
             if (typeof(this.styles[element])=="undefined") return;
             if (typeof(this.styles[element][prop])=="undefined") return;
@@ -2606,6 +2680,77 @@
         }
     };
 
+    var keyframesMap = {
+        map: [],
+        eMap: {},
+        styles: {},
+        indexes: {},
+        init: function() {
+            this.map = [];
+            this.eMap = {};
+            this.styles = {};
+            this.indexes = {};
+        },
+        set: function(keyframes, element, prop, val) {
+            if (typeof(this.styles[keyframes])=="undefined") this.styles[keyframes] = {};
+            if (typeof(this.styles[keyframes][element])=="undefined") this.styles[keyframes][element] = {};
+            if (typeof(this.indexes[keyframes])=="undefined") this.indexes[keyframes] = {};
+            if (typeof(this.eMap[keyframes])=="undefined") this.eMap[keyframes] = [];
+            var i = 0;
+            if (typeof(this.indexes[keyframes][element])!="undefined") {
+                i = this.indexes[keyframes][element] + 1;
+            }
+            if ($.inArray(keyframes, this.map)<0) this.map.push(keyframes);
+            if ($.inArray(element, this.eMap[keyframes])<0) this.eMap[keyframes].push(element);
+            this.styles[keyframes][element][prop] = { index: i, value: val };
+            this.indexes[keyframes][element] = i;
+        },
+        get: function(keyframes, element, prop) {
+            if (typeof(this.styles[keyframes])=="undefined") return null;
+            if (typeof(this.styles[keyframes][element])=="undefined") return null;
+            if (typeof(this.styles[keyframes][element][prop])=="undefined" || this.styles[keyframes][element][prop]===null) return null;
+            return this.styles[keyframes][element][prop].value;
+        },
+        remove: function(keyframes, element, prop) {
+            if (typeof(this.styles[keyframes])=="undefined") return;
+            if (typeof(this.styles[keyframes][element])=="undefined") return;
+            if (typeof(this.styles[keyframes][element][prop])=="undefined") return;
+            this.styles[keyframes][element][prop] = null;
+        },
+        getContent: function(pretty) {
+            if (typeof(pretty)=="undefined") pretty = false;
+            var content = '';
+            for (var i=0; i<this.map.length; i++) {
+                var m_content = [];
+                var keyframes = this.map[i];
+                for (var y=0; y<this.eMap[keyframes].length; y++) {
+                    var element = this.eMap[keyframes][y];
+                    var props = [];
+                    for (var prop in this.styles[keyframes][element]) {
+                        if (this.styles[keyframes][element][prop]===null) continue;
+                        props.push(this.styles[keyframes][element][prop]);
+                    }
+                    if (props.length==0) continue;
+                    props.sort(function(a, b){
+                        return a.index - b.index;
+                    });
+                    if (!pretty) {
+                        m_content.push(element + '{' + $.map(props, function(value, index) { return value.value; }).join('') + '}');
+                    } else {
+                        m_content.push(element.split(',').join(','+"\r\n\t") + ' {' + "\r\n\t\t" + $.map(props, function(value, index) { return value.value; }).join("\r\n\t\t") + "\r\n\t" + '}');
+                    }
+                }
+                if (m_content.length===0) continue;
+                if (!pretty) {
+                    content += keyframes + '{' + m_content.join('') + '}';
+                } else {
+                    content += keyframes + ' {' + "\r\n\t" + m_content.join("\r\n\t") + "\r\n" + '}' + "\r\n";
+                }
+            }
+            return content;
+        }
+    };
+
     $(window).keydown(function(e){
         if (e.keyCode == 83 && e.ctrlKey) {
             e.preventDefault();
@@ -2636,8 +2781,10 @@
         }
         editorMap.init();
         mediaMap.init();
+        keyframesMap.init();
         content = prepareCode(content);
         content = extractMediaContent(content);
+        content = extractKeyframesContent(content);
         parseStyles(content);
         return true;
     };
@@ -2645,12 +2792,14 @@
     window.editorStyle = function() {
         var content = editorMap.getContent();
         content += mediaMap.getContent();
+        content += keyframesMap.getContent();
         return content;
     };
     
     window.editorContent = function() {
         var content = editorMap.getContent(true);
         content += mediaMap.getContent(true);
+        content += keyframesMap.getContent(true);
         return content;
     };
     
