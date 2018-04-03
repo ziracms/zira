@@ -2100,21 +2100,26 @@ ul.vote-results li .vote-result {
 }
 .zira-collapse-toggle {
     display: block;
-    color: #1A354D;
+    color: #A0C4EC;
     padding: 2px 0px 2px 10px;
     margin: 0px;
     border-left: 3px solid #B04615;
-    background-color: #59A5C3;
+    background-color: #41444E;
     border-radius: 0px;
     cursor: pointer;
 }
 .zira-collapse-block {
-    color: #1A354D;
+    color: #ACB5BC;
     padding: 2px 0px 2px 10px;
     margin: 0px;
     border-left: 3px solid #27709E;
-    background-color: #83D7F8;
+    background-color: #5D636E;
     border-radius: 0px;
+}
+
+.recaptcha {
+    filter: invert(65%) contrast(300%);
+    opacity: .6;
 }
 
 /** mobile **/

@@ -147,5 +147,6 @@ return array(
     'To play the media you will need to either update your browser to a recent version or update your flash plugin.' => 'Для проигрывыния медиа установите последнюю версию браузера или обновите flash-плеер.',
     'Users online' => 'Пользователи онлайн',
     'Who\'s online' => 'Сейчас на сайте',
-    'Nobody' => 'Никого'
+    'Nobody' => 'Никого',
+    'CAPTCHA' => 'CAPTCHA'
 );

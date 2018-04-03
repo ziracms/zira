@@ -409,5 +409,9 @@ return array(
     'Show image descriptions' => 'Показывать описание изображений',
     'Add collapsible block' => 'Вставить скрываемый блок',
     'Collapsible block' => 'Скрываемый блок',
-    'Hidden text' => 'Скрытый текст'
+    'Hidden text' => 'Скрытый текст',
+    'Do not use' => 'Не использовать',
+    'Site key for reCaptcha' => 'Ключ сайта для reCaptcha',
+    'Secret key for reCaptcha' => 'Секретный ключ для reCaptcha',
+    'Anti-Bot (CAPTCHA)' => 'Анти-Бот (CAPTCHA)'
 );

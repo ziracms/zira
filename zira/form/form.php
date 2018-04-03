@@ -229,6 +229,17 @@ class Form {
         return $html;
     }
 
+    public static function recaptcha($site_key, $wrapper_class='recaptcha') {
+        $html = Helper::tag_open('div',array('class'=>$wrapper_class));
+        $html .= Helper::tag('div', null, array(
+            'class' => 'g-recaptcha', 
+            'data-sitekey' => $site_key, 
+            'data-size' => Zira\Request::isMobile() ? 'compact' : 'normal'
+        ));
+        $html .= Helper::tag_close('div');
+        return $html;
+    }
+
     public static function generateCaptcha() {
         $token = Request::get('token');
         if (!$token) return;
@@ -293,6 +304,31 @@ class Form {
         $captcha = Session::get(self::getFieldName($token, CAPTCHA_NAME));
         if (!$captcha) return false;
         return $value == $captcha;
+    }
+
+    public static function isRecaptchaValid($secret_key, $response_value) {
+        if (!$secret_key || !$response_value) return false;
+        $data = http_build_query(array(
+            'secret' => $secret_key,
+            'response' => $response_value
+        ));
+        $options = array(
+            'http' => array(
+                        'method'  => 'POST',
+                        'header'  => 'Content-type: application/x-www-form-urlencoded',
+                        'content' => $data
+                    )
+        );
+        $context  = stream_context_create($options);
+        try {
+            $result = file_get_contents(Zira\Models\Captcha::RECAPTCHA_VALIDATE_URL, false, $context);
+            if (!$result) throw new \Exception('An error occurred');
+            $result_data = json_decode($result, true);
+            if (empty($result_data) || !array_key_exists('success', $result_data)) throw new \Exception('An error occurred');
+        } catch (\Exception $e) {
+            return false;
+        }
+        return $result_data['success'];
     }
 
     public static function getValue($token,$name,$method=Request::POST) {

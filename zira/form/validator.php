@@ -354,6 +354,13 @@ class Validator {
     }
 
     public function registerCaptcha($message) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return;
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_registerCaptchaRecaptcha($message);
+        else return $this->_registerCaptchaDefault($message);
+    }
+
+    protected function _registerCaptchaDefault($message) {
         $this->_fields []= array(
             'type' => self::TYPE_CAPTCHA,
             'name' => CAPTCHA_NAME,
@@ -362,11 +369,37 @@ class Validator {
         );
     }
 
+    protected function _registerCaptchaRecaptcha($message) {
+        $this->_fields []= array(
+            'type' => self::TYPE_CAPTCHA,
+            'name' => CAPTCHA_NAME,
+            'message' => $message
+        );
+    }
+
     protected function validateCaptcha(array $field) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return true;
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_validateCaptchaRecaptcha($field);
+        else return $this->_validateCaptchaDefault($field);
+    }
+
+    protected function _validateCaptchaDefault(array $field) {
         return Form::isCaptchaValid($field['token'], $this->_method);
     }
 
+    protected function _validateCaptchaRecaptcha(array $field) {
+        return Form::isRecaptchaValid(Zira\Config::get('recaptcha_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT));
+    }
+
     public function registerCaptchaLazy($form_id, $message) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return;
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_registerCaptchaLazyRecaptcha($form_id, $message);
+        else return $this->_registerCaptchaLazyDefault($form_id, $message);
+    }
+
+    protected function _registerCaptchaLazyDefault($form_id, $message) {
         $this->_fields []= array(
             'type' => self::TYPE_CAPTCHA_LAZY,
             'name' => CAPTCHA_NAME,
@@ -376,13 +409,39 @@ class Validator {
         );
     }
 
+    protected function _registerCaptchaLazyRecaptcha($form_id, $message) {
+        $this->_fields []= array(
+            'type' => self::TYPE_CAPTCHA_LAZY,
+            'name' => CAPTCHA_NAME,
+            'form_id' => $form_id,
+            'message' => $message
+        );
+    }
+
     protected function validateCaptchaLazy(array $field) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return true;
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_validateCaptchaLazyRecaptcha($field);
+        else return $this->_validateCaptchaLazyDefault($field);
+    }
+
+    protected function _validateCaptchaLazyDefault(array $field) {
         if ($this->getValue($field)===null && !Zira\Models\Captcha::isActive($field['form_id'])) {
             Zira\Models\Captcha::register($field['form_id']);
             return true;
         } else {
             Zira\Models\Captcha::register($field['form_id']);
             return Form::isCaptchaValid($field['token'], $this->_method);
+        }
+    }
+
+    protected function _validateCaptchaLazyRecaptcha(array $field) {
+        if (Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT)===null && !Zira\Models\Captcha::isActive($field['form_id'])) {
+            Zira\Models\Captcha::register($field['form_id']);
+            return true;
+        } else {
+            Zira\Models\Captcha::register($field['form_id']);
+            return Form::isRecaptchaValid(Zira\Config::get('recaptcha_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT));
         }
     }
 

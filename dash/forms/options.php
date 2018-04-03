@@ -66,6 +66,11 @@ class Options extends Form
         if (count(Zira\Config::get('languages'))>1) {
             $html .= $this->checkbox(Locale::t('Detect language'), 'detect_language', null, false);
         }
+        $html .= $this->select(Locale::t('Anti-Bot (CAPTCHA)'), 'captcha_type', Zira\Models\Captcha::getTypes(), array('class'=>'form-control captcha_select'));
+        $html .= Zira\Helper::tag_open('div', array('class' => 'recaptcha_inputs'));
+        $html .= $this->input(Locale::t('Site key for reCaptcha'), 'recaptcha_site_key');
+        $html .= $this->input(Locale::t('Secret key for reCaptcha'), 'recaptcha_secret_key');
+        $html .= Zira\Helper::tag_close('div');
         $html .= $this->checkbox(Locale::t('Sticky top bar'), 'dash_panel_frontend', null, false);
         $html .= $this->select(Locale::t('Window buttons position'), 'dashwindow_mode', array(
             '0' => Locale::t('Left'),
@@ -87,7 +92,10 @@ class Options extends Form
         $validator->registerCustom(array(get_class(), 'checkWatermark'), 'watermark',Locale::t('Invalid value "%s"',Locale::t('Watermark')));
         $validator->registerCustom(array(get_class(), 'checkPHPDateFormat'), 'date_format',Locale::t('Invalid value "%s"',Locale::t('PHP date format')));
         $validator->registerCustom(array(get_class(), 'checkJSDateFormat'), 'datepicker_date_format',Locale::t('Invalid value "%s"',Locale::t('JS date format')));
-
+        $validator->registerCustom(array(get_class(), 'checkCaptchaType'), 'captcha_type',Locale::t('Invalid value "%s"',Locale::t('Anti-Bot (CAPTCHA)')));
+        $validator->registerString('recaptcha_site_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Site key for reCaptcha')));
+        $validator->registerString('recaptcha_secret_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Secret key for reCaptcha')));
+        
         $watermark = $this->getValue('watermark');
         if (!empty($watermark)) {
             $watermark = trim($watermark,'/');
@@ -126,6 +134,11 @@ class Options extends Form
 
     public static function checkJSDateFormat($datepicker_date_format) {
         if ($datepicker_date_format!='DD.MM.YYYY' && $datepicker_date_format!='MM.DD.YYYY') return false;
+        return true;
+    }
+
+    public static function checkCaptchaType($captcha_type) {
+        if (!array_key_exists($captcha_type, Zira\Models\Captcha::getTypes())) return false;
         return true;
     }
 }

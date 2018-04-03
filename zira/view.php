@@ -327,6 +327,9 @@ class View {
         if (self::$_render_js_strings) {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
             $js_scripts .= 'zira_base = \''.Helper::baseUrl('').'\';';
+            if (Config::get('captcha_type', Models\Captcha::TYPE_DEFAULT)==Models\Captcha::TYPE_RECAPTCHA) {
+                $js_scripts .= 'zira_recaptcha_url = \''.Models\Captcha::RECAPTCHA_JS_URL.'?hl='.(Locale::getLanguage()).'\';';
+            }
             $js_scripts .= 'zira_scroll_effects_enabled = '.(Config::get('site_scroll_effects',1) ? 'true' : 'false').';';
             $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';
             $js_scripts .= Helper::tag_close('script')."\r\n";

@@ -36,7 +36,10 @@ class Options extends Model {
                 'dashwindow_maximized' => 'int',
                 'watermark_margin' => 'int',
                 'site_offline' => 'int',
-                'check_updates' => 'int'
+                'check_updates' => 'int',
+                'captcha_type' => 'string',
+                'recaptcha_site_key' => 'string',
+                'recaptcha_secret_key' => 'string'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

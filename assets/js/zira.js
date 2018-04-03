@@ -266,7 +266,13 @@
                     $(window).trigger('scroll');
                 }
             }
-        }        
+        }
+        /** 
+         * reCaptcha 
+         **/
+        if ($('.g-recaptcha').length>0) {
+            zira_load_recaptcha();
+        }
     });
 
     zira_resize_jplayer = function() {
@@ -1190,6 +1196,21 @@
             method.call(object, arg);
         }
     };
+
+    zira_load_recaptcha = function() {
+        if (typeof zira_recaptcha_url == "undefined") return;
+        $('body').append('<script src="'+zira_recaptcha_url+'"></script>');
+
+        $('.g-recaptcha').each(function(){
+            $(this).parents('form').submit(function(){
+                window.setTimeout(function(){
+                    try {
+                        grecaptcha.reset();
+                    } catch(err) {}
+                }, 3000);
+            });
+        });
+    }
 
     /**
      * translate

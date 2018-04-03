@@ -701,6 +701,20 @@ class Factory {
     }
 
     public function captcha($label, $description = null) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return '';
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_captcha_recaptcha();
+        else return $this->_captcha_default($label, $description);
+    }
+
+    public function captchaLazy($label, $description = null) {
+        $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
+        if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return '';
+        if (!Zira\Models\Captcha::isActive($this->_id)) return '';
+        return $this->captcha($label, $description);
+    }
+
+    protected function _captcha_default($label, $description = null) {
         $error_class = '';
         if ($this->isErrorField(CAPTCHA_NAME)) $error_class=' '.$this->_field_error_class;
         $label = Form::label($label, null, array('class'=>$this->_label_class));
@@ -718,9 +732,12 @@ class Factory {
         return $this->wrap($label.$this->wrap($captcha,$this->_captcha_wrapper_class));
     }
 
-    public function captchaLazy($label) {
-        if (!Zira\Models\Captcha::isActive($this->_id)) return '';
-        return $this->captcha($label);
+    protected function _captcha_recaptcha() {
+        $label = Form::label(' ', null, array('class'=>$this->_label_class));
+        $captcha = Form::recaptcha(
+            Zira\Config::get('recaptcha_site_key','')
+        );
+        return $this->wrap($label.$this->wrap($captcha,$this->_input_wrap_class));
     }
 
     public function validate() {
