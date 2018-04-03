@@ -20,7 +20,8 @@ class Comments extends Model {
         foreach($data as $comment_id) {
             $comment = new Zira\Models\Comment($comment_id);
             if (!$comment->loaded()) {
-                return array('error' => Zira\Locale::t('An error occurred'));
+                continue;
+                //return array('error' => Zira\Locale::t('An error occurred'));
             };
             $comment->delete();
 
