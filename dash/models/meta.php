@@ -41,7 +41,8 @@ class Meta extends Model {
                 'video_check' => 'int',
                 'comments_enabled'=>'int',
                 'site_scroll_effects'=>'int',
-                'site_parse_images'=>'int'
+                'site_parse_images'=>'int',
+                'site_records_grid'=>'int'
             );
 
             $config_ids = array();

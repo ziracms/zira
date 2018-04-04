@@ -100,7 +100,8 @@ class Category extends Zira\Page {
                     'display_author' => $display_author,
                     'display_date' => $display_date
                 ),
-                'pagination' => $pagination
+                'pagination' => $pagination,
+                'grid' => Zira\Config::get('site_records_grid', 1)
         );
 
         if (!$is_ajax) {

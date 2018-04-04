@@ -32,7 +32,7 @@
 &nbsp; &nbsp;
 <span class="glyphicon glyphicon-time"></span> <span><?php echo Zira\Helper::html(date(Zira\Config::get('date_format'), strtotime($item->modified_date))) ?></span>
 &nbsp; &nbsp;
-<span class="glyphicon glyphicon-envelope"></span> <a href="<?php echo Zira\Helper::url('user/messages/'.$item->conversation_id) ?>"><?php echo Zira\Helper::html($item->subject) ?></a>
+<span class="glyphicon glyphicon-envelope"></span> <a class="conversation" href="<?php echo Zira\Helper::url('user/messages/'.$item->conversation_id) ?>"><?php echo Zira\Helper::html($item->subject) ?></a>
 </li>
 <?php endforeach; ?>
 </ul>

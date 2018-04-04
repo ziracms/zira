@@ -19,7 +19,8 @@ class Index extends Zira\Page {
             $layout = Zira\Config::get('layout');
             if (static::getLayout()!==null) $layout = static::getLayout();
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                'grid' => $layout != Zira\View::LAYOUT_ALL_SIDEBARS,
+                //'grid' => $layout != Zira\View::LAYOUT_ALL_SIDEBARS,
+                'grid' => Zira\Config::get('site_records_grid', 1),
                 'categories' => $categories
             ), 'zira/home');
         }

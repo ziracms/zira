@@ -1562,7 +1562,7 @@ a.scroll-top.visible span {
     color: #ffffff;
     text-decoration: none;
 }
-.grid-category-wrapper .list .list-item {
+.grid-category-wrapper .list-item {
     width: 49%;
     display: inline-block;
     vertical-align: top;
@@ -1570,14 +1570,14 @@ a.scroll-top.visible span {
     margin-right: 5px;
     margin-right: 0\9; /** ie8 hack **/
 }
-.grid-category-wrapper .list .list-item.jsed {
+.grid-category-wrapper .list-item.jsed {
     position: relative;
 }
-.grid-category-wrapper .list .list-item.jsed .list-info-wrapper {
+.grid-category-wrapper .list-item.jsed .list-info-wrapper {
     position: absolute;
     bottom: 0px;
 }
-.grid-category-wrapper .list .list-item:nth-child(2) {
+.grid-category-wrapper .list-item:nth-child(2) {
     margin-right: 0px;
 }
 
@@ -1765,13 +1765,13 @@ a.scroll-top.visible span {
 .messages-list li.odd {
     background-color: #596268;
 }
-.messages-list li a:link,
-.messages-list li a:visited {
+.messages-list li a.conversation:link,
+.messages-list li a.conversation:visited {
     color: #CBDCE9;
 }
-.messages-list li.highlight a:link,
-.messages-list li.highlight a:visited {
-    color: #fff;
+.messages-list li.highlight a.conversation:link,
+.messages-list li.highlight a.conversation:visited {
+    color: #83afe1;
     font-weight: bold;
 }
 .messages-list .message-head {
@@ -2124,7 +2124,7 @@ ul.vote-results li .vote-result {
 
 /** mobile **/
 @media (max-width: 1199px) {
-    .grid-category-wrapper .list .list-item {
+    .grid-category-wrapper .list-item {
         margin-bottom: 5px;
         margin-right: 2px;
         margin-right: 0\9; /** ie8 hack **/
@@ -2179,10 +2179,11 @@ ul.vote-results li .vote-result {
     header .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #cccccc;
     }
-    .grid-category-wrapper .list .list-item {
+    .grid-category-wrapper .list-item {
         width: 100%;
         display: block;
         margin-right: 0px;
+        margin-bottom: 14px;
     }
     #top-menu-container .zira-search-preview-wnd {
         position: static;
@@ -2196,11 +2197,53 @@ ul.vote-results li .vote-result {
     .search-simple-form .zira-loader {
         top: 19px;
     }
-    .grid-category-wrapper .list .list-item {
-        margin-bottom: 14px;
-    }
     a.scroll-top {
         display: none !important;
+    }
+    .comment-btn-group .btn-primary {
+        display: none;
+    }
+    .comment-btn-group > .btn:last-child:not(:first-child),
+    .comment-btn-group > .dropdown-toggle:not(:first-child) {
+        border-radius: 4px;
+    }
+    .comments .comments-item .comment-avatar {
+        max-width: 30px;
+    }
+    .comments .comments-item .comment-head,
+    .comments .comments-item .comment-text,
+    .comments .comments-item .comment-info {
+        margin-left: 40px;
+    }
+    .comments .comments-item-nested-1 {
+        margin-left: 20px;
+    }
+    .comments .comments-item-nested-2 {
+        margin-left: 40px;
+    }
+    .comments .comments-item-nested-3 {
+        margin-left: 60px;
+    }
+    .comments .comments-item-nested-4 {
+        margin-left: 80px;
+    }
+    .comments .comments-item-nested-5 {
+        margin-left: 100px;
+    }
+    .comments .comments-item-nested-6 {
+        margin-left: 120px;
+    }
+    .comments .comments-item-nested-7 {
+        margin-left: 140px;
+    }
+    .comments .comments-item-nested-8 {
+        margin-left: 160px;
+    }
+    .comments .comments-item-nested-9 {
+        margin-left: 180px;
+    }
+    .comments .comments-item-nested-10 {
+        margin-left: 200px;
     }
 }
 @media (min-width: 768px) {

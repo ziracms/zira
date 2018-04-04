@@ -22,8 +22,15 @@ class Comments extends Model {
             if (!$comment->loaded()) {
                 continue;
                 //return array('error' => Zira\Locale::t('An error occurred'));
-            };
+            }
             $comment->delete();
+
+            $childs_count = Zira\Models\Comment::getCollection()
+                                ->count()
+                                ->where('record_id','=',$comment->record_id)
+                                ->and_where('published','=',Zira\Models\Comment::STATUS_PUBLISHED)
+                                ->and_where('sort_path','like',$comment->sort_path.Zira\Models\Comment::PATH_DELIMITER.'%')
+                                ->get('co');
 
             Zira\Models\Comment::getCollection()
                                 ->where('record_id','=',$comment->record_id)
@@ -34,7 +41,7 @@ class Comments extends Model {
             if ($comment->published == Zira\Models\Comment::STATUS_PUBLISHED) {
                 $record = new Zira\Models\Record($comment->record_id);
                 if ($record->loaded()) {
-                    $record->comments--;
+                    $record->comments -= ($childs_count+1);
                 }
                 if ($record->comments<0) $record->comments = 0;
                 $record->save();
@@ -45,6 +52,7 @@ class Comments extends Model {
                         Zira\User::decreaseCommentsCount($user);
                     }
                 }
+                // decrease child comments' authors count ?
             }
             
             // deleting likes

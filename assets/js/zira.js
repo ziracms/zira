@@ -119,6 +119,7 @@
             zira_scroll_effects_enabled && 
             $('#top-menu-wrapper').length>0 && 
             $('#dashpanel-container').length==0 && 
+            $('#dashpanel-fixed-button').length==0 && 
             typeof(designer_style_theme)=="undefined"
         ) {
             var topMenuTop = $('#top-menu-wrapper').offset().top;
@@ -311,14 +312,18 @@
     };
 
     zira_init_grid = function() {
-        $('.container #content .grid-category-wrapper .list .list-item').removeClass('jsed').css('height','auto');
+        $('.container #content .grid-category-wrapper .list-item').removeClass('jsed').css('height','auto');
 
-        $('.container #content .grid-category-wrapper .list').each(function(){
-            var items = $(this).children('.list-item');
+        $('.container #content .grid-category-wrapper').each(function(){
+            var list = $(this);
+            if ($(list).get(0).tagName.toLowerCase() != 'ul') list = $(list).find('ul.list');
+            if (!$(list).length) return true;
+            var items = $(list).children('.list-item');
             if ($(items).length<2) return;
             var prev = null;
             var co = 1;
             $(items).each(function(){
+                if ($(this).hasClass('jsed')) return true;
                 if (co%2==0) {
                     if (prev && $(prev).offset().top == $(this).offset().top) {
                         var h = Math.max($(prev).outerHeight(), $(this).outerHeight());
@@ -445,11 +450,12 @@
                 'category_id': category_id,
                 'last_id': last_id
             }, zira_bind(this, function(response){
-                $(this).parent('.list-view-more-wrapper').replaceWith(response);
-                if (navigator.userAgent.indexOf('MSIE')<0) {
-                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
-                } else {
-                    $('.container #content .xhr-list').removeClass('xhr-list');
+                var r = new RegExp('<ul[^>]*>([\\s\\S]+?)</ul>([\\s\\S]*)$','g');
+                var m = r.exec(response);
+                if (m) {
+                    $(this).parent('.list-view-more-wrapper').prev('ul').append(m[1]);
+                    $(this).parent('.list-view-more-wrapper').replaceWith(m[2]);
+                    zira_init_grid();
                 }
             }),'html');
         });

@@ -12,5 +12,6 @@ return array(
     '%s comments was posted' => array('%s comment was posted', '%s comments was posted'),
     'max. length: %s chars' => array('max. length: %s char', 'max. length: %s chars'),
     'Updated %s thumbs' => array('Updated %s thumb', 'Updated %s thumbs'),
-    '%s downloads' => array('%s download', '%s downloads')
+    '%s downloads' => array('%s download', '%s downloads'),
+    'Display records list in %s columns' => array('Display records list in %s column', 'Display records list in %s columns')
 );

@@ -413,5 +413,6 @@ return array(
     'Do not use' => 'Не использовать',
     'Site key for reCaptcha' => 'Ключ сайта для reCaptcha',
     'Secret key for reCaptcha' => 'Секретный ключ для reCaptcha',
-    'Anti-Bot (CAPTCHA)' => 'Анти-Бот (CAPTCHA)'
+    'Anti-Bot (CAPTCHA)' => 'Анти-Бот (CAPTCHA)',
+    'Display records list in %s columns' => array('Показывать список записей в %s колонку', 'Показывать список записей в %s колонки', 'Показывать список записей в %s колонок')
 );
