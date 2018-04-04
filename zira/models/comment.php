@@ -89,7 +89,7 @@ class Comment extends Orm {
         if ($parent!==null) {
             $parent_id = $parent->id;
             $parts = explode(self::PATH_DELIMITER, $parent->sort_path);
-            if (count($parts)>=50) return $parent->sort_path;
+            if (count($parts)>=50) return $parent->path_offset-1;
         }
 
         $offset= self::getCollection()
@@ -105,7 +105,9 @@ class Comment extends Orm {
         if ($parent===null) {
             $path = self::generatePath($path_offset, true);
         } else {
-            $path = $parent->sort_path . self::PATH_DELIMITER . self::generatePath($path_offset, false);
+            $parts = explode(self::PATH_DELIMITER, $parent->sort_path);
+            if (count($parts)>=50) $path = $parent->sort_path;
+            else $path = $parent->sort_path . self::PATH_DELIMITER . self::generatePath($path_offset, false);
         }
 
         return $path;
