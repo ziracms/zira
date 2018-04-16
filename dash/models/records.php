@@ -563,11 +563,13 @@ class Records extends Model {
         $record = new Zira\Models\Record($id);
         if (!$record->loaded()) return array();
 
+        /**
         if ($record->front_page) {
             $info[] = '<span class="glyphicon glyphicon-home"></span> ' . Zira\Locale::t('ID: %s', $record->id);
         } else {
             $info[] = '<span class="glyphicon glyphicon-tag"></span> ' . Zira\Locale::t('ID: %s', $record->id);
         }
+         **/
         //$info[] = '<span class="glyphicon glyphicon-paperclip"></span> ' . Zira\Helper::html($record->title);
         $info[] = '<span class="glyphicon glyphicon-thumbs-up"></span> ' . Zira\Locale::t('Rating: %s', Zira\Helper::html($record->rating));
         $info[] = '<span class="glyphicon glyphicon-comment"></span> ' . Zira\Locale::t('Comments: %s', Zira\Helper::html($record->comments));

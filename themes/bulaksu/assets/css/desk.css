@@ -486,7 +486,7 @@ body.dashboard-window-sidebar-resizing {
     border-bottom: 1px solid #EDEDF6;
     border-top: 1px solid #B3B6D1;
     padding: 0px;
-    margin: 7px 14px;
+    margin: 3px 14px;
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper ul {
     list-style-type: none;

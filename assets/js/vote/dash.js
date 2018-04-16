@@ -26,8 +26,8 @@ var dash_votes_select = function() {
             if (!selected || !selected.length || selected.length!=1) return;
             desk_post(url('vote/dash/info'),{'item':selected[0].data, 'token':token()}, this.bind(this, function(response){
                 if (response && response.length>0) {
-                    $(this.element).find('.vote-infobar').append('<div style="cursor:default;padding:0px;margin:10px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
-                    $(this.element).find('.vote-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:10px 0px"></div>');
+                    $(this.element).find('.vote-infobar').append('<div style="cursor:default;padding:0px;margin:5px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
+                    $(this.element).find('.vote-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:5px 0px"></div>');
                     for (var i=0; i<response.length; i++) {
                         $(this.element).find('.vote-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');
                     }

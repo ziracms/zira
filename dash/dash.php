@@ -255,6 +255,7 @@ class Dash {
             $this->addPanelGroup($this->_panel_settings_group);
         }
         if (!empty($this->_panel_modules_group['rel'])) {
+            usort($this->_panel_modules_group['rel'], array($this, 'sortPanelModuleItems'));
             $this->addPanelGroup($this->_panel_modules_group);
         }
     }
@@ -269,6 +270,13 @@ class Dash {
 
     public function getPanelItems() {
         return $this->_panel_items;
+    }
+    
+    public static function sortPanelModuleItems($a, $b) {
+        if (!is_array($a) || !is_array($b)) return 0;
+        if (!array_key_exists('label', $a) || !array_key_exists('label', $b)) return 0;
+        if ($a['label'] == $b['label']) return 0;
+        return $a['label'] < $b['label'] ? -1 : 1;
     }
 
     public function getPanelCallbacks() {

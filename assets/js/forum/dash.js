@@ -400,8 +400,8 @@ var dash_forum_topics_select = function() {
             if (!selected || !selected.length || selected.length!=1) return;
             desk_post(url('forum/dash/topicinfo'),{'topic_id':selected[0].data, 'token':token()}, this.bind(this, function(response){
                 if (response && response.length>0) {
-                    $(this.element).find('.topics-infobar').append('<div style="cursor:default;padding:0px;margin:10px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
-                    $(this.element).find('.topics-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:10px 0px"></div>');
+                    $(this.element).find('.topics-infobar').append('<div style="cursor:default;padding:0px;margin:5px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
+                    $(this.element).find('.topics-infobar').append('<div style="border-top:1px solid #B3B6D1;border-bottom:1px solid #EDEDF6;height:1px;padding:0px;margin:5px 0px"></div>');
                     for (var i=0; i<response.length; i++) {
                         var title = response[i].replace(/^.+title="([^"]+?)".+$/, '$1');
                         $(this.element).find('.topics-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+title+': '+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');

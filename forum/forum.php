@@ -137,7 +137,7 @@ class Forum {
         $messages = \Forum\Models\Message::getNewMessagesCount();
         if ($messages == 0) return false;
         return array(
-                'message'=>Zira\Locale::t('%s forum messages was posted', $messages),
+                'message'=>Zira\Locale::tm('%s forum messages was posted', 'forum', $messages),
                 'callback'=>Dash\Dash::getInstance()->getWindowJSName(\Forum\Windows\Forums::getClass())
             );
     }

@@ -155,7 +155,7 @@ class Modules extends Window {
                     if (array_key_exists('name', $meta['meta'])) $name = Zira\Locale::tm($meta['meta']['name'], $module);
                     if (array_key_exists('description', $meta['meta'])) $description = Zira\Locale::tm($meta['meta']['description'], $module);
                     if (array_key_exists('author', $meta['meta'])) $author = $meta['meta']['author'];
-                    if (array_key_exists('version', $meta['meta'])) $version = $meta['meta']['version'];
+                    //if (array_key_exists('version', $meta['meta'])) $version = $meta['meta']['version'];
                 }
             }
 
@@ -166,6 +166,15 @@ class Modules extends Window {
             $items[]=$this->createBodyFileItem($title, $description, $key, null, false, array('activated'=>in_array($key, $active_modules),'installable'=>count($tables)>0,'installed'=>$installed));
         }
 
+        usort($items, array($this, 'sortModules'));
+        
         $this->setBodyItems($items);
+    }
+    
+    public static function sortModules($a, $b) {
+        if (!is_array($a) || !is_array($b)) return 0;
+        if (!array_key_exists('title', $a) || !array_key_exists('title', $b)) return 0;
+        if ($a['title'] == $b['title']) return 0;
+        return $a['title'] < $b['title'] ? -1 : 1;
     }
 }
