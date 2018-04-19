@@ -40,7 +40,7 @@ class Group extends Form
         
         $html = $this->open();
         $html .= $this->input(Locale::t('Title').'*', 'title');
-        $html .= $this->textarea(Locale::t('Description'), 'description');
+        $html .= $this->input(Locale::t('Description'), 'description', array('placeholder'=>Locale::tm('visible for administrator', 'fields')));
         $html .= $this->select(Locale::t('Placeholder').'*','placeholder',$placeholders);
         if (count(Zira\Config::get('languages'))<2) {
             $html .= $this->hidden('language');
@@ -62,6 +62,7 @@ class Group extends Form
         $validator->registerNoTags('title',Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerUtf8('title',Locale::t('Invalid value "%s"',Locale::t('Title')));
 
+        $validator->registerString('description',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNoTags('description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerUtf8('description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         

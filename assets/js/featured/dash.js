@@ -127,3 +127,11 @@ var dash_featured_drop = function(element) {
         desk_window_request(this, url('featured/dash/add'),{'record':element.data});
     }
 };
+
+var dash_featured_on_record_select = function() {
+    var selected = this.getSelectedContentItems();
+    this.disableItemsByProperty('typo','featured');
+    if (selected && selected.length == 1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=="record") {
+        this.enableItemsByProperty('typo','featured');
+    }
+};

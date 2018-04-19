@@ -32,12 +32,22 @@ class Featured {
             Dash\Dash::getInstance()->registerModuleWindowClass('featuredWindow', 'Featured\Windows\Featured', 'Featured\Models\Dash');
             Dash\Dash::unloadDashLanguage();
             Zira\Hook::register(Dash\Windows\Records::RECORDS_MENU_HOOK, array(get_class(), 'dashRecordsMenuHook'));
+            Zira\Hook::register(Dash\Windows\Records::RECORDS_CONTEXT_MENU_HOOK, array(get_class(), 'dashRecordsContextMenuHook'));
+            Zira\Hook::register(Dash\Windows\Records::RECORDS_ON_SELECT_CALLBACK_HOOK, array(get_class(), 'dashRecordsOnSelectCallbackHook'));
         }
     }
 
     public static function dashRecordsMenuHook($window) {
         return array(
-            $window->createMenuDropdownItem(Zira\Locale::tm('Add to featured', 'featured'), 'glyphicon glyphicon-star', 'desk_call(dash_featured_add, this);', 'edit'),
+            $window->createMenuDropdownItem(Zira\Locale::tm('Add to featured', 'featured'), 'glyphicon glyphicon-star', 'desk_call(dash_featured_add, this);', 'edit', true, array('typo'=>'featured'))
         );
+    }
+    
+    public static function dashRecordsContextMenuHook($window) {
+        return $window->createContextMenuItem(Zira\Locale::tm('Add to featured', 'featured'), 'glyphicon glyphicon-star', 'desk_call(dash_featured_add, this);', 'edit', true, array('typo'=>'featured'));
+    }
+    
+    public static function dashRecordsOnSelectCallbackHook() {
+        return 'desk_call(dash_featured_on_record_select, this);';
     }
 }

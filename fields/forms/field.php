@@ -41,7 +41,7 @@ class Field extends Form
         }
         $html = $this->open();
         $html .= $this->input(Locale::t('Title').'*', 'title');
-        $html .= $this->textarea(Locale::t('Description'), 'description');
+        $html .= $this->input(Locale::t('Description'), 'description', array('placeholder'=>Locale::tm('visible for administrator', 'fields')));
         $html .= $this->select(Locale::tm('Type','fields').'*', 'field_type', $types, array('class'=>'form-control field-types-select'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form_field_values_wrapper', 'style'=>'display:none'));
         $html .= $this->input(Locale::tm('Field values','fields').'*', 'form_field_values[]', array('class'=>'form-control field-values-input', 'id'=>''));
@@ -65,11 +65,12 @@ class Field extends Form
         $validator->registerNoTags('title',Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerUtf8('title',Locale::t('Invalid value "%s"',Locale::t('Title')));
 
+        $validator->registerString('description',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerNoTags('description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         $validator->registerUtf8('description',Locale::t('Invalid value "%s"',Locale::t('Description')));
         
         $type = $this->getValue('field_type');
-        if ($type == 'radio' || $type == 'select') {
+        if ($type == 'radio' || $type == 'select' || $type == 'multiple') {
             $validator->registerCustom(array(get_class(), 'checkValues'), 'form_field_values', Locale::t('Invalid value "%s"', Locale::t('Field values')));
         }
     }

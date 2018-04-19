@@ -49,7 +49,8 @@ class Record extends Table {
             'front_page' => Field::tinyint(true, true, 0),
             'rating' => Field::int(true, false, 0),
             'comments' => Field::int(true, true, 0),
-            'tpl' => Field::string()
+            'tpl' => Field::string(),
+            'extradata' => Field::blob(false)
         );
     }
 

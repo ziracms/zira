@@ -275,8 +275,7 @@ class Dash {
     public static function sortPanelModuleItems($a, $b) {
         if (!is_array($a) || !is_array($b)) return 0;
         if (!array_key_exists('label', $a) || !array_key_exists('label', $b)) return 0;
-        if ($a['label'] == $b['label']) return 0;
-        return $a['label'] < $b['label'] ? -1 : 1;
+        return strcmp($a['label'], $b['label']);
     }
 
     public function getPanelCallbacks() {

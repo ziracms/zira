@@ -38,6 +38,7 @@ class Factory {
     protected $_input_group_button_class = 'input-group-btn';
     protected $_input_class = 'form-control';
     protected $_label_class = 'col-sm-3 control-label';
+    protected $_inline_label_class = 'col-sm-3 control-label-inline';
     protected $_input_wrap_class = 'col-sm-9';
     protected $_file_wrap_class = 'col-sm-4';
     protected $_input_offset_wrap_class = 'col-sm-offset-3 col-sm-9';

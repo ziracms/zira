@@ -13,6 +13,9 @@ use Zira\Permission;
 
 class Records extends Window {
     const RECORDS_MENU_HOOK = 'dash_records_menu_hook';
+    const RECORDS_CONTEXT_MENU_HOOK = 'dash_records_context_menu_hook';
+    const RECORDS_SIDEBAR_HOOK = 'dash_records_sidebar_hook';
+    const RECORDS_ON_SELECT_CALLBACK_HOOK = 'dash_records_on_select_callback_hook';
 
     protected static $_icon_class = 'glyphicon glyphicon-book';
     protected static $_title = 'Records';
@@ -56,6 +59,13 @@ class Records extends Window {
         $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Files'), 'glyphicon glyphicon-file', 'desk_call(dash_records_record_files, this);', 'edit', true, array('typo'=>'files'))
         );
+        // extra sidebar items
+        $extra_items = \Zira\Hook::run(self::RECORDS_SIDEBAR_HOOK, $this);
+        if (!empty($extra_items)) {
+            foreach($extra_items as $extra) {
+                $this->addDefaultSidebarItem($extra);
+            }
+        }
 
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('New category'), 'glyphicon glyphicon-folder-close', 'desk_call(dash_records_create_category, this);', 'create')
@@ -121,6 +131,16 @@ class Records extends Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Publish'), 'glyphicon glyphicon-ok', 'desk_call(dash_records_record_publish, this);', 'edit', true, array('typo'=>'publish'))
         );
+        // extra context menu items
+        $extra_items = \Zira\Hook::run(self::RECORDS_CONTEXT_MENU_HOOK, $this);
+        if (!empty($extra_items)) {
+            $this->addDefaultContextMenuItem(
+                $this->createContextMenuSeparator()
+            );
+            foreach($extra_items as $extra) {
+                $this->addDefaultContextMenuItem($extra);
+            }
+        }
 
         $this->setOnEditItemJSCallback(
             $this->createJSCallback(
@@ -138,10 +158,16 @@ class Records extends Window {
             'desk_call(dash_records_load, this);'
         );
 
+        $onSelectCallback = 'desk_call(dash_records_select, this);';
+        // extra onSelect callbacks
+        $extra_items = \Zira\Hook::run(self::RECORDS_ON_SELECT_CALLBACK_HOOK);
+        if (!empty($extra_items)) {
+            foreach($extra_items as $extra) {
+                $onSelectCallback .= $extra;
+            }
+        }
         $this->setOnSelectJSCallback(
-            $this->createJSCallback(
-                'desk_call(dash_records_select, this);'
-            )
+            $this->createJSCallback($onSelectCallback)
         );
 
         $this->setOnDropJSCallback(
@@ -397,11 +423,12 @@ class Records extends Window {
             $this->createMenuDropdownSeparator(),
             $this->createMenuDropdownItem(Zira\Locale::t('Publish'), 'glyphicon glyphicon-ok', 'desk_call(dash_records_record_publish, this);', 'edit', true, array('typo'=>'publish')),
             $this->createMenuDropdownItem(Zira\Locale::t('Show on front page'), 'glyphicon glyphicon-home', 'desk_call(dash_records_record_front, this);', 'edit', true, array('typo'=>'front_page')),
-            $this->createMenuDropdownSeparator(),
-            $this->createMenuDropdownItem(Zira\Locale::t('Slider'), 'glyphicon glyphicon-film', 'desk_call(dash_records_record_slider, this);', 'edit', true, array('typo'=>'slider')),
-            $this->createMenuDropdownItem(Zira\Locale::t('Gallery'), 'glyphicon glyphicon-th', 'desk_call(dash_records_record_gallery, this);', 'edit', true, array('typo'=>'gallery'))
+            //$this->createMenuDropdownSeparator(),
+            //$this->createMenuDropdownItem(Zira\Locale::t('Slider'), 'glyphicon glyphicon-film', 'desk_call(dash_records_record_slider, this);', 'edit', true, array('typo'=>'slider')),
+            //$this->createMenuDropdownItem(Zira\Locale::t('Gallery'), 'glyphicon glyphicon-th', 'desk_call(dash_records_record_gallery, this);', 'edit', true, array('typo'=>'gallery'))
         );
 
+        // extra menu items
         $extra_items = \Zira\Hook::run(self::RECORDS_MENU_HOOK, $this);
         if (!empty($extra_items)) {
             $recordMenu [] = $this->createMenuDropdownSeparator();

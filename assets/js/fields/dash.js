@@ -149,7 +149,7 @@ var dash_fields_item_edit = function() {
 var dash_fields_field_form_init = function() {
     $(this.content).find('select.field-types-select').eq(0).change(this.bind(this, function(){
         var val = $(this.content).find('select.field-types-select').eq(0).val();
-        if (val == 'radio' || val == 'select') {
+        if (val == 'radio' || val == 'select' || val == 'multiple') {
             $(this.content).find('.form_field_values_wrapper').show();
             desk_call(dash_fields_field_values_init, this);
         } else {
@@ -282,5 +282,94 @@ var dash_fields_fields_drag = function() {
         this.dragOverItem = null;
         this.dragReplaced = false;
         $(this.content).find('li.tmp-drag-fields-item').remove();
+    }));
+};
+
+var dash_fields_records_on_select = function() {
+    var selected = this.getSelectedContentItems();
+    this.disableItemsByProperty('typo','fields');
+    if (selected && selected.length == 1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=="record") {
+        this.enableItemsByProperty('typo','fields');
+    }
+};
+
+var dash_fields_records_open = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        var data = {
+            'data':{
+                'items': [selected[0].data]
+            }
+        };
+        desk_call(dash_fields_values_wnd, null, data);
+    }
+};
+
+var dash_fields_records_load = function() {
+    $(this.content).find('.fields_new_group_btn').click(function(){
+        fieldsGroupsWindow();
+    });
+    $(this.content).find('.fields_record_file_btn').click(this.bind(this, function(e){
+        desk_file_selector(function(selected){
+            if (selected && selected.length>0) {
+                for (var i=0; i<selected.length; i++) {
+                    var src = selected[i].data;
+                    var regexp = new RegExp('\\'+desk_ds, 'g');
+                    src = src.replace(regexp,'/');
+                    var url = encodeURIComponent(src).replace(/%2F/gi,'/');
+                    $(this.container).find('.fields_record_files_wrapper').append('<div style="margin-bottom:4px"><span class="glyphicon glyphicon-remove-circle fields_record_files_hidden_remove" style="cursor:pointer"></span> <a href="'+baseUrl(url)+'" data-url="'+url+'" target="_blank">'+src.split('/').slice(-1)[0]+'</a></div>');
+                    var input = $(this.container).find('.fields_record_files_hidden').last();
+                    $(input).clone().insertAfter(input);
+                    $(input).val(url);
+                }
+                this.wnd.focusedElement = null;
+            }
+        }, {
+            'wnd': this,
+            'container': $(e.originalEvent.target).parents('.form-group')
+        });
+    }));
+    $(this.content).on('click', '.fields_record_files_hidden_remove', this.bind(this, function(e){
+        var link = $(e.originalEvent.target).parent().children('a');
+        var url = $(link).data('url');
+        $(e.originalEvent.target).parents('.form-group').find('input[type=hidden]').each(function(index, elem){
+            if ($(elem).val() == url) {
+                $(elem).remove();
+                $(link).parent().remove();
+                return false;
+            }
+        });
+    }));
+    $(this.content).find('.fields_record_image_btn').click(this.bind(this, function(e){
+        desk_file_selector(function(selected){
+            if (selected && selected.length>0) {
+                for (var i=0; i<selected.length; i++) {
+                    if (typeof selected[i].type == "undefined" || selected[i].type != 'image') continue;
+                    var src = selected[i].data;
+                    var regexp = new RegExp('\\'+desk_ds, 'g');
+                    var url = src.replace(regexp,'/');
+                    url = encodeURIComponent(url).replace(/%2F/gi,'/');
+                    $(this.container).find('.fields_record_images_wrapper').append('<div style="position:relative;margin-bottom:4px;display:inline-block;vertical-align:top;margin:0px 2px 2px 0px;"><span class="glyphicon glyphicon-remove-circle fields_record_images_hidden_remove" style="position:absolute;cursor:pointer;z-index:9;background:white;"></span> <img src="'+baseUrl(url)+'" height="200" data-url="'+url+'" alt="'+url.split('/').slice(-1)[0]+'" /></div>');
+                    var input = $(this.container).find('.fields_record_images_hidden').last();
+                    $(input).clone().insertAfter(input);
+                    $(input).val(url);
+                }
+                this.wnd.focusedElement = null;
+            }
+        }, {
+            'wnd': this,
+            'container': $(e.originalEvent.target).parents('.form-group')
+        });
+    }));
+    $(this.content).on('click', '.fields_record_images_hidden_remove', this.bind(this, function(e){
+        var img = $(e.originalEvent.target).parent().children('img');
+        var url = $(img).data('url');
+        $(e.originalEvent.target).parents('.form-group').find('input[type=hidden]').each(function(index, elem){
+            if ($(elem).val() == url) {
+                $(elem).remove();
+                $(img).parent().remove();
+                return false;
+            }
+        });
     }));
 };

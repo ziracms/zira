@@ -64,7 +64,8 @@ class Groups extends Window {
         $this->addVariables(array(
             'dash_fields_blank_src' => Zira\Helper::imgUrl('blank.png'),
             'dash_fields_fields_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Fields::getClass()),
-            'dash_fields_field_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Field::getClass())
+            'dash_fields_field_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Field::getClass()),
+            'dash_fields_values_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Values::getClass())
         ));
 
         $this->includeJS('fields/dash');

@@ -65,4 +65,12 @@ interface Field {
      * @return string
      */
     public static function longtext($not_null = false, $default = null);
+    
+    /**
+     * Blob type
+     * @param bool|false $not_null
+     * @param null $default
+     * @return string
+     */
+    public static function blob($not_null = false, $default = null);
 }

@@ -27,6 +27,8 @@ abstract class Field implements \Zira\Db\Implement\Field {
     const FIELD_TYPE_TEXT_NOT_NULL = 'TEXT NOT NULL';
     const FIELD_TYPE_LONGTEXT = 'LONGTEXT';
     const FIELD_TYPE_LONGTEXT_NOT_NULL = 'LONGTEXT NOT NULL';
+    const FIELD_TYPE_BLOB = 'BLOB';
+    const FIELD_TYPE_BLOB_NOT_NULL = 'BLOB NOT NULL';
 
     protected static function buildDefault($default) {
         if ($default !== null) {
@@ -108,6 +110,15 @@ abstract class Field implements \Zira\Db\Implement\Field {
             return self::FIELD_TYPE_LONGTEXT_NOT_NULL . $default;
         } else {
             return self::FIELD_TYPE_LONGTEXT . $default;
+        }
+    }
+    
+    public static function blob($not_null = false, $default = null) {
+        $default = self::buildDefault($default);
+        if ($not_null) {
+            return self::FIELD_TYPE_BLOB_NOT_NULL . $default;
+        } else {
+            return self::FIELD_TYPE_BLOB . $default;
         }
     }
 }

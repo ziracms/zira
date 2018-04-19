@@ -233,7 +233,9 @@ var Desk = {
                     this.windows[id].setSidebarResizing(false);
                     this.windows[id].setContentClicked(false);
                 }
-                this.windows[id].blur(false);
+                if (!(current_active instanceof DashWindow) || current_active.getId()!=this.windows[id].getId()) {
+                    this.windows[id].blur(false);
+                }
             }
         }
         if ((current_active instanceof DashWindow) && (!(this.active instanceof DashWindow) || current_active.getId()!=this.active.getId())) {
@@ -661,6 +663,7 @@ var Desk = {
         this.windows[id].onResizeCallback = this.dock_position;
         this.windows[id].onMenuItemCallback = this.bind(this, this.doUpdateDock);
         this.windows[id].onLoadCallback = this.bind(this, this.forceUpdateDock);
+        this.windows[id].onFocusRequest = this.bind(this, this.focusWindow);
         this.forceUpdateDock();
         return this.windows[id];
     },

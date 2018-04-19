@@ -14,6 +14,20 @@ class Group extends Orm {
     public static $table = 'field_groups';
     public static $pk = 'id';
     public static $alias = 'fld_grp';
+    
+    public static function getFields() {
+        return array(
+            'id',
+            'title',
+            'description',
+            'placeholder',
+            'category_id',
+            'language',
+            'sort_order',
+            'active',
+            'tpl'
+        );
+    }
 
     public static function getTable() {
         return self::$table;
@@ -29,7 +43,7 @@ class Group extends Orm {
 
     public static function getReferences() {
         return array(
-
+            Zira\Models\Category::getClass() => 'category_id'
         );
     }
     

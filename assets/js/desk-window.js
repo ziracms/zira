@@ -297,9 +297,11 @@ DashWindow.prototype.focus = function() {
     ) {
         $('body').css('overflow','hidden');
     }
+    if (!this.focused) {
+        $(this.element).addClass(this.focused_window_class);
+        if (this.focusedElement!==null) $(this.focusedElement).focus();
+    }
     this.focused = true;
-    $(this.element).addClass(this.focused_window_class);
-    if (this.focusedElement!==null) $(this.focusedElement).focus();
     if (this.onFocusCallback !== null) {
         this.onFocusCallback.call(this);
     }
@@ -2687,21 +2689,39 @@ DashWindow.prototype.clearSidebarContent = function() {
 DashWindow.prototype.prependBodyContent = function(content) {
     if (content.length==0) return;
     $(this.content).prepend('<div class="'+this.body_content_wrapper_class+'">'+content+'</div>');
+    this.initBodySelects($(this.content).children('.'+this.body_content_wrapper_class).first());
 };
 
 DashWindow.prototype.appendBodyContent = function(content) {
     if (content.length==0) return;
     $(this.content).append('<div class="'+this.body_content_wrapper_class+'">'+content+'</div>');
+    this.initBodySelects($(this.content).children('.'+this.body_content_wrapper_class).last());
 };
 
 DashWindow.prototype.appendBodyFullContent = function(content) {
     if (content.length==0) return;
     $(this.content).append('<div class="'+this.body_full_content_wrapper_class+'">'+content+'</div>');
+    this.initBodySelects($(this.content).children('.'+this.body_full_content_wrapper_class).last());
 };
 
 DashWindow.prototype.setBodyFullContent = function(content) {
     content = content.replace(/&([^;]+;)/g, '&amp;$1');
     $(this.content).html('<div class="'+this.body_full_content_wrapper_class+'">'+content+'</div>');
+    this.initBodySelects($(this.content).children('.'+this.body_full_content_wrapper_class).last());
+};
+
+DashWindow.prototype.initBodySelects = function(container) {
+    if ($(container).length==0) return;
+    var selects = $(container).find('select');
+    if (selects.length>0) {
+        $(selects).change(this.bind(this, function(){
+            this.onFocusRequest(this);
+        }));
+    }
+};
+
+DashWindow.prototype.onFocusRequest = function(wnd) {
+    // to override
 };
 
 DashWindow.prototype.clearBodyContent = function() {

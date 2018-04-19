@@ -24,7 +24,7 @@ class Fieldvalue extends Table {
             'field_item_id' => Field::int(true, true),
             'field_group_id' => Field::int(true, true),
             'content' => Field::text(),
-            'mark' => Field::string(true),
+            'mark' => Field::string(false),
             'date_added' => Field::datetime(true)
         );
     }

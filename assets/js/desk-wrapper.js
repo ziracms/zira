@@ -665,6 +665,11 @@ var desk_window_form_init = function(window) {
                 var for_id = $(label).attr('for');
                 $(label).attr('for',for_id+'-'+window_id);
             }
+            var inline_label = $(this).parents('.control-label-inline');
+            if ($(inline_label).length>0) {
+                var i_for_id = $(inline_label).attr('for');
+                $(inline_label).attr('for',i_for_id+'-'+window_id);
+            }
         });
     }
 };
