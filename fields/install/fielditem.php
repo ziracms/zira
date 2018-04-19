@@ -33,7 +33,7 @@ class Fielditem extends Table {
 
     public function getKeys() {
         return array(
-            'search' => array('sort_order', 'active', 'field_group_id')
+            'search' => array('active', 'field_group_id')
         );
     }
 

@@ -27,8 +27,6 @@ class Values extends Dash\Models\Model {
             
             $name_prefix = $form->getNamePrefix();
             $fields = $form->getFields();
-            $preview_fields = array();
-            $preview_groups = array();
             foreach ($fields as $group_id=>$fields_group) {
                 $group = $fields_group['group'];
                 foreach($fields_group['fields'] as $field) {
@@ -79,29 +77,6 @@ class Values extends Dash\Models\Model {
                     $valueObj->date_added = date('Y-m-d H:i:s');
                     $valueObj->mark = $field->field_type;
                     $valueObj->save();
-                    
-                    if ($field->field_preview) {
-                        if (!array_key_exists($field->group_id, $preview_fields)) {
-                            $preview_fields[$field->group_id] = array(
-                                'group' => array(
-                                    'id' => $field->group_id,
-                                    'title' => $field->group_title
-                                ),
-                                'fields' => array()
-                            );
-                        }
-                        $preview_fields[$field->group_id]['fields'][]=array(
-                            'id' => $field->field_id,
-                            'title' => $field->field_title,
-                            'content' => $content
-                        );
-                    }
-                }
-                
-                if (!empty($preview_fields)) {
-                    $preview_description = serialize($preview_fields);
-                    $record->extradata = $preview_description;
-                    $record->save();
                 }
             }
 

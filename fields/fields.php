@@ -68,13 +68,4 @@ class Fields {
             
         }
     }
-    
-    public static function parseExtraData($extradata) {
-        try {
-            $data = @unserialize($extradata);
-            return $data;
-        } catch(\Exception $e) {
-            return '';
-        }
-    }
 }

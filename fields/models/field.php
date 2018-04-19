@@ -65,7 +65,7 @@ class Field extends Orm {
     }
     
     
-    public static function getRecordFields($record_id, $category_id, $language) {
+    public static function getRecordFields($record_id, $category_id, $language, $preview=false) {
         $fields_select = array(
                         'field_id' => 'id',
                         'field_type' => 'field_type',
@@ -91,8 +91,15 @@ class Field extends Orm {
                     ->and_where('category_id','=',Zira\Category::ROOT_CATEGORY_ID,Group::getAlias())
                     ->and_where('language','is',null,Group::getAlias())
                     ->and_where('active','=',1)
-                    ->close_query()
-                    ->union()
+                    ;
+        
+        if ($preview) {
+            $query->and_where('preview','=',1);
+        }
+        
+        $query->close_query();
+        
+        $query->union()
                     ->open_query()
                     ->select($fields_select)
                     ->join(Group::getClass(), $groups_select)
@@ -100,8 +107,13 @@ class Field extends Orm {
                     ->and_where('category_id','=',Zira\Category::ROOT_CATEGORY_ID,Group::getAlias())
                     ->and_where('language','=',$language,Group::getAlias())
                     ->and_where('active','=',1)
-                    ->close_query()
-                ;
+                    ;
+        
+        if ($preview) {
+            $query->and_where('preview','=',1);
+        }
+        
+        $query->close_query();
         
         if ($category_id != Zira\Category::ROOT_CATEGORY_ID) {
             $query->union()
@@ -112,8 +124,15 @@ class Field extends Orm {
                     ->and_where('category_id','=',$category_id,Group::getAlias())
                     ->and_where('language','is',null,Group::getAlias())
                     ->and_where('active','=',1)
-                    ->close_query()
-                    ->union()
+                    ;
+            
+            if ($preview) {
+                $query->and_where('preview','=',1);
+            }
+        
+            $query->close_query();
+                    
+            $query->union()
                     ->open_query()
                     ->select($fields_select)
                     ->join(Group::getClass(), $groups_select)
@@ -121,8 +140,13 @@ class Field extends Orm {
                     ->and_where('category_id','=',$category_id,Group::getAlias())
                     ->and_where('language','=',$language,Group::getAlias())
                     ->and_where('active','=',1)
-                    ->close_query()
                     ;
+        
+            if ($preview) {
+                $query->and_where('preview','=',1);
+            }
+        
+            $query->close_query();
         }
         
         $query->merge()
@@ -133,8 +157,8 @@ class Field extends Orm {
         return $query->get();
     }
     
-    public static function loadRecordFields($record_id, $category_id, $language) {
-        $_fields = self::getRecordFields($record_id, $category_id, $language);
+    public static function loadRecordFields($record_id, $category_id, $language, $preview=false) {
+        $_fields = self::getRecordFields($record_id, $category_id, $language, $preview);
         $fields = array();
         foreach ($_fields as $field) {
             if (!array_key_exists($field->group_id, $fields)) {

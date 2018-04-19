@@ -33,7 +33,7 @@ class Fieldgroup extends Table {
 
     public function getKeys() {
         return array(
-            'search' => array('sort_order', 'active', 'category_id', 'language')
+            'search' => array('active', 'category_id', 'language')
         );
     }
 
