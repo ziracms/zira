@@ -22,7 +22,15 @@ class Fields {
     }
 
     public function beforeDispatch() {
-        
+        Zira\Assets::registerCSSAsset('fields/fields.css');
+    }
+    
+    public function onActivate() {
+        Zira\Assets::registerCSSAsset('fields/fields.css');
+    }
+
+    public function onDeactivate() {
+        Zira\Assets::unregisterCSSAsset('fields/fields.css');
     }
 
     public function bootstrap() {
@@ -41,7 +49,8 @@ class Fields {
             Zira\Hook::register(Dash\Windows\Records::RECORDS_ON_SELECT_CALLBACK_HOOK, array(get_class(), 'dashRecordsOnSelectCallbackHook'));
         }
   
-        Zira\View::registerRenderHook($this, 'beforeRender');
+        Zira\View::addStyle('fields/fields.css');
+        Zira\View::registerRenderHook($this, 'renderFields');
     }
     
     public static function dashRecordsMenuHook($window) {
@@ -62,10 +71,56 @@ class Fields {
         return 'desk_call(dash_fields_records_on_select, this);';
     }
     
-    public static function beforeRender() {
+    public static function renderFields() {
         $record_id = Zira\Page::getRecordId();
-        if ($record_id) {
-            
+        if (!$record_id) return;
+        $category_id = Zira\Category::current() ? Zira\Category::current()->id : Zira\Category::ROOT_CATEGORY_ID;
+        $fields = \Fields\Models\Field::loadRecordFields($record_id, $category_id, Zira\Locale::getLanguage());
+        if (empty($fields)) return;
+        $field_values = \Fields\Models\Value::loadRecordValues($record_id);
+        if (empty($field_values)) return;
+        $placeholders = array();
+        $_fields = array();
+        $_group_with_vals = array();
+        foreach ($fields as $group_id=>$fields_group) {
+            if (!array_key_exists('group', $fields_group) || !array_key_exists('fields', $fields_group)) continue;
+            $group = $fields_group['group'];
+            if (!array_key_exists($group['placeholder'], $placeholders)) $placeholders[$group['placeholder']] = array();
+            $placeholders[$group['placeholder']][]=$group_id;
+            if (!array_key_exists($group_id, $_fields)) {
+                $_fields[$group_id] = array(
+                    'group' => $group,
+                    'fields' => array()
+                );
+            }
+            foreach($fields_group['fields'] as $field) {
+                $value = null;
+                $date_added = '';
+                if (array_key_exists($field->field_id, $field_values)) {
+                    $value = $field_values[$field->field_id]->content;
+                    $date_added = $field_values[$field->field_id]->date_added;
+                    if (!in_array($group_id, $_group_with_vals)) $_group_with_vals []= $group_id;
+                }
+                $_fields[$group_id]['fields'][]=array(
+                    'id' => $field->field_id,
+                    'type' => $field->field_type,
+                    'title' => $field->field_title,
+                    'description' => $field->field_description,
+                    'values' => $field->field_values,
+                    'value' => $value,
+                    'date_added' => $date_added
+                );
+            }
         }
+        foreach($placeholders as $placeholder=>$group_ids) {
+            $data = array();
+            foreach ($group_ids as $group_id) {
+                if (!array_key_exists($group_id, $_fields)) continue;
+                if (!in_array($group_id, $_group_with_vals)) continue;
+                $data[]=$_fields[$group_id];
+            }
+            Zira\View::addBeforeWidgetsView($placeholder, array('fields_groups'=>$data), 'fields/record');
+        }
+        Zira\View::addLightbox();
     }
 }

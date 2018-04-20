@@ -35,12 +35,14 @@ function layout_head() {
         (!INSERT_SCRIPTS_TO_BODY ? Zira\View::getLayoutData(Zira\View::VAR_SCRIPTS) : '').
         Zira\View::getLayoutData(Zira\View::VAR_HEAD_BOTTOM)
     ;
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_HEAD_BOTTOM);
     Zira\View::renderWidgets(Zira\View::VAR_HEAD_BOTTOM);
     Zira\View::includePlaceholderViews(Zira\View::VAR_HEAD_BOTTOM);
 }
 
 function layout_body_top() {
     echo Zira\View::getLayoutData(Zira\View::VAR_BODY_TOP);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_BODY_TOP);
     Zira\View::includePlaceholderViews(Zira\View::VAR_BODY_TOP);
     Zira\View::renderWidgets(Zira\View::VAR_BODY_TOP);
 }
@@ -48,41 +50,48 @@ function layout_body_top() {
 function layout_body_bottom() {
     echo  Zira\View::getBodyBottomScripts() . 
           Zira\View::getLayoutData(Zira\View::VAR_BODY_BOTTOM);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_BODY_BOTTOM);
     Zira\View::renderWidgets(Zira\View::VAR_BODY_BOTTOM);
     Zira\View::includePlaceholderViews(Zira\View::VAR_BODY_BOTTOM);
 }
 
 function layout_content_top() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT_TOP);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_CONTENT_TOP);
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT_TOP);
     Zira\View::renderWidgets(Zira\View::VAR_CONTENT_TOP);
 }
 
 function layout_content_bottom() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT_BOTTOM);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_CONTENT_BOTTOM);
     Zira\View::renderWidgets(Zira\View::VAR_CONTENT_BOTTOM);
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT_BOTTOM);
 }
 
 function layout_sidebar_left() {
     echo Zira\View::getLayoutData(Zira\View::VAR_SIDEBAR_LEFT);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_SIDEBAR_LEFT);
     Zira\View::renderWidgets(Zira\View::VAR_SIDEBAR_LEFT);
     Zira\View::includePlaceholderViews(Zira\View::VAR_SIDEBAR_LEFT);
 }
 
 function layout_sidebar_right() {
     echo Zira\View::getLayoutData(Zira\View::VAR_SIDEBAR_RIGHT);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_SIDEBAR_RIGHT);
     Zira\View::renderWidgets(Zira\View::VAR_SIDEBAR_RIGHT);
     Zira\View::includePlaceholderViews(Zira\View::VAR_SIDEBAR_RIGHT);
 }
 
 function layout_header() {
     echo Zira\View::getLayoutData(Zira\View::VAR_HEADER);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_HEADER);
     Zira\View::includePlaceholderViews(Zira\View::VAR_HEADER);
     Zira\View::renderWidgets(Zira\View::VAR_HEADER);
 }
 
 function layout_footer() {
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_FOOTER);
     Zira\View::renderWidgets(Zira\View::VAR_FOOTER);
     Zira\View::includePlaceholderViews(Zira\View::VAR_FOOTER);
     echo Zira\View::getLayoutData(Zira\View::VAR_FOOTER);
@@ -91,6 +100,7 @@ function layout_footer() {
 function layout_content() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT);
     Zira\View::renderContent(Zira\View::$data, Zira\View::$view);
+    Zira\View::includeBeforeWidgetsViews(Zira\View::VAR_CONTENT);
     Zira\View::renderWidgets(Zira\View::VAR_CONTENT);
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT);
 }

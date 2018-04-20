@@ -80,6 +80,7 @@ class Field extends Orm {
                         'group_id' => 'id',
                         'group_title' => 'title',
                         'group_description' => 'description',
+                        'group_placeholder' => 'placeholder',
                         'group_sort_order' => 'sort_order'
                     );
         
@@ -166,7 +167,8 @@ class Field extends Orm {
                     'group' => array(
                         'id' => $field->group_id,
                         'title' => $field->group_title,
-                        'description' => $field->group_description
+                        'description' => $field->group_description,
+                        'placeholder' => $field->group_placeholder
                     ),
                     'fields' => array()
                 );

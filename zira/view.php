@@ -41,6 +41,7 @@ class View {
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
+    protected static $_before_widgets_views = array();
 
     protected static $_theme;
     protected static $_render_layout = true;
@@ -433,6 +434,28 @@ class View {
         if (!isset(self::$_placeholder_views[$placeholder]) || !is_array(self::$_placeholder_views[$placeholder])) return;
 
         foreach(self::$_placeholder_views[$placeholder] as $view=>$data) {
+            self::renderView($data, $view);
+        }
+    }
+
+    public static function addBeforeWidgetsView($placeholder,$data,$view) {
+        if (!isset(self::$_before_widgets_views[$placeholder])) self::$_before_widgets_views[$placeholder] = array();
+        self::$_before_widgets_views[$placeholder][$view] = $data;
+    }
+    
+    public static function getBeforeWidgetsViews($placeholder) {
+        if (!isset(self::$_before_widgets_views[$placeholder])) return array();
+        return self::$_before_widgets_views[$placeholder];
+    }
+    
+    public static function &getBeforeWidgetsViewsArray() {
+        return self::$_before_widgets_views;
+    }
+
+    public static function includeBeforeWidgetsViews($placeholder) {
+        if (!isset(self::$_before_widgets_views[$placeholder]) || !is_array(self::$_before_widgets_views[$placeholder])) return;
+
+        foreach(self::$_before_widgets_views[$placeholder] as $view=>$data) {
             self::renderView($data, $view);
         }
     }

@@ -25,7 +25,7 @@ class Value extends Form
     protected $_fields = array();
     protected $_field_values = array();
     
-    const THUMBS_HEIGHT = 100;
+    const THUMBS_HEIGHT = 100; // img tag height
 
     public function __construct()
     {
