@@ -38,6 +38,11 @@ class Values extends Dash\Windows\Window {
                 'desk_call(dash_fields_records_load, this);'
             )
         );
+        
+        $this->addVariables(array(
+            'fields_thumbs_url_prefix' => Zira\Helper::url('fields/dash/thumb').'?image=',
+            'fields_thumbs_height' => \Fields\Forms\Value::THUMBS_HEIGHT
+        ));
     }
 
     public function load() {

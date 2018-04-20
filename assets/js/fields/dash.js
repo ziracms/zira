@@ -349,7 +349,8 @@ var dash_fields_records_load = function() {
                     var regexp = new RegExp('\\'+desk_ds, 'g');
                     var url = src.replace(regexp,'/');
                     url = encodeURIComponent(url).replace(/%2F/gi,'/');
-                    $(this.container).find('.fields_record_images_wrapper').append('<div style="position:relative;margin-bottom:4px;display:inline-block;vertical-align:top;margin:0px 2px 2px 0px;"><span class="glyphicon glyphicon-remove-circle fields_record_images_hidden_remove" style="position:absolute;cursor:pointer;z-index:9;background:white;"></span> <img src="'+baseUrl(url)+'" height="200" data-url="'+url+'" alt="'+url.split('/').slice(-1)[0]+'" /></div>');
+                    var thumb = fields_thumbs_url_prefix + url + '&t=' + Date.now();
+                    $(this.container).find('.fields_record_images_wrapper').append('<div style="position:relative;margin-bottom:4px;display:inline-block;vertical-align:top;margin:0px 2px 2px 0px;"><span class="glyphicon glyphicon-remove-circle fields_record_images_hidden_remove" style="position:absolute;cursor:pointer;z-index:9;background:white;"></span> <img src="'+thumb+'" height="'+fields_thumbs_height+'" data-url="'+url+'" alt="'+url.split('/').slice(-1)[0]+'" /></div>');
                     var input = $(this.container).find('.fields_record_images_hidden').last();
                     $(input).clone().insertAfter(input);
                     $(input).val(url);

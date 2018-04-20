@@ -24,6 +24,8 @@ class Value extends Form
     
     protected $_fields = array();
     protected $_field_values = array();
+    
+    const THUMBS_HEIGHT = 100;
 
     public function __construct()
     {
@@ -95,8 +97,10 @@ class Value extends Form
                     $field->field_description = Locale::t($field->field_description);
                     $name = $name_prefix.$field->field_id;
                     $value = null;
+                    $value_date_added = '';
                     if (array_key_exists($field->field_id, $this->_field_values)) {
                         $value = $this->_field_values[$field->field_id]->content;
+                        $value_date_added = $this->_field_values[$field->field_id]->date_added;
                         if ($field->field_type != 'multiple' &&
                             $field->field_type != 'file' &&
                             $field->field_type != 'image'
@@ -187,7 +191,7 @@ class Value extends Form
                         $label = Zira\Form\Form::label($label, $name, array('class'=>$this->_label_class));
                         $elems = Zira\Helper::tag_open('div', array('class'=>'fields_record_files_wrapper'));
                         foreach($_value as $_val) {
-                            $_val_title = urldecode(ltrim(substr($_val, (int)strrpos($_val, '/')),'/'));
+                            $_val_title = rawurldecode(ltrim(substr($_val, (int)strrpos($_val, '/')),'/'));
                             $elems .= '<div style="margin-bottom:4px"><span class="glyphicon glyphicon-remove-circle fields_record_files_hidden_remove" style="cursor:pointer"></span> <a href="'.Zira\Helper::baseUrl($_val).'" data-url="'.$_val.'" target="_blank">'.$_val_title.'</a></div>';
                         }
                         $elems .= Zira\Helper::tag_close('div');
@@ -208,8 +212,8 @@ class Value extends Form
                         $label = Zira\Form\Form::label($label, $name, array('class'=>$this->_label_class));
                         $elems = Zira\Helper::tag_open('div', array('class'=>'fields_record_images_wrapper'));
                         foreach($_value as $_val) {
-                            $_val_title = urldecode(ltrim(substr($_val, (int)strrpos($_val, '/')),'/'));
-                            $elems .= '<div style="position:relative;margin-bottom:4px;display:inline-block;vertical-align:top;margin:0px 2px 2px 0px;"><span class="glyphicon glyphicon-remove-circle fields_record_images_hidden_remove" style="position:absolute;cursor:pointer;z-index:9;background:white;"></span> <img src="'.Zira\Helper::baseUrl($_val).'" height="200" data-url="'.$_val.'" alt="'.$_val_title.'" /></div>';
+                            $_val_title = rawurldecode(ltrim(substr($_val, (int)strrpos($_val, '/')),'/'));
+                            $elems .= '<div style="position:relative;margin-bottom:4px;display:inline-block;vertical-align:top;margin:0px 2px 2px 0px;"><span class="glyphicon glyphicon-remove-circle fields_record_images_hidden_remove" style="position:absolute;cursor:pointer;z-index:9;background:white;"></span> <img src="'.Zira\Helper::baseUrl(\Fields\Models\Value::getImageThumb($_val)).'?t='.\Fields\Models\Value::getThumbTag($value_date_added).'" height="'.self::THUMBS_HEIGHT.'" data-url="'.$_val.'" alt="'.Zira\Helper::html($_val_title).'" /></div>';
                         }
                         $elems .= Zira\Helper::tag_close('div');
                         $elems .= Zira\Helper::tag('button', Locale::tm('Add images', 'fields'), array('class'=>'btn btn-default fields_record_image_btn'));

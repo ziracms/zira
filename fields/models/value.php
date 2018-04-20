@@ -14,6 +14,8 @@ class Value extends Orm {
     public static $table = 'field_values';
     public static $pk = 'id';
     public static $alias = 'fld_val';
+    
+    const THUMBS_SUBDIR = 'fields';
 
     public static function getFields() {
         return array(
@@ -79,5 +81,48 @@ class Value extends Orm {
             $values[$value->field_item_id] = $value;
         }
         return $values;
+    }
+    
+    public static function createImageThumb($url, $recreate = false) {
+        $path = str_replace('/', DIRECTORY_SEPARATOR, rawurldecode($url));
+        if (strpos($path, UPLOADS_DIR)!==0) return false;
+        $src_path = ROOT_DIR . DIRECTORY_SEPARATOR . $path;
+        $_path = substr($path, 0, (int)strrpos($path, DIRECTORY_SEPARATOR));
+        $_path = substr($_path, strlen(UPLOADS_DIR . DIRECTORY_SEPARATOR));
+        $savedir = THUMBS_DIR . DIRECTORY_SEPARATOR . self::THUMBS_SUBDIR;
+        if (!empty($_path)) $savedir .= DIRECTORY_SEPARATOR . $_path;
+        $save_path = Zira\File::getAbsolutePath($savedir);
+        $name = ltrim(substr($path, (int)strrpos($path, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
+        if (file_exists($save_path . DIRECTORY_SEPARATOR . $name) && filesize($save_path . DIRECTORY_SEPARATOR . $name)>0 && !$recreate) {
+            return UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $savedir) . '/' . $name;
+        } else if (file_exists($save_path . DIRECTORY_SEPARATOR . $name)) {
+            @unlink($save_path . DIRECTORY_SEPARATOR . $name);
+        }
+        if (file_exists($src_path) && Zira\Image::createThumb($src_path, $save_path . DIRECTORY_SEPARATOR . $name, Zira\Config::get('thumbs_width'), Zira\Config::get('thumbs_height'))) {
+            return $save_path . DIRECTORY_SEPARATOR . $name;
+        } else {
+            return false;
+        }
+    }
+    
+    public static function getImageThumb($url) {
+        $path = str_replace('/', DIRECTORY_SEPARATOR, rawurldecode($url));
+        if (strpos($path, UPLOADS_DIR)!==0) return false;
+        $src_path = ROOT_DIR . DIRECTORY_SEPARATOR . $path;
+        $_path = substr($path, 0, (int)strrpos($path, DIRECTORY_SEPARATOR));
+        $_path = substr($_path, strlen(UPLOADS_DIR . DIRECTORY_SEPARATOR));
+        $savedir = THUMBS_DIR . DIRECTORY_SEPARATOR . self::THUMBS_SUBDIR;
+        if (!empty($_path)) $savedir .= DIRECTORY_SEPARATOR . $_path;
+        $save_path = ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $savedir;
+        $name = ltrim(substr($path, (int)strrpos($path, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
+        if (file_exists($save_path . DIRECTORY_SEPARATOR . $name)) {
+            return Zira\Helper::urlencode(UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $savedir) . '/' . $name);
+        } else {
+            return $url;
+        }
+    }
+    
+    public static function getThumbTag($date_added) {
+        return strtotime($date_added);
     }
 }
