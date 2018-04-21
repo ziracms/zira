@@ -273,6 +273,7 @@ class Category extends Zira\Page {
                         ->where('category_id', '=', $category_id)
                         ->and_where('language', '=', Zira\Locale::getLanguage())
                         ->and_where('name', '=', $record_name)
+                        ->and_where('published', '=', Zira\Models\Record::STATUS_PUBLISHED)
                         ->get(0)
                         ;
 

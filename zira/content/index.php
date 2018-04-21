@@ -92,6 +92,7 @@ class Index extends Zira\Page {
                         ->where('category_id', '=', Zira\Category::ROOT_CATEGORY_ID)
                         ->and_where('language', '=', Zira\Locale::getLanguage())
                         ->and_where('name', '=', $record_name)
+                        ->and_where('published', '=', Zira\Models\Record::STATUS_PUBLISHED)
                         ->get(0)
                         ;
 

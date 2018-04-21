@@ -75,7 +75,7 @@ class Values extends Dash\Models\Model {
                         }
 
                         //if (empty($content)) $content = null;
-                        if (empty($content)) continue;
+                        if (empty($content) && $field->field_type != 'checkbox') continue;
 
                         $valueObj = new \Fields\Models\Value();
                         $valueObj->record_id = $record->id;

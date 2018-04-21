@@ -64,6 +64,8 @@
 .record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a img {
     display: block;
     border: none;
+    max-width: 100%;
+    height: auto;
 }
 
 @media (max-width: 479px) {
