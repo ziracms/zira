@@ -12,6 +12,8 @@ use Dash;
 
 class Fields {
     private static $_instance;
+    
+    protected static $_fields = array();
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -19,6 +21,10 @@ class Fields {
         }
 
         return self::$_instance;
+    }
+    
+    public static function getFields() {
+        return self::$_fields;
     }
 
     public function beforeDispatch() {
@@ -78,6 +84,7 @@ class Fields {
         $fields = \Fields\Models\Field::loadRecordFields($record_id, $category_id, Zira\Locale::getLanguage());
         if (empty($fields)) return;
         $field_values = \Fields\Models\Value::loadRecordValues($record_id);
+        
         if (empty($field_values)) return;
         $placeholders = array();
         $_fields = array();
@@ -116,11 +123,20 @@ class Fields {
             $data = array();
             foreach ($group_ids as $group_id) {
                 if (!array_key_exists($group_id, $_fields)) continue;
-                if (!in_array($group_id, $_group_with_vals)) continue;
+                if (!in_array($group_id, $_group_with_vals)) {
+                    unset($_fields[$group_id]);
+                    continue;
+                }
                 $data[]=$_fields[$group_id];
             }
-            Zira\View::addBeforeWidgetsView($placeholder, array('fields_groups'=>$data), 'fields/record');
+            if ($placeholder == Zira\View::VAR_CONTENT) {
+                //Zira\View::addPlaceholderView($placeholder, array('fields_groups'=>$data), 'fields/record');
+                Zira\Page::setContentView(array('fields_groups'=>$data), 'fields/record');
+            }
         }
+        
         Zira\View::addLightbox();
+        
+        self::$_fields = $_fields;
     }
 }

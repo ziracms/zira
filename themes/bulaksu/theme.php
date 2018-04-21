@@ -24,10 +24,6 @@
  * ))."\r\n";
  * 
  * Example 2:
- * $placeholder_views = &Zira\View::getPlaceholderViewsArray();
- * $placeholder_views['content']['zira/comments'] = array();
- * 
- * Example 3:
  * $widgets = &Zira\View::getDbWidgetsArray();
  * unset($widgets['sidebar_right']);
  */

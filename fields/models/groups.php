@@ -21,7 +21,7 @@ class Groups extends Dash\Models\Model {
         $form = new Fields\Forms\Group();
         if ($form->isValid()) {
             $id = (int)$form->getValue('id');
-
+            
             if ($id) {
                 $group = new Fields\Models\Group($id);
                 if (!$group->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
@@ -40,6 +40,42 @@ class Groups extends Dash\Models\Model {
             $group->active = (int)$form->getValue('active') ? 1 : 0;
             
             $group->save();
+            
+            $widgets = Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Group::WIDGET_CLASS)
+                                ->and_where('params','=',$group->id)
+                                ->get();
+            
+            if ($group->placeholder != Zira\View::VAR_CONTENT && empty($widgets)) {
+                $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+                $widget = new Zira\Models\Widget();
+                $widget->name = \Fields\Models\Group::WIDGET_CLASS;
+                $widget->module = 'fields';
+                $widget->placeholder = $group->placeholder;
+                $widget->params = $group->id;
+                $widget->category_id = $group->category_id != Zira\Category::ROOT_CATEGORY_ID ? $group->category_id : null;
+                $widget->language = $group->language;
+                $widget->sort_order = ++$max_order;
+                $widget->active = Zira\Models\Widget::STATUS_ACTIVE;
+                $widget->save();
+            } else if ($group->placeholder != Zira\View::VAR_CONTENT && !empty($widgets)) {
+                foreach ($widgets as $widget_row) {
+                    $widget = new Zira\Models\Widget($widget_row->id);
+                    if ($widget->loaded()) {
+                        $widget->placeholder = $group->placeholder;
+                        $widget->category_id = $group->category_id != Zira\Category::ROOT_CATEGORY_ID ? $group->category_id : null;
+                        $widget->language = $group->language;
+                        $widget->save();
+                    }
+                }
+            } else if ($group->placeholder == Zira\View::VAR_CONTENT && !empty($widgets)) {
+                Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Group::WIDGET_CLASS)
+                                ->and_where('params','=',$group->id)
+                                ->delete()
+                                ->execute();
+            }
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
@@ -68,6 +104,12 @@ class Groups extends Dash\Models\Model {
             if ($co>0) return array('error' => Zira\Locale::tm('Cannot delete group that have fields', 'fields'));
             
             $group->delete();
+            
+            Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Group::WIDGET_CLASS)
+                                ->and_where('params','=',$group_id)
+                                ->delete()
+                                ->execute();
 
             /**
             Fields\Models\Field::getCollection()

@@ -29,6 +29,14 @@ class Page {
     const VIEW_PLACEHOLDER_CLASS = 'class';
     const VIEW_PLACEHOLDER_URL = 'url';
     const VIEW_PLACEHOLDER_ADMIN_ICONS = 'admin_icons';
+    
+    const VIEW_PLACEHOLDER_SLIDER_DATA = 'slider';
+    const VIEW_PLACEHOLDER_GALLERY_DATA = 'gallery';
+    const VIEW_PLACEHOLDER_VIDEO_DATA = 'videos';
+    const VIEW_PLACEHOLDER_AUDIO_DATA = 'audio';
+    const VIEW_PLACEHOLDER_FILES_DATA = 'files';
+    const VIEW_PLACEHOLDER_COMMENTS_DATA = 'comments';
+    const VIEW_PLACEHOLDER_CONTENT_VIEW_DATA = 'contentView';
 
     protected static $_view = 'page';
     protected static $_layout = null;
@@ -38,6 +46,7 @@ class Page {
     protected static $_redirect_url = null;
     
     protected static $_category_childs = array();
+    protected static $_placeholders_data = array();
 
     public static function setView($view) {
         self::$_view = $view;
@@ -53,6 +62,10 @@ class Page {
 
     public static function getLayout() {
         return self::$_layout;
+    }
+    
+    public static function &getPlaceHoldersData() {
+        return self::$_placeholders_data;
     }
 
     public static function addTitle($title) {
@@ -165,16 +178,19 @@ class Page {
             'slideMargin' => 0,
             'adaptiveHeight' => false
         ));
-        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('images'=>$images), 'zira/slider');
+        //View::addPlaceholderView(View::VAR_CONTENT_TOP, array('images'=>$images), 'zira/slider');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_SLIDER_DATA] = array('images'=>$images);
     }
 
     public static function setGallery(array $images, $access_allowed = true) {
         View::addLightbox();
-        View::addPlaceholderView(View::VAR_CONTENT, array('images'=>$images, 'access_allowed' => $access_allowed), 'zira/gallery');
+        //View::addPlaceholderView(View::VAR_CONTENT, array('images'=>$images, 'access_allowed' => $access_allowed), 'zira/gallery');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_GALLERY_DATA] = array('images'=>$images, 'access_allowed' => $access_allowed);
     }
     
     public static function setFiles(array $files, $access_allowed = true) {
-        View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$files, 'access_allowed' => $access_allowed), 'zira/files');
+        //View::addPlaceholderView(View::VAR_CONTENT, array('files'=>$files, 'access_allowed' => $access_allowed), 'zira/files');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_FILES_DATA] = array('files'=>$files, 'access_allowed' => $access_allowed);
     }
     
     public static function setAudio(array $audio, $access_allowed = true) {
@@ -189,7 +205,8 @@ class Page {
         if (!empty($urls)) {
             View::addJPlayer($container_id, $player_id, $urls, 'audio');
         }
-        View::addPlaceholderView(View::VAR_CONTENT, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/audio');
+        //View::addPlaceholderView(View::VAR_CONTENT, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/audio');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_AUDIO_DATA] = array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'container_id'=>$container_id, 'player_id'=>$player_id);
     }
     
     public static function setVideo(array $video, $access_allowed = true, $poster = null) {
@@ -204,7 +221,8 @@ class Page {
         if (!empty($urls)) {
             View::addJPlayer($container_id, $player_id, $urls, 'video', $poster);
         }
-        View::addPlaceholderView(View::VAR_CONTENT_TOP, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'poster' => $poster, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/videos');
+        //View::addPlaceholderView(View::VAR_CONTENT_TOP, array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'poster' => $poster, 'container_id'=>$container_id, 'player_id'=>$player_id), 'zira/videos');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_VIDEO_DATA] = array('urls'=>$urls, 'embeds'=>$embeds, 'access_allowed' => $access_allowed, 'poster' => $poster, 'container_id'=>$container_id, 'player_id'=>$player_id);
     }
 
     public static function setComments($record, $preview = false) {
@@ -222,7 +240,7 @@ class Page {
         }
         $limit = Config::get('comments_limit', 10);
         $comments = Models\Comment::getComments($record->id, $limit, 0, !$preview);
-        View::addPlaceholderView(View::VAR_CONTENT, array(
+        $data = array(
             'record_id'=>$record->id,
             'form'=>$form,
             'comments'=>$comments,
@@ -230,8 +248,14 @@ class Page {
             'page'=>0,
             'total'=>Models\Comment::countComments($record->id, !$preview),
             'commenting_allowed'=>$commenting_allowed
-        ), 'zira/comments');
+        );
+        //View::addPlaceholderView(View::VAR_CONTENT, $data, 'zira/comments');
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_COMMENTS_DATA] = $data;
         View::addParser();
+    }
+    
+    public static function setContentView(array $data, $view) {
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA] = array('data'=>$data, 'view' => $view);
     }
 
     public static function encodeURL($url) {
@@ -550,6 +574,15 @@ class Page {
                             ->order_by('id', 'asc')
                             ->get('co');
     }
+    
+    public static function setPlaceholdersData() {
+        if (!empty(self::$_placeholders_data)) {
+            foreach(self::$_placeholders_data as $_var=>$_data) {
+                if (array_key_exists($_var, View::$data)) continue;
+                View::$data[$_var] = $_data;
+            }
+        }
+    }
 
     public static function render(array $data = null) {
         if ($data === null) $data = array();
@@ -564,6 +597,7 @@ class Page {
             }
             return;
         }
+        View::registerRenderHook(get_called_class(), 'setPlaceholdersData');
         View::render($data, self::$_view, self::$_layout);
     }
 }

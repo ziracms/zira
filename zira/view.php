@@ -41,7 +41,6 @@ class View {
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
-    protected static $_before_widgets_views = array();
 
     protected static $_theme;
     protected static $_render_layout = true;
@@ -191,6 +190,8 @@ class View {
     public static function render(array $data, $view=null, $layout=null) {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
         
+        self::$data = $data;
+        
         foreach(self::$_before_render_callbacks as $callback) {
             try {
                 call_user_func($callback);
@@ -246,7 +247,6 @@ class View {
                             self::LAYOUT_ALL_SIDEBARS . '.php';
             }
 
-            self::$data = $data;
             self::$view = $view_file;
             self::$layout = $layout_file;
             
@@ -432,30 +432,10 @@ class View {
 
     public static function includePlaceholderViews($placeholder) {
         if (!isset(self::$_placeholder_views[$placeholder]) || !is_array(self::$_placeholder_views[$placeholder])) return;
-
-        foreach(self::$_placeholder_views[$placeholder] as $view=>$data) {
-            self::renderView($data, $view);
+        if ($placeholder == self::VAR_CONTENT) {
+            
         }
-    }
-
-    public static function addBeforeWidgetsView($placeholder,$data,$view) {
-        if (!isset(self::$_before_widgets_views[$placeholder])) self::$_before_widgets_views[$placeholder] = array();
-        self::$_before_widgets_views[$placeholder][$view] = $data;
-    }
-    
-    public static function getBeforeWidgetsViews($placeholder) {
-        if (!isset(self::$_before_widgets_views[$placeholder])) return array();
-        return self::$_before_widgets_views[$placeholder];
-    }
-    
-    public static function &getBeforeWidgetsViewsArray() {
-        return self::$_before_widgets_views;
-    }
-
-    public static function includeBeforeWidgetsViews($placeholder) {
-        if (!isset(self::$_before_widgets_views[$placeholder]) || !is_array(self::$_before_widgets_views[$placeholder])) return;
-
-        foreach(self::$_before_widgets_views[$placeholder] as $view=>$data) {
+        foreach(self::$_placeholder_views[$placeholder] as $view=>$data) {
             self::renderView($data, $view);
         }
     }

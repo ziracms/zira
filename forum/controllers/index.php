@@ -43,7 +43,7 @@ class Index extends Zira\Controller {
     }
 
     public function index() {
-        $this->_renderPlaceholderCategory();
+        //$this->_renderPlaceholderCategory();
 
         $categories = Forum\Models\Category::getCollection()
                                 ->open_query()
@@ -103,10 +103,13 @@ class Index extends Zira\Controller {
         $searchForm = new Forum\Forms\Search();
         $searchForm->setAlignRight(true);
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                                                                    'categories'=>$categories,
-                                                                    'searchForm'=>$searchForm
-                                                                ), 'forum/index');
+        $contentData = array(
+                        'categories'=>$categories,
+                        'searchForm'=>$searchForm
+                    );
+        
+        //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/index');
+        Zira\Page::setContentView($contentData, 'forum/index');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -117,12 +120,13 @@ class Index extends Zira\Controller {
 
     public function group($category_id) {
         if (empty($category_id)) {
-            if (!$this->_has_category) Zira\Response::notFound();
-            else $this->_renderCategoryPage();
+            //if (!$this->_has_category) Zira\Response::notFound();
+            //else $this->_renderCategoryPage();
+            Zira\Response::notFound();
             return;
         }
 
-        $this->_renderPlaceholderCategory();
+        //$this->_renderPlaceholderCategory();
 
         $category = Forum\Models\Category::getCollection()
                                 ->where('id','=',$category_id)
@@ -186,11 +190,14 @@ class Index extends Zira\Controller {
         $searchForm = new Forum\Forms\Search();
         $searchForm->setAlignRight(true);
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                                                                    'items'=>$rows,
-                                                                    'searchForm'=>$searchForm
-                                                                ), 'forum/group');
-
+        $contentData = array(
+                                'items'=>$rows,
+                                'searchForm'=>$searchForm
+                            );
+        
+        //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/group');
+        Zira\Page::setContentView($contentData, 'forum/group');
+        
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
             Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => $description,
@@ -200,12 +207,13 @@ class Index extends Zira\Controller {
 
     public function threads($forum_id) {
         if (empty($forum_id)) {
-            if (!$this->_has_category) Zira\Response::notFound();
-            else $this->_renderCategoryPage();
+            //if (!$this->_has_category) Zira\Response::notFound();
+            //else $this->_renderCategoryPage();
+            Zira\Response::notFound();
             return;
         }
 
-        $this->_renderPlaceholderCategory();
+        //$this->_renderPlaceholderCategory();
 
         $category_fields = Forum\Models\Category::getFields();
         $_category_fields = array();
@@ -359,17 +367,20 @@ class Index extends Zira\Controller {
         $searchForm = new Forum\Forms\Search();
         $searchForm->setValue('forum_id', $forum->id);
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                                                                'top_items'=>$sticky,
-                                                                'items'=>$topics,
-                                                                'pagination' => $pagination,
-                                                                'compose_url' => Forum\Forum::ROUTE.'/compose/'.$forum->id,
-                                                                'category_title' => $forum->category_title,
-                                                                'category_url' => Forum\Models\Category::generateUrl($forum->category_id),
-                                                                'info' => $forum->info,
-                                                                'searchForm' => $searchForm
-                                                            ), 'forum/threads');
-
+        $contentData = array(
+                            'top_items'=>$sticky,
+                            'items'=>$topics,
+                            'pagination' => $pagination,
+                            'compose_url' => Forum\Forum::ROUTE.'/compose/'.$forum->id,
+                            'category_title' => $forum->category_title,
+                            'category_url' => Forum\Models\Category::generateUrl($forum->category_id),
+                            'info' => $forum->info,
+                            'searchForm' => $searchForm
+                        );
+        
+        //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/threads');
+        Zira\Page::setContentView($contentData, 'forum/threads');
+        
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
             Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => $description,
@@ -379,12 +390,13 @@ class Index extends Zira\Controller {
 
     public function thread($topic_id) {
         if (empty($topic_id)) {
-            if (!$this->_has_category) Zira\Response::notFound();
-            else $this->_renderCategoryPage();
+            //if (!$this->_has_category) Zira\Response::notFound();
+            //else $this->_renderCategoryPage();
+            Zira\Response::notFound();
             return;
         }
 
-        $this->_renderPlaceholderCategory();
+        //$this->_renderPlaceholderCategory();
 
         $category_fields = Forum\Models\Category::getFields();
         $_category_fields = array();
@@ -561,20 +573,23 @@ class Index extends Zira\Controller {
         $searchForm = new Forum\Forms\Search();
         $searchForm->setValue('forum_id', $topic->forum_id);
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                                                                'items'=>$rows,
-                                                                'pagination' => $pagination,
-                                                                'forum_title' => $topic->forum_title,
-                                                                'forum_url' => Forum\Models\Forum::generateUrl($topic->forum_id),
-                                                                'info' => $topic->info,
-                                                                'user_groups' => Zira\Models\Group::getArray(true),
-                                                                'form' => Zira\User::isAuthorized() ? $form : null,
-                                                                'topic_active' => $topic->active,
-                                                                'topic_url' => Forum\Models\Topic::generateUrl($topic),
-                                                                'topic_page' => $page,
-                                                                'searchForm' => $searchForm,
-                                                                'editableMessageId' => Forum\Models\Message::getEditableMessageId($topic->id)
-                                                            ), 'forum/thread');
+        $contentData = array(
+                            'items'=>$rows,
+                            'pagination' => $pagination,
+                            'forum_title' => $topic->forum_title,
+                            'forum_url' => Forum\Models\Forum::generateUrl($topic->forum_id),
+                            'info' => $topic->info,
+                            'user_groups' => Zira\Models\Group::getArray(true),
+                            'form' => Zira\User::isAuthorized() ? $form : null,
+                            'topic_active' => $topic->active,
+                            'topic_url' => Forum\Models\Topic::generateUrl($topic),
+                            'topic_page' => $page,
+                            'searchForm' => $searchForm,
+                            'editableMessageId' => Forum\Models\Message::getEditableMessageId($topic->id)
+                        );
+        
+        //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/thread');
+        Zira\Page::setContentView($contentData, 'forum/thread');
 
         Zira\Page::render(array(
             Forum\Forum::VIEW_PLACEHOLDER_LABEL => $status,
@@ -847,13 +862,16 @@ class Index extends Zira\Controller {
         $searchForm = new Forum\Forms\Search();
         $searchForm->setAlignRight(true);
 
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
-                                                                'items'=>$rows,
-                                                                'user_groups' => Zira\Models\Group::getArray(true),
-                                                                'pagination' => $pagination,
-                                                                'searchForm' => $searchForm,
-                                                                'user' => $user
-                                                            ), 'forum/user');
+        $contentData = array(
+                            'items'=>$rows,
+                            'user_groups' => Zira\Models\Group::getArray(true),
+                            'pagination' => $pagination,
+                            'searchForm' => $searchForm,
+                            'user' => $user
+                        );
+        
+        //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/user');
+        Zira\Page::setContentView($contentData, 'forum/user');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -900,7 +918,8 @@ class Index extends Zira\Controller {
                             );
 
                 if (!$is_ajax) {
-                    Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'forum/search-results');
+                    //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'forum/search-results');
+                    Zira\Page::setContentView($_data, 'forum/search-results');
                     $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = ($forum ? $forum->title.' - ' : '').Zira\Locale::tm('Search results','forum');
                     $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
                 } else {

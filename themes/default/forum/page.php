@@ -5,13 +5,14 @@
 </div>
 <?php endif; ?>
 <?php if (!empty($description)): ?>
-<p class="description">
+<p class="description forum-description">
 <?php echo nl2br(Zira\Helper::html($description)); ?>
 </p>
 <?php endif; ?>
-<?php if (isset($content)): ?>
+<?php if (!empty($content)): ?>
 <div class="article forum">
 <?php echo $content; ?>
 </div>
 <?php endif; ?>
+<?php if (!empty($contentView) && isset($contentView['data']) && isset($contentView['view'])) render($contentView['data'], $contentView['view']); ?>
 </article>

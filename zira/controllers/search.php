@@ -42,7 +42,7 @@ class Search extends Zira\Controller {
                 );
 
                 if (!$is_ajax) {
-                    Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'zira/search-results');
+                    Zira\Page::setContentView($_data, 'zira/search-results');
                     $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = Zira\Locale::t('Search results');
                     $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
                 } else {
