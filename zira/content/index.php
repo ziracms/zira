@@ -221,6 +221,11 @@ class Index extends Zira\Page {
             $cached_categories = Zira\Cache::getArray($categories_cache_key);
             if ($cached_categories!==false) {
                 $categories = $cached_categories;
+                foreach ($categories as $category) {
+                    if (isset($category['records'])) {
+                        static::runRecordsHook($category['records']);
+                    }
+                }
             } else {
                 // root category records
                 $records = Zira\Models\Record::getCollection()

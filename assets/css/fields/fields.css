@@ -46,7 +46,7 @@
 }
 .sidebar .record_fields_tabs_wrapper .tab-content .dt,
 .record_fields_preview_wrapper .dt {
-    width: 100px;
+    width: 110px;
 }
 .record_fields_tabs_wrapper .tab-content .dd,
 .record_fields_preview_wrapper .dd {
@@ -55,7 +55,7 @@
 }
 .sidebar .record_fields_tabs_wrapper .tab-content .dd,
 .record_fields_preview_wrapper .dd {
-    margin-left: 110px;
+    margin-left: 120px;
 }
 .record_fields_tabs_wrapper .tab-content .dd ul,
 .record_fields_preview_wrapper .dd ul {
