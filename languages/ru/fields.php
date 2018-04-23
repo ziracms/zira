@@ -33,5 +33,8 @@ return array(
     'Create new extra fields' => 'Создать новые экстра поля',
     'Add files' => 'Добавить файлы',
     'Add images' => 'Добавить изображения',
-    'visible for administrator' => 'видно для администратора'
+    'visible for administrator' => 'видно для администратора',
+    'Extra fields settings' => 'Настройки экстра полей',
+    'Enable records description extra fields' => 'Включить экстра поля описаний записей',
+    'Display description extra fields in widgets' => 'Показывать экстра поля описаний в виджетах'
 );

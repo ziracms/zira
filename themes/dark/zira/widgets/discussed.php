@@ -18,7 +18,7 @@
 </a>
 <?php endif; ?>
 <p><?php echo Zira\Helper::nl2br(Zira\Helper::html($record->description)) ?></p>
-<?php Zira\Page::renderRecordPreview($record->id); ?>
+<?php Zira\Page::renderRecordWidgetPreview($record->id); ?>
 </div>
 <div class="list-info-wrapper">
 <?php if (isset($settings) && empty($settings['sidebar'])): ?>

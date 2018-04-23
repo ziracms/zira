@@ -39,7 +39,7 @@ class Previous extends Zira\Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
-        $records = Zira\Page::getRecords($category, false, $limit, $record_id, false);
+        $records = Zira\Page::getWidgetRecords($category, false, $limit, $record_id, false);
         if (!count($records)) return;
 
         $data = array(

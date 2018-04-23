@@ -54,6 +54,7 @@ class Fields {
             Dash\Dash::getInstance()->registerModuleWindowClass('fieldsItemsWindow', 'Fields\Windows\Fields', 'Fields\Models\Fields');
             Dash\Dash::getInstance()->registerModuleWindowClass('fieldsItemWindow', 'Fields\Windows\Field', 'Fields\Models\Fields');
             Dash\Dash::getInstance()->registerModuleWindowClass('fieldsValuesWindow', 'Fields\Windows\Values', 'Fields\Models\Values');
+            Dash\Dash::getInstance()->registerModuleWindowClass('fieldsSettingsWindow', 'Fields\Windows\Settings', 'Fields\Models\Settings');
             Dash\Dash::unloadDashLanguage();
             Zira\Hook::register(Dash\Windows\Records::RECORDS_MENU_HOOK, array(get_class(), 'dashRecordsMenuHook'));
             Zira\Hook::register(Dash\Windows\Records::RECORDS_CONTEXT_MENU_HOOK, array(get_class(), 'dashRecordsContextMenuHook'));
@@ -63,7 +64,9 @@ class Fields {
   
         Zira\View::addStyle('fields/fields.css');
         Zira\View::registerRenderHook($this, 'renderCallback');
-        Zira\Page::registerRecordsPreviewHook($this, 'previewCallback');
+        if (Zira\Config::get('fields_enable_previews')) {
+            Zira\Page::registerRecordsPreviewHook($this, 'previewCallback');
+        }
     }
     
     public static function dashRecordsMenuHook($window) {
@@ -156,7 +159,8 @@ class Fields {
         self::$_fields = $_fields;
     }
     
-    public static function previewCallback($records) {
+    public static function previewCallback($records, $is_widget = false) {
+        if ($is_widget && !Zira\Config::get('fields_display_widgets_previews')) return;
         if (empty($records)) return;
         $record_ids = array();
         foreach($records as $record) {
@@ -231,7 +235,7 @@ class Fields {
             }
             
             if (!empty($data)) {
-                Zira\Page::addRecordPreviewData($record->id, array('fields_groups'=>$data), 'fields/preview');
+                Zira\Page::addRecordPreviewData($record->id, array('fields_groups'=>$data), 'fields/preview', Zira\Config::get('fields_display_widgets_previews'));
             }
         }
     }

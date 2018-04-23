@@ -108,7 +108,7 @@ class Rated extends Zira\Widget {
             )
         );
 
-        Zira\Page::runRecordsHook($records);
+        Zira\Page::runRecordsHook($records, true);
         
         Zira\View::renderView($data, 'zira/widgets/rated');
     }

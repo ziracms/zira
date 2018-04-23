@@ -115,10 +115,11 @@ class Page {
         return array_key_exists($record_id, self::$_records_preview_data);
     }
     
-    public static function addRecordPreviewData($record_id, $data, $view) {
+    public static function addRecordPreviewData($record_id, $data, $view, $show_in_widgets = false) {
         self::$_records_preview_data[$record_id] = array(
             'data' => $data,
-            'view' => $view
+            'view' => $view,
+            'show_in_widgets' => $show_in_widgets
         );
     }
     
@@ -356,17 +357,17 @@ class Page {
         }
     }
     
-    public static function runRecordsHook($records) {
+    public static function runRecordsHook($records, $is_widget = false) {
         foreach(self::$_records_preview_callbacks as $callback) {
             try {
-                call_user_func($callback, $records);
+                call_user_func($callback, $records, $is_widget);
             } catch (Exception $e) {
                 // ignore
             }
         }
     }
 
-    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1) {
+    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1, $is_widget = false) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
         $category_ids = array($category->id);
@@ -383,9 +384,13 @@ class Page {
             $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id, $page);
         }
         
-        self::runRecordsHook($records);
+        self::runRecordsHook($records, $is_widget);
 
         return $records;
+    }
+    
+    public static function getWidgetRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1) {
+        return self::getRecords($category, $front_page, $limit, $last_id, $includeChilds, $childs, $page, true);
     }
     
     public static function getRecordsCount($category, $front_page = false, $includeChilds = true, array $childs = null) {
@@ -636,10 +641,15 @@ class Page {
         }
     }
     
-    public static function renderRecordPreview($record_id) {
+    public static function renderRecordPreview($record_id, $is_widget = false) {
         $data = self::getRecordPreviewData($record_id);
-        if (!$data || !isset($data['data']) || !isset($data['view'])) return;
+        if (!$data || !isset($data['data']) || !isset($data['view']) || !isset($data['show_in_widgets'])) return;
+        if (!$data['show_in_widgets'] && $is_widget) return;
         View::renderView($data['data'], $data['view']);
+    }
+    
+    public static function renderRecordWidgetPreview($record_id) {
+        self::renderRecordPreview($record_id, true);
     }
 
     public static function render(array $data = null) {

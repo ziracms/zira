@@ -33,6 +33,10 @@ class Groups extends Window {
     }
 
     public function create() {
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(null, Zira\Locale::tm('Extra fields settings', 'fields'), 'glyphicon glyphicon-cog', 'desk_call(dash_fields_settings_wnd, this);', 'settings', false, true)
+        );
+        
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownSeparator()
         );
@@ -65,7 +69,8 @@ class Groups extends Window {
             'dash_fields_blank_src' => Zira\Helper::imgUrl('blank.png'),
             'dash_fields_fields_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Fields::getClass()),
             'dash_fields_field_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Field::getClass()),
-            'dash_fields_values_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Values::getClass())
+            'dash_fields_values_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Values::getClass()),
+            'dash_fields_settings_wnd' => Dash::getInstance()->getWindowJSName(\Fields\Windows\Settings::getClass())
         ));
 
         $this->includeJS('fields/dash');

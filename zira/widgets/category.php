@@ -82,7 +82,7 @@ class Category extends Zira\Widget {
         $data = array(
             'title' => Zira\Locale::t($category->title),
             'url' => Zira\Page::generateCategoryUrl($category->name),
-            'records' => Zira\Page::getRecords($category, false, $limit, null, Zira\Config::get('category_childs_list', true)),
+            'records' => Zira\Page::getWidgetRecords($category, false, $limit, null, Zira\Config::get('category_childs_list', true)),
             'grid' => $is_grid,
             'settings' => array(
                 'comments_enabled' => $comments_enabled,

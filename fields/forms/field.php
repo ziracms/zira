@@ -46,7 +46,11 @@ class Field extends Form
         $html .= Zira\Helper::tag_open('div', array('class'=>'form_field_values_wrapper', 'style'=>'display:none'));
         $html .= $this->input(Locale::tm('Field values','fields').'*', 'form_field_values[]', array('class'=>'form-control field-values-input', 'id'=>''));
         $html .= Zira\Helper::tag_close('div');
-        $html .= $this->checkbox(Locale::tm('add to record description','fields'), 'preview', null, false);
+        if (Zira\Config::get('fields_enable_previews')) {
+            $html .= $this->checkbox(Locale::tm('add to record description','fields'), 'preview', null, false);
+        } else {
+            $html .= $this->hidden('preview');
+        }
         $html .= $this->checkbox(Locale::tm('field is active','fields'), 'active', null, false);
         $html .= $this->hidden('id');
         $html .= $this->hidden('field_group_id');
