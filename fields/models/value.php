@@ -74,11 +74,33 @@ class Value extends Orm {
         return $query->get();
     }
     
+    public static function getRecordsValues(array $record_ids, array $field_ids = null) {
+        $query = self::getCollection()
+                    ->where('record_id', 'in', $record_ids)
+                    ;
+ 
+        if ($field_ids !== null) {
+            $query->and_where('field_item_id', 'in', $field_ids);
+        }
+        
+        return $query->get();
+    }
+    
     public static function loadRecordValues($record_id) {
         $values = array();
         $_values = self::getRecordValues($record_id);
         foreach($_values as $value) {
             $values[$value->field_item_id] = $value;
+        }
+        return $values;
+    }
+    
+    public static function loadRecordsValues(array $record_ids, array $field_ids = null) {
+        $values = array();
+        $_values = self::getRecordsValues($record_ids, $field_ids);
+        foreach($_values as $value) {
+            if (!array_key_exists($value->record_id, $values)) $values[$value->record_id] = array();
+            $values[$value->record_id][$value->field_item_id] = $value;
         }
         return $values;
     }

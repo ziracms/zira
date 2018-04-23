@@ -65,7 +65,7 @@ class Field extends Orm {
     }
     
     
-    public static function getRecordFields($record_id, $category_id, $language, $preview=false) {
+    public static function fetchFields($category_ids, $language, $preview=false) {
         $fields_select = array(
                         'field_id' => 'id',
                         'field_type' => 'field_type',
@@ -89,10 +89,15 @@ class Field extends Orm {
                     ->select($fields_select)
                     ->join(Group::getClass(), $groups_select)
                     ->where('active','=',1,Group::getAlias())
-                    ->and_where('category_id','=',Zira\Category::ROOT_CATEGORY_ID,Group::getAlias())
-                    ->and_where('language','is',null,Group::getAlias())
-                    ->and_where('active','=',1)
-                    ;
+                ;
+        
+        if (!empty($category_ids)) {
+            $query->and_where('category_id','in',$category_ids,Group::getAlias());
+        }
+        
+        $query->and_where('language','is',null,Group::getAlias())
+                ->and_where('active','=',1)
+                ;
         
         if ($preview) {
             $query->and_where('preview','=',1);
@@ -105,10 +110,15 @@ class Field extends Orm {
                     ->select($fields_select)
                     ->join(Group::getClass(), $groups_select)
                     ->where('active','=',1,Group::getAlias())
-                    ->and_where('category_id','=',Zira\Category::ROOT_CATEGORY_ID,Group::getAlias())
-                    ->and_where('language','=',$language,Group::getAlias())
-                    ->and_where('active','=',1)
-                    ;
+                ;
+        
+        if (!empty($category_ids)) {
+            $query->and_where('category_id','in',$category_ids,Group::getAlias());
+        }
+        
+        $query->and_where('language','=',$language,Group::getAlias())
+                ->and_where('active','=',1)
+                ;
         
         if ($preview) {
             $query->and_where('preview','=',1);
@@ -116,50 +126,16 @@ class Field extends Orm {
         
         $query->close_query();
         
-        if ($category_id != Zira\Category::ROOT_CATEGORY_ID) {
-            $query->union()
-                    ->open_query()
-                    ->select($fields_select)
-                    ->join(Group::getClass(), $groups_select)
-                    ->where('active','=',1,Group::getAlias())
-                    ->and_where('category_id','=',$category_id,Group::getAlias())
-                    ->and_where('language','is',null,Group::getAlias())
-                    ->and_where('active','=',1)
-                    ;
-            
-            if ($preview) {
-                $query->and_where('preview','=',1);
-            }
-        
-            $query->close_query();
-                    
-            $query->union()
-                    ->open_query()
-                    ->select($fields_select)
-                    ->join(Group::getClass(), $groups_select)
-                    ->where('active','=',1,Group::getAlias())
-                    ->and_where('category_id','=',$category_id,Group::getAlias())
-                    ->and_where('language','=',$language,Group::getAlias())
-                    ->and_where('active','=',1)
-                    ;
-        
-            if ($preview) {
-                $query->and_where('preview','=',1);
-            }
-        
-            $query->close_query();
-        }
-        
         $query->merge()
                 ->order_by('group_sort_order')
                 ->order_by('field_sort_order')
             ;
-        
+
         return $query->get();
     }
     
-    public static function loadRecordFields($record_id, $category_id, $language, $preview=false) {
-        $_fields = self::getRecordFields($record_id, $category_id, $language, $preview);
+    public static function loadRecordFields($category_ids, $language, $preview=false) {
+        $_fields = self::fetchFields($category_ids, $language, $preview);
         $fields = array();
         foreach ($_fields as $field) {
             if (!array_key_exists($field->group_id, $fields)) {

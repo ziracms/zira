@@ -33,7 +33,29 @@ class Value extends Form
     }
     
     public function loadFields($record) {
-        $this->_fields = \Fields\Models\Field::loadRecordFields($record->id, $record->category_id, $record->language);
+        $category_ids = array(Zira\Category::ROOT_CATEGORY_ID);
+        if ($record->category_id != Zira\Category::ROOT_CATEGORY_ID) {
+            $category_ids []= $record->category_id;
+            $category = new Zira\Models\Category($record->category_id);
+            if ($category->loaded()) {
+                $chain = explode('/', $category->name);
+                if (count($chain)>1) {
+                    $names = array();
+                    do {
+                        array_pop($chain);
+                        $names []= implode('/', $chain);
+                    } while(count($chain)>0);
+                    $rows = Zira\Models\Category::getCollection()
+                                    ->select('id')
+                                    ->where('name', 'in', $names)
+                                    ->get();
+                    foreach($rows as $row) {
+                        $category_ids []= $row->id;
+                    }
+                }
+            }
+        }
+        $this->_fields = \Fields\Models\Field::loadRecordFields($category_ids, $record->language);
     }
     
     public function loadFieldValues($record) {

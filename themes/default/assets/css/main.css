@@ -776,6 +776,9 @@ article .rating .share-wrapper .share-btn {
 .list .list-item .list-content-wrapper p {
     padding: 10px;
 }
+.list .list-item .list-content-wrapper p:empty {
+    padding: 0;
+}
 .list .list-item .list-info-wrapper {
     clear: left;
     margin: 10px 0px 0px;
@@ -1733,7 +1736,8 @@ a.scroll-top.visible span {
 .record_fields_tabs_wrapper .tab-content .dl.even {
     background: #f5f5f5;
 }
-.record_fields_tabs_wrapper .tab-content ul.fields-images a {
+.record_fields_tabs_wrapper .tab-content ul.fields-images a,
+.record_fields_preview_wrapper ul.fields-images a {
     box-shadow: 0px 0px 2px #dddddd;
 }
 
@@ -1876,5 +1880,12 @@ a.scroll-top.visible span {
         padding: 10px;
         min-height: 20px;
         text-align: center;
+    }
+}
+
+@media (max-width: 479px) {
+    .list .list-item a.list-thumb:link,
+    .list .list-item a.list-thumb:visited {
+        float: none;
     }
 }

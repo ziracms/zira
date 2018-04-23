@@ -14,6 +14,8 @@ class Fields {
     private static $_instance;
     
     protected static $_fields = array();
+    protected static $_preview_fields = array();
+    protected static $_preview_fields_ids = null;
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -25,6 +27,10 @@ class Fields {
     
     public static function getFields() {
         return self::$_fields;
+    }
+    
+    public static function getPreviewFields() {
+        return self::$_preview_fields;
     }
 
     public function beforeDispatch() {
@@ -56,7 +62,8 @@ class Fields {
         }
   
         Zira\View::addStyle('fields/fields.css');
-        Zira\View::registerRenderHook($this, 'renderFields');
+        Zira\View::registerRenderHook($this, 'renderCallback');
+        Zira\Page::registerRecordsPreviewHook($this, 'previewCallback');
     }
     
     public static function dashRecordsMenuHook($window) {
@@ -77,11 +84,20 @@ class Fields {
         return 'desk_call(dash_fields_records_on_select, this);';
     }
     
-    public static function renderFields() {
+    public static function renderCallback() {
         $record_id = Zira\Page::getRecordId();
+        if (!$record_id && Zira\Category::current()) {
+            $record_id = Zira\Page::getCategoryPageRecordId();
+        }
         if (!$record_id) return;
-        $category_id = Zira\Category::current() ? Zira\Category::current()->id : Zira\Category::ROOT_CATEGORY_ID;
-        $fields = \Fields\Models\Field::loadRecordFields($record_id, $category_id, Zira\Locale::getLanguage());
+        $category_ids = array(Zira\Category::ROOT_CATEGORY_ID);
+        if (Zira\Category::current()) {
+            $chain = Zira\Category::chain();
+            foreach($chain as $row) {
+                $category_ids[]=$row->id;
+            }
+        }
+        $fields = \Fields\Models\Field::loadRecordFields($category_ids, Zira\Locale::getLanguage());
         if (empty($fields)) return;
         $field_values = \Fields\Models\Value::loadRecordValues($record_id);
         
@@ -138,5 +154,85 @@ class Fields {
         Zira\View::addLightbox();
         
         self::$_fields = $_fields;
+    }
+    
+    public static function previewCallback($records) {
+        if (empty($records)) return;
+        $record_ids = array();
+        foreach($records as $record) {
+            if (Zira\Page::isRecordPreviewDataExists($record->id)) continue;
+            $record_ids []= $record->id;
+        }
+
+        if (empty($record_ids)) return;
+        
+        if (self::$_preview_fields_ids === null) {
+            $preview_cache_key = 'fields.preview.'.Zira\Locale::getLanguage();
+            $cached_preview_fields = Zira\Cache::getArray($preview_cache_key);
+            if ($cached_preview_fields!==false) {
+                self::$_preview_fields = $cached_preview_fields;
+            } else {
+                self::$_preview_fields = \Fields\Models\Field::loadRecordFields(array(), Zira\Locale::getLanguage(), true);
+                Zira\Cache::setArray($preview_cache_key, self::$_preview_fields);
+            }
+            self::$_preview_fields_ids = array();
+            foreach(self::$_preview_fields as $fields_group) {
+                foreach($fields_group['fields'] as $field) {
+                    self::$_preview_fields_ids []= $field->field_id;
+                }
+            }
+        }
+        if (empty(self::$_preview_fields_ids)) return;
+        
+        $values = \Fields\Models\Value::loadRecordsValues($record_ids, self::$_preview_fields_ids);
+        if (empty($values)) return;
+        
+        foreach($records as $record) {
+            if (!array_key_exists($record->id, $values)) continue;
+            $field_values = $values[$record->id];
+
+            $_fields = array();
+            $_group_with_vals = array();
+            foreach (self::$_preview_fields as $group_id=>$fields_group) {
+                if (!array_key_exists('group', $fields_group) || !array_key_exists('fields', $fields_group)) continue;
+                $group = $fields_group['group'];
+                if (!array_key_exists($group_id, $_fields)) {
+                    $_fields[$group_id] = array(
+                        'group' => $group,
+                        'fields' => array()
+                    );
+                }
+                foreach($fields_group['fields'] as $field) {
+                    $value = null;
+                    $date_added = '';
+                    if (array_key_exists($field->field_id, $field_values)) {
+                        $value = $field_values[$field->field_id]->content;
+                        $date_added = $field_values[$field->field_id]->date_added;
+                        if (!in_array($group_id, $_group_with_vals)) $_group_with_vals []= $group_id;
+                    }
+                    $_fields[$group_id]['fields'][]=array(
+                        'id' => $field->field_id,
+                        'type' => $field->field_type,
+                        'title' => $field->field_title,
+                        'description' => $field->field_description,
+                        'values' => $field->field_values,
+                        'value' => $value,
+                        'date_added' => $date_added
+                    );
+                }
+            }
+            $data = array();
+            foreach (self::$_preview_fields as $group_id=>$fields_group) {
+                if (!in_array($group_id, $_group_with_vals)) {
+                    unset($_fields[$group_id]);
+                    continue;
+                }
+                $data[]=$_fields[$group_id];
+            }
+            
+            if (!empty($data)) {
+                Zira\Page::addRecordPreviewData($record->id, array('fields_groups'=>$data), 'fields/preview');
+            }
+        }
     }
 }

@@ -42,11 +42,14 @@ class Page {
     protected static $_layout = null;
     protected static $_breadcrumbs = array();
     protected static $_record_id = null;
+    protected static $_category_page_record_id = null;
     protected static $_record_url = null;
     protected static $_redirect_url = null;
     
     protected static $_category_childs = array();
     protected static $_placeholders_data = array();
+    protected static $_records_preview_callbacks = array();
+    protected static $_records_preview_data = array();
 
     public static function setView($view) {
         self::$_view = $view;
@@ -103,6 +106,26 @@ class Page {
         View::addMeta(array('name'=>'description','content'=>$description));
         View::setDescriptionAdded(true);
     }
+    
+    public static function registerRecordsPreviewHook($object, $method) {
+        self::$_records_preview_callbacks []= array($object, $method);
+    }
+    
+    public static function isRecordPreviewDataExists($record_id) {
+        return array_key_exists($record_id, self::$_records_preview_data);
+    }
+    
+    public static function addRecordPreviewData($record_id, $data, $view) {
+        self::$_records_preview_data[$record_id] = array(
+            'data' => $data,
+            'view' => $view
+        );
+    }
+    
+    public static function getRecordPreviewData($record_id) {
+        if (!array_key_exists($record_id, self::$_records_preview_data)) return false;
+        return self::$_records_preview_data[$record_id];
+    }
 
     public static function addOpenGraphTags($title, $description, $url = '', $image = null) {
         $description = str_replace("\r\n", ' ', $description);
@@ -141,6 +164,15 @@ class Page {
                 return;
             }
         }
+    }
+    
+    public static function removeBreadcrumbs() {
+        self::$_breadcrumbs = array();
+    }
+    
+    public static function resetBreadcrumbs() {
+        self::removeBreadcrumbs();
+        Page::addBreadcrumb('/', Locale::t('Home'));
     }
 
     public static function breadcrumbs() {
@@ -277,6 +309,10 @@ class Page {
     public static function getRecordId() {
         return self::$_record_id;
     }
+    
+    public static function getCategoryPageRecordId() {
+        return self::$_category_page_record_id;
+    }
 
     public static function getRecordUrl() {
         return self::$_record_url;
@@ -284,6 +320,10 @@ class Page {
 
     public static function setRecordId($record_id) {
         self::$_record_id = (int)$record_id;
+    }
+    
+    public static function setCategoryPageRecordId($record_id) {
+        self::$_category_page_record_id = $record_id;
     }
 
     public static function setRecordUrl($url) {
@@ -315,6 +355,16 @@ class Page {
             return false;
         }
     }
+    
+    public static function runRecordsHook($records) {
+        foreach(self::$_records_preview_callbacks as $callback) {
+            try {
+                call_user_func($callback, $records);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+    }
 
     public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
@@ -332,6 +382,8 @@ class Page {
         } else {
             $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id, $page);
         }
+        
+        self::runRecordsHook($records);
 
         return $records;
     }
@@ -582,6 +634,12 @@ class Page {
                 View::$data[$_var] = $_data;
             }
         }
+    }
+    
+    public static function renderRecordPreview($record_id) {
+        $data = self::getRecordPreviewData($record_id);
+        if (!$data || !isset($data['data']) || !isset($data['view'])) return;
+        View::renderView($data['data'], $data['view']);
     }
 
     public static function render(array $data = null) {

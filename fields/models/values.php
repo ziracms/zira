@@ -96,6 +96,8 @@ class Values extends Dash\Models\Model {
                 \Fields\Models\Value::createImageThumb($image, true);
             }
 
+            Zira\Cache::clear();
+            
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
             return array('error'=>$form->getError());

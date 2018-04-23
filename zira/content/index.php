@@ -250,6 +250,7 @@ class Index extends Zira\Page {
                             'display_date' => Zira\Config::get('display_date', 0)
                         )
                     );
+                    static::runRecordsHook($records);
                 }
 
                 // top level category records

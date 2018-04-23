@@ -44,6 +44,8 @@ class Featured extends Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
+        Zira\Page::runRecordsHook($rows);
+        
         Zira\View::renderView(array(
             'title' => Zira\Locale::tm('Featured', 'featured'),
             'records' => $rows,

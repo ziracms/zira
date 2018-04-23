@@ -450,7 +450,7 @@
                 'category_id': category_id,
                 'last_id': last_id
             }, zira_bind(this, function(response){
-                var r = new RegExp('<ul[^>]*>([\\s\\S]+?)</ul>([\\s\\S]*)$','g');
+                var r = new RegExp('<ul[^>]*>([\\s\\S]+)</ul>([\\s\\S]*?)$','g');
                 var m = r.exec(response);
                 if (m) {
                     $(this).parent('.list-view-more-wrapper').prev('ul').append(m[1]);

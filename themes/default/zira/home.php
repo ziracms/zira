@@ -24,6 +24,7 @@
 </a>
 <?php endif; ?>
 <p><?php echo Zira\Helper::nl2br(Zira\Helper::html($record->description)) ?></p>
+<?php Zira\Page::renderRecordPreview($record->id); ?>
 </div>
 <div class="list-info-wrapper">
 <?php if (!empty($category['settings']['display_date'])): ?>

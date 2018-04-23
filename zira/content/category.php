@@ -291,8 +291,10 @@ class Category extends Zira\Page {
                 if (!$record->video_count) $video_enabled = false;
                 
                 if (!$record->access_check || Zira\Permission::check(Zira\Permission::TO_VIEW_RECORD)) {
-//                    static::setRecordId($record->id);
-//                    static::setRecordUrl(static::generateRecordUrl(null, $record->name));
+                    // not setting record id on category page
+                    //static::setRecordId($record->id);
+                    //static::setRecordUrl(static::generateRecordUrl(null, $record->name));
+                    static::setCategoryPageRecordId($record->id);
 
                     // checking permission for gallery, files, audio & video
                     if (($record->gallery_check || $category->gallery_check || Zira\Config::get('gallery_check')) &&

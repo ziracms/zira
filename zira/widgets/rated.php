@@ -93,10 +93,12 @@ class Rated extends Zira\Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
+        $records = self::getTopRatedRecordsList($limit);
+        
         $data = array(
             'title' => Zira\Locale::t('Top rated'),
             'url' => '',
-            'records' => self::getTopRatedRecordsList($limit),
+            'records' => $records,
             'grid' => $is_grid,
             'settings' => array(
                 'comments_enabled' => true,
@@ -106,6 +108,8 @@ class Rated extends Zira\Widget {
             )
         );
 
+        Zira\Page::runRecordsHook($records);
+        
         Zira\View::renderView($data, 'zira/widgets/rated');
     }
 }

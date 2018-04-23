@@ -1,26 +1,9 @@
 <?php if (!empty($fields_groups)): ?>
-<div class="record_fields_tabs_wrapper">
-<ul class="nav nav-tabs" role="tablist">
-<?php $co=0; ?>
-<?php foreach ($fields_groups as $group_id=>$fields_group): ?>
-<?php $group = $fields_group['group']; ?>
-<?php $class = $co === 0 ? 'active' : ''; ?>
-<li class="<?php echo $class ?>" role="presentation">
-<a href="<?php echo '#record-field-group-'.$group['id'] ?>" aria-control="<?php echo 'record-field-group-'.$group['id'] ?>" role="tab" data-toggle="tab"><?php echo Zira\Helper::html(t($group['title'])) ?></a>
-</li>
-<?php $co++; ?>
-<?php endforeach; ?>
-</ul>
-<!--tabs content-->
-<div class="tab-content">
-<?php $co=0; ?>
+<div class="record_fields_preview_wrapper">
+<?php $fco = 0; ?>
 <?php foreach ($fields_groups as $group_id=>$fields_group): ?>
 <?php $group = $fields_group['group']; ?>
 <?php $fields = $fields_group['fields']; ?>
-<?php $class = $co === 0 ? 'tab-pane active' : 'tab-pane'; ?>
-<div role="tab-panel" id="<?php echo 'record-field-group-'.$group['id'] ?>" class="<?php echo $class ?>">
-<div class="fields-tab-content-wrapper">
-<?php $fco = 0; ?>
 <?php foreach($fields as $field): ?>
 <?php if (empty($field['value']) && $field['type']!='checkbox') continue; ?>
 <?php $fco++ ?>
@@ -86,10 +69,6 @@
 </div><!--/.dd-->
 </div><!--/.dl-->
 <?php endforeach; ?>
-</div><!--/.fields-tab-content-wrapper-->
-</div>
-<?php $co++; ?>
 <?php endforeach; ?>
-</div><!--/.tab-content-->
 </div>
 <?php endif; ?>

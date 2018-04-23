@@ -5,6 +5,11 @@
 .sidebar .record_fields_tabs_wrapper {
     margin-top: 0;
 }
+.record_fields_preview_wrapper {
+    width: 100%;
+    overflow: hidden;
+    font-size: 90%;
+}
 .record_fields_tabs_wrapper .tab-content {
     background: #fff;
     border-left: 1px solid #ddd;
@@ -15,65 +20,128 @@
     overflow: hidden;
     padding: 20px;
 }
+.record_fields_preview_wrapper .dl {
+    overflow: hidden;
+    padding: 10px 14px;
+    width: 33%;
+    float: left;
+}
+.sidebar .record_fields_preview_wrapper .dl {
+    padding: 10px 5px;
+}
+.sidebar .record_fields_preview_wrapper .dl,
+.grid-category-wrapper .record_fields_preview_wrapper .dl {
+    width: 100%;
+    float: none;
+}
 .record_fields_tabs_wrapper .tab-content .dl.even {
     background: #f9f9f9;
 }
-.record_fields_tabs_wrapper .tab-content .dt {
+.record_fields_tabs_wrapper .tab-content .dt,
+.record_fields_preview_wrapper .dt {
     float: left;
-    width: 150px;
+    width: 180px;
     font-weight: bold;
     word-wrap: break-word;
 }
-.sidebar .record_fields_tabs_wrapper .tab-content .dt {
+.sidebar .record_fields_tabs_wrapper .tab-content .dt,
+.record_fields_preview_wrapper .dt {
     width: 100px;
 }
-.record_fields_tabs_wrapper .tab-content .dd {
-    margin-left: 160px;
+.record_fields_tabs_wrapper .tab-content .dd,
+.record_fields_preview_wrapper .dd {
+    margin-left: 190px;
     word-wrap: break-word;
 }
-.sidebar .record_fields_tabs_wrapper .tab-content .dd {
+.sidebar .record_fields_tabs_wrapper .tab-content .dd,
+.record_fields_preview_wrapper .dd {
     margin-left: 110px;
 }
-.record_fields_tabs_wrapper .tab-content .dd ul {
+.record_fields_tabs_wrapper .tab-content .dd ul,
+.record_fields_preview_wrapper .dd ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
-.record_fields_tabs_wrapper .tab-content .dd ul.options li::before {
+.record_fields_tabs_wrapper .tab-content .dd ul.options li::before,
+.record_fields_preview_wrapper .dd ul.options li::before {
     content: '\2022';
     margin-right: 4px;
 }
 .record_fields_tabs_wrapper .tab-content .dd ul.fields-files,
-.record_fields_tabs_wrapper .tab-content .dd ul.fields-images {
+.record_fields_tabs_wrapper .tab-content .dd ul.fields-images,
+.record_fields_preview_wrapper .dd ul.fields-files,
+.record_fields_preview_wrapper .dd ul.fields-images {
     list-style-type: none;
 }
-.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li {
+.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li,
+.record_fields_preview_wrapper .dd ul.fields-images li {
     display: block;
     float: left;
     margin: 0px 2px 2px 0px;
 }
 .record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:link,
-.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:visited {
+.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:visited,
+.record_fields_preview_wrapper .dd ul.fields-images li a:link,
+.record_fields_preview_wrapper .dd ul.fields-images li a:visited {
     display: block;
     text-decoration: none;
     border: 1px solid #ddd;
 }
-.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:hover {
+.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:hover,
+.record_fields_preview_wrapper .dd ul.fields-images li a:hover {
     border: 1px solid #6666ff;
 }
-.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a img {
+.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a img,
+.record_fields_preview_wrapper .dd ul.fields-images li a img {
     display: block;
     border: none;
     max-width: 100%;
     height: auto;
 }
 
+@media (max-width: 992px) {
+    .record_fields_preview_wrapper .dl {
+        width: 50%;
+        float: left;
+    }
+}
+@media (max-width: 767px) {
+    .sidebar .record_fields_preview_wrapper .dl,
+    .grid-category-wrapper .record_fields_preview_wrapper .dl {
+        width: 50%;
+        float: left;
+    }
+}
 @media (max-width: 479px) {
-    .record_fields_tabs_wrapper .tab-content .dt {
+    .record_fields_tabs_wrapper .nav-tabs>li {
+        width: 100%;
+    }
+    .record_fields_tabs_wrapper .nav-tabs>li>a,
+    .record_fields_tabs_wrapper .nav-tabs>li>a:hover,
+    .record_fields_tabs_wrapper .nav-tabs>li>a:focus {
+        border-radius: 0;
+        border: none;
+    }
+    .record_fields_tabs_wrapper .nav-tabs>li.active>a,
+    .record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,
+    .record_fields_tabs_wrapper .nav-tabs>li.active>a:hover {
+        border-left: 1px solid #6666ff;
+    }
+    .record_fields_tabs_wrapper .tab-content .dt,
+    .record_fields_preview_wrapper  .dt {
+        width: 100%;
         float: none;
     }
-    .record_fields_tabs_wrapper .tab-content .dd {
+    .record_fields_tabs_wrapper .tab-content .dd,
+    .record_fields_preview_wrapper .dd {
         margin-left: 0;
         margin-top: 10px;
+    }
+    .record_fields_preview_wrapper .dl,
+    .sidebar .record_fields_preview_wrapper .dl,
+    .grid-category-wrapper .record_fields_preview_wrapper .dl {
+        width: 100%;
+        float: none;
     }
 }

@@ -77,6 +77,8 @@ class Groups extends Dash\Models\Model {
                                 ->execute();
             }
 
+            Zira\Cache::clear();
+            
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
             return array('error'=>$form->getError());
@@ -123,6 +125,8 @@ class Groups extends Dash\Models\Model {
                                 ->execute();
              */
         }
+        
+        Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
     }
@@ -155,6 +159,8 @@ class Groups extends Dash\Models\Model {
             $item->save();
         }
 
+        Zira\Cache::clear();
+        
         return array('reload'=>$this->getJSClassName());
     }
 }

@@ -52,6 +52,8 @@ class Fields extends Dash\Models\Model {
             $field->active = (int)$form->getValue('active') ? 1 : 0;
 
             $field->save();
+            
+            Zira\Cache::clear();
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {
@@ -82,6 +84,8 @@ class Fields extends Dash\Models\Model {
                                 ->execute();
         }
 
+        Zira\Cache::clear();
+        
         return array('reload' => $this->getJSClassName());
     }
     
@@ -113,6 +117,8 @@ class Fields extends Dash\Models\Model {
             $item->save();
         }
 
+        Zira\Cache::clear();
+        
         return array('reload'=>$this->getJSClassName());
     }
 }

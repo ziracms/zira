@@ -93,10 +93,12 @@ class Discussed extends Zira\Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
+        $records = self::getMostDiscussedRecordsList($limit);
+        
         $data = array(
             'title' => Zira\Locale::t('Most discussed'),
             'url' => '',
-            'records' => self::getMostDiscussedRecordsList($limit),
+            'records' => $records,
             'grid' => $is_grid,
             'settings' => array(
                 'comments_enabled' => true,
@@ -106,6 +108,8 @@ class Discussed extends Zira\Widget {
             )
         );
 
+        Zira\Page::runRecordsHook($records);
+        
         Zira\View::renderView($data, 'zira/widgets/discussed');
     }
 }

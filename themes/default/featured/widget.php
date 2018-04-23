@@ -18,6 +18,7 @@
 </a>
 <?php endif; ?>
 <p><?php echo Zira\Helper::nl2br(Zira\Helper::html($record->description)) ?></p>
+<?php Zira\Page::renderRecordPreview($record->id); ?>
 </div>
 <?php if (!empty($grid)): ?>
 <div class="list-info-wrapper">

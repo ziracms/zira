@@ -18,15 +18,16 @@ class Index extends Zira\Controller {
 
         Zira\Page::setRedirectUrl(Forum\Forum::ROUTE);
 
-        $category = Zira\Category::current();
-        if ($category) {
-            $category_parts = explode('/',$category->name);
-            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule() && Zira\Router::getAction()==DEFAULT_ACTION) ||
-                (count($category_parts)==2 && $category_parts[0]==Zira\Router::getModule() && $category_parts[1]==Zira\Router::getAction())
-            ) {
-                $this->_has_category = true;
-            }
-        }
+        Zira\Page::resetBreadcrumbs();
+//        $category = Zira\Category::current();
+//        if ($category) {
+//            $category_parts = explode('/',$category->name);
+//            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule() && Zira\Router::getAction()==DEFAULT_ACTION) ||
+//                (count($category_parts)==2 && $category_parts[0]==Zira\Router::getModule() && $category_parts[1]==Zira\Router::getAction())
+//            ) {
+//                $this->_has_category = true;
+//            }
+//        }
     }
 
     protected function _renderPlaceholderCategory() {
