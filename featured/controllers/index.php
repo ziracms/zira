@@ -26,7 +26,7 @@ class Index extends Zira\Controller {
         Zira\Page::setContentView(array(
             'records' => $rows,
             'grid' => $is_grid
-        ),'featured/page');
+        ),'featured/page', 'featured');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => Zira\Locale::tm('Featured records', 'featured'),

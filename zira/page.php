@@ -115,8 +115,9 @@ class Page {
         return array_key_exists($record_id, self::$_records_preview_data);
     }
     
-    public static function addRecordPreviewData($record_id, $data, $view, $show_in_widgets = false) {
-        self::$_records_preview_data[$record_id] = array(
+    public static function addRecordPreviewData($record_id, $data, $view, $show_in_widgets = false, $module = 'zira') {
+        if (!array_key_exists($record_id, self::$_records_preview_data)) self::$_records_preview_data[$record_id] = array();
+        self::$_records_preview_data[$record_id][$module] = array(
             'data' => $data,
             'view' => $view,
             'show_in_widgets' => $show_in_widgets
@@ -287,8 +288,14 @@ class Page {
         View::addParser();
     }
     
-    public static function setContentView(array $data, $view) {
-        self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA] = array('data'=>$data, 'view' => $view);
+    public static function setContentView(array $data, $view, $module = 'zira') {
+        if (!array_key_exists(self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA, self::$_placeholders_data)) {
+            self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA] = array();
+        }
+        if (!array_key_exists($module, self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA])) {
+            self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA][$module] = array();
+        }
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA][$module] = array('data'=>$data, 'view' => $view);
     }
 
     public static function encodeURL($url) {
@@ -641,15 +648,39 @@ class Page {
         }
     }
     
-    public static function renderRecordPreview($record_id, $is_widget = false) {
-        $data = self::getRecordPreviewData($record_id);
-        if (!$data || !isset($data['data']) || !isset($data['view']) || !isset($data['show_in_widgets'])) return;
-        if (!$data['show_in_widgets'] && $is_widget) return;
-        View::renderView($data['data'], $data['view']);
+    public static function renderContentView(array $contentView, $module = null) {
+        if ($module===null) {
+            foreach($contentView as $_module=>$_contentView) {
+                if ($_module!='zira' && !in_array($_module, Config::get('modules'))) continue;
+                if (isset($_contentView['data']) && isset($_contentView['view'])) {
+                    View::renderView($_contentView['data'], $_contentView['view']);
+                }
+            }
+        } else if (array_key_exists($module, $contentView)) {
+            View::renderView($contentView[$module]['data'], $contentView[$module]['view']);
+        }
     }
     
-    public static function renderRecordWidgetPreview($record_id) {
-        self::renderRecordPreview($record_id, true);
+    public static function renderRecordPreview($record_id, $is_widget = false, $module = null) {
+        $data = self::getRecordPreviewData($record_id);
+        if (!$data) return;
+        if ($module === null) {
+            foreach ($data as $_module => $_data) {
+                if ($_module!='zira' && !in_array($_module, Config::get('modules'))) continue;
+                if (!isset($_data['data']) || !isset($_data['view']) || !isset($_data['show_in_widgets'])) continue;
+                if (!$_data['show_in_widgets'] && $is_widget) continue;
+                View::renderView($_data['data'], $_data['view']);
+            }
+        } else {
+            if (!array_key_exists($module, $data)) return;
+            if (!isset($data[$module]['data']) || !isset($data[$module]['view']) || !isset($data[$module]['show_in_widgets'])) return;
+            if (!$data[$module]['show_in_widgets'] && $is_widget) return;
+            View::renderView($data[$module]['data'], $data[$module]['view']);
+        }
+    }
+    
+    public static function renderRecordWidgetPreview($record_id, $module = null) {
+        self::renderRecordPreview($record_id, true, $module);
     }
 
     public static function render(array $data = null) {

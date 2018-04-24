@@ -110,7 +110,7 @@ class Index extends Zira\Controller {
                     );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/index');
-        Zira\Page::setContentView($contentData, 'forum/index');
+        Zira\Page::setContentView($contentData, 'forum/index', 'forum');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -197,7 +197,7 @@ class Index extends Zira\Controller {
                             );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/group');
-        Zira\Page::setContentView($contentData, 'forum/group');
+        Zira\Page::setContentView($contentData, 'forum/group', 'forum');
         
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -380,7 +380,7 @@ class Index extends Zira\Controller {
                         );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/threads');
-        Zira\Page::setContentView($contentData, 'forum/threads');
+        Zira\Page::setContentView($contentData, 'forum/threads', 'forum');
         
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -590,7 +590,7 @@ class Index extends Zira\Controller {
                         );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/thread');
-        Zira\Page::setContentView($contentData, 'forum/thread');
+        Zira\Page::setContentView($contentData, 'forum/thread', 'forum');
 
         Zira\Page::render(array(
             Forum\Forum::VIEW_PLACEHOLDER_LABEL => $status,
@@ -872,7 +872,7 @@ class Index extends Zira\Controller {
                         );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/user');
-        Zira\Page::setContentView($contentData, 'forum/user');
+        Zira\Page::setContentView($contentData, 'forum/user', 'forum');
 
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
@@ -920,7 +920,7 @@ class Index extends Zira\Controller {
 
                 if (!$is_ajax) {
                     //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'forum/search-results');
-                    Zira\Page::setContentView($_data, 'forum/search-results');
+                    Zira\Page::setContentView($_data, 'forum/search-results', 'forum');
                     $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = ($forum ? $forum->title.' - ' : '').Zira\Locale::tm('Search results','forum');
                     $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
                 } else {

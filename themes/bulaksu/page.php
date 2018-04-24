@@ -36,7 +36,7 @@
 <?php echo $content; ?>
 </div>
 <?php endif; ?>
-<?php if (!empty($contentView) && isset($contentView['data']) && isset($contentView['view'])) render($contentView['data'], $contentView['view']); ?>
+<?php if (!empty($contentView)) Zira\Page::renderContentView($contentView); ?>
 <?php if (isset($rating)): ?>
 <div id="rating" class="rating">
 <a href="javascript:void(0)" class="like" data-value="1" data-type="record" data-id="<?php echo Zira\Page::getRecordId() ?>" data-token="<?php echo Zira\User::getToken() ?>" data-url="<?php echo Zira\Helper::url('poll') ?>">

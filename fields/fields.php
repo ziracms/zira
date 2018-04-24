@@ -150,7 +150,7 @@ class Fields {
             }
             if ($placeholder == Zira\View::VAR_CONTENT) {
                 //Zira\View::addPlaceholderView($placeholder, array('fields_groups'=>$data), 'fields/record');
-                Zira\Page::setContentView(array('fields_groups'=>$data), 'fields/record');
+                Zira\Page::setContentView(array('fields_groups'=>$data), 'fields/record', 'fields');
             }
         }
         
@@ -235,7 +235,7 @@ class Fields {
             }
             
             if (!empty($data)) {
-                Zira\Page::addRecordPreviewData($record->id, array('fields_groups'=>$data), 'fields/preview', Zira\Config::get('fields_display_widgets_previews'));
+                Zira\Page::addRecordPreviewData($record->id, array('fields_groups'=>$data), 'fields/preview', Zira\Config::get('fields_display_widgets_previews'), 'fields');
             }
         }
     }

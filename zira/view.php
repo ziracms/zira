@@ -305,8 +305,11 @@ class View {
     public static function renderTpl(array $data, $view) {
         if (!self::isViewExists($view)) return;
         $render_started = self::$_render_started;
+        ob_start();
         self::renderView($data, $view);
+        $content = ob_get_clean();
         self::$_render_started = $render_started;
+        return $content;
     }
 
     public static function renderContent(array $data, $view_file) {
