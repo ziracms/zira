@@ -279,7 +279,7 @@ class Value extends Form
                     $validator->registerText($name, null, $required, Locale::t('Invalid value "%s"',$label));
                     $validator->registerNoTags($name, Locale::t('Invalid value "%s"',$label));
                 } else if ($field->field_type == 'multiple') {
-                    $validator->registerCustom(array(get_class(), 'checkMultiRadio'), array($name.'[]'), Locale::t('Invalid value "%s"',$label));
+                    $validator->registerCustom(array(get_class(), 'checkMultiRadio'), array($name), Locale::t('Invalid value "%s"',$label));
                 } else if ($field->field_type == 'link') {
                     $validator->registerString($name, null, 255, $required, Locale::t('Invalid value "%s"',$label));
                     $validator->registerNoTags($name, Locale::t('Invalid value "%s"',$label));

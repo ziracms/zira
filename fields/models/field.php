@@ -64,8 +64,7 @@ class Field extends Orm {
         return self::$_types;
     }
     
-    
-    public static function fetchFields($category_ids, $language, $preview=false) {
+    public static function fetchFields($category_ids, $language, $preview=false, $search=false) {
         $fields_select = array(
                         'field_id' => 'id',
                         'field_type' => 'field_type',
@@ -103,6 +102,10 @@ class Field extends Orm {
             $query->and_where('preview','=',1);
         }
         
+        if ($search) {
+            $query->and_where('search','=',1);
+        }
+        
         $query->close_query();
         
         $query->union()
@@ -124,6 +127,10 @@ class Field extends Orm {
             $query->and_where('preview','=',1);
         }
         
+        if ($search) {
+            $query->and_where('search','=',1);
+        }
+        
         $query->close_query();
         
         $query->merge()
@@ -134,8 +141,8 @@ class Field extends Orm {
         return $query->get();
     }
     
-    public static function loadRecordFields($category_ids, $language, $preview=false) {
-        $_fields = self::fetchFields($category_ids, $language, $preview);
+    public static function loadRecordFields($category_ids, $language, $preview=false, $search=false) {
+        $_fields = self::fetchFields($category_ids, $language, $preview, $search);
         $fields = array();
         foreach ($_fields as $field) {
             if (!array_key_exists($field->group_id, $fields)) {

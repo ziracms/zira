@@ -44,6 +44,8 @@ class Settings extends Dash\Windows\Window {
         $configs = Zira\Config::getArray();
 
         $form = new \Fields\Forms\Settings();
+        if (!array_key_exists('fields_search_expand', $configs)) $configs['fields_search_expand'] = 1;
+        if (!array_key_exists('fields_search_type', $configs)) $configs['fields_search_type'] = \Fields\Models\Search::TYPE_SEARCH_OR;
         $form->setValues($configs);
 
         $this->setBodyContent($form);

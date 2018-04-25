@@ -46,6 +46,7 @@ class Field extends Form
         $html .= Zira\Helper::tag_open('div', array('class'=>'form_field_values_wrapper', 'style'=>'display:none'));
         $html .= $this->input(Locale::tm('Field values','fields').'*', 'form_field_values[]', array('class'=>'form-control field-values-input', 'id'=>''));
         $html .= Zira\Helper::tag_close('div');
+        $html .= $this->checkbox(Locale::tm('add to search widget','fields'), 'search', null, false);
         if (Zira\Config::get('fields_enable_previews')) {
             $html .= $this->checkbox(Locale::tm('add to record description','fields'), 'preview', null, false);
         } else {

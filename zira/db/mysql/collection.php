@@ -52,6 +52,14 @@ class Collection implements \Zira\Db\Implement\Collection {
             throw new \Exception('Orm class should be passed');
         }
     }
+    
+    public function getData() {
+        return $this->_data;
+    }
+    
+    public function setData(array $data) {
+        $this->_data = $data;
+    }
 
     public function select($args) {
         if (!is_array($args)) {
@@ -221,6 +229,27 @@ class Collection implements \Zira\Db\Implement\Collection {
             return $this->where($field, $sign, $value, $alias);
         }
         return $this;
+    }
+    
+    public function where_sql($field, $sign, $sql, $alias = null) {
+        if ($alias === null) $alias = $this->_alias;
+        if ($field === null) $field = $this->_pk;
+        $sign = strtoupper($sign);
+        if (!in_array($sign, $this->_allowed_signs)) {
+            throw new \Exception('Invalid sign passed');
+        }
+        $this->_where .= Db::escapeIdentifier($alias) . '.' . Db::escapeIdentifier($field) . ' ' . $sign . ' (' . $sql . ')';  
+        return $this;
+    }
+    
+    public function and_where_sql($field, $sign, $sql, $alias = null) {
+        $this->_where.=' AND ';
+        return $this->where_sql($field, $sign, $sql, $alias);
+    }
+
+    public function or_where_sql($field, $sign, $sql, $alias = null) {
+        $this->_where.=' OR ';
+        return $this->where_sql($field, $sign, $sql, $alias);
     }
 
     public function open_where() {

@@ -76,6 +76,35 @@ class Groups extends Dash\Models\Model {
                                 ->delete()
                                 ->execute();
             }
+            
+            if (!$id) {
+                $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+                $widget = new Zira\Models\Widget();
+                $widget->name = \Fields\Models\Search::WIDGET_CLASS;
+                $widget->module = 'fields';
+                $widget->placeholder = Zira\View::VAR_SIDEBAR_RIGHT;
+                $widget->params = $group->id;
+                $widget->category_id = $group->category_id != Zira\Category::ROOT_CATEGORY_ID ? $group->category_id : null;
+                $widget->language = $group->language;
+                $widget->sort_order = ++$max_order;
+                $widget->active = Zira\Models\Widget::STATUS_NOT_ACTIVE;
+                $widget->save();
+            } else {
+                $widgets = Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Search::WIDGET_CLASS)
+                                ->and_where('params','=',$group->id)
+                                ->get();
+                
+                foreach ($widgets as $widget_row) {
+                    $widget = new Zira\Models\Widget($widget_row->id);
+                    if ($widget->loaded()) {
+                        $widget->category_id = $group->category_id != Zira\Category::ROOT_CATEGORY_ID ? $group->category_id : null;
+                        $widget->language = $group->language;
+                        $widget->save();
+                    }
+                }
+            }
 
             Zira\Cache::clear();
             
@@ -109,6 +138,12 @@ class Groups extends Dash\Models\Model {
             
             Zira\Models\Widget::getCollection()
                                 ->where('name','=',\Fields\Models\Group::WIDGET_CLASS)
+                                ->and_where('params','=',$group_id)
+                                ->delete()
+                                ->execute();
+            
+            Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Search::WIDGET_CLASS)
                                 ->and_where('params','=',$group_id)
                                 ->delete()
                                 ->execute();

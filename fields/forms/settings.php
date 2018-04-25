@@ -34,7 +34,10 @@ class Settings extends Form
 
     protected function _render()
     {
+        $search_types = \Fields\Models\Search::getSearchTypes();
         $html = $this->open();
+        $html .= $this->radioButton(Locale::tm('Search type', 'fields'), 'fields_search_type', $search_types);
+        $html .= $this->checkbox(Locale::tm('Expand extra fields search form', 'fields'), 'fields_search_expand', null, false);
         $html .= $this->checkbox(Locale::tm('Enable records description extra fields', 'fields'), 'fields_enable_previews', null, false);
         $html .= $this->checkbox(Locale::tm('Display description extra fields in widgets', 'fields'), 'fields_display_widgets_previews', null, false);
         $html .= $this->close();
@@ -45,5 +48,11 @@ class Settings extends Form
     {
         $validator = $this->getValidator();
         
+        $validator->registerCustom(array(get_class(), 'checkType'), 'fields_search_type', Locale::t('An error occurred'));
+    }
+    
+    public static function checkType($type) {
+        $types = \Fields\Models\Search::getSearchTypes();
+        return array_key_exists($type, $types);
     }
 }

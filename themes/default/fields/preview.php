@@ -1,7 +1,7 @@
 <?php if (!empty($fields_groups)): ?>
 <div class="record_fields_preview_wrapper">
 <?php $fco = 0; ?>
-<?php foreach ($fields_groups as $group_id=>$fields_group): ?>
+<?php foreach ($fields_groups as $fields_group): ?>
 <?php $group = $fields_group['group']; ?>
 <?php $fields = $fields_group['fields']; ?>
 <?php foreach($fields as $field): ?>

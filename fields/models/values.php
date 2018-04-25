@@ -27,6 +27,7 @@ class Values extends Dash\Models\Model {
             try {
                 Zira\Db\Db::begin();
                 \Fields\Models\Value::clearRecordValues($record->id);
+                \Fields\Models\Search::clearRecordIndex($record->id);
 
                 $name_prefix = $form->getNamePrefix();
                 $fields = $form->getFields();
@@ -36,20 +37,25 @@ class Values extends Dash\Models\Model {
                         $name = $name_prefix.$field->field_id;
                         $value = $form->getValue($name);
                         $content = '';
+                        $keywords = '';
                         if ($field->field_type == 'input' || 
                             $field->field_type == 'textarea' || 
                             $field->field_type == 'link' ||
                             $field->field_type == 'html'
                         ) {
                             $content = $value;
+                            $keywords = $content;
                         } else if ($field->field_type == 'checkbox') {
                             $content = $value ? 1 : null;
+                            $keywords = $value ? 1 : 0;
                         } else if ($field->field_type == 'radio') { 
                             $value_titles = explode(',', $field->field_values);
                             $content = in_array($value, $value_titles) ? $value : null;
+                            $keywords = $content;
                         } else if ($field->field_type == 'select') { 
                             $value_titles = explode(',', ','.$field->field_values);
                             $content = $value && in_array($value, $value_titles) ? $value : null;
+                            $keywords = $content;
                         } else if ($field->field_type == 'multiple') {
                             $value = (array)$value;
                             $value_titles = explode(',', $field->field_values);
@@ -57,18 +63,21 @@ class Values extends Dash\Models\Model {
                             foreach($value as $val) {
                                 if (in_array($val, $value_titles)) $content []= $val;
                             }
+                            $keywords = $content;
                             $content = implode(',', $content);
                         } else if ($field->field_type == 'file' || 
                                   $field->field_type == 'image'
                         ) {
                             $value = (array)$value;
                             $content = array();
+                            $keywords = array();
                             foreach($value as $val) {
                                 if (!empty($val)) {
                                     $content []= $val;
                                     if ($field->field_type == 'image') {
                                         $images []= $val;
                                     }
+                                    $keywords []= rawurldecode(ltrim(substr($val, (int)strrpos($val, '/')),'/'));
                                 }
                             }
                             $content = implode(',', $content);
@@ -85,11 +94,14 @@ class Values extends Dash\Models\Model {
                         $valueObj->date_added = date('Y-m-d H:i:s');
                         $valueObj->mark = $field->field_type;
                         $valueObj->save();
+                        
+                        \Fields\Models\Search::addRecordFieldIndex($record->language, $record->id, $field->field_id, $keywords);
                     }
                 }
                 Zira\Db\Db::commit();
             } catch(\Exception $e) {
                 Zira\Db\Db::rollback();
+                return array('error'=>$e->getMessage());
             }
             
             foreach($images as $image) {

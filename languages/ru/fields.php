@@ -36,5 +36,17 @@ return array(
     'visible for administrator' => 'видно для администратора',
     'Extra fields settings' => 'Настройки экстра полей',
     'Enable records description extra fields' => 'Включить экстра поля описаний записей',
-    'Display description extra fields in widgets' => 'Показывать экстра поля описаний в виджетах'
+    'Display description extra fields in widgets' => 'Показывать экстра поля описаний в виджетах',
+    'Extra fields search' => 'Поиск экстра полей',
+    'add to search widget' => 'добавить в виджет поиска',
+    'Extended search' => 'Расширенный поиск',
+    'Expand extra fields search form' => 'Раскрывать форму поиска экстра полей',
+    'Extra fields extended search' => 'Расширенный поиск экстра полей',
+    'Incorrect value "%s"' => 'Некорректное значение "%s"',
+    'Search results' => 'Результаты поиска',
+    'Your search did not match any documents' => 'По вашему запросу ничего не найдено',
+    'Search type' => 'Тип поиска',
+    '"or"' => '"или"',
+    '"and"' => '"и"',
+    'Reset' => 'Сбросить'
 );

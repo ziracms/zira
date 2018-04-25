@@ -48,6 +48,7 @@ class Fields extends Dash\Models\Model {
                 $field->field_values = null;
             }
             
+            $field->search = (int)$form->getValue('search') ? 1 : 0;
             $field->preview = (int)$form->getValue('preview') ? 1 : 0;
             $field->active = (int)$form->getValue('active') ? 1 : 0;
 

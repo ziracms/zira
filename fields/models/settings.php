@@ -22,7 +22,9 @@ class Settings extends Dash\Models\Model {
         if ($form->isValid()) {
             $options = array(
                 'fields_enable_previews' => 'int',
-                'fields_display_widgets_previews' => 'int'
+                'fields_display_widgets_previews' => 'int',
+                'fields_search_expand' => 'int',
+                'fields_search_type' => 'string'
             );
 
             $config_ids = array();

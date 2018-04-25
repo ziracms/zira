@@ -27,6 +27,7 @@ class Fielditem extends Table {
             'description' => Field::string(false),
             'sort_order' => Field::int(true, false, 0),
             'active' => Field::int(true, true, 0),
+            'search' => Field::int(true, true, 0),
             'preview' => Field::int(true, true, 0)
         );
     }

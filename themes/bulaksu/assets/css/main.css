@@ -1686,6 +1686,16 @@ a.scroll-top.visible span {
 .record_fields_preview_wrapper ul.fields-images a {
     box-shadow: 0px 0px 2px #dddddd;
 }
+.field-search-form-wrapper .form-group {
+    margin-bottom: 0;
+    padding: 7px 0px;
+}
+.field-search-form-wrapper .form-group:nth-child(even) {
+    background: #f5f5f5;
+}
+.field-search-form-wrapper .form-group:last-child {
+    background: none;
+}
 
 /** mobile **/
 @media (max-width: 1199px) {

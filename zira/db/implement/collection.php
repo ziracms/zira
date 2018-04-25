@@ -128,6 +128,33 @@ interface Collection {
     public function or_where($field=null, $sign=null, $value=null, $alias = null);
 
     /**
+     * WHERE subquery
+     * @param type $field
+     * @param type $sign
+     * @param type $sql
+     * @param type $alias
+     */
+    public function where_sql($field, $sign, $sql, $alias = null);
+    
+    /**
+     * AND WHERE subquery
+     * @param type $field
+     * @param type $sign
+     * @param type $sql
+     * @param type $alias
+     */
+    public function and_where_sql($field, $sign, $sql, $alias = null);
+
+    /**
+     * OR WHERE subquery
+     * @param type $field
+     * @param type $sign
+     * @param type $sql
+     * @param type $alias
+     */
+    public function or_where_sql($field, $sign, $sql, $alias = null);
+    
+    /**
      * Open parenthesis for WHERE query
      * @return Collection
      */
@@ -210,6 +237,17 @@ interface Collection {
      */
     public function merge($alias = 'sub');
 
+    /**
+     * Get query data
+     */
+    public function getData();
+    
+    /**
+     * Set query data
+     * @param array $data
+     */
+    public function setData(array $data);
+    
     /**
      * Magic method for toString()
      * @return string

@@ -99,6 +99,22 @@
     max-width: 100%;
     height: auto;
 }
+.field-search-form-wrapper {
+    position: relative;
+}
+.sidebar.col-sm-4 aside .field-search-form-wrapper {
+    padding: 0;
+}
+.sidebar.col-sm-4 aside .field-search-form-wrapper .form-panel {
+    margin-top: 0;
+}
+.field-search-form-wrapper .panel-title {
+    font-size: 98%;
+}
+.list .list-item.unpublished {
+    opacity: .5;
+    filter: alpha(opacity=50);
+}
 
 @media (max-width: 992px) {
     .record_fields_preview_wrapper .dl {
