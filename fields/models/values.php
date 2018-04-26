@@ -44,7 +44,7 @@ class Values extends Dash\Models\Model {
                             $field->field_type == 'html'
                         ) {
                             $content = $value;
-                            $keywords = $content;
+                            $keywords = strip_tags($content);
                         } else if ($field->field_type == 'checkbox') {
                             $content = $value ? 1 : null;
                             $keywords = $value ? 1 : 0;
@@ -95,7 +95,7 @@ class Values extends Dash\Models\Model {
                         $valueObj->mark = $field->field_type;
                         $valueObj->save();
                         
-                        \Fields\Models\Search::addRecordFieldIndex($record->language, $record->id, $field->field_id, $keywords);
+                        \Fields\Models\Search::addRecordFieldIndex($record->language, $record->id, $field->field_id, $keywords, $record->published);
                     }
                 }
                 Zira\Db\Db::commit();

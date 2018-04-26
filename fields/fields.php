@@ -67,6 +67,10 @@ class Fields {
         if (Zira\Config::get('fields_enable_previews')) {
             Zira\Page::registerRecordsPreviewHook($this, 'previewCallback');
         }
+        
+        Dash\Models\Records::registerRecordsDeleteHook($this, 'recordDeleteHook');
+        Dash\Models\Records::registerRecordsPublishHook($this, 'recordPublishHook');
+        Dash\Models\Records::registerRecordsUnpublishHook($this, 'recordUnpublishHook');
     }
     
     public static function dashRecordsMenuHook($window) {
@@ -85,6 +89,18 @@ class Fields {
     
     public static function dashRecordsOnSelectCallbackHook() {
         return 'desk_call(dash_fields_records_on_select, this);';
+    }
+    
+    public static function recordDeleteHook($record) {
+        \Fields\Models\Search::clearRecordIndex($record->id);
+    }
+    
+    public static function recordPublishHook($record) {
+        \Fields\Models\Search::updateRecordIndex($record->id, $record->published);
+    }
+    
+    public static function recordUnpublishHook($record) {
+        \Fields\Models\Search::updateRecordIndex($record->id, $record->published);
     }
     
     public static function renderCallback() {

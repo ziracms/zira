@@ -53,7 +53,7 @@ class Search extends Orm {
             ->execute();
     }
 
-    public static function addRecordFieldIndex($language, $record_id, $field_id, $values) {
+    public static function addRecordFieldIndex($language, $record_id, $field_id, $values, $published) {
         if ($values === null) $values = '';
         if (!is_array($values)) $values = array($values);
         foreach($values as $keyword) {
@@ -63,8 +63,18 @@ class Search extends Orm {
             $index->keyword = $keyword;
             $index->record_id = $record_id;
             $index->language = $language;
+            $index->published = $published;
             $index->save();
         }
+    }
+    
+    public static function updateRecordIndex($record_id, $published) {
+        self::getCollection()
+            ->update(array(
+                'published' => $published
+            ))
+            ->where('record_id', '=', $record_id)
+            ->execute();
     }
     
     public static function searchRecords($values, $limit = 10, $offset = 0, $type = self::TYPE_SEARCH_OR) {
@@ -75,6 +85,7 @@ class Search extends Orm {
         
         if ($type == self::TYPE_SEARCH_OR) {
             $query->where('language','=',Zira\Locale::getLanguage());
+            $query->and_where('published','=', Zira\Models\Record::STATUS_PUBLISHED);
             $query->and_where();
             $query->open_where();
 
@@ -115,6 +126,7 @@ class Search extends Orm {
                     $subquery = self::getCollection();
                     $subquery->select('record_id');
                     $subquery->where('language','=',Zira\Locale::getLanguage());
+                    $subquery->and_where('published','=', Zira\Models\Record::STATUS_PUBLISHED);
                     $subquery->and_where('field_item_id','=',$field_id);
 
                     if (is_array($_value['value'])) {
@@ -125,16 +137,16 @@ class Search extends Orm {
                         $subquery->and_where('keyword', 'like', $_value['value'].'%');
                     }
 
-                    $subqueries []= $subquery->toString();
+                    $subqueries []= $subquery;
                     $data = array_merge($data, $subquery->getData());
                 }
             }
 
             foreach($subqueries as $index=>$subquery) {
                 if ($index==0) {
-                    $query->where_sql('record_id', 'in', $subquery);
+                    $query->where('record_id', 'in', $subquery);
                 } else {
-                    $query->and_where_sql('record_id', 'in', $subquery);
+                    $query->and_where('record_id', 'in', $subquery);
                 }
             }
             $query->setData($data);
@@ -142,7 +154,7 @@ class Search extends Orm {
 
         $query->limit($limit, $offset);
         $query->group_by('record_id');
-        
+
         $rows = $query->get();
 
         $results = array();

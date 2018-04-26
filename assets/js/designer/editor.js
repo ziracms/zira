@@ -927,6 +927,10 @@
                 setColorStyle('.files-wrapper ul.files li a:link,.files-wrapper ul.files li a:visited', color1);
                 setColorStyle('.files-wrapper ul.files li', color2);
                 setColorStyle('.files-wrapper ul.files li a:hover', color2);
+                
+                setColorStyle('.record_fields_tabs_wrapper .nav-tabs>li.active>a,.record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,.record_fields_tabs_wrapper .nav-tabs>li.active>a:hover', color1);
+                setColorStyle('.record_fields_tabs_wrapper .nav-tabs>li>a:hover', color2);
+                setColorStyle('.record_fields_tabs_wrapper .tab-content', color1);
             }, 'right', 'rgb');
 
             // files font size
@@ -975,6 +979,17 @@
                 setBackgroundStyle('.files-wrapper ul.files,.files-wrapper ul.files li', color1);
                 setBackgroundStyle('.files-wrapper ul.files li:nth-child(2n)', color2);
                 setBorderColorStyle('.files-wrapper ul.files', color1);
+                
+                setBorderColorStyle('.record_fields_tabs_wrapper .nav-tabs', color1);
+                setBackgroundStyle('.record_fields_tabs_wrapper .nav-tabs>li.active>a,.record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,.record_fields_tabs_wrapper .nav-tabs>li.active>a:hover', color1);
+                setBorderColorStyle('.record_fields_tabs_wrapper .nav-tabs>li.active>a,.record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,.record_fields_tabs_wrapper .nav-tabs>li.active>a:hover', color2);
+                setBorderBottomColorStyle('.record_fields_tabs_wrapper .nav-tabs>li.active>a,.record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,.record_fields_tabs_wrapper .nav-tabs>li.active>a:hover', color1);
+                setBackgroundStyle('.record_fields_tabs_wrapper .nav-tabs>li>a:hover', color1);
+                setBorderColorStyle('.record_fields_tabs_wrapper .nav-tabs>li>a:hover', color2);
+                setBackgroundStyle('.record_fields_tabs_wrapper .tab-content', color1);
+                setBorderColorStyle('.record_fields_tabs_wrapper .tab-content', color2);
+                setBackgroundStyle('.record_fields_tabs_wrapper .tab-content .dl.even,.sidebar .record_fields_tabs_wrapper .tab-content .dl.even', color2);
+                setBorderColorStyle('.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:link,.record_fields_tabs_wrapper .tab-content .dd ul.fields-images li a:visited,.record_fields_preview_wrapper .dd ul.fields-images li a:link,.record_fields_preview_wrapper .dd ul.fields-images li a:visited', color2);
             }, 'right', 'rgb');
         }
         
@@ -1216,6 +1231,7 @@
                 setColorStyle('#main-container .input-group-addon a', color);
                 setColorStyle('.jumbotron', hexColor(color));
                 setColorStyle('#main-container .panel .bootstrap-datetimepicker-widget,#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color);
+                setColorStyle('.field-search-form-wrapper a:link,.field-search-form-wrapper a:visited,.field-search-form-wrapper a:hover', color);
             });
             
             // forms background
@@ -1259,6 +1275,9 @@
                 setBorderBottomColorStyle('#main-container .panel .dropdown-menu.bottom::before,#main-container .panel .dropdown-menu.bottom::after', color2);                
                 setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color1);                
                 setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover', color1);
+                
+                setBorderTopColorStyle('.panel-default > .panel-heading + .panel-collapse > .panel-body', color2);
+                setBackgroundStyle('.field-search-form-wrapper .form-group:nth-child(even)', color1);
             }, 'right', 'rgb');
         }
         

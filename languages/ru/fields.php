@@ -47,6 +47,6 @@ return array(
     'Your search did not match any documents' => 'По вашему запросу ничего не найдено',
     'Search type' => 'Тип поиска',
     '"or"' => '"или"',
-    '"and"' => '"и"',
+    '"and"' => '" и "',
     'Reset' => 'Сбросить'
 );

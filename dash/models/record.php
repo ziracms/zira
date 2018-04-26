@@ -25,12 +25,15 @@ class Record extends Model {
                 return array('error'=>Zira\Locale::t('Permission denied'));
             }
 
+            $publish_state = null;
             if (!empty($id)) {
                 $record = new Zira\Models\Record($id);
                 if (!$record->loaded()) {
                     return array('error' => Zira\Locale::t('An error occurred'));
                 }
 
+                $publish_state = $record->published;
+                
                 if ($form->getValue('delete_image')) {
                     $record->image = null;
                     if ($record->thumb) {
@@ -63,6 +66,19 @@ class Record extends Model {
 
             $record->save();
             Zira\Models\Search::indexRecord($record);
+            
+            if (empty($id)) {
+                // running create hook
+                Records::runRecordCreateHook($record);
+            } else if ($publish_state != $record->published) {
+                if ($record->published == Zira\Models\Record::STATUS_PUBLISHED) {
+                    // running publish hook
+                    Records::runRecordPublishHook($record);
+                } else {
+                    // running unpublish hook
+                    Records::runRecordUnpublishHook($record);
+                }
+            }
 
             Zira\Cache::clear();
 

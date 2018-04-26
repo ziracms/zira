@@ -97,6 +97,7 @@
     display: block;
     border: none;
     max-width: 100%;
+    max-width: none\9; /** ie8 hack **/
     height: auto;
 }
 .field-search-form-wrapper {

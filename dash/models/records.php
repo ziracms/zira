@@ -11,6 +11,11 @@ use Zira;
 use Zira\Permission;
 
 class Records extends Model {
+    protected static $_records_publish_callbacks = array();
+    protected static $_records_unpublish_callbacks = array();
+    protected static $_records_create_callbacks = array();
+    protected static $_records_delete_callbacks = array();
+            
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));
         if (!Permission::check(Permission::TO_DELETE_RECORDS)) {
@@ -159,6 +164,9 @@ class Records extends Model {
                 
                 // deleting search index
                 Zira\Models\Search::clearRecordIndex($record);
+                
+                // running delete hook
+                self::runRecordDeleteHook($record);
             }
         }
 
@@ -448,6 +456,9 @@ class Records extends Model {
 
         Zira\Models\Search::indexRecord($new);
 
+        // running create hook
+        self::runRecordCreateHook($new);
+                
         Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
@@ -502,6 +513,9 @@ class Records extends Model {
         $record->save();
 
         Zira\Models\Search::indexRecord($record);
+        
+        // running publish hook
+        self::runRecordPublishHook($record);
 
         Zira\Cache::clear();
 
@@ -576,5 +590,61 @@ class Records extends Model {
         //$info[] = '<span class="glyphicon glyphicon-time"></span> ' . date(Zira\Config::get('date_format'), strtotime($record->creation_date));
 
         return array('info'=>$info, 'slides_count'=>$record->slides_count, 'images_count'=>$record->images_count, 'audio_count'=>$record->audio_count, 'video_count'=>$record->video_count, 'files_count'=>$record->files_count);
+    }
+    
+    public static function registerRecordsPublishHook($object, $method) {
+        self::$_records_publish_callbacks []= array($object, $method);
+    }
+    
+    public static function registerRecordsUnpublishHook($object, $method) {
+        self::$_records_unpublish_callbacks []= array($object, $method);
+    }
+    
+    public static function registerRecordsCreateHook($object, $method) {
+        self::$_records_create_callbacks []= array($object, $method);
+    }
+    
+    public static function registerRecordsDeleteHook($object, $method) {
+        self::$_records_delete_callbacks []= array($object, $method);
+    }
+    
+    public static function runRecordPublishHook($record) {
+        foreach(self::$_records_publish_callbacks as $callback) {
+            try {
+                call_user_func($callback, $record);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+    }
+    
+    public static function runRecordUnpublishHook($record) {
+        foreach(self::$_records_unpublish_callbacks as $callback) {
+            try {
+                call_user_func($callback, $record);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+    }
+    
+    public static function runRecordCreateHook($record) {
+        foreach(self::$_records_create_callbacks as $callback) {
+            try {
+                call_user_func($callback, $record);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+    }
+    
+    public static function runRecordDeleteHook($record) {
+        foreach(self::$_records_delete_callbacks as $callback) {
+            try {
+                call_user_func($callback, $record);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
     }
 }

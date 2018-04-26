@@ -23,13 +23,14 @@ class Fieldsearch extends Table {
             'field_item_id' => Field::int(true, true),
             'keyword' => Field::string(true),
             'record_id' => Field::int(true, true),
-            'language' => Field::string(true)
+            'language' => Field::string(true),
+            'published' => Field::int(true, true, 0)
         );
     }
 
     public function getKeys() {
         return array(
-            'search' => array('language', 'field_item_id', 'keyword', 'record_id')
+            'search' => array('language', 'published', 'field_item_id', 'keyword', 'record_id')
         );
     }
 
