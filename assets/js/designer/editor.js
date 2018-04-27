@@ -931,6 +931,7 @@
                 setColorStyle('.record_fields_tabs_wrapper .nav-tabs>li.active>a,.record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,.record_fields_tabs_wrapper .nav-tabs>li.active>a:hover', color1);
                 setColorStyle('.record_fields_tabs_wrapper .nav-tabs>li>a:hover', color2);
                 setColorStyle('.record_fields_tabs_wrapper .tab-content', color1);
+                setColorStyle('.record_fields_tabs_wrapper .tab-content a:link,.record_fields_tabs_wrapper .tab-content a:visited,.record_fields_tabs_wrapper .tab-content a:hover', color2);
             }, 'right', 'rgb');
 
             // files font size
@@ -1232,6 +1233,7 @@
                 setColorStyle('.jumbotron', hexColor(color));
                 setColorStyle('#main-container .panel .bootstrap-datetimepicker-widget,#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color);
                 setColorStyle('.field-search-form-wrapper a:link,.field-search-form-wrapper a:visited,.field-search-form-wrapper a:hover', color);
+                setColorStyle('#main-container .panel .dropdown-menu li a', color);
             });
             
             // forms background
@@ -1271,6 +1273,7 @@
                 setBackgroundStyle('.emoji-editable', color2);
                 setBorderColorStyle('.emoji-editable', color1);
                 setBackgroundStyle('#main-container .panel .dropdown-menu', color2);
+                setBackgroundStyle('#main-container .panel .dropdown-menu li a:hover', color1);
                 setBorderTopColorStyle('#main-container .panel .dropdown-menu.top::before,#main-container .panel .dropdown-menu.top::after', color2);
                 setBorderBottomColorStyle('#main-container .panel .dropdown-menu.bottom::before,#main-container .panel .dropdown-menu.bottom::after', color2);                
                 setBackgroundStyle('#main-container .panel .bootstrap-datetimepicker-widget table td.active,#main-container .panel .bootstrap-datetimepicker-widget table td span.active,#main-container .panel .bootstrap-datetimepicker-widget table td.day:hover,#main-container .panel .bootstrap-datetimepicker-widget table td span:hover,#main-container .panel .bootstrap-datetimepicker-widget table thead tr:first-child th:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.hour:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.minute:hover,#main-container .panel .bootstrap-datetimepicker-widget table td.second:hover', color1);                
@@ -1327,6 +1330,8 @@
                 removeColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.sidebar .zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day');
                 removeTextShadowStyle('.sidebar .widget-title');
                 removeTextShadowStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited');
+                removeColorStyle('.sidebar .record_fields_preview_wrapper a:link,.sidebar .record_fields_preview_wrapper a:visited');
+                removeColorStyle('.sidebar .record_fields_preview_wrapper a:hover');
                 
                 setColorStyle('.sidebar .block', color2);
                 setColorStyle('.list .list-item', color2);
@@ -1367,6 +1372,9 @@
                 setColorStyle('.pagination > li > a,.pagination > li > span', color2);
                 setColorStyle('.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover', color2);
                 setColorStyle('.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover', color1);
+                
+                setColorStyle('.record_fields_preview_wrapper a:link,.record_fields_preview_wrapper a:visited', color1);
+                setColorStyle('.record_fields_preview_wrapper a:hover', color2);
             }, 'right', 'rgb');
             
             // lists background
@@ -1536,6 +1544,9 @@
                 setColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days li.prev-days .zira-calendar-day,.sidebar .zira-calendar-wrapper .zira-calendar-days li.next-days .zira-calendar-day', color1);
                 setTextShadowStyle('.sidebar .widget-title', 'none');
                 setTextShadowStyle('.sidebar .list .list-item .list-title-wrapper a:link,.sidebar .list .list-item .list-title-wrapper a:visited', 'none');
+                
+                setColorStyle('.sidebar .record_fields_preview_wrapper a:link,.sidebar .record_fields_preview_wrapper a:visited', color1);
+                setColorStyle('.sidebar .record_fields_preview_wrapper a:hover', color2);
             }, 'right', 'rgb');
             
             // sidebar lists background

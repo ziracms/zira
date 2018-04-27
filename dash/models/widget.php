@@ -83,6 +83,10 @@ class Widget extends Model {
                     if (strpos($url, 'http')===0) {
                         $url = preg_replace('/^http(?:[s])?:\/\/[^\/]+(.*?)/','$1',$url);
                     }
+                    if (!Zira\Config::get('clean_url')) {
+                        $url = trim($url,'/');
+                        $url = preg_replace('/^index\.php(.*?)/','$1',$url);
+                    }
                     $url = trim($url,'/');
                     if (count(Zira\Config::get('languages'))>1) {
                         $url = preg_replace('/^(?:'.implode('|',Zira\Config::get('languages')).')\/(.+?)/','$1',$url);
