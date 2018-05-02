@@ -39,6 +39,7 @@ class Featured {
 
     public static function dashRecordsMenuHook($window) {
         return array(
+            $window->createMenuDropdownItem(Zira\Locale::tm('Featured records', 'featured'), 'glyphicon glyphicon-star-empty', 'featuredWindow();', 'create'),
             $window->createMenuDropdownItem(Zira\Locale::tm('Add to featured', 'featured'), 'glyphicon glyphicon-star', 'desk_call(dash_featured_add, this);', 'edit', true, array('typo'=>'featured'))
         );
     }

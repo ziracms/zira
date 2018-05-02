@@ -5,5 +5,6 @@ return array(
     'Featured records' => 'Избранныe записи',
     'Widget with featured records' => 'Виджет с избранными записями',
     'Add to featured' => 'Добавить в избранное',
-    'Successfully added to featured records' => 'Успешно добавлено в избранные записи'
+    'Successfully added to featured records' => 'Успешно добавлено в избранные записи',
+    'Category featured records' => 'Избранныe записи категории',
 );
