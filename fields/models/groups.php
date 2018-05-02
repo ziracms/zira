@@ -41,6 +41,7 @@ class Groups extends Dash\Models\Model {
             
             $group->save();
             
+            // checking fields widget
             $widgets = Zira\Models\Widget::getCollection()
                                 ->where('name','=',\Fields\Models\Group::WIDGET_CLASS)
                                 ->and_where('params','=',$group->id)
@@ -77,7 +78,13 @@ class Groups extends Dash\Models\Model {
                                 ->execute();
             }
             
-            if (!$id) {
+            // checking search widget
+            $widgets = Zira\Models\Widget::getCollection()
+                                ->where('name','=',\Fields\Models\Search::WIDGET_CLASS)
+                                ->and_where('params','=',$group->id)
+                                ->get();
+            
+            if (empty($widgets)) {
                 $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
 
                 $widget = new Zira\Models\Widget();
@@ -91,11 +98,6 @@ class Groups extends Dash\Models\Model {
                 $widget->active = Zira\Models\Widget::STATUS_NOT_ACTIVE;
                 $widget->save();
             } else {
-                $widgets = Zira\Models\Widget::getCollection()
-                                ->where('name','=',\Fields\Models\Search::WIDGET_CLASS)
-                                ->and_where('params','=',$group->id)
-                                ->get();
-                
                 foreach ($widgets as $widget_row) {
                     $widget = new Zira\Models\Widget($widget_row->id);
                     if ($widget->loaded()) {

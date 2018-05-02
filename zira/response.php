@@ -87,8 +87,12 @@ class Response {
         exit;
     }
 
-    public static function error($message) {
-        self::$status = self::STATUS_500;
+    public static function error($message, $status = null) {
+        if ($status != self::STATUS_403 && $status != self::STATUS_404) {
+            self::$status = self::STATUS_500;
+        } else {
+            self::$status = $status;
+        }
         http_response_code(self::$status);
         if (View::isInitialized()) {
             if (defined('DEBUG') && DEBUG && !View::isRenderStarted()) {

@@ -11,6 +11,8 @@ use Zira;
 use Oauth;
 
 class Login extends Zira\Controller {
+    protected static $_error_status = Zira\Response::STATUS_403;
+    
     public function _before() {
         parent::_before();
         if (Zira\User::isAuthorized()) {
@@ -62,7 +64,7 @@ class Login extends Zira\Controller {
         $email = $userNode->getField('email');
 
         if (empty($id) || empty($name)) {
-            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
         }
 
         // checking if user is already registered
@@ -101,12 +103,12 @@ class Login extends Zira\Controller {
             // getting existing user
             $user = new Zira\Models\User($fb_user->user_id);
             if (!$user->loaded()) {
-                Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
+                Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'), self::$_error_status);
             }
         }
 
         if (!Oauth\Models\Oauth::isUserActive($user, !empty($fb_user->email))) {
-            Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'), self::$_error_status);
         }
 
         // logging in and redirecting
@@ -138,17 +140,17 @@ class Login extends Zira\Controller {
 
         $code = Zira\Request::get('code');
         if (empty($code)) {
-            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
         }
 
         // getting access token with user_id and email
         $response = @file_get_contents(Oauth\Oauth::getVkontakteAccessTokenUrl($code));
         if (empty($response)) {
-            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
         }
         $data = json_decode($response, true);
         if (empty($data['user_id'])) {
-            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
         }
         $id = $data['user_id'];
         $email = !empty($data['email']) ? $data['email'] : '';
@@ -162,7 +164,7 @@ class Login extends Zira\Controller {
             // getting profile name
             $response = @file_get_contents(Oauth\Oauth::getVkontakteUserApiUrl($data['access_token'], $data['user_id']));
             if (empty($response)) {
-                Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+                Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
             }
             $info = json_decode($response, true);
             if (empty($info['response']) ||
@@ -171,7 +173,7 @@ class Login extends Zira\Controller {
                 empty($info['response'][0]['first_name']) ||
                 empty($info['response'][0]['last_name'])
             ) {
-                Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'));
+                Zira\Response::error(Zira\Locale::tm('You have to grant access to your profile', 'oauth'), self::$_error_status);
             }
             $firstname = $info['response'][0]['first_name'];
             $secondname = $info['response'][0]['last_name'];
@@ -198,12 +200,12 @@ class Login extends Zira\Controller {
             // getting existing user
             $user = new Zira\Models\User($vk_user->user_id);
             if (!$user->loaded()) {
-                Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
+                Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'), self::$_error_status);
             }
         }
 
         if (!Oauth\Models\Oauth::isUserActive($user, !empty($vk_user->email))) {
-            Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'));
+            Zira\Response::error(Zira\Locale::tm('Sorry, this user is disabled', 'oauth'), self::$_error_status);
         }
 
         // logging in and redirecting
