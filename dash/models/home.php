@@ -26,7 +26,9 @@ class Home extends Model {
                 'home_description' => 'string',
                 'home_records_limit' => 'int',
                 'home_records_enabled' => 'int',
-                'home_record_name' => 'string'
+                'home_record_name' => 'string',
+                'home_records_sorting' => 'string',
+                'home_site_records_grid'=>'int'
             );
 
             $config_ids = array();

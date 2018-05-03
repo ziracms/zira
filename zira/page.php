@@ -374,7 +374,7 @@ class Page {
         }
     }
 
-    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1, $is_widget = false) {
+    public static function getRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1, $is_widget = false, $order_by = null) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
         $category_ids = array($category->id);
@@ -386,9 +386,9 @@ class Page {
         }
 
         if ($includeChilds && count($category_ids)>1) {
-            $records = self::getCategoriesRecordsList($category_ids, $front_page, $limit, $last_id, $page);
+            $records = self::getCategoriesRecordsList($category_ids, $front_page, $limit, $last_id, $page, $is_widget, $order_by);
         } else {
-            $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id, $page);
+            $records = self::getCategoryRecordsList($category_ids[0], $front_page, $limit, $last_id, $page, $is_widget, $order_by);
         }
         
         self::runRecordsHook($records, $is_widget);
@@ -396,8 +396,8 @@ class Page {
         return $records;
     }
     
-    public static function getWidgetRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1) {
-        return self::getRecords($category, $front_page, $limit, $last_id, $includeChilds, $childs, $page, true);
+    public static function getWidgetRecords($category, $front_page = false, $limit = null, $last_id = null, $includeChilds = true, array $childs = null, $page = 1, $order_by = null) {
+        return self::getRecords($category, $front_page, $limit, $last_id, $includeChilds, $childs, $page, true, $order_by);
     }
     
     public static function getRecordsCount($category, $front_page = false, $includeChilds = true, array $childs = null) {
@@ -416,11 +416,13 @@ class Page {
         }
     }
 
-    public static function getCategoryRecordsList($category_id, $front_page = false, $limit = null, $last_id = null, $page = 1) {
+    public static function getCategoryRecordsList($category_id, $front_page = false, $limit = null, $last_id = null, $page = 1, $is_widget = false, $order_by = null) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
         if ($page < 1) $page = 1;
         $offset = $limit * ($page - 1);
+        
+        if (!$order_by) $order_by = 'id';
         
         $query = Record::getCollection()
                         ->select('id')
@@ -434,7 +436,10 @@ class Page {
         if ($last_id!==null) {
             $query->and_where('id', '<', $last_id);
         }
-        $query->order_by('id', 'desc');
+        $query->order_by($order_by, 'desc');
+        if ($order_by!='id') {
+            $query->order_by('id', 'desc');
+        }
         $query->limit($limit, $offset);
 
         $rows = $query->get();
@@ -453,7 +458,10 @@ class Page {
         }
         $query->where('id','in',$record_ids);
 
-        $query->order_by('id', 'desc');
+        $query->order_by($order_by, 'desc');
+        if ($order_by!='id') {
+            $query->order_by('id', 'desc');
+        }
         
         return $query->get();
     }
@@ -475,11 +483,13 @@ class Page {
         return $query->get('co');
     }
 
-    public static function getCategoriesRecordsList(array $category_ids, $front_page = false, $limit = null, $last_id = null, $page = 1) {
+    public static function getCategoriesRecordsList(array $category_ids, $front_page = false, $limit = null, $last_id = null, $page = 1, $is_widget = false, $order_by = null) {
         if ($limit === null) $limit = Config::get('records_limit', 10);
 
         if ($page < 1) $page = 1;
         $offset = $limit * ($page - 1);
+        
+        if (!$order_by) $order_by = 'id';
         
         $query = Record::getCollection();
         foreach($category_ids as $index=>$category_id) {
@@ -487,7 +497,7 @@ class Page {
                 $query->union();
             }
             $query->open_query();
-            $query->select('id');
+            $query->select('id', 'rating', 'comments');
             $query->where('category_id', '=', $category_id);
             $query->and_where('language', '=', Locale::getLanguage());
             $query->and_where('published', '=', Record::STATUS_PUBLISHED);
@@ -497,12 +507,15 @@ class Page {
             if ($last_id!==null) {
                 $query->and_where('id', '<', $last_id);
             }
-            //$query->order_by('id', 'desc');
+            //$query->order_by($order_by, 'desc');
             //$query->limit($limit * $page);
             $query->close_query();
         }
         $query->merge();
-        $query->order_by('id', 'desc');
+        $query->order_by($order_by, 'desc');
+        if ($order_by!='id') {
+            $query->order_by('id', 'desc');
+        }
         $query->limit($limit, $offset);
 
         $rows = $query->get();
@@ -521,47 +534,43 @@ class Page {
         }
         $query->where('id','in',$record_ids);
 
-        $query->order_by('id', 'desc');
+        $query->order_by($order_by, 'desc');
+        if ($order_by!='id') {
+            $query->order_by('id', 'desc');
+        }
 
         return $query->get();
     }
     
     public static function getCategoriesRecordsCount(array $category_ids, $front_page = false) {
-        $use_union = true; // seems faster
-        if (!$use_union) {
-            $query = Record::getCollection();
-            $query->count();
-            $query->join(Models\Category::getClass());
-            $query->join(Models\User::getClass());             
-            $query->where('category_id', 'in', $category_ids);
-            $query->and_where('language', '=', Locale::getLanguage());
-            $query->and_where('published', '=', Record::STATUS_PUBLISHED);
-            if ($front_page) {
-                $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
-            }
-            return $query->get('co');
-        } else {
-            $query = Record::getCollection();
-            foreach ($category_ids as $index=>$category_id) {
-                if ($index>0) $query->union();
-                $query->count();
-                $query->join(Models\Category::getClass());
-                $query->join(Models\User::getClass());             
-                $query->where('category_id', '=', $category_id);
-                $query->and_where('language', '=', Locale::getLanguage());
-                $query->and_where('published', '=', Record::STATUS_PUBLISHED);
-                if ($front_page) {
-                    $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
-                }
-            }
-            $rows = $query->get();
-            $co = 0;
-            foreach($rows as $row) {
-                $co += $row->co;
-            }
-            return $co;
+        $query = Record::getCollection();
+        $query->count();
+        $query->join(Models\Category::getClass());
+        $query->join(Models\User::getClass());             
+        $query->where('category_id', 'in', $category_ids);
+        $query->and_where('language', '=', Locale::getLanguage());
+        $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+        if ($front_page) {
+            $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
         }
-        
+        return $query->get('co');
+    }
+    
+    public static function getRecordsOrderColumn() {
+        $order_by = Config::get('records_sorting', 'id');
+        if (!in_array($order_by, Record::getFields())) {
+            $order_by = 'id';
+        }
+        return $order_by;
+    }
+    
+    public static function getHomeRecordsOrderColumn() {
+        $order_by = Config::get('home_records_sorting');
+        if ($order_by === null) return self::getRecordsOrderColumn();
+        if (!in_array($order_by, Record::getFields())) {
+            $order_by = 'id';
+        }
+        return $order_by;
     }
     
     public static function getRecordSlides($record_id) {

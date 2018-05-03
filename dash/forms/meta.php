@@ -52,7 +52,8 @@ class Meta extends Form
         $html .= $this->checkbox(Locale::t('Enable scroll effects'), 'site_scroll_effects', null, false);
         $html .= $this->checkbox(Locale::t('Show image descriptions'), 'site_parse_images', null, false);
         $html .= $this->checkbox(Locale::t('Display records list in %s columns', 2), 'site_records_grid', null, false);
-
+        $html .= $this->select(Locale::t('Sort records'), 'records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
+        
         $html .= Zira\Helper::tag_open('div', array('id'=>'dashmetaform_access_button'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'col-sm-offset-4 col-sm-8'));

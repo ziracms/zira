@@ -111,6 +111,7 @@
 }
 .field-search-form-wrapper .panel-title {
     font-size: 98%;
+    overflow: hidden;
 }
 .list .list-item.unpublished {
     opacity: .5;

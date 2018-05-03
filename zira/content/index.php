@@ -20,7 +20,7 @@ class Index extends Zira\Page {
             if (static::getLayout()!==null) $layout = static::getLayout();
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                 //'grid' => $layout != Zira\View::LAYOUT_ALL_SIDEBARS,
-                'grid' => Zira\Config::get('site_records_grid', 1),
+                'grid' => Zira\Config::get('home_site_records_grid', Zira\Config::get('site_records_grid', 1)),
                 'categories' => $categories
             ), 'zira/home');
         }
@@ -215,6 +215,8 @@ class Index extends Zira\Page {
         $limit = Zira\Config::get('home_records_limit');
         if (!$limit) $limit = Zira\Config::get('records_limit', 10);
 
+        $order = Zira\Page::getHomeRecordsOrderColumn();
+        
         $categories = array();
         if (Zira\Config::get('home_records_enabled', true)) {
             $categories_cache_key = 'home.categories.'.Zira\Locale::getLanguage();
@@ -291,7 +293,7 @@ class Index extends Zira\Page {
                     $categories [] = array(
                         'title' => Zira\Locale::t($category->title),
                         'url' => static::generateCategoryUrl($category->name),
-                        'records' => static::getRecords($category, true, $limit, null, $includeChilds, $childs),
+                        'records' => static::getRecords($category, true, $limit, null, $includeChilds, $childs, 1, false, $order),
                         'settings' => array(
                             'comments_enabled' => $comments_enabled,
                             'rating_enabled' => $rating_enabled,

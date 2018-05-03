@@ -20,7 +20,7 @@ class Home extends Form
     protected $_input_offset_wrap_class = 'col-sm-offset-4 col-sm-8';
     protected $_select_wrapper_class = 'col-sm-8';
 
-    protected $_checkbox_inline_label = false;
+    protected $_checkbox_inline_label = true;
 
     public function __construct()
     {
@@ -41,8 +41,10 @@ class Home extends Form
         $html .= $this->input(Locale::t('Window title'), 'home_window_title', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Keywords'), 'home_keywords', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Description'), 'home_description', array('placeholder'=>Locale::t('max. %s characters', 255)));
+        $html .= $this->select(Locale::t('Sort records'), 'home_records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
         $html .= $this->input(Locale::t('Records limit'), 'home_records_limit');
         $html .= $this->checkbox(Locale::t('Display records'), 'home_records_enabled', null, false);
+        $html .= $this->checkbox(Locale::t('Display records list in %s columns', 2), 'home_site_records_grid', null, false);
         $html .= $this->input(Locale::t('Link record'), 'home_record_name', array('placeholder'=>Locale::t('Enter system name')));
         $html .= $this->close();
         return $html;

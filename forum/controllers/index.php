@@ -19,33 +19,9 @@ class Index extends Zira\Controller {
         Zira\Page::setRedirectUrl(Forum\Forum::ROUTE);
 
         Zira\Page::resetBreadcrumbs();
-//        $category = Zira\Category::current();
-//        if ($category) {
-//            $category_parts = explode('/',$category->name);
-//            if ((count($category_parts)==1 && $category_parts[0]==Zira\Router::getModule() && Zira\Router::getAction()==DEFAULT_ACTION) ||
-//                (count($category_parts)==2 && $category_parts[0]==Zira\Router::getModule() && $category_parts[1]==Zira\Router::getAction())
-//            ) {
-//                $this->_has_category = true;
-//            }
-//        }
-    }
-
-    protected function _renderPlaceholderCategory() {
-        if ($this->_has_category) {
-            Zira\Content\Category::placeholderContent();
-        }
-    }
-
-    protected function _renderCategoryPage() {
-        if ($this->_has_category) {
-            Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT_BOTTOM, array(), 'forum/bottom');
-            Zira\Content\Category::content();
-        }
     }
 
     public function index() {
-        //$this->_renderPlaceholderCategory();
-
         $categories = Forum\Models\Category::getCollection()
                                 ->open_query()
                                 ->where('language', 'is', null)
@@ -121,13 +97,9 @@ class Index extends Zira\Controller {
 
     public function group($category_id) {
         if (empty($category_id)) {
-            //if (!$this->_has_category) Zira\Response::notFound();
-            //else $this->_renderCategoryPage();
             Zira\Response::notFound();
             return;
         }
-
-        //$this->_renderPlaceholderCategory();
 
         $category = Forum\Models\Category::getCollection()
                                 ->where('id','=',$category_id)
@@ -208,13 +180,9 @@ class Index extends Zira\Controller {
 
     public function threads($forum_id) {
         if (empty($forum_id)) {
-            //if (!$this->_has_category) Zira\Response::notFound();
-            //else $this->_renderCategoryPage();
             Zira\Response::notFound();
             return;
         }
-
-        //$this->_renderPlaceholderCategory();
 
         $category_fields = Forum\Models\Category::getFields();
         $_category_fields = array();
@@ -391,13 +359,9 @@ class Index extends Zira\Controller {
 
     public function thread($topic_id) {
         if (empty($topic_id)) {
-            //if (!$this->_has_category) Zira\Response::notFound();
-            //else $this->_renderCategoryPage();
             Zira\Response::notFound();
             return;
         }
-
-        //$this->_renderPlaceholderCategory();
 
         $category_fields = Forum\Models\Category::getFields();
         $_category_fields = array();

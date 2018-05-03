@@ -42,9 +42,9 @@
 <?php echo $pagination; ?>
 </div>
 <?php endif; ?>
-<?php if (isset($settings) && !empty($settings['limit']) && count($records)>$settings['limit'] && !isset($pagination)): ?>
+<?php if (isset($settings) && !empty($settings['limit']) && ((!empty($settings['pages']) && !empty($settings['page']) && $settings['page']<$settings['pages']) || count($records)>$settings['limit']) && !isset($pagination)): ?>
 <div class="list-view-more-wrapper">
-<button class="btn btn-primary list-view-more" type="button" data-url="<?php echo Zira\Helper::url('records') ?>" data-category="<?php echo Zira\Category::current()->id ?>" data-last="<?php echo $record->id ?>"><?php echo t('View more') ?>&nbsp;&rsaquo;&rsaquo;</button>
+<button class="btn btn-primary list-view-more" type="button" data-url="<?php echo Zira\Helper::url('records') ?>" data-category="<?php echo Zira\Category::current()->id ?>" data-last="<?php echo $record->id ?>" data-page="<?php echo (!empty($settings['page']) ? intval($settings['page'])+1 : 0); ?>"><?php echo t('View more') ?>&nbsp;&rsaquo;&rsaquo;</button>
 </div>
 <?php endif; ?>
 <?php endif; ?>

@@ -717,6 +717,7 @@
                 $('h2').not('.panel-title').css('color', color);
                 setColorStyle('h2', color);
                 setColorStyle('.home-category-wrapper .home-category-title,.home-category-wrapper .home-category-title a:link,.home-category-wrapper .home-category-title a:visited', color);
+                setColorStyle('.forum-page-header.page-header a:link,.forum-page-header.page-header a:visited', color);
             });
 
             // subtitle font size

@@ -52,6 +52,8 @@ class Home extends Window {
         if (!array_key_exists('home_records_limit', $configs)) $configs['home_records_limit'] = Zira\Config::get('records_limit', 10);
         if (!array_key_exists('home_records_enabled', $configs)) $configs['home_records_enabled'] = true;
         if (!array_key_exists('home_categories_order', $configs)) $configs['home_categories_order'] = 'asc';
+        if (!array_key_exists('home_records_sorting', $configs)) $configs['home_records_sorting'] = Zira\Config::get('records_sorting', 'id');
+        if (!array_key_exists('home_site_records_grid', $configs)) $configs['home_site_records_grid'] = Zira\Config::get('site_records_grid', 1);
         $form->setValues($configs);
 
         $this->setBodyContent($form);

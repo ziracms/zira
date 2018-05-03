@@ -50,6 +50,7 @@ class Meta extends Window {
         if (!array_key_exists('site_scroll_effects', $configs)) $configs['site_scroll_effects'] = 1;
         if (!array_key_exists('site_parse_images', $configs)) $configs['site_parse_images'] = 1;
         if (!array_key_exists('site_records_grid', $configs)) $configs['site_records_grid'] = 1;
+        if (!array_key_exists('records_sorting', $configs)) $configs['records_sorting'] = 'id';
 
         $form->setValues($configs);
 

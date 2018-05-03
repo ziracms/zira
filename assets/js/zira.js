@@ -435,20 +435,24 @@
             var url = $(this).data('url');
             var category_id = $(this).data('category');
             var last_id = $(this).data('last');
+            var page = $(this).data('page');
 
             if (typeof(url)=="undefined" ||
                 typeof(category_id)=="undefined" ||
-                typeof(last_id)=="undefined"
+                (typeof(last_id)=="undefined" && typeof(page)=="undefined")
             ) {
                 return;
             }
+            
+            if (typeof page == "undefined") page = 0;
 
             $(this).attr('disabled','disabled');
             $(this).parent('.list-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
 
             $.post(url, {
                 'category_id': category_id,
-                'last_id': last_id
+                'last_id': last_id,
+                'page': page
             }, zira_bind(this, function(response){
                 var r = new RegExp('<ul[^>]*>([\\s\\S]+)</ul>([\\s\\S]*?)$','g');
                 var m = r.exec(response);

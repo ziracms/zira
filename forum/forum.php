@@ -47,11 +47,6 @@ class Forum {
 
         Zira\Assets::registerCSSAsset('forum/forum.css');
         Zira\Assets::registerJSAsset('forum/forum.js');
-
-//        Zira\Router::addAvailableRoute('forum');
-//        Zira\Router::addAvailableRoute('forum/group');
-//        Zira\Router::addAvailableRoute('forum/threads');
-//        Zira\Router::addAvailableRoute('forum/thread');
     }
 
     public function bootstrap() {
@@ -83,38 +78,6 @@ class Forum {
             }
         }
         Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfoHook'));
-
-//        if (!Zira\Category::current() &&
-//            Zira\Router::getRequest()!=self::ROUTE &&
-//            Zira\Router::getModule() == self::ROUTE &&
-//            Zira\Router::getController() == DEFAULT_CONTROLLER &&
-//            in_array(Zira\Router::getAction(), get_class_methods('\Forum\Controllers\Index')) &&
-//            (!Zira\Router::getParam() || is_numeric(Zira\Router::getParam()))
-//        ) {
-//            if (CACHE_CATEGORIES_LIST) {
-//                $categories = Zira\Category::getAllCategories();
-//                foreach($categories as $category) {
-//                    if ($category->name == self::ROUTE) {
-//                        Zira\Category::setCurrent($category);
-//                        break;
-//                    }
-//                }
-//            } else {
-//                $category = Zira\Models\Category::getCollection()
-//                                                    ->where('name','=',self::ROUTE)
-//                                                    ->get(0);
-//                if ($category) {
-//                    Zira\Category::setCurrent($category);
-//                }
-//            }
-//        }
-//
-//        if (Zira\Category::current() &&
-//            Zira\Router::getModule() == self::ROUTE &&
-//            Zira\Category::current()->layout
-//        ) {
-//            Zira\Page::setLayout(Zira\Category::current()->layout);
-//        }
     }
 
     public static function profileLinksHook() {

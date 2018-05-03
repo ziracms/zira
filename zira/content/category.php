@@ -10,7 +10,7 @@ namespace Zira\Content;
 use Zira;
 
 class Category extends Zira\Page {
-    public static function content($last_id = null, $is_ajax = false) {
+    public static function content($page = null, $last_id = null, $is_ajax = false) {
         if (!Zira\Category::current()) return;
         static::setRedirectUrl(Zira\Category::current()->name);
         // checking permission
@@ -52,25 +52,30 @@ class Category extends Zira\Page {
             static::addOpenGraphTags(Zira\Locale::t($meta_title), Zira\Locale::t($meta_description), static::generateCategoryUrl(Zira\Category::current()->name), $thumb);
         }
 
+        $order = Zira\Page::getRecordsOrderColumn();
+        
         $limit = Zira\Config::get('records_limit', 10);
         $limit_plus = 1;
         
         $use_pagination = Zira\Config::get('enable_pagination') && !$is_ajax;
         
         $pages = 1;
-        if ($use_pagination) {
+        if ($use_pagination || $order != 'id') {
             $records_count = static::getRecordsCount(Zira\Category::current(), false, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds());
             $pages = ceil($records_count / $limit);
         }
         
-        $page = (int)Zira\Request::get('page');
+        if ($page === null) {
+            $page = (int)Zira\Request::get('page');
+        }
         if ($page > $pages) $page = $pages;
         if ($page < 1) $page = 1;
-        
-        if ($use_pagination) $limit_plus = 0;
+
+        if ($use_pagination || $order != 'id') $limit_plus = 0;
+        if ($page > 1) $last_id = null;
         
         if (Zira\Category::current()->records_list===null || Zira\Category::current()->records_list) {
-            $records = static::getRecords(Zira\Category::current(), false, $limit + $limit_plus, $last_id, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds(), $page);
+            $records = static::getRecords(Zira\Category::current(), false, $limit + $limit_plus, $last_id, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds(), $page, false, $order);
         } else {
             $records = array();
         }
@@ -98,7 +103,9 @@ class Category extends Zira\Page {
                     'comments_enabled' => $comments_enabled,
                     'rating_enabled' => $rating_enabled,
                     'display_author' => $display_author,
-                    'display_date' => $display_date
+                    'display_date' => $display_date,
+                    'page' => ($order != 'id') ? $page : null,
+                    'pages' => ($order != 'id') ? $pages : null
                 ),
                 'pagination' => $pagination,
                 'grid' => Zira\Config::get('site_records_grid', 1)
@@ -142,118 +149,6 @@ class Category extends Zira\Page {
             $data[static::VIEW_PLACEHOLDER_CLASS] .= ' xhr-list';
             Zira\View::renderView($data, 'zira/list');
         }
-    }
-
-    public static function placeholderContent($add_title = false, $add_description = false, $add_meta = false) {
-        if (!Zira\Category::current()) return;
-
-        // checking permission
-        if (Zira\Category::current()->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
-            return;
-        }
-
-        $record = Zira\Content\Category::record(Zira\Category::current());
-
-        if ($add_title) {
-            $title = Zira\Category::current()->title;
-        }
-
-        // adding meta tags
-        if ($add_meta) {
-            if (Zira\Category::current()->meta_title) $meta_title = Zira\Category::current()->meta_title;
-            else $meta_title = Zira\Category::current()->title;
-            if (Zira\Category::current()->meta_keywords) $meta_keywords = Zira\Locale::t(Zira\Category::current()->meta_keywords);
-            else $meta_keywords = mb_strtolower(Zira\Locale::t(Zira\Category::current()->title), CHARSET);
-            if (Zira\Category::current()->meta_description) $meta_description = Zira\Category::current()->meta_description;
-            else if (Zira\Category::current()->description) $meta_description = Zira\Category::current()->description;
-            else $meta_description = Zira\Locale::t('Category: %s', Zira\Category::current()->title);
-            $thumb = null;
-
-            if ($record) {
-                if ($add_title) {
-                    $title = $record->title;
-                }
-                if ($record->meta_title) $meta_title = $record->meta_title;
-                else $meta_title = $record->title;
-                if ($record->meta_keywords) $meta_keywords = $record->meta_keywords;
-                if ($record->meta_description) $meta_description = $record->meta_description;
-                else $meta_description = $record->description;
-                if ($record->thumb) $thumb = $record->thumb;
-            }
-
-            static::addTitle(Zira\Locale::t($meta_title));
-            static::setKeywords($meta_keywords);
-            static::setDescription(Zira\Locale::t($meta_description));
-        }
-
-        $limit = Zira\Config::get('records_limit', 10);
-        if (Zira\Category::current()->records_list===null || Zira\Category::current()->records_list) {
-            $records = static::getRecords(Zira\Category::current(), false, $limit + 1, null, Zira\Config::get('category_childs_list', true), Zira\Category::currentChilds());
-        } else {
-            $records = array();
-        }
-
-        $rating_enabled = Zira\Category::current()->rating_enabled!==null ? Zira\Category::current()->rating_enabled : Zira\Config::get('rating_enabled', 0);
-        $display_author = Zira\Category::current()->display_author!==null ? Zira\Category::current()->display_author : Zira\Config::get('display_author', 0);
-        $display_date = Zira\Category::current()->display_date!==null ? Zira\Category::current()->display_date : Zira\Config::get('display_date', 0);
-
-        $comments_enabled = Zira\Config::get('comments_enabled', 1);
-        if (Zira\Category::current()->comments_enabled!==null) $comments_enabled = Zira\Category::current()->comments_enabled && $comments_enabled;
-        
-        $data = array(
-                static::VIEW_PLACEHOLDER_CLASS => 'records',
-                static::VIEW_PLACEHOLDER_RECORDS => $records,
-                static::VIEW_PLACEHOLDER_SETTINGS => array(
-                    'limit' => $limit,
-                    'comments_enabled' => $comments_enabled,
-                    'rating_enabled' => $rating_enabled,
-                    'display_author' => $display_author,
-                    'display_date' => $display_date
-                )
-        );
-
-        if ($add_title) {
-            $_data = array(
-                static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
-            );
-        } else {
-            $_data = array();
-        }
-
-        if ($record) {
-            $_data[static::VIEW_PLACEHOLDER_IMAGE] = $record->image;
-            $_data[static::VIEW_PLACEHOLDER_CONTENT] = $record->content;
-            $_data[static::VIEW_PLACEHOLDER_CLASS] = 'parse-content';
-            Zira\View::addParser();
-        } else if ($add_description) {
-            $_data[static::VIEW_PLACEHOLDER_DESCRIPTION] = Zira\Locale::t(Zira\Category::current()->description);
-        }
-
-        if ($add_title) {
-            $admin_icons = null;
-            if ($record) {
-                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS) && Zira\Permission::check(Zira\Permission::TO_EDIT_RECORDS)) {
-                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
-                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
-                    $admin_icons .= '&nbsp;';
-                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file record', 'data-item'=>$record->id));
-                    $admin_icons .= Zira\Helper::tag_close('div');
-                }
-            } else {
-                if (!static::allowPreview() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
-                    $admin_icons = Zira\Helper::tag_open('div', array('class'=>'editor-links-wrapper'));
-                    $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark category', 'data-item'=>'/'.Zira\Category::current()->name));
-                    $admin_icons .= Zira\Helper::tag_close('div');
-                }
-            }
-            $_data[static::VIEW_PLACEHOLDER_ADMIN_ICONS] = $admin_icons;
-        }
-
-        if (!empty($_data)) {
-            Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $_data, 'page');
-        }
-
-        Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
     }
 
     public static function record($category) {

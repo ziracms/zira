@@ -414,5 +414,9 @@ return array(
     'Site key for reCaptcha' => 'Ключ сайта для reCaptcha',
     'Secret key for reCaptcha' => 'Секретный ключ для reCaptcha',
     'Anti-Bot (CAPTCHA)' => 'Анти-Бот (CAPTCHA)',
-    'Display records list in %s columns' => array('Показывать список записей в %s колонку', 'Показывать список записей в %s колонки', 'Показывать список записей в %s колонок')
+    'Display records list in %s columns' => array('Показывать список записей в %s колонку', 'Показывать список записей в %s колонки', 'Показывать список записей в %s колонок'),
+    'Sort records' => 'Сортировать записи',
+    'by creation date' => 'по дате создания',
+    'by rating' => 'по рейтингу',
+    'by comments count' => 'по числу комментариев'
 );

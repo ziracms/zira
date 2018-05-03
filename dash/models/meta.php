@@ -42,7 +42,8 @@ class Meta extends Model {
                 'comments_enabled'=>'int',
                 'site_scroll_effects'=>'int',
                 'site_parse_images'=>'int',
-                'site_records_grid'=>'int'
+                'site_records_grid'=>'int',
+                'records_sorting'=>'string'
             );
 
             $config_ids = array();
