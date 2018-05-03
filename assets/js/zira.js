@@ -1208,7 +1208,7 @@
         $('body').append('<script src="'+zira_recaptcha_url+'"></script>');
 
         $('.g-recaptcha').each(function(){
-            $(this).parents('form').submit(function(){
+            $(this).parents('form.xhr-form').submit(function(){
                 window.setTimeout(function(){
                     try {
                         grecaptcha.reset();

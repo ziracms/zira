@@ -102,16 +102,26 @@ class User extends Zira\Controller {
 
             try {
                 $user->save();
-                if (Zira\Config::get(Zira\User::CONFIG_VERIFY_EMAIL, true)) {
-                    Zira\User::sendConfirmEmail($user->email, Zira\User::getProfileName($user), $vcode);
-                    Zira\User::rememberConfirmEmail($user->email);
-                    Zira\Response::redirect('user/confirm');
-                } else {
-                    Zira\Response::redirect('user/login');
-                }
             } catch(\Exception $e) {
                 Zira::getInstance()->exception($e);
                 $form->setError($e->getMessage());
+            }
+            
+            if ($user->id>0) {
+                if (Zira\Config::get(Zira\User::CONFIG_VERIFY_EMAIL, true)) {
+                    try {
+                        Zira\User::sendConfirmEmail($user->email, Zira\User::getProfileName($user), $vcode);
+                        Zira\User::rememberConfirmEmail($user->email);
+                        Zira\Response::redirect('user/confirm');
+                    } catch(\Exception $e) {
+                        Zira::getInstance()->exception($e);
+                        $form->setError(Zira\Locale::t('An error occurred'));
+                    }
+                } else {
+                    Zira\Response::redirect('user/login');
+                }
+            } else {
+                $form->setError(Zira\Locale::t('An error occurred'));
             }
         }
 

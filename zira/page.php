@@ -497,8 +497,8 @@ class Page {
             if ($last_id!==null) {
                 $query->and_where('id', '<', $last_id);
             }
-            $query->order_by('id', 'desc');
-            $query->limit($limit * $page);
+            //$query->order_by('id', 'desc');
+            //$query->limit($limit * $page);
             $query->close_query();
         }
         $query->merge();

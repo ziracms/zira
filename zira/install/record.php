@@ -55,7 +55,7 @@ class Record extends Table {
 
     public function getKeys() {
         return array(
-            'record' => array('category_id', 'language', 'name','published','front_page'),
+            'record' => array('category_id', 'language','published','front_page'),
             'widget' => array('category_id', 'language', 'published','rating', 'comments')
         );
     }
