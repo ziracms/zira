@@ -247,7 +247,7 @@ class Form {
         $digit1 = rand(1,9);
         $digit2 = rand(1,9);
 
-        $result = $digit1 + $digit2;
+        $result = $digit1 * $digit2;
         Session::set(self::getFieldName($token, CAPTCHA_NAME),$result);
 
         $image = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
@@ -272,7 +272,7 @@ class Form {
 			imagestring($image,$size,CAPTCHA_WIDTH/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$digit1,$color);
 		}
 
-        $sign = '+';
+        $sign = 'x';
         $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
 		try {
 			imagettftext($image,$size,rand(-5,5),CAPTCHA_WIDTH*2/5+(CAPTCHA_WIDTH/5-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$sign);
@@ -295,7 +295,18 @@ class Form {
 			imagestring($image,$size,CAPTCHA_WIDTH*4/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$sign,$color);
 		}
 
-        imagejpeg($image,null,90);
+        for ($i=0;$i<20;$i++) {
+            $color= imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
+            imagefilledellipse($image,rand(0,CAPTCHA_WIDTH),rand(0,CAPTCHA_HEIGHT),CAPTCHA_HEIGHT/10,CAPTCHA_HEIGHT/10,$color);
+        }
+                
+        $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
+        imagecopy($image_copy, $image, 0, 0, 0, 0, CAPTCHA_WIDTH, CAPTCHA_HEIGHT);
+        imagecopy($image_copy, $image, 2, 0, 0, 0, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4);
+        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4);
+        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4);
+        imagedestroy($image);
+        imagejpeg($image_copy,null,90);
     }
 
     public static function isCaptchaValid($token,$method=Request::POST) {
