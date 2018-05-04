@@ -460,8 +460,31 @@
                     $(this).parent('.list-view-more-wrapper').prev('ul').append(m[1]);
                     $(this).parent('.list-view-more-wrapper').replaceWith(m[2]);
                     zira_init_grid();
+                    window.setTimeout(zira_init_grid, 500);
                 }
             }),'html');
+        });
+        
+        if (typeof(zira_scroll_effects_enabled)!="undefined" && zira_scroll_effects_enabled) {
+            zira_init_records_scroll();
+        }
+    };
+    
+    zira_init_records_scroll = function() {
+        if ($('.container #content .list-view-more').length==0) return;
+        $(window).unbind('scroll', zira_init_records_scroll).scroll(function(e){
+            if ($('.container #content .list-view-more').length==0) {
+                $(window).unbind('scroll', zira_init_records_scroll);
+                return;
+            }
+            if ($('.container #content .list-view-more').get(0).disabled) return;
+            var win_t = $(window).scrollTop();
+            var btn_t = $('.container #content .list-view-more').offset().top;
+            var win_h = $(window).height();
+            if (win_t+win_h>btn_t) {
+                zira_init_records_more.lock = true;
+                $('.container #content .list-view-more').trigger('click');
+            }
         });
     };
 

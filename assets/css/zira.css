@@ -214,6 +214,10 @@ textarea {
     background: rgba(45, 45, 45, .2);
     border-radius: 30px;
 }
+.pagination > li > a,
+.pagination > li > span {
+    padding: 6px 10px;
+}
 
 @keyframes loader {
   0% { 
