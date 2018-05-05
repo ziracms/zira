@@ -219,7 +219,7 @@ class Form {
         $html .= self::input($token,CAPTCHA_NAME, null, array('class'=>$input_class,'autocomplete'=>'off'), false);
 
         $html .= Helper::tag_open('div',array('class'=>$refresh_wrapper_class));
-        $html .= Helper::tag_open('a',array('href'=>'javascript:void(0)','onclick'=>'document.getElementById(\''.$token.'-'.CAPTCHA_NAME.'-image'.'\').src+=Math.floor(Math.random()*10);'));
+        $html .= Helper::tag_open('a',array('href'=>'javascript:void(0)','class'=>'captcha-refresh-btn','data-id'=>$token.'-'.CAPTCHA_NAME.'-image'));
         $html .= $refresh_value;
         $html .= Helper::tag_close('a');
         $html .= Helper::tag_close('div');
@@ -251,6 +251,7 @@ class Form {
         Session::set(self::getFieldName($token, CAPTCHA_NAME),$result);
 
         $image = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
+        $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
 
         $size = CAPTCHA_HEIGHT*.8;
         putenv('GDFONTPATH=' . realpath(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . FONTS_DIR));
@@ -258,10 +259,12 @@ class Form {
         $bg = imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
         imagefill($image,0,0,$bg);
 
-        for ($i=0;$i<30;$i++) {
+        for ($i=0;$i<15;$i++) {
             $color= imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
             imagefilledellipse($image,rand(0,CAPTCHA_WIDTH),rand(0,CAPTCHA_HEIGHT),CAPTCHA_HEIGHT/3,CAPTCHA_HEIGHT/3,$color);
         }
+        
+        imagecopy($image_copy, $image, 0, 0, 0, 0, CAPTCHA_WIDTH, CAPTCHA_HEIGHT);
 
         $captcha_font = CAPTCHA_FONT;
 
@@ -295,16 +298,16 @@ class Form {
 			imagestring($image,$size,CAPTCHA_WIDTH*4/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$sign,$color);
 		}
 
-        for ($i=0;$i<20;$i++) {
+        for ($i=0;$i<15;$i++) {
             $color= imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
             imagefilledellipse($image,rand(0,CAPTCHA_WIDTH),rand(0,CAPTCHA_HEIGHT),CAPTCHA_HEIGHT/10,CAPTCHA_HEIGHT/10,$color);
         }
-                
-        $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
-        imagecopy($image_copy, $image, 0, 0, 0, 0, CAPTCHA_WIDTH, CAPTCHA_HEIGHT);
-        imagecopy($image_copy, $image, 2, 0, 0, 0, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4);
-        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4);
-        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4);
+        
+        //imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
+        imagecopy($image_copy, $image, 2, 0, 0, 2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-2);
+        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+2, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-2);
+        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-2);
+        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+2, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-2);
         imagedestroy($image);
         imagejpeg($image_copy,null,90);
     }
@@ -314,6 +317,7 @@ class Form {
         if (!$value) return false;
         $captcha = Session::get(self::getFieldName($token, CAPTCHA_NAME));
         if (!$captcha) return false;
+        Session::remove(self::getFieldName($token, CAPTCHA_NAME));
         return $value == $captcha;
     }
 

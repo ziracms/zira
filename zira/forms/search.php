@@ -19,9 +19,12 @@ class Search extends Form {
     
     protected static $_initialized = false;
 
-    public function __construct() {
+    public function __construct($id=null, $extended = false) {
         $this->_is_token_unique = true;
-        parent::__construct($this->_id);
+        if ($id===null) $id = $this->_id;
+        else $this->_id = $id;
+        if ($extended) $this->_extended = true;
+        parent::__construct($id);
     }
 
     public function setExtended($extended) {
@@ -53,7 +56,7 @@ class Search extends Form {
     public function input($label, $name, array $attributes = NULL) {
         if (!$attributes) $attributes = array();
         $attributes['type'] = 'text';
-        $attributes['id'] = $name;
+        $attributes['id'] = $this->_id.'-'.$name;
         $attributes['name'] = $name;
 
         $_value = trim($this->getValue($name));

@@ -11,6 +11,8 @@ use Zira;
 
 class Usermenu extends Zira\Widget {
     protected $_title = 'User menu';
+    protected $_authorizied_class = 'authorized';
+    protected $_unauthorizied_class = 'not-authorized';
 
     protected function _init() {
         $this->setCaching(false);
@@ -20,7 +22,7 @@ class Usermenu extends Zira\Widget {
 
     protected function _render() {
         if (Zira\User::isAuthorized()) {
-            $class='authorized';
+            $class=$this->_authorizied_class;
             $items = array(
                 array(
                     'url' => 'user/profile',
@@ -65,13 +67,14 @@ class Usermenu extends Zira\Widget {
             if (!$redirect_url) $redirect_url = Zira\Page::getRecordUrl();
             if ($redirect_url && $redirect_url==Zira\Config::get('home_record_name')) $redirect_url = null;
             if (!$redirect_url && Zira\Category::current()) $redirect_url = Zira\Category::current()->name;
-            $class='not-authorized';
+            $class=$this->_unauthorizied_class;
             if (Zira\Config::get('user_signup_allow')) {
                 $items = array(
                     array(
                         'url' => 'user/login'.($redirect_url ? '?redirect='.$redirect_url : ''),
                         'icon' => '',
-                        'title' => Zira\Locale::t('Log In')
+                        'title' => Zira\Locale::t('Log In'),
+                        'class' => 'user-login-menu'
                     )
                 );
                 $items []= array(
@@ -84,7 +87,8 @@ class Usermenu extends Zira\Widget {
                     array(
                         'url' => 'user/login'.($redirect_url ? '?redirect='.$redirect_url : ''),
                         'icon' => 'glyphicon glyphicon-log-in',
-                        'title' => Zira\Locale::t('Authorization')
+                        'title' => Zira\Locale::t('Authorization'),
+                        'class' => 'user-login-menu'
                     )
                 );
             }

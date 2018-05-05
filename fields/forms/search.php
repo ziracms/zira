@@ -25,9 +25,11 @@ class Search extends Form
     protected static $_fields_array = null;
     protected $_fields = array();
     
-    public function __construct()
+    public function __construct($id=null)
     {
-        parent::__construct($this->_id);
+        if ($id===null) $id = $this->_id;
+        else $this->_id = $id;
+        parent::__construct($id);
         $this->_token = 'field';
         $this->getValidator()->setToken($this->_token);
     }
@@ -60,7 +62,6 @@ class Search extends Form
         $this->setMethod(Zira\Request::GET);
         $this->setFill(Zira\Request::GET);
         $this->setRenderPanel(false);
-        $this->setFormClass('form-horizontal dash-window-form');
     }
     
     public function getNamePrefix() {
@@ -85,11 +86,12 @@ class Search extends Form
                     $field->field_type == 'textarea' || $field->field_type == 'html' || 
                     $field->field_type == 'file' || $field->field_type == 'image'
                 ) {
-                    $html .= $this->input($label, $name);
+                    $html .= $this->input($label, $name, array('id'=>$this->_id.'-input-'.$name));
                 } else if ($field->field_type == 'checkbox') {
                     $attributes = array();
                     $attributes['class'] = $this->_input_class;
                     $attributes['style'] = 'width:auto;height:auto;outline:none';
+                    $attributes['id'] = $this->_id.'-input-'.$name;
                     $_field = Zira\Form\Form::checkbox($this->_token, $name, null, $attributes, $this->_fill);
                     $_html = Zira\Helper::tag_open('label', array('class'=>$this->_label_class, 'style'=>'width:auto;padding-top:0px'));
                     $_html .= $_field . $label;
@@ -103,8 +105,11 @@ class Search extends Form
                         $_value_titles[$value_title] = Locale::t($value_title);
                     }
                     $elems = '';
+                    $co = 0;
                     foreach ($_value_titles as $_value=>$_title) {
+                        $co++;
                         $attributes = array();
+                        $attributes['id'] = $this->_id.'-input-'.$name.'-'.$co;
                         $_field = Zira\Form\Form::radio($this->_token, $name, $_value, $attributes, $this->_fill);
                         $_html = Zira\Helper::tag_open('label', array('style'=>'font-weight:normal'));
                         $_html .= $_field.' '.$_title;
@@ -119,7 +124,7 @@ class Search extends Form
                     foreach($value_titles as $value_title) {
                         $_value_titles[$value_title] = Locale::t($value_title);
                     }
-                    $html .= $this->select($label, $name, $_value_titles);
+                    $html .= $this->select($label, $name, $_value_titles, array('id'=>$this->_id.'-input-'.$name));
                 } else if ($field->field_type == 'multiple') {
                     $options = explode(',', $field->field_values);
                     $elems = '';
@@ -129,7 +134,7 @@ class Search extends Form
                     $co = 0;
                     foreach($options as $option) {
                         $_attributes = $attributes;
-                        $id = 'field-item-multiple-option-'.$field->field_id.'-'.(++$co);
+                        $id = 'field-item-multiple-'.$this->_id.'-option-'.$field->field_id.'-'.(++$co);
                         $_attributes['id'] = $id;
                         if (in_array($option, (array)Zira\Request::get($this->_token.'-'.$name))) $_attributes['checked'] = 'checked';
                         $_field = Zira\Form\Form::checkbox($this->_token, $name.'[]', $option, $_attributes, false);

@@ -18,11 +18,11 @@ class Login extends Form {
     protected $_id = 'user-login-form';
 
     const HOOK_NAME = 'user_login_form_hook';
-
+    
     public function __construct() {
         parent::__construct($this->_id);
     }
-
+    
     protected function _init() {
         $action = 'user/login';
         $redirect = Request::get('redirect');
@@ -38,6 +38,7 @@ class Login extends Form {
     }
 
     protected function _render() {
+        if (View::isAjax()) $this->setRenderPanel(false);
         $html = $this->open();
         $html .= $this->input(Locale::t('Username or Email').'*','login');
         $html .= $this->password(Locale::t('Password').'*','password');
@@ -45,17 +46,19 @@ class Login extends Form {
         $html .= $this->captchaLazy(Locale::t('Enter result').'*');
         $html .= $this->submit(Locale::t('Submit'));
 
-        $extra_items = \Zira\Hook::run(self::HOOK_NAME);
-        if (!empty($extra_items)) {
-            $html .= Helper::tag_open('div',array('class'=>'user-login-form-extra-items'));
-            foreach($extra_items as $item) {
-                $html .= Helper::tag_open('div',array('class'=>'user-login-form-extra-item'));
-                $html .= $item;
+        if (!View::isAjax()) {
+            $extra_items = \Zira\Hook::run(self::HOOK_NAME);
+            if (!empty($extra_items)) {
+                $html .= Helper::tag_open('div',array('class'=>'user-login-form-extra-items'));
+                foreach($extra_items as $item) {
+                    $html .= Helper::tag_open('div',array('class'=>'user-login-form-extra-item'));
+                    $html .= $item;
+                    $html .= Helper::tag_close('div');
+                }
                 $html .= Helper::tag_close('div');
             }
-            $html .= Helper::tag_close('div');
         }
-
+        
         $html .= Helper::tag_open('p',array('class'=>'text-right'));
         $html .= Helper::tag('a', Locale::t('Forgot password ?'), array('href'=>Helper::url('user/recover')));
         if (\Zira\Config::get('user_signup_allow')) {

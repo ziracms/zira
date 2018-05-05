@@ -22,7 +22,7 @@ class Searchall extends Widget {
     }
 
     protected function _render() {
-        $form = new \Fields\Forms\Search();
+        $form = new \Fields\Forms\Search('fields-search-widget-all-form');
         $fields = $form->getFieldsArray();
         
         if (empty($fields)) return;

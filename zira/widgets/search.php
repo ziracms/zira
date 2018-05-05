@@ -21,7 +21,7 @@ class Search extends Zira\Widget {
     protected function _render() {
         if (Zira\Router::getController() == 'search' || Zira\Router::getModule() == 'forum') return;
         
-        $search = new Zira\Forms\Search();
+        $search = new Zira\Forms\Search('search-form-extended', true);
         $search->setExtended(true);
         
         $data = array(

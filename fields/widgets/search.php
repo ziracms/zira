@@ -48,7 +48,7 @@ class Search extends Widget {
         $id = $this->getData();
         if (!is_numeric($id)) return;
         
-        $form = new \Fields\Forms\Search();
+        $form = new \Fields\Forms\Search('fields-search-widget-form-'.$id);
         $fields = $form->getFieldsArray();
         
         if (empty($fields) || !array_key_exists($id, $fields)) return;

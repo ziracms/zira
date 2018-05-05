@@ -268,11 +268,23 @@
                 }
             }
         }
+        /**
+         * captcha
+         */
+        if ($('.captcha-refresh-btn').length>0) {
+            zira_init_captcha();
+        }
         /** 
          * reCaptcha 
          **/
         if ($('.g-recaptcha').length>0) {
             zira_load_recaptcha();
+        }
+        /**
+         * User auth popup
+         */
+        if ($('.usermenu-popup').length>0) {
+            zira_init_auth_popup();
         }
     });
 
@@ -471,9 +483,12 @@
     };
     
     zira_init_records_scroll = function() {
+        zira_init_records_scroll.co = 0;
         if ($('.container #content .list-view-more').length==0) return;
         $(window).unbind('scroll', zira_init_records_scroll).scroll(function(e){
-            if ($('.container #content .list-view-more').length==0) {
+            if ($('.container #content .list-view-more').length==0 ||
+                zira_init_records_scroll.co >= 5
+            ) {
                 $(window).unbind('scroll', zira_init_records_scroll);
                 return;
             }
@@ -481,9 +496,11 @@
             var win_t = $(window).scrollTop();
             var btn_t = $('.container #content .list-view-more').offset().top;
             var win_h = $(window).height();
-            if (win_t+win_h>btn_t) {
+            var delta = 50;
+            if (win_t+win_h+delta>btn_t) {
                 zira_init_records_more.lock = true;
                 $('.container #content .list-view-more').trigger('click');
+                zira_init_records_scroll.co++;
             }
         });
     };
@@ -938,6 +955,53 @@
             zira_scroll(selector);
         });
     };
+    
+    zira_init_auth_popup = function() {
+        $('.usermenu-popup a.user-login-menu').click(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            zira_modal(t('Authorization'), '<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>', null, false, 'zira-auth-dialog');
+            var url = $(this).attr('href');
+            $.get(url, {
+                format : 'json'
+            }, zira_auth_popup_response, 'json');
+        });
+    };
+    
+    zira_auth_popup_response = function(response){
+        if (!response || typeof response.form == "undefined") {
+            zira_error(t('An error occurred'));
+            return;
+        }
+        if (response && typeof response.redirect != "undefined" && response.redirect.length>0) {
+            window.location.href = response.redirect;
+            return;
+        }
+        $('#zira-auth-dialog .modal-body').html(response.form);
+        $('#zira-auth-dialog .modal-body form').submit(function(e){
+            e.stopPropagation();
+            e.preventDefault();
+            var data = $(this).serialize();
+            var url = $(this).attr('action');
+            $('#zira-auth-dialog .modal-body').html('<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>');
+            if (url.indexOf('?')<0) url += '?';
+            else url += '&';
+            url += 'format=json';
+            $.post(url, data, zira_auth_popup_response, 'json');
+        });
+        if ($('.g-recaptcha').length>0) {
+            if (typeof zira_auth_popup_response.recaptcha == "undefined") {
+                zira_load_recaptcha();
+                zira_auth_popup_response.recaptcha = true;
+            } else {
+                try {
+                    grecaptcha.render($('.g-recaptcha').get(0));
+                } catch(e) {}
+            }
+        } else if ($('.captcha-refresh-btn').length>0) {
+            zira_init_captcha();
+        }
+    };
 
     /**
      * modal
@@ -955,6 +1019,9 @@
         zira_modal_create('zira-prompt-dialog', 'zira-prompt-modal', '', zira_modal_input(), zira_modal_cancel_btn()+zira_modal_ok_btn());
         // multi prompt dialog
         zira_modal_create('zira-multi-prompt-dialog', 'zira-prompt-modal', '', zira_modal_multi_input(), zira_modal_cancel_btn()+zira_modal_ok_btn());
+        if ($('.usermenu-popup').length>0) {
+            zira_modal_create('zira-auth-dialog', '', '', '', '');
+        }
     }
 
     zira_modal_create = function(id, className, title, content, buttons) {
@@ -1229,6 +1296,24 @@
             method.call(object, arg);
         }
     };
+    
+    zira_init_captcha = function() {
+        $('.captcha-refresh-btn').each(function(){
+            $(this).click(zira_bind(this, function(){
+                var id = $(this).data('id');
+                if (typeof id == "undefined") return;
+                var img = $('#'+id);
+                if ($(img).length==0) return;
+                var src = $(img).attr('src');
+                $(img).attr('src', src+Math.floor(Math.random()*10));
+            }));
+            $(this).parents('form.xhr-form').submit(zira_bind(this, function(){
+                window.setTimeout(zira_bind(this, function(){
+                    $(this).trigger('click');
+                }), 3000);
+            }));
+        });
+    };
 
     zira_load_recaptcha = function() {
         if (typeof zira_recaptcha_url == "undefined") return;
@@ -1243,7 +1328,7 @@
                 }, 3000);
             });
         });
-    }
+    };
 
     /**
      * translate

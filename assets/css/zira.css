@@ -218,6 +218,15 @@ textarea {
 .pagination > li > span {
     padding: 6px 10px;
 }
+#zira-auth-dialog form label {
+    font-weight: normal;
+}
+#zira-auth-dialog .form-alert {
+    margin-top: 0;
+}
+#zira-auth-dialog a {
+    color: #073954;
+}
 
 @keyframes loader {
   0% { 

@@ -7,7 +7,7 @@
 <li class="menu-item">
 <?php $icon = !empty($item['icon']) ? '<span class="'.Zira\Helper::html($item['icon']).'"></span>' : ''; ?>
 <?php if (empty($item['dropdown'])): ?>
-<a href="<?php echo Zira\Helper::html(Zira\Helper::url($item['url'])) ?>" class="menu-link"><?php echo $icon ?> <?php echo Zira\Helper::html($item['title']) ?></a>
+<a href="<?php echo Zira\Helper::html(Zira\Helper::url($item['url'])) ?>" class="menu-link<?php if (isset($item['class'])) echo ' '.$item['class']; ?>"><?php echo $icon ?> <?php echo Zira\Helper::html($item['title']) ?></a>
 <?php else: ?>
 <a href="<?php echo Zira\Helper::html(Zira\Helper::url($item['url'])) ?>" id="user-menu-<?php echo $index ?>-dropdown"  class="menu-link dropdown-toggle" data-toggle="dropdown"><?php echo $icon ?> <?php echo Zira\Helper::html($item['title']) ?> <span class="caret"></span></a>
 <ul class="dropdown-menu" aria-labelledby="user-menu-<?php echo $index ?>-dropdown">

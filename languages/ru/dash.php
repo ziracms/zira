@@ -418,5 +418,6 @@ return array(
     'Sort records' => 'Сортировать записи',
     'by creation date' => 'по дате создания',
     'by rating' => 'по рейтингу',
-    'by comments count' => 'по числу комментариев'
+    'by comments count' => 'по числу комментариев',
+    'User menu with popup window' => 'Меню пользователя со всплывающим окном'
 );

@@ -137,6 +137,7 @@ class User extends Zira\Controller {
         if (Zira\User::isAuthorized()) {
             Zira\Response::redirect('user/profile');
         }
+        
         $form = new Zira\Forms\User\Login();
 
         $email = Zira\User::getRememberedConfirmEmail();
@@ -150,21 +151,30 @@ class User extends Zira\Controller {
                 $redirect = Zira\Request::get('redirect');
                 if (isset($redirect) && strpos($redirect,'//')===false && strpos($redirect, '.')===false) {
                     if ($redirect=='dash') Zira\Helper::setAddingLanguageToUrl(false);
-                    Zira\Response::redirect($redirect);
                 } else {
-                    Zira\Response::redirect('user/profile');
+                    $redirect = 'user/profile';
                 }
             } else {
-                Zira\Response::redirect('user/confirm');
+                $redirect = 'user/confirm';
+            }
+            if (!empty($redirect) && !Zira\View::isAjax()) {
+                Zira\Response::redirect($redirect);
             }
         }
 
         Zira\Page::addTitle(Zira\Locale::t('Sign In'));
         Zira\Page::addBreadcrumb('user/login',Zira\Locale::t('Sign In'));
 
-        Zira\Page::render(array(
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT=>$form
-        ));
+        if (Zira\View::isAjax()) {
+            echo json_encode(array(
+                'form' => (string)$form,
+                'redirect' => isset($redirect) ? Zira\Helper::url($redirect) : ''
+            ));
+        } else {
+            Zira\Page::render(array(
+                Zira\Page::VIEW_PLACEHOLDER_CONTENT=>$form
+            ));
+        }
     }
 
     public function logout() {

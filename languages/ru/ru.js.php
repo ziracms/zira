@@ -34,5 +34,6 @@ return array(
     'Wed' => 'Ср',
     'Thu' => 'Чт',
     'Fri' => 'Пт',
-    'Sat' => 'Сб'
+    'Sat' => 'Сб',
+    'Authorization' => 'Авторизация'
 );

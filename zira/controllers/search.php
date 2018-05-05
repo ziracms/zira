@@ -18,7 +18,7 @@ class Search extends Zira\Controller {
         $is_ajax = (int)Zira\Request::get('ajax');
         $is_simple = (int)Zira\Request::get('simple');
         $limit = $is_simple ? 3 : 10;
-        $form = new Zira\Forms\Search();
+        $form = new Zira\Forms\Search('search-form-extended', true);
         $form->setExtended(true);
         $data = array();
         $found = false;

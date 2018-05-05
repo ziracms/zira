@@ -18,13 +18,15 @@ class Widgets {
                 'childmenu' => '\Zira\Widgets\Childmenu',
                 'footermenu' => '\Zira\Widgets\Footermenu',
                 'languages' => '\Zira\Widgets\Languages',
-                'usermenu' => '\Zira\Widgets\Usermenu'
+                'usermenu' => '\Zira\Widgets\Usermenu',
+                'usermenupopup' => '\Zira\Widgets\Usermenupopup'
             );
         } else {
             return array(
                 'logo' => '\Zira\Widgets\Logo',
                 'languages' => '\Zira\Widgets\Languages',
-                'usermenu' => '\Zira\Widgets\Usermenu'
+                'usermenu' => '\Zira\Widgets\Usermenu',
+                'usermenupopup' => '\Zira\Widgets\Usermenupopup'
             );
         }
     }
@@ -38,6 +40,7 @@ class Widgets {
         if (!Config::get('user_signup_allow') && !User::isAuthorized()) {
             unset($defaultDbWidgets['usermenu']);
         }
+        unset($defaultDbWidgets['usermenupopup']);
         
         foreach($defaultDbWidgets as $name=>$class) {
             View::addWidget($class);
