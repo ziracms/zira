@@ -35,9 +35,9 @@ class Submit extends Form {
         $html = $this->open();
         $html .= $this->hidden('chat_id');
         if(!User::isAuthorized()) {
-            $html .= $this->input(Locale::t('Name'), 'sender_name');
+            $html .= $this->input(Locale::t('Name'), 'sender_name', array('id'=>'chat-'.intval($this->getValue('chat_id')).'-sender-name'));
         } else {
-            $html .= $this->hidden('sender_name');
+            $html .= $this->hidden('sender_name', array('id'=>'chat-'.intval($this->getValue('chat_id')).'-sender-name'));
         }
 
         $extra_items = \Zira\Hook::run(\Zira\Page::USER_TEXTAREA_HOOK);

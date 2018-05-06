@@ -989,14 +989,15 @@
             url += 'format=json';
             $.post(url, data, zira_auth_popup_response, 'json');
         });
-        if ($('.g-recaptcha').length>0) {
-            if (typeof zira_auth_popup_response.recaptcha == "undefined") {
+        if ($('#zira-auth-dialog .g-recaptcha').length>0) {
+            if (typeof zira_load_recaptcha.loaded == "undefined") {
                 zira_load_recaptcha();
-                zira_auth_popup_response.recaptcha = true;
             } else {
                 try {
-                    grecaptcha.render($('.g-recaptcha').get(0));
-                } catch(e) {}
+                    grecaptcha.render($('#zira-auth-dialog .g-recaptcha').get(0));
+                } catch(e) {
+                    console.log(e)
+                }
             }
         } else if ($('.captcha-refresh-btn').length>0) {
             zira_init_captcha();
@@ -1299,6 +1300,8 @@
     
     zira_init_captcha = function() {
         $('.captcha-refresh-btn').each(function(){
+            if ($(this).hasClass('jsed')) return true;
+            $(this).addClass('jsed');
             $(this).click(zira_bind(this, function(){
                 var id = $(this).data('id');
                 if (typeof id == "undefined") return;
@@ -1317,6 +1320,8 @@
 
     zira_load_recaptcha = function() {
         if (typeof zira_recaptcha_url == "undefined") return;
+        if (typeof zira_load_recaptcha.loaded != 'undefined') return;
+        zira_load_recaptcha.loaded = true;
         $('body').append('<script src="'+zira_recaptcha_url+'"></script>');
 
         $('.g-recaptcha').each(function(){

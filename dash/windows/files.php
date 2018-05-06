@@ -338,6 +338,9 @@ class Files extends Window {
             'order'=>$this->order,
             'root'=>$root
         ));
-        $this->setTitle($root);
+        
+        $title_suffix = '';
+        if ($this->pages>1) $title_suffix = ' ('.intval($this->page).'/'.intval($this->pages).')';
+        $this->setTitle($root.$title_suffix);
     }
 }

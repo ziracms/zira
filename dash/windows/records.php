@@ -380,8 +380,10 @@ class Records extends Window {
         $this->setBodyItems($items);
 
         // window title
+        $title_suffix = '';
+        if ($this->pages>1) $title_suffix = ' ('.intval($this->page).'/'.intval($this->pages).')';
         if (empty($root)) {
-            $this->setTitle(Zira\Locale::t(self::$_title));
+            $this->setTitle(Zira\Locale::t(self::$_title).$title_suffix);
         } else {
             $cats = explode('/',trim($root,'/'));
             $_cat = '';
@@ -392,7 +394,7 @@ class Records extends Window {
                 if (!array_key_exists($_cat, $categories)) continue;
                 $_cats []= Zira\Locale::t($categories[$_cat]);
             }
-            $this->setTitle(Zira\Locale::t(self::$_title).': '.implode(' / ',$_cats));
+            $this->setTitle(Zira\Locale::t(self::$_title).': '.implode(' / ',$_cats).$title_suffix);
         }
 
         // menu
