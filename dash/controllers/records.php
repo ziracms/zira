@@ -154,6 +154,15 @@ class Records extends Dash\Controller {
         }
     }
     
+    public function slidelink() {
+        if (Zira\Request::isPost()) {
+            $link = Zira\Request::post('link');
+            $id = Zira\Request::post('item');
+            $response = $this->getSlidesModel()->saveLink($id, $link);
+            Zira\Page::render($response);
+        }
+    }
+    
     public function addfile() {
         if (Zira\Request::isPost()) {
             $files = Zira\Request::post('files');

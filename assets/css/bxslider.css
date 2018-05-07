@@ -21,6 +21,10 @@
 	*zoom: 1;
 }
 
+.bx-wrapper a {
+    display: block;
+}
+
 .bx-wrapper img {
 	max-width: 100%;
 	display: block;

@@ -30,12 +30,18 @@ class Recordslides extends Window {
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-list-alt', 'desk_window_edit_item(this);', 'edit', true)
         );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('URL address'), 'glyphicon glyphicon-link', 'desk_call(dash_recordslides_link, this);', 'edit', true)
+        );
 
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Add image'), 'glyphicon glyphicon-plus-sign', 'desk_call(dash_recordslides_add, this);', 'create')
         );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-list-alt', 'desk_window_edit_item(this);', 'edit', true)
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('URL address'), 'glyphicon glyphicon-link', 'desk_call(dash_recordslides_link, this);', 'edit', true)
         );
 
         $this->setDeleteActionEnabled(true);
@@ -92,7 +98,7 @@ class Recordslides extends Window {
         foreach($images as $image) {
             $name = Zira\Helper::basename($image->image);
             $inactive = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->image)) ? 0 : 1;
-            $items []= $this->createBodyItem(Zira\Helper::html($name), Zira\Helper::html($image->description), Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description,'inactive'=>$inactive));
+            $items []= $this->createBodyItem(Zira\Helper::html($name), Zira\Helper::html($image->description), Zira\Helper::baseUrl($image->thumb), $image->id, null, false, array('description'=>$image->description,'link'=>$image->link,'inactive'=>$inactive));
         }
 
         $this->setBodyItems($items);

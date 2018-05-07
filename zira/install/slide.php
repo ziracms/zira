@@ -23,7 +23,8 @@ class Slide extends Table {
             'record_id' => Field::int(true, true),
             'description' => Field::string(),
             'thumb' => Field::string(true),
-            'image' => Field::string(true)
+            'image' => Field::string(true),
+            'link' => Field::string()
         );
     }
 

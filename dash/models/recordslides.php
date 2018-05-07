@@ -65,6 +65,25 @@ class Recordslides extends Model {
 
         return array('reload' => $this->getJSClassName(),'message'=>Zira\Locale::t('Successfully saved'));
     }
+    
+    public function saveLink($id, $link) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        $slide = new Zira\Models\Slide($id);
+        if (!$slide->loaded()) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+
+        $slide->link = strip_tags($link);
+        $slide->save();
+
+        Zira\Cache::clear();
+
+        return array('reload' => $this->getJSClassName(),'message'=>Zira\Locale::t('Successfully saved'));
+    }
 
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));

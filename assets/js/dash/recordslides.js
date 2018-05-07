@@ -38,3 +38,13 @@ var dash_recordslides_add = function() {
         desk_window_request(this, url('dash/records/addslide'),{'images':images, 'item':this.options.data.items[0]});
     }));
 };
+
+var dash_recordslides_link = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1 && typeof(selected[0].link)!="undefined") {
+        desk_prompt(t('Enter URL address'), this.bind(this, function(link){
+            desk_window_request(this, url('dash/records/slidelink'),{'link':link, 'item':selected[0].data});
+        }));
+        $('#zira-prompt-dialog input[name=modal-input]').val(selected[0].link);
+    }
+};

@@ -995,9 +995,7 @@
             } else {
                 try {
                     grecaptcha.render($('#zira-auth-dialog .g-recaptcha').get(0));
-                } catch(e) {
-                    console.log(e)
-                }
+                } catch(e) {}
             }
         } else if ($('.captcha-refresh-btn').length>0) {
             zira_init_captcha();
