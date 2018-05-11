@@ -244,8 +244,8 @@ class Form {
         $token = Request::get('token');
         if (!$token) return;
 
-        $digit1 = rand(1,9);
-        $digit2 = rand(1,9);
+        $digit1 = rand(5,9);
+        $digit2 = rand(5,9);
 
         $result = $digit1 * $digit2;
         Session::set(self::getFieldName($token, CAPTCHA_NAME),$result);
@@ -304,10 +304,10 @@ class Form {
         }
         
         //imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
-        imagecopy($image_copy, $image, 2, 0, 0, 2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-2);
-        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+2, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-2);
-        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+2, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-2);
-        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+2, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-2);
+        imagecopy($image_copy, $image, 2, 0, 0, 3, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-3);
+        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+3, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-3);
+        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+3, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-3);
+        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+3, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-3);
         imagedestroy($image);
         imagejpeg($image_copy,null,90);
     }

@@ -1,0 +1,134 @@
+/********** Theming *****************/
+.zira-slider li p {
+    margin-bottom: 20px;
+    padding: 20px;
+    color: #fff;
+    font-weight: bold;
+    background: #397767;
+    background: rgba(57, 119, 103, .8);
+    border-left: 10px solid #9FD31D;
+    transition: opacity 1s ease;
+}
+.zira-slider-box .zs-cube-part {
+    background-color: #397767;
+}
+.zira-slider-wrapper .zs-nav {
+    width: 42px;
+    height: 42px;
+    background-color: #397767;
+    background-color: rgba(57, 119, 103, .8);
+    background-image: url(../images/zs-nav.png);
+    background-repeat: no-repeat;
+    transition: opacity .5s ease;
+    
+}
+.zira-slider-wrapper .zs-nav-prev {
+    left: 0px;
+    background-position: left top;
+    border-top-right-radius: 21px;
+    border-bottom-right-radius: 21px;
+}
+.zira-slider-wrapper .zs-nav-next {
+    right: 0px;
+    background-position: right top;
+    border-top-left-radius: 21px;
+    border-bottom-left-radius: 21px;
+}
+.zira-slider-wrapper .zs-loader-wrapper {
+    background: #61847a;
+}
+.zira-slider-wrapper .zs-loader-wrapper .zs-loader {
+    background: #289E70;
+    padding: 0px;
+    border-bottom: 1px solid #6eba8a;
+    transition: width 100ms linear;
+}
+.zira-slider-wrapper .zs-loader-wrapper .zs-loader span {
+    color: #e8f1f5;
+    font-size: 10px;
+}
+/********* Zira Slider **************/
+.zira-slider-wrapper {
+    position: relative;
+    max-width: 100%;
+    perspective: 1200px;
+}
+.zira-slider-wrapper .zira-slider {
+    position: relative;
+    list-style-type: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+}
+.zira-slider-wrapper .zira-slider li {
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    z-index: 1;
+}
+.zira-slider-wrapper .zira-slider li.active {
+    position: relative;
+    z-index: 2;
+}
+.zira-slider-wrapper .zira-slider li.visible {
+    opacity: 1;
+}
+.zira-slider-wrapper .zira-slider li a {
+    display: block;
+}
+.zira-slider-wrapper .zira-slider li img {
+    display: block;
+    border: none;
+    width: 100%;
+    height: auto;
+}
+.zira-slider-wrapper .zira-slider li p {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+}
+.zira-slider-wrapper .zira-slider li.visible p {
+    opacity: 1;
+}
+.zira-slider-wrapper .zira-slider-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transform-style: preserve-3d;
+    -ms-perspective: 1200px;
+	-ms-perspective-origin: center center;
+}
+.zira-slider-wrapper .zira-slider-box .zs-cube-part {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.zira-slider-wrapper .zira-slider-box .zs-cube-part.reset {
+    transition: transform 5ms !important;
+}
+.zira-slider-wrapper .zs-nav {
+    display: none;
+    position: absolute;
+    z-index: 3;
+    cursor: pointer;
+}
+.zira-slider-wrapper.zs-progress .zs-nav {
+    opacity: 0;
+}
+.zira-slider-wrapper .zs-loader-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+}
+.zira-slider-wrapper .zs-loader-wrapper .zs-loader {
+    height: 100%;
+    text-align: center;
+}

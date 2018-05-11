@@ -30,7 +30,9 @@ class Recordsettings extends Model {
                 'display_author'=>'int',
                 'display_date'=>'int',
                 'jpeg_quality'=>'int',
-                'create_thumbnails'=>'int'
+                'create_thumbnails'=>'int',
+                'slider_type'=>'string',
+                'slider_mode'=>'int'
             );
 
             $config_ids = array();

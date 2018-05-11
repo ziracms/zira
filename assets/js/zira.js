@@ -257,7 +257,7 @@
                     }
                     var offset = parseInt($('#content').height())-parseInt($('.sidebar').height())-sidebar_init_margin;
                     var height = parseInt($(document).height())-parseInt($(window).height())-sidebar_offset;
-                    var margin = ((top-sidebar_offset) / height * offset);
+                    var margin = Math.round((top-sidebar_offset) / height * offset);
                     $('.sidebar').css('marginTop', margin+sidebar_init_margin+'px');
                 };
                 if (typeof(requestAnimationFrame)!="undefined") {
@@ -978,6 +978,7 @@
             return;
         }
         $('#zira-auth-dialog .modal-body').html(response.form);
+        $('#zira-auth-dialog .modal-body').find('input[type=text]').first().addClass('modal-focus');
         $('#zira-auth-dialog .modal-body form').submit(function(e){
             e.stopPropagation();
             e.preventDefault();

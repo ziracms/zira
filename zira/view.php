@@ -588,13 +588,36 @@ class View {
 
     public static function addSliderAssets() {
         if (self::$_slider_added) return;
-        self::addStyle('bxslider.css');
-        self::addScript('bxslider.min.js');
+        $type = Config::get('slider_type');
+        if ($type == 'slider3d') {
+            self::add3DSliderAssets();
+        } else {
+            self::addDefaultSliderAssets();
+        }
         self::$_slider_added = true;
     }
-
+    
+    public static function addDefaultSliderAssets() {
+        self::addStyle('bxslider.css');
+        self::addScript('bxslider.min.js');
+    }
+    
+    public static function add3DSliderAssets() {
+        self::addStyle('slider3d.css');
+        self::addScript('slider3d.js');
+    }
+    
     public static function addSlider($id, array $options=null) {
         self::addSliderAssets();
+        $type = Config::get('slider_type');
+        if ($type == 'slider3d') {
+            self::add3DSlider($id, $options);
+        } else {
+            self::addDefaultSlider($id, $options);
+        }
+    }
+
+    public static function addDefaultSlider($id, array $options=null) {
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';
         $script .= 'jQuery(\'#'.Helper::html($id).'\').bxSlider({';
@@ -616,6 +639,93 @@ class View {
         $script .= Helper::tag_close('script');
         //self::addHTML($script, self::VAR_HEAD_BOTTOM);
         self::addBodyBottomScript($script);
+    }
+    
+    public static function add3DSlider($id, array $options=null) {
+        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
+        $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'jQuery(\'#'.Helper::html($id).'\').ziraSlider({';
+        if ($options) {
+            $_options = array();
+            foreach($options as $k=>$v) {
+                if (is_bool($v)) {
+                    $_options[]="'".Helper::html($k)."': ".($v ? 'true' : 'false');
+                } else if (is_int($v)) {
+                    $_options[]="'".Helper::html($k)."': ".Helper::html($v);
+                } else {
+                    $_options[]="'".Helper::html($k)."': '".Helper::html($v)."'";
+                }
+            }
+            $script .= implode(', ',$_options);
+        }
+        $script .= '});';
+        $script .= ' });';
+        $script .= Helper::tag_close('script');
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
+    }
+    
+    public static function getSliderSettings() {
+        $mode = Config::get('slider_mode', 3);
+        if ($mode<1) $mode = 1;
+        if ($mode>5) $mode = 5;
+        $type = Config::get('slider_type');
+        if ($type == 'slider3d') {
+            return self::get3DSliderSettings($mode);
+        } else {
+            return self::getDefaultSliderSettings($mode);
+        }
+    }
+    
+    public static function getDefaultSliderSettings($mode) {
+        $settings = array(
+            'auto' => true,
+            'speed' => 1000,
+            'pause' => 15000,
+            'captions' => true,
+            'slideMargin' => 0,
+            'adaptiveHeight' => true,
+            'preloadImages' => 'all'
+        );
+        
+        if ($mode == 1) {
+            $settings['mode'] = 'fade';
+            $settings['speed'] = 2000;
+        } else if ($mode == 2) {
+            $settings['mode'] = 'fade';
+            $settings['pause'] = 8000;
+        } else if ($mode == 4) {
+            $settings['speed'] = 500;
+            $settings['pause'] = 8000;
+        } else if ($mode == 5) {
+            $settings['mode'] = 'vertical';
+        }
+        return $settings;
+    }
+    
+    public static function get3DSliderSettings($mode) {
+        $settings = array(
+            'interval' => 6000,
+            'transition_time' => 600,
+            'delay_time' => 200,
+            'parts' => 3
+        );
+        if ($mode == 1) {
+            $settings['transition_time'] = 500;
+            $settings['parts'] = 1;
+        } else if ($mode == 2) {
+            $settings['parts'] = 2;
+            $settings['delay_time'] = 300;
+        } if ($mode == 4) {
+            $settings['transition_time'] = 1000;
+            $settings['parts'] = 5;
+            $settings['delay_time'] = 200;
+        } else if ($mode == 5) {
+            $settings['transition_time'] = 1500;
+            $settings['parts'] = 10;
+            $settings['delay_time'] = 150;
+        }
+        return $settings;
     }
 
     public static function addCropperAssets() {

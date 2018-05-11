@@ -43,6 +43,8 @@ class Recordsettings extends Form
         $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>'50 - 500'));
         $html .= $this->select(Locale::t('Image quality'), 'jpeg_quality', $q_arr);
         $html .= $this->checkbox(Locale::t('Create thumbnails'), 'create_thumbnails', null, false);
+        $html .= $this->select(Locale::t('Slider type'), 'slider_type', array('default'=>Locale::t('Default'), 'slider3d'=>Locale::t('3D slider')));
+        $html .= $this->radioButton(Locale::t('Slider mode'), 'slider_mode', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'));
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show files'), 'files_enabled', null, false);

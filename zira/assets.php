@@ -34,6 +34,7 @@ class Assets {
         'cropper.css',
         'lightbox.css',
         'bxslider.css',
+        'slider3d.css',
         'jplayer.css',
         'zira.css'
     );
@@ -47,6 +48,7 @@ class Assets {
         'bootstrap-datetimepicker.min.js',
         'cropper.js',
         'bxslider.min.js',
+        'slider3d.js',
         'md5.js',
         'parse.js',
         'upload.inc.js',

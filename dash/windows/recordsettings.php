@@ -48,6 +48,8 @@ class Recordsettings extends Window {
         if (!array_key_exists('display_date', $configs)) $configs['display_date'] = 0;
         if (!array_key_exists('jpeg_quality', $configs)) $configs['jpeg_quality'] = Zira\Image::QUALITY_JPEG;
         if (!array_key_exists('create_thumbnails', $configs)) $configs['create_thumbnails'] = 1;
+        if (!array_key_exists('slider_type', $configs)) $configs['slider_type'] = 'default';
+        if (!array_key_exists('slider_mode', $configs)) $configs['slider_mode'] = 3;
 
         $form = new \Dash\Forms\Recordsettings();
         $form->setValues($configs);

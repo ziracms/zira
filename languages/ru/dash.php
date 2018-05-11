@@ -419,5 +419,9 @@ return array(
     'by creation date' => 'по дате создания',
     'by rating' => 'по рейтингу',
     'by comments count' => 'по числу комментариев',
-    'User menu with popup window' => 'Меню пользователя со всплывающим окном'
+    'User menu with popup window' => 'Меню пользователя со всплывающим окном',
+    'Slider type' => 'Тип слайдера',
+    'Slider mode' => 'Режим слайдера',
+    'Default' => 'По-умолчанию',
+    '3D slider' => '3D слайдер'
 );

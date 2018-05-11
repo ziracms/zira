@@ -204,14 +204,7 @@ class Page {
     }
 
     public static function setSlider(array $images) {
-        View::addSlider('slider', array(
-            'auto' => true,
-            'speed' => 500,
-            'pause' => 8000,
-            'captions' => true,
-            'slideMargin' => 0,
-            'adaptiveHeight' => false
-        ));
+        View::addSlider('slider', View::getSliderSettings());
         //View::addPlaceholderView(View::VAR_CONTENT_TOP, array('images'=>$images), 'zira/slider');
         self::$_placeholders_data[self::VIEW_PLACEHOLDER_SLIDER_DATA] = array('images'=>$images);
     }
