@@ -233,7 +233,8 @@
         /**
          * Sidebar parallax
          */
-        if (typeof(zira_scroll_effects_enabled)!="undefined" && 
+        if (false && // disabled
+            typeof(zira_scroll_effects_enabled)!="undefined" && 
             zira_scroll_effects_enabled && 
             $('.sidebar').length==1 && 
             $('#content').length==1 && 

@@ -1,6 +1,9 @@
 html, body {
     width: 100%;
 }
+body, header {
+    transition: background-position 0ms;
+}
 select.form-control {
     -webkit-appearance: none;
     -moz-appearance: none;

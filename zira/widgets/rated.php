@@ -74,6 +74,7 @@ class Rated extends Zira\Widget {
         $query->where('id','in',$record_ids);
 
         $_rows = $query->get();
+        $records = array();
         foreach($_rows as $_row) {
             $records[] = $_row;
         }
@@ -94,6 +95,7 @@ class Rated extends Zira\Widget {
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
         $records = self::getTopRatedRecordsList($limit);
+        if (empty($records)) return;
         
         $data = array(
             'title' => Zira\Locale::t('Top rated'),

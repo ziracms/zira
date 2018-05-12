@@ -705,7 +705,7 @@ class View {
     
     public static function get3DSliderSettings($mode) {
         $settings = array(
-            'interval' => 6000,
+            'interval' => 10000,
             'transition_time' => 600,
             'delay_time' => 200,
             'parts' => 3
@@ -715,15 +715,13 @@ class View {
             $settings['parts'] = 1;
         } else if ($mode == 2) {
             $settings['parts'] = 2;
-            $settings['delay_time'] = 300;
+            $settings['delay_time'] = 150;
         } if ($mode == 4) {
-            $settings['transition_time'] = 1000;
             $settings['parts'] = 5;
             $settings['delay_time'] = 200;
         } else if ($mode == 5) {
-            $settings['transition_time'] = 1500;
-            $settings['parts'] = 10;
-            $settings['delay_time'] = 150;
+            $settings['parts'] = 9;
+            $settings['delay_time'] = 100;
         }
         return $settings;
     }

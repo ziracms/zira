@@ -79,10 +79,13 @@ class Category extends Zira\Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
+        $records = Zira\Page::getWidgetRecords($category, false, $limit, null, Zira\Config::get('category_childs_list', true));
+        if (empty($records)) return;
+        
         $data = array(
             'title' => Zira\Locale::t($category->title),
             'url' => Zira\Page::generateCategoryUrl($category->name),
-            'records' => Zira\Page::getWidgetRecords($category, false, $limit, null, Zira\Config::get('category_childs_list', true)),
+            'records' => $records,
             'grid' => $is_grid,
             'settings' => array(
                 'comments_enabled' => $comments_enabled,

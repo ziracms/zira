@@ -1,16 +1,16 @@
 <?php
 /**
  * Zira project.
- * discussed.php
- * (c)2016 http://dro1d.ru
+ * records.php
+ * (c)2018 http://dro1d.ru
  */
 
 namespace Zira\Widgets;
 
 use Zira;
 
-class Discussed extends Zira\Widget {
-    protected $_title = 'Most discussed records';
+class Records extends Zira\Widget {
+    protected $_title = 'Last records';
 
     protected function _init() {
         $this->setCaching(true);
@@ -19,7 +19,7 @@ class Discussed extends Zira\Widget {
     }
 
     protected function getKey() {
-        $layout = Zira\Page::getLayout();
+       $layout = Zira\Page::getLayout();
         if (!$layout) $layout = Zira\Config::get('layout');
 
         $is_sidebar = $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_LEFT || $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_RIGHT;
@@ -28,7 +28,7 @@ class Discussed extends Zira\Widget {
         return self::CACHE_PREFIX.'.'.strtolower(str_replace('\\','.',get_class($this))).'.side'.intval($is_sidebar).'.grid'.intval($is_grid).'.'.Zira\Locale::getLanguage();
     }
 
-    public static function getMostDiscussedRecordsList($limit = null, $last_id = null) {
+    public static function getLastRecordsList($limit = null, $last_id = null) {
         if ($limit === null) $limit = Zira\Config::get('widget_records_limit', 5);
 
         $category_ids = array(Zira\Category::ROOT_CATEGORY_ID);
@@ -43,19 +43,19 @@ class Discussed extends Zira\Widget {
                 $query->union();
             }
             $query->open_query();
-            $query->select('id', 'comments');
+            $query->select('id');
             $query->where('category_id', '=', $category_id);
             $query->and_where('language', '=', Zira\Locale::getLanguage());
             $query->and_where('published', '=', Zira\Models\Record::STATUS_PUBLISHED);
             if ($last_id!==null) {
                 $query->and_where('id', '<', $last_id);
             }
-            $query->order_by('comments', 'desc');
+            $query->order_by('id', 'desc');
             $query->limit($limit);
             $query->close_query();
         }
         $query->merge();
-        $query->order_by('comments', 'desc');
+        $query->order_by('id', 'desc');
         $query->limit($limit);
 
         $rows = $query->get();
@@ -72,16 +72,9 @@ class Discussed extends Zira\Widget {
             $record_ids []= $row->id;
         }
         $query->where('id','in',$record_ids);
+        $query->order_by('id', 'desc');
 
-        $_rows = $query->get();
-        $records = array();
-        foreach($_rows as $_row) {
-            $records[] = $_row;
-        }
-
-        usort($records, array(Zira\Models\Record::getClass(), 'sortByCommentsDesc'));
-
-        return $records;
+        return $query->get();
     }
 
     protected function _render() {
@@ -94,11 +87,11 @@ class Discussed extends Zira\Widget {
         //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
         $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
 
-        $records = self::getMostDiscussedRecordsList($limit);
+        $records = self::getLastRecordsList($limit);
         if (empty($records)) return;
         
         $data = array(
-            'title' => Zira\Locale::t('Most discussed'),
+            'title' => Zira\Locale::t('Recently published'),
             'url' => '',
             'records' => $records,
             'grid' => $is_grid,
@@ -112,6 +105,6 @@ class Discussed extends Zira\Widget {
 
         Zira\Page::runRecordsHook($records, true);
         
-        Zira\View::renderView($data, 'zira/widgets/discussed');
+        Zira\View::renderView($data, 'zira/widgets/records');
     }
 }

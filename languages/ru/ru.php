@@ -148,5 +148,7 @@ return array(
     'Users online' => 'Пользователи онлайн',
     'Who\'s online' => 'Сейчас на сайте',
     'Nobody' => 'Никого',
-    'CAPTCHA' => 'CAPTCHA'
+    'CAPTCHA' => 'CAPTCHA',
+    'Recently published' => 'Последние публикации',
+    'Last comments' => 'Последние комментарии'
 );

@@ -244,16 +244,17 @@ class Form {
         $token = Request::get('token');
         if (!$token) return;
 
-        $digit1 = rand(5,9);
-        $digit2 = rand(5,9);
-
-        $result = $digit1 * $digit2;
-        Session::set(self::getFieldName($token, CAPTCHA_NAME),$result);
+        if (Zira\Locale::getLanguage()=='ru') {
+            $chars = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я');
+            $chars = array_merge($chars, range(0,9));
+        } else {
+            $chars = array_merge(range('A', 'Z'), range(0,9));
+        }
 
         $image = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
         $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
 
-        $size = CAPTCHA_HEIGHT*.8;
+        $size = CAPTCHA_HEIGHT*.4;
         putenv('GDFONTPATH=' . realpath(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . FONTS_DIR));
 
         $bg = imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
@@ -268,48 +269,33 @@ class Form {
 
         $captcha_font = CAPTCHA_FONT;
 
-        $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
-        try {
-			imagettftext($image,$size,rand(-15,15),CAPTCHA_WIDTH/5+(CAPTCHA_WIDTH/5-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$digit1);
-		} catch(\Exception $e) {
-			imagestring($image,$size,CAPTCHA_WIDTH/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$digit1,$color);
-		}
-
-        $sign = 'x';
-        $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
-		try {
-			imagettftext($image,$size,rand(-5,5),CAPTCHA_WIDTH*2/5+(CAPTCHA_WIDTH/5-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$sign);
-		} catch(\Exception $e) {
-			imagestring($image,$size,CAPTCHA_WIDTH*2/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$sign,$color);
-		}
-
-        $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
-		try {
-			imagettftext($image,$size,rand(-15,15),CAPTCHA_WIDTH*3/5+(CAPTCHA_WIDTH/5-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$digit2);
-		} catch(\Exception $e) {
-			imagestring($image,$size,CAPTCHA_WIDTH*3/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$digit2,$color);
-		}
-
-        $sign = '=';
-        $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
-		try {
-			imagettftext($image,$size,rand(-5,5),CAPTCHA_WIDTH*4/5+(CAPTCHA_WIDTH/5-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$sign);
-		} catch(\Exception $e) {
-			imagestring($image,$size,CAPTCHA_WIDTH*4/5+(CAPTCHA_WIDTH/5-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$sign,$color);
-		}
-
+        $str_co = 5;
+        $result = '';
+        for ($i=0; $i<$str_co; $i++) {
+            $char = $chars[rand(0, count($chars)-1)];
+            $result .= $char;
+            $color= imagecolorallocate($image, rand(0,155), rand(0,155), rand(0,155));
+            try {
+                imagettftext($image,$size,rand(-5,5),CAPTCHA_WIDTH/$str_co*$i+(CAPTCHA_WIDTH/$str_co-$size)/2,CAPTCHA_HEIGHT-(CAPTCHA_HEIGHT-$size)/2,$color,$captcha_font,$char);
+            } catch(\Exception $e) {
+                imagestring($image,$size,CAPTCHA_WIDTH/$str_co*$i+(CAPTCHA_WIDTH/$str_co-$size)/2,(CAPTCHA_HEIGHT-$size)/2+$size/4,$char,$color);
+            }
+        }
+        
+        Session::set(self::getFieldName($token, CAPTCHA_NAME),$result);
+        
         for ($i=0;$i<15;$i++) {
             $color= imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
             imagefilledellipse($image,rand(0,CAPTCHA_WIDTH),rand(0,CAPTCHA_HEIGHT),CAPTCHA_HEIGHT/10,CAPTCHA_HEIGHT/10,$color);
         }
         
-        //imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
-        imagecopy($image_copy, $image, 2, 0, 0, 3, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-3);
-        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+3, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-3);
-        imagecopy($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+3, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-3);
-        imagecopy($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+3, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-3);
+//        imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
+        imagecopymerge($image_copy, $image, 2, 0, 0, 1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 50);
+        imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
+        imagecopymerge($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 100);
+        imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
         imagedestroy($image);
-        imagejpeg($image_copy,null,90);
+        imagejpeg($image_copy,null,50);
     }
 
     public static function isCaptchaValid($token,$method=Request::POST) {
@@ -318,7 +304,7 @@ class Form {
         $captcha = Session::get(self::getFieldName($token, CAPTCHA_NAME));
         if (!$captcha) return false;
         Session::remove(self::getFieldName($token, CAPTCHA_NAME));
-        return $value == $captcha;
+        return mb_strtolower($value, CHARSET) == mb_strtolower($captcha, CHARSET);
     }
 
     public static function isRecaptchaValid($secret_key, $response_value) {

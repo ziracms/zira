@@ -93,6 +93,7 @@ class Fields {
     
     public static function recordDeleteHook($record) {
         \Fields\Models\Search::clearRecordIndex($record->id);
+        \Fields\Models\Value::clearRecordValues($record->id);
     }
     
     public static function recordPublishHook($record) {

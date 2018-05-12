@@ -423,5 +423,6 @@ return array(
     'Slider type' => 'Тип слайдера',
     'Slider mode' => 'Режим слайдера',
     'Default' => 'По-умолчанию',
-    '3D slider' => '3D слайдер'
+    '3D slider' => '3D слайдер',
+    'Last records' => 'Последние записи'
 );
