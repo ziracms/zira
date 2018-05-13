@@ -38,7 +38,7 @@ class Contact extends Form {
             $html .= $this->input(Locale::t('Email'), 'email');
         }
         $html .= $this->textarea(Locale::t('Message').'*','message');
-        $html .= $this->captcha(Locale::t('Enter result').'*');
+        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

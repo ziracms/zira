@@ -26,7 +26,7 @@ class Nophoto extends Form {
     protected function _render() {
         $html = $this->open();
         $html .= $this->password(Locale::t('Current password').'*','password-current');
-        $html .= $this->captchaLazy(Locale::t('Enter result').'*');
+        $html .= $this->captchaLazy(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

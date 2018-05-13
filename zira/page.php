@@ -693,7 +693,8 @@ class Page {
             } else {
                 echo json_encode(array(
                     'message'=>$data[self::VIEW_PLACEHOLDER_CONTENT]->getMessage(),
-                    'error'=>$data[self::VIEW_PLACEHOLDER_CONTENT]->getError()
+                    'error'=>$data[self::VIEW_PLACEHOLDER_CONTENT]->getError(),
+                    'captcha_error'=>$data[self::VIEW_PLACEHOLDER_CONTENT]->getErrorField() == CAPTCHA_NAME ? 1 : 0
                 ));
             }
             return;

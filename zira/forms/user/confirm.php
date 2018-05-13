@@ -30,7 +30,7 @@ class Confirm extends Form {
             $html .= $this->input(Locale::t('Username or Email').'*','login');
         }
         $html .= $this->input(Locale::t('Verification code').'*','code');
-        $html .= $this->captchaLazy(Locale::t('Enter result').'*');
+        $html .= $this->captchaLazy(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= Helper::tag_open('p',array('class'=>'text-right'));
         $html .= Helper::tag('a', Locale::t('Did not recieve verification code ?'), array('href'=>Helper::url('user/send')));

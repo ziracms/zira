@@ -46,7 +46,7 @@ class Message extends Form {
         }
 
         $html .= $this->textarea(Locale::t('Message').'*', 'content', array('class'=>'form-control user-rich-input'));
-        $html .= $this->captchaLazy(Locale::t('Enter result').'*');
+        $html .= $this->captchaLazy(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

@@ -15,7 +15,7 @@ class Group extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Extra field group';
 
-    //protected $_help_url = 'zira/help/extra-field-group';
+    protected $_help_url = 'zira/help/extra-field-group';
 
     public $item;
 

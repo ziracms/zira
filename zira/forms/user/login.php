@@ -43,7 +43,7 @@ class Login extends Form {
         $html .= $this->input(Locale::t('Username or Email').'*','login');
         $html .= $this->password(Locale::t('Password').'*','password');
         $html .= $this->checkbox(Locale::t('Remember me'), 'rememberme');
-        $html .= $this->captchaLazy(Locale::t('Enter result').'*');
+        $html .= $this->captchaLazy(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
 
         if (!View::isAjax()) {

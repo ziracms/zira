@@ -151,6 +151,12 @@ class Factory {
     public function getError() {
         return $this->_error;
     }
+    
+    public function getErrorField() {
+        $validator = $this->getValidator();
+        if ($validator === null || !($validator instanceof Validator)) return '';
+        return $validator->getErrorField();
+    }
 
     public function getInfo() {
         return $this->_info;

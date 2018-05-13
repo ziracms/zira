@@ -439,8 +439,8 @@ class Dash {
             $js .= '$(\'.editor-links-wrapper\').children(\'.record\').click(desk_editor_record_callback);';
             $js .= '}';
         }
-        $js .= 'if (typeof(zira_cr) == "undefined") {';
-        $js .= '$(\'#content\').animate({opacity:0}, 3000);';
+        $js .= 'if (typeof(zira_tm) == "undefined") {';
+        $js .= '$(\'#content\').animate({opacity:.2}, 3000);';
         $js .= '}';
         $js .= '});'."\r\n";
         $js .= 'window.setInterval("dashPinger=$.get(\''.Zira\Helper::url('dash/index/ping').'?'.FORMAT_GET_VAR.'='.FORMAT_JSON.'\').always(function(xhr){if (dashPinger.status!=200) jQuery(\'#dashpanel-container nav\').addClass(\'disabled\'); else $(\'#dashpanel-container nav\').removeClass(\'disabled\'); });",600000);'."\r\n"; // keep session alive

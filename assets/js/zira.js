@@ -287,6 +287,12 @@
         if ($('.usermenu-popup').length>0) {
             zira_init_auth_popup();
         }
+        /**
+         * ajax forms
+         */
+        if ($('form.xhr-form').length>0) {
+            zira_init_xhr_form();
+        }
     });
 
     zira_resize_jplayer = function() {
@@ -1295,7 +1301,21 @@
     zira_bind = function(object, method) {
         return function(arg) {
             method.call(object, arg);
-        }
+        };
+    };
+    
+    zira_init_xhr_form = function() {
+        $('form.xhr-form').each(function() {
+            if ($(this).find('.g-recaptcha').length>0 || $(this).find('.captcha-refresh-btn').length>0) return true;
+            $(this).bind('xhr-submit-error', function(e, response){
+                if (!response) return;
+                if (typeof response.captcha_error != "undefined" && response.captcha_error) {
+                    zira_confirm(t('Too many requests. Page need to be reloaded. Reload now ?'), function(){
+                       window.location.reload(); 
+                    });
+                }
+            });
+        });
     };
     
     zira_init_captcha = function() {

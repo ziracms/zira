@@ -35,5 +35,6 @@ return array(
     'Thu' => 'Чт',
     'Fri' => 'Пт',
     'Sat' => 'Сб',
-    'Authorization' => 'Авторизация'
+    'Authorization' => 'Авторизация',
+    'Too many requests. Page need to be reloaded. Reload now ?' => 'Слишком много запросов. Страницу нужно перезагрузить. Перезагрузить сейчас ?'
 );

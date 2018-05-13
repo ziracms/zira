@@ -150,5 +150,6 @@ return array(
     'Nobody' => 'Никого',
     'CAPTCHA' => 'CAPTCHA',
     'Recently published' => 'Последние публикации',
-    'Last comments' => 'Последние комментарии'
+    'Last comments' => 'Последние комментарии',
+    'Anti-Bot' => 'Анти-Бот'
 );

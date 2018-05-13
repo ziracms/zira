@@ -16,7 +16,7 @@ class Groups extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Extra field groups';
 
-    //protected $_help_url = 'zira/help/extra-field-groups';
+    protected $_help_url = 'zira/help/extra-field-groups';
     
     public function init() {
         $this->setIconClass(self::$_icon_class);

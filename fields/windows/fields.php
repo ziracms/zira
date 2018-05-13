@@ -16,7 +16,7 @@ class Fields extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Records extra fields';
 
-    //protected $_help_url = 'zira/help/extra-fields';
+    protected $_help_url = 'zira/help/extra-fields';
     
     public $item;
     

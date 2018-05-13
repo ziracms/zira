@@ -91,7 +91,7 @@ class Submit extends Form
                 $html .= $this->selectDropdown($label, $name, $options, array('title'=>$field->description));
             }
         }
-        $html .= $this->captcha(Locale::t('Enter result').'*');
+        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

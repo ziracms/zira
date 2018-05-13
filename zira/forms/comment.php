@@ -61,9 +61,9 @@ class Comment extends Form {
 
         $html .= $this->textarea(Locale::t('Message').'*','comment', array('class'=>'form-control user-rich-input'));
         if (Config::get('comments_captcha',true)) {
-            $html .= $this->captcha(Locale::t('Enter result').'*');
+            $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         } else {
-            $html .= $this->captchaLazy(Locale::t('Enter result') . '*');
+            $html .= $this->captchaLazy(Locale::t('Anti-Bot') . '*');
         }
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();

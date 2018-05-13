@@ -66,7 +66,7 @@ class Reply extends Form {
             $html .= Helper::tag_close('div');
         }
         $html .= $this->hidden('editid', array('class'=>'forum-edit-inline-id'));
-        $html .= $this->captcha(Locale::t('Enter result').'*');
+        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

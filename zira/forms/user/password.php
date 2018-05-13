@@ -27,7 +27,7 @@ class Password extends Form {
         $html = $this->open();
         $html .= $this->input(Locale::t('Username or Email').'*','login');
         $html .= $this->input(Locale::t('Verification code').'*','code');
-        $html .= $this->captcha(Locale::t('Enter result').'*');
+        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

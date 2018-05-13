@@ -31,7 +31,7 @@ class Register extends Form {
         $html .= $this->input(Locale::t('Email').'*','email',array('title'=>Locale::t('Enter a valid email')));
         $html .= $this->password(Locale::t('Password').'*','password',array('title'=>Locale::t('At least %s characters required',User::PASSWORD_MIN_CHARS)));
         $html .= $this->password(Locale::t('Repeat password').'*','password-match',array('title'=>Locale::t('Enter password again')));
-        $html .= $this->captcha(Locale::t('Enter result').'*');
+        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;

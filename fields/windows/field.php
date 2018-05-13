@@ -15,7 +15,7 @@ class Field extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Records extra field';
 
-    //protected $_help_url = 'zira/help/extra-field';
+    protected $_help_url = 'zira/help/extra-field';
 
     public $item;
 

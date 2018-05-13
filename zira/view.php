@@ -505,7 +505,7 @@ class View {
 
     public static function addCR() {
         $c = Locale::t(Config::get('s'.'i'.  't'.'e'.'_'  .'c'.'o'."p"  .'y'.'r'.'i'  .'g'.'h'.'t'));
-        if (!self::checkLK()) {
+        if (!self::checkLK() && Router::getModule()!='dash') {
             self::addMeta(array('name'=>'gene'.  "rator",'content'=>'Zir'.  'a C'."MS"));
             if (!empty($c)) $c .= ' ';
             $s = 'P' . 'o' . "w" .  'e' . 'r' . 'e' .  'd' . ' ' . "b" .  'y' . ' ' . '%s';
@@ -518,11 +518,19 @@ class View {
                 $_c = str_replace('%s', $t, $s);
             }
             $c .= $_c;
-            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zira_cr='.time().';', array('type'=>'text/javascript')));
+            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zira_tm='.time().';', array('type'=>'text/javascript')));
         } else {
-            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zira_cr='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
+            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zira_tm='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
+        $js = Helper::tag_open('script', array('type'=>'text/javascript'));
+        $js .= '$(document).ready(function(){';
+        $js .= 'if (typeof(zira_tm) == "undefined") {';
+        $js .= '$(\'body\').css(\'filter\', \'grayscale(100%)\');';
+        $js .= '}';
+        $js .= '});';
+        $js .= Helper::tag_close('script')."\r\n";
+        self::addBodyBottomScript($js);
     }
 
     public static function checkLK() {
