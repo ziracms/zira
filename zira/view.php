@@ -530,7 +530,9 @@ class View {
         $js .= '}';
         $js .= '});';
         $js .= Helper::tag_close('script')."\r\n";
-        self::addBodyBottomScript($js);
+        if (!defined('ZIRA_INSTALL') && !defined('ZIRA_UPDATE')) {
+            self::addBodyBottomScript($js);
+        }
     }
 
     public static function checkLK() {

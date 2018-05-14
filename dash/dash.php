@@ -291,9 +291,9 @@ class Dash {
         if (!isset($attributes['rel'])) $attributes['rel'] = 'stylesheet';
         if (!isset($attributes['type'])) $attributes['type'] = 'text/css';
         if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$url)) {
-            $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url;
+            $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;
         } else {
-            $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url;
+            $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;
         }
         Zira\View::addHTML(Zira\Helper::tag_short('link', $attributes),Zira\View::VAR_STYLES);
     }
