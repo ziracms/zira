@@ -115,6 +115,10 @@
     color: #505559;
     font-size: 14px;
 }
+.forum-list.list .list-item .list-info.author {
+    float: none;
+    margin-left: 0;
+}
 .forum-page-header.page-header {
     border: none;
     padding-bottom: 0px;
