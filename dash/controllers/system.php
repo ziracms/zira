@@ -107,6 +107,14 @@ class System extends Dash\Controller {
             Zira\Page::render(array('ok'=>1));
         }
     }
+    
+    public function bg() {
+        if (Zira\Request::isPost()) {
+            $url = Zira\Request::post('url');
+            Zira\Models\Option::write('dash_bg', $url);
+            Zira\Page::render(array('ok'=>1));
+        }
+    }
 
     public function blocks() {
         if (Zira\Request::isPost()) {

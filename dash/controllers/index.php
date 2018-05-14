@@ -38,8 +38,14 @@ class Index extends Dash\Controller {
                                         ->get('co');
 
         Zira\Page::addTitle(Zira\Locale::t('System dashboard'));
+        
+        $content = Zira\Helper::tag('div', Zira\Locale::t('Version: %s', Zira::VERSION), array('id'=>'dash-version'));
+        $content .= Zira\Helper::tag_open('a', array('href'=>'javascript:void(0)', 'id'=>'dashboard-background-setter', 'title'=>Zira\Locale::t('Background image')));
+        $content .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-picture'));
+        $content .= Zira\Helper::tag_close('a');
+        
         Zira\Page::render(array(
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT => Zira\Helper::tag('div', Zira\Locale::t('Version: %s', Zira::VERSION), array('id'=>'dash-version')),
+            Zira\Page::VIEW_PLACEHOLDER_CONTENT => $content,
             Zira\Page::VIEW_PLACEHOLDER_SETTINGS => array(
                 'records' => $records_co,
                 'comments' => $comments_co

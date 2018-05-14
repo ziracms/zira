@@ -424,5 +424,6 @@ return array(
     'Slider mode' => 'Режим слайдера',
     'Default' => 'По-умолчанию',
     '3D slider' => '3D слайдер',
-    'Last records' => 'Последние записи'
+    'Last records' => 'Последние записи',
+    'Background image' => 'Фоновое изображение'
 );

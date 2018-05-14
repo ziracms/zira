@@ -1,5 +1,5 @@
 <div id="dashboard-wrapper">
-<div id="dashboard-canvas-wrapper">
+<div id="dashboard-canvas-wrapper"<?php if (Zira\Config::get('dash_bg')) echo ' data-bg="'.Zira\Helper::html(Zira\Config::get('dash_bg')).'"' ?>>
     <div id="dashboard-sidebar">
         <div id="remote-clock-wrapper">
             <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
@@ -44,6 +44,7 @@
                 $.post('<?php echo Zira\Helper::url('dash/system/stick') ?>',{'content':data, 'token':'<?php echo Dash\Dash::getToken() ?>'}, function(response){
                     if (response && response.ok) {
                         $('#memory-stick-save').hide();
+                        desk_timeout_message('<?php echo t('Successfully saved'); ?>');
                     }
                 },'json');
             });
@@ -56,6 +57,14 @@
             Desk.dock_reset = Dock.reset;
             Dock.click = Desk.dock_click;
             Dock.init();
+            
+            dashboard_init_background_setter(function(url){
+                $.post('<?php echo Zira\Helper::url('dash/system/bg') ?>',{'url':url, 'token':'<?php echo Dash\Dash::getToken() ?>'}, function(response){
+                    if (response && response.ok && url.length>0) {
+                        desk_timeout_message('<?php echo t('Successfully saved'); ?>');
+                    }
+                },'json');
+            });
         });
     })(jQuery);
 </script>

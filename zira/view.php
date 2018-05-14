@@ -518,15 +518,15 @@ class View {
                 $_c = str_replace('%s', $t, $s);
             }
             $c .= $_c;
-            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zira_tm='.time().';', array('type'=>'text/javascript')));
+            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zi'.'ra'.'_'.'t'.'m='.time().';', array('type'=>'text/javascript')));
         } else {
-            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zira_tm='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
+            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zi'.'ra'.'_'.'t'.'m='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
         $js = Helper::tag_open('script', array('type'=>'text/javascript'));
         $js .= '$(document).ready(function(){';
-        $js .= 'if (typeof(zira_tm) == "undefined") {';
-        $js .= '$(\'body\').css(\'filter\', \'grayscale(100%)\');';
+        $js .= 'if (typeof(zi'.'ra'.'_'.'t'.'m) == "undefined") {';
+        $js .= '$(\'bo'.'dy\').css(\'fil'.'ter\', \'gr'.'ays'.'ca'.'le(1'.'0'.'0'.'%)\');';
         $js .= '}';
         $js .= '});';
         $js .= Helper::tag_close('script')."\r\n";

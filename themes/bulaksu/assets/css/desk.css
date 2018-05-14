@@ -740,6 +740,7 @@ body.dashboard #dashboard-wrapper,
 body.dashboard #dashboard-canvas-wrapper,
 body.dashboard #dashboard-sidebar {
     height: 100%;
+    color: #333;
 }
 body.dashboard #main-wrapper {
     min-width: 800px;
@@ -757,6 +758,11 @@ body.dashboard #dashboard-canvas-wrapper {
     background: url(../images/dash-wallpaper.png) no-repeat 50% 50%;
     position: relative;
     overflow: hidden;
+}
+body.dashboard #dashboard-canvas-wrapper.cover {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 body.dashboard #dashboard-sidebar {
     width: 280px;
@@ -790,6 +796,15 @@ body.dashboard #dash-version {
     right: 40px;
     bottom: 20px;
     color: #240036;
+    text-shadow: 1px 1px 0px #fff;
+    font-size: 12px;
+}
+body.dashboard #dashboard-background-setter {
+    display: none;
+    position: absolute;
+    right: 240px;
+    bottom: 20px;
+    color: #901d62;
     text-shadow: 1px 1px 0px #fff;
     font-size: 12px;
 }

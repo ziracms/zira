@@ -251,6 +251,33 @@
             t += $(this).outerHeight() + 10;
         });
     };
+    
+    dashboard_init_background_setter = function(callback) {
+        var setter = $('#dashboard-background-setter');
+        if (!$(setter).length) return;
+        $(setter).show().tooltip();
+        $(setter).click(function(){
+            $('body.dashboard #dashboard-canvas-wrapper').removeClass('cover').css('background-image','none');
+            if (typeof callback != "undefined") callback.call(null, '');
+            desk_file_selector(function(selected){
+                if (selected && selected.length>0 && (typeof(selected[0].type)!="undefined" && selected[0].type=='image')) {
+                    var src = selected[0].data;
+                    var regexp = new RegExp('\\'+desk_ds, 'g');
+                    var url = encodeURI(baseUrl(src.replace(regexp,'/')));
+                    $('body.dashboard #dashboard-canvas-wrapper').addClass('cover').css('background-image', 'url('+url+')');
+                    if (typeof callback != "undefined") callback.call(null, url);
+                }
+            });
+        });
+        var bg = $('body.dashboard #dashboard-canvas-wrapper').data('bg');
+        if (typeof bg != "undefined" && bg.length>0) {
+            var img = new Image();
+            img.onload = function() {
+                $('body.dashboard #dashboard-canvas-wrapper').addClass('cover').css('background-image', 'url('+img.src+')');
+            };
+            img.src = bg;
+        }
+    };
 
     Dock = {
         'windows': {},
