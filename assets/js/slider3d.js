@@ -304,10 +304,11 @@
             $(last_cube_part).on(this.transitionEndEvents,this.bind(this,function(){
                 $(last_cube_part).off(this.transitionEndEvents);
                 if (this.isIE) {
-					$(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-left').css('opacity', 1);
-				}
+                    $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-left').css('opacity', 1);
+                }
                 $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part').removeClass('reset');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.inProgress = false;
             }));
             this.setCubeImages();
@@ -315,8 +316,8 @@
             this.startTimer();
         }));
         if (this.isIE) {
-			$(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-left').css('opacity', 0);
-		}
+            $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-left').css('opacity', 0);
+        }
         this.rotateCubeLeft();
         $(this.element).css('opacity',0);
         $(this.element).parent().addClass('zs-progress');
@@ -335,6 +336,7 @@
                 $(active).removeClass('visible').removeClass('active');
                 $(next).addClass('active');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.startTimer();
                 this.inProgress = false;
             }));
@@ -346,6 +348,7 @@
                 $(active).removeClass('visible').removeClass('active');
                 $(next).addClass('visible').addClass('active');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.startTimer();
                 this.inProgress = false;
             }));
@@ -379,10 +382,11 @@
             $(last_cube_part).on(this.transitionEndEvents,this.bind(this,function(){
                 $(last_cube_part).off(this.transitionEndEvents);
                 if (this.isIE) {
-					$(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-right').css('opacity', 1);
-				}
+                    $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-right').css('opacity', 1);
+                }
                 $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part').removeClass('reset');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.inProgress = false;
             }));
             this.setCubeImages();
@@ -390,8 +394,8 @@
             this.startTimer();
         }));
         if (this.isIE) {
-			$(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-right').css('opacity', 0);
-		}
+            $(this.element).parent().children('.zira-slider-box').children('.zs-cube-part-right').css('opacity', 0);
+        }
         this.rotateCubeRight();
         $(this.element).css('opacity',0);
         $(this.element).parent().addClass('zs-progress');;
@@ -410,6 +414,7 @@
                 $(active).removeClass('visible').removeClass('active');
                 $(prev).addClass('active');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.startTimer();
                 this.inProgress = false;
             }));
@@ -421,6 +426,7 @@
                 $(active).removeClass('visible').removeClass('active');
                 $(prev).addClass('visible').addClass('active');
                 $(this.element).parent().removeClass('zs-progress');
+                this.updateRect();
                 this.startTimer();
                 this.inProgress = false;
             }));
