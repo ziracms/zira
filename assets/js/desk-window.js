@@ -35,6 +35,7 @@ var DashWindow = function(id, className, options) {
     this.dashwindow_content_icon_video_class = 'dashwindow-content-icon-video';
     this.dashwindow_content_icon_txt_class = 'dashwindow-content-icon-txt';
     this.dashwindow_content_icon_html_class = 'dashwindow-content-icon-html';
+    this.dashwindow_content_icon_zira_class = 'dashwindow-content-icon-zira';
     this.dashwindow_content_icon_blank_class = 'dashwindow-content-icon-blank';
     this.dashwindow_content_list_class = 'dashwindow-content-list';
     this.dashwindow_content_grid_class = 'dashwindow-content-grid';
@@ -2289,6 +2290,7 @@ DashWindow.prototype.createBodyItems = function(elements) {
                 else if (elements[i].type=='video') icon_class += ' ' + this.dashwindow_content_icon_video_class;
                 else if (elements[i].type=='txt') icon_class += ' ' + this.dashwindow_content_icon_txt_class;
                 else if (elements[i].type=='html') icon_class += ' ' + this.dashwindow_content_icon_html_class;
+                else if (elements[i].type=='zira') icon_class += ' ' + this.dashwindow_content_icon_zira_class;
                 else icon_class += ' ' + this.dashwindow_content_icon_blank_class;
             }
             if (typeof(elements[i].icon_class)!="undefined" && elements[i].icon_class!==null && elements[i].icon_class.length>0)

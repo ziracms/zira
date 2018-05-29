@@ -163,7 +163,7 @@ class Modules extends Window {
             if (empty($description)) $description = Zira\Helper::html($name);
             if (!empty($author)) $description .= "\r\n".Zira\Locale::t('Author: %s', Zira\Helper::html($author));
             if (!empty($version)) $description .= "\r\n".Zira\Locale::t('Version: %s', Zira\Helper::html($version));
-            $items[]=$this->createBodyFileItem($title, $description, $key, null, false, array('activated'=>in_array($key, $active_modules),'installable'=>count($tables)>0,'installed'=>$installed));
+            $items[]=$this->createBodyFileItem($title, $description, $key, null, false, array('activated'=>in_array($key, $active_modules),'installable'=>count($tables)>0,'installed'=>$installed,'type'=>'zira'));
         }
 
         usort($items, array($this, 'sortModules'));
