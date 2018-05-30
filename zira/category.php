@@ -160,22 +160,51 @@ class Category {
     public static function getCategoriesMap() {
         $categories = self::getAllCategories();
         if (empty($categories)) return array();
+        $_categories_by_id = array();
+        $_categories = array();
         $child_counts = array();
+        foreach($categories as $category) {
+            $_categories_by_id[$category->id] = $category;
+        }
         foreach($categories as $category) {
             $co = Models\Record::getCollection()
                                 ->count()
                                 ->where('category_id', '=', $category->id)
                                 ->and_where('language', '=', Locale::getLanguage())
+                                ->and_where('published', '=', Models\Record::STATUS_PUBLISHED)
                                 ->get('co');
             if ($co==0) continue;
-
+            if ($category->parent_id && 
+                !array_key_exists($category->parent_id, $_categories) && 
+                array_key_exists($category->parent_id, $_categories_by_id)
+            ) {
+                $_category = $_categories_by_id[$category->parent_id];
+                do {
+                    if (!array_key_exists($_category->id, $_categories)) {
+                        $_categories[$_category->id] = $_category;
+                        if (!array_key_exists($_category->parent_id, $child_counts)) {
+                            $child_counts[$_category->parent_id] = 0;
+                        }
+                        $child_counts[$_category->parent_id]++;
+                    }
+                    if ($_category->parent_id && 
+                        !array_key_exists($_category->parent_id, $_categories) && 
+                        array_key_exists($_category->parent_id, $_categories_by_id)
+                    ) {
+                        $_category = $_categories_by_id[$_category->parent_id];
+                    } else {
+                        $_category = null;
+                    }
+                } while($_category);
+            }
+            $_categories[$category->id] = $category;
             if (!array_key_exists($category->parent_id, $child_counts)) {
                 $child_counts[$category->parent_id] = 0;
             }
             $child_counts[$category->parent_id]++;
         }
         $items = array();
-        self::buildCategoriesMap($items, $categories, $child_counts);
+        self::buildCategoriesMap($items, $_categories, $child_counts);
         return $items;
     }
 
