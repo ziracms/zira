@@ -33,7 +33,8 @@ class Settings extends Dash\Models\Model {
                 'forum_file_max_size' => 'int',
                 'forum_file_ext' => 'string',
                 'forum_moderate' => 'int',
-                'forum_notify_email' => 'string'
+                'forum_notify_email' => 'string',
+                'forum_threads_sorting' => 'string'
             );
 
             $config_ids = array();

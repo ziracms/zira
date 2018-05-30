@@ -260,37 +260,7 @@ class Index extends Zira\Controller {
         if ($page>$pages) $page = $pages;
         if ($page<1) $page = 1;
 
-        /*
-        $topics = Forum\Models\Topic::getCollection()
-                            ->open_query()
-                            ->select(Forum\Models\Topic::getFields())
-                            ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
-                            ->where('language', 'is', null)
-                            ->and_where('category_id','=',$forum->category_id)
-                            ->and_where('forum_id','=',$forum->id)
-                            ->and_where('sticky','=',0)
-                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
-                            ->order_by('id','desc')
-                            ->limit($limit*$page)
-                            ->close_query()
-                            ->union()
-                            ->open_query()
-                            ->select(Forum\Models\Topic::getFields())
-                            ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
-                            ->where('language', '=', Zira\Locale::getLanguage())
-                            ->and_where('category_id','=',$forum->category_id)
-                            ->and_where('forum_id','=',$forum->id)
-                            ->and_where('sticky','=',0)
-                            ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
-                            ->order_by('id','desc')
-                            ->limit($limit*$page)
-                            ->close_query()
-                            ->merge()
-                            ->order_by('id','desc')
-                            ->limit($limit, ($page-1)*$limit)
-                            ->get();
-        */
-
+        $order_by = Forum\Forum::getThreadsOrderColumn();
         $topics = Forum\Models\Topic::getCollection()
                             ->select(Forum\Models\Topic::getFields())
                             ->left_join(Zira\Models\User::getClass(), array('user_firstname'=>'firstname', 'user_secondname'=>'secondname', 'user_username'=>'username'))
@@ -302,7 +272,7 @@ class Index extends Zira\Controller {
                             ->and_where('forum_id','=',$forum->id)
                             ->and_where('sticky','=',0)
                             ->and_where('published','=',Forum\Models\Topic::STATUS_PUBLISHED)
-                            ->order_by('id','desc')
+                            ->order_by($order_by,'desc')
                             ->limit($limit, ($page-1)*$limit)
                             ->get();
 

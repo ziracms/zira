@@ -48,6 +48,7 @@ class Settings extends Dash\Windows\Window {
         if (!array_key_exists('forum_min_chars', $configs)) $configs['forum_min_chars'] = 10;
         if (!array_key_exists('forum_file_max_size', $configs)) $configs['forum_file_max_size'] = \Forum\Models\File::DEFAULT_MAX_SIZE;
         if (!array_key_exists('forum_file_ext', $configs)) $configs['forum_file_ext'] = \Forum\Models\File::DEFAULT_ALLOWED_EXTENSIONS;
+        if (!array_key_exists('forum_threads_sorting', $configs)) $configs['forum_threads_sorting'] = 'id';
         $form->setValues($configs);
 
         $this->setBodyContent($form);

@@ -41,6 +41,7 @@ class Settings extends Form
         $html .= $this->input(Locale::t('Window title'), 'forum_meta_title');
         $html .= $this->input(Locale::t('Keywords'), 'forum_meta_keywords');
         $html .= $this->input(Locale::tm('Meta description', 'forum'), 'forum_meta_description');
+        $html .= $this->select(Locale::t('Sort threads'), 'forum_threads_sorting', array('id'=>Locale::t('by creation date'),'date_modified'=>Locale::t('by modification date')));
         $html .= $this->input(Locale::t('Records limit'), 'forum_limit');
         $html .= $this->input(Locale::tm('Message min. length', 'forum'), 'forum_min_chars');
         $html .= $this->checkbox(Locale::t('Moderation'), 'forum_moderate', null, false);

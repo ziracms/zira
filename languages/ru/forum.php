@@ -80,5 +80,8 @@ return array(
     'Search text contains bad character' => 'Поисковый текст содержит некорректный символ',
     'Forum: %s' => 'Форум: %s',
     'Published %s messages' => array('Опубликовано %s сообщение', 'Опубликовано %s сообщения', 'Опубликовано %s сообщений'),
-    'Sorry, this message cannot be edited' => 'Извините, данное сообщение не может быть отредактировано'
+    'Sorry, this message cannot be edited' => 'Извините, данное сообщение не может быть отредактировано',
+    'Sort threads' => 'Сортировать темы',
+    'by creation date' => 'по дате создания',
+    'by modification date' => 'по дате изменения'
 );

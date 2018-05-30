@@ -104,4 +104,12 @@ class Forum {
                 'callback'=>Dash\Dash::getInstance()->getWindowJSName(\Forum\Windows\Forums::getClass())
             );
     }
+    
+    public static function getThreadsOrderColumn() {
+        $order_by = Zira\Config::get('forum_threads_sorting', 'id');
+        if (!in_array($order_by, \Forum\Models\Topic::getFields())) {
+            $order_by = 'id';
+        }
+        return $order_by;
+    }
 }
