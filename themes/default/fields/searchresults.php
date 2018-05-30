@@ -14,13 +14,11 @@
 <?php endif; ?>
 <p><?php echo Zira\Helper::nl2br(Zira\Helper::html($record->description)) ?></p>
 </div>
-<?php if (!isset($settings)): ?>
 <div class="list-info-wrapper">
 <?php if ($record->category_name && $record->category_title): ?>
-<span class="list-info category"><span class="glyphicon glyphicon-tag"></span> <a href="<?php echo Zira\Helper::url(Zira\Page::generateCategoryUrl($record->category_name)) ?>" title="<?php echo Zira\Helper::html($record->category_title) ?>"><?php echo Zira\Helper::html($record->category_title) ?></a></span>
+<span class="list-info category"><span class="glyphicon glyphicon-tag"></span> <a href="<?php echo Zira\Helper::url(Zira\Page::generateCategoryUrl($record->category_name)) ?>" title="<?php echo Zira\Helper::html(t($record->category_title)) ?>"><?php echo Zira\Helper::html(t($record->category_title)) ?></a></span>
 <?php endif; ?>
 </div>
-<?php endif; ?>
 </li>
 <?php $co++; ?>
 <?php if (isset($settings) && !empty($settings['limit']) && $co>=$settings['limit']) break; ?>
