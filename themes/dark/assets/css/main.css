@@ -2207,47 +2207,41 @@ ul.vote-results li .vote-result {
         clear: left;
         padding-top: 10px;
     }
-
     .user-button .user-profile-links {
         float: none;
         margin-top: 0px;
     }
-
     header {
         height: auto;
     }
-
     #site-logo-wrapper {
         margin: 0px 20px;
     }
-
     #site-logo-wrapper a#site-logo:link,
     #site-logo-wrapper a#site-logo:visited {
 
     }
-
     #site-logo-wrapper #site-slogan {
         display: block;
         text-align: right;
     }
-
     header .header-top-item {
         display: none;
     }
-
     ul#user-menu {
-        visibility: hidden;
+        margin-right: 20px;
+        margin-bottom: 20px;
     }
-
+    ul#language-switcher {
+        margin-right: 20px;
+    }
     #top-menu-wrapper {
         margin: 30px 15px 0px;
     }
-
     #top-menu-wrapper .navbar-default .navbar-nav > .active {
         margin-top: 0px;
         border-top: 0px;
     }
-
     header .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #cccccc;
     }
@@ -2352,6 +2346,21 @@ ul.vote-results li .vote-result {
         padding: 10px;
         min-height: 20px;
         text-align: center;
+    }
+    .breadcrumb li {
+        display: block;
+    }
+    .breadcrumb > li + li::before {
+        padding: 0px 5px;
+        content: '\2022';
+    }
+    .breadcrumb li::before {
+        padding: 0px 5px;
+        content: '\2022';
+        color: #ccc;
+    }
+    .breadcrumb li:first-child a::before {
+        content: '';
     }
 }
 

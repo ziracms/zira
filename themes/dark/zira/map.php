@@ -7,7 +7,7 @@
 <?php foreach($categories as $category): ?>
 <?php $parts = explode('/',$category->name); ?>
 <li class="menu-item <?php echo $co++%2==0 ? 'odd' : 'even'; ?><?php if (count($parts)>1) echo  ' menu-item-offset menu-item-offset-'.(count($parts)-1); ?>">
-<a href="<?php echo Zira\Helper::html(Zira\Page::generateCategoryUrl($category->name)) ?>" title="<?php echo Zira\Helper::html(t($category->title)) ?>" class="menu-link">
+<a href="<?php echo Zira\Helper::url(Zira\Helper::html(Zira\Page::generateCategoryUrl($category->name))) ?>" title="<?php echo Zira\Helper::html(t($category->title)) ?>" class="menu-link">
 <span class="<?php echo (count($parts)>1) ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-link'; ?>"></span> <?php echo Zira\Helper::html(t($category->title)) ?>
 </a>
 </li>

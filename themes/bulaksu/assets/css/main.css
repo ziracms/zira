@@ -1732,7 +1732,13 @@ a.scroll-top.visible span {
         display: none;
     }
     ul#user-menu {
-        visibility: hidden;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+    }
+    ul#language-switcher {
+        margin-right: 20px;
+        margin-left: 20px;
     }
     #top-menu-wrapper {
         margin: 10px 15px 0px;
@@ -1832,6 +1838,18 @@ a.scroll-top.visible span {
         padding: 10px;
         min-height: 20px;
         text-align: center;
+    }
+    .breadcrumb li {
+        display: block;
+    }
+    .breadcrumb > li + li::before {
+        padding: 0px 5px;
+        content: '\2022';
+    }
+    .breadcrumb li::before {
+        padding: 0px 5px;
+        content: '\2022';
+        color: #ccc;
     }
 }
 

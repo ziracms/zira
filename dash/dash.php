@@ -595,7 +595,17 @@ class Dash {
     }
 
     protected function registerPanelItems() {
+        Zira\Helper::setAddingLanguageToUrl(true);
         $this->addPanelWebsiteGroupItem('glyphicon glyphicon-home', Zira\Locale::t('Home'), Zira\Helper::url('/'));
+        $categories = Zira\Category::getCategoriesMap(true);
+        if (count($categories)>0) {
+            $this->addPanelWebsiteGroupSeparator();
+            foreach($categories as $category) {
+                $parts = explode('/',$category->name);
+                $this->addPanelWebsiteGroupItem(count($parts)>1 ? 'glyphicon glyphicon-menu-right' : 'glyphicon glyphicon-link', Zira\Helper::html(Zira\Locale::t($category->title)), Zira\Helper::url(Zira\Helper::html(Zira\Page::generateCategoryUrl($category->name))));
+            }
+        }
+        Zira\Helper::setAddingLanguageToUrl(false);
         $this->addPanelWebsiteGroupSeparator();
         $this->addPanelWebsiteGroupItem('glyphicon glyphicon-th-large', Zira\Locale::t('System dashboard'), Zira\Helper::url('dash'));
         if (Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {

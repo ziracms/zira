@@ -157,7 +157,7 @@ class Category {
         return Models\Category::getChildCategories($category);
     }
 
-    public static function getCategoriesMap() {
+    public static function getCategoriesMap($get_all=false) {
         $categories = self::getAllCategories();
         if (empty($categories)) return array();
         $_categories_by_id = array();
@@ -173,7 +173,7 @@ class Category {
                                 ->and_where('language', '=', Locale::getLanguage())
                                 ->and_where('published', '=', Models\Record::STATUS_PUBLISHED)
                                 ->get('co');
-            if ($co==0) continue;
+            if ($co==0 && !$get_all) continue;
             if ($category->parent_id && 
                 !array_key_exists($category->parent_id, $_categories) && 
                 array_key_exists($category->parent_id, $_categories_by_id)

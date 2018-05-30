@@ -118,6 +118,7 @@ var dash_editor_html_load = function() {
         toolbar: ['desk_save | undo redo | table | bullist numlist | desk_file_selector  image media link | outdent indent | hr pagebreak | code', 'styleselect | bold italic underline | forecolor backcolor | removeformat |  aligncenter alignleft alignright alignjustify | desk_collapse_block '],
         menubar: false,
         language: dash_editor_language,
+        valid_elements : '*[*]',
         paste_word_valid_elements: 'b,strong,i,em,h1,h2,h3,h4,h5,h6,p,ul,ol,li,hr,br,table,tr,td',
         paste_filter_drop: false,
         convert_urls: false,
