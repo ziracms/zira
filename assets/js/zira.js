@@ -964,7 +964,7 @@
     };
     
     zira_init_auth_popup = function() {
-        $('.usermenu-popup a.user-login-menu').click(function(e){
+        $('.usermenu-popup a.user-login-menu, .inline-login-link').click(function(e){
             e.stopPropagation();
             e.preventDefault();
             zira_modal(t('Authorization'), '<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>', null, false, 'zira-auth-dialog');
@@ -981,7 +981,11 @@
             return;
         }
         if (response && typeof response.redirect != "undefined" && response.redirect.length>0) {
-            window.location.href = response.redirect;
+            if (response.redirect == 'refresh') {
+                window.location.reload();
+            } else {
+                window.location.href = response.redirect;
+            }
             return;
         }
         $('#zira-auth-dialog .modal-body').html(response.form);

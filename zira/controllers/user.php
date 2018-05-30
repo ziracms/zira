@@ -166,9 +166,15 @@ class User extends Zira\Controller {
         Zira\Page::addBreadcrumb('user/login',Zira\Locale::t('Sign In'));
 
         if (Zira\View::isAjax()) {
+            if (isset($redirect)) {
+                if (strpos($redirect, 'user/')!==0) $redirect = 'refresh';
+                else $redirect = Zira\Helper::url($redirect);
+            } else {
+                $redirect = '';
+            }
             echo json_encode(array(
                 'form' => (string)$form,
-                'redirect' => isset($redirect) ? Zira\Helper::url($redirect) : ''
+                'redirect' => $redirect
             ));
         } else {
             Zira\Page::render(array(

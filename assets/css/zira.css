@@ -4,6 +4,9 @@ html, body {
 body, header {
     transition: background-position 0ms;
 }
+a.label:link, a.label:visited, a.label:hover {
+    color: #fff;
+}
 select.form-control {
     -webkit-appearance: none;
     -moz-appearance: none;

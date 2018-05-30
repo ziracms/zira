@@ -64,7 +64,7 @@
 </div>
 <?php endif; ?>
 <?php if (!isset($form) && Zira\Config::get('comments_allowed',true) && !Zira\Config::get('comment_anonymous',true) && !Zira\User::isAuthorized() && Zira\Page::getRecordUrl()!==null): ?>
-<?php echo t('%s to leave a comment', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRecordUrl()).'">'.t('Login').'</a>') ?>
+<?php echo t('%s to leave a comment', '<a class="inline-login-link" href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRecordUrl()).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
 <?php if (empty($ajax)): ?>
 </div>

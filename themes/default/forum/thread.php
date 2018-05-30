@@ -128,5 +128,5 @@
 <?php if (isset($form) && !empty($topic_active)) echo $form; ?>
 <?php if (empty($topic_active)) echo '<span class="label label-danger forum-label forum-bottom-label"><span class="glyphicon glyphicon-warning-sign"></span> '.tm('Thread is closed','forum').'</span>' ?>
 <?php if (!isset($form) && !empty($topic_active) && !Zira\User::isAuthorized()): ?>
-<?php echo tm('%s to reply', 'forum', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
+<?php echo tm('%s to reply', 'forum', '<a class="inline-login-link" href="'.Zira\Helper::url('user/login?redirect='.Zira\Helper::html($topic_url)).'">'.t('Login').'</a>') ?>
 <?php endif; ?>
