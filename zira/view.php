@@ -334,6 +334,8 @@ class View {
             self::$body_class = 'zira-page';
         }
         
+        if (!Config::get('enable_breadcrumbs', 1)) self::$body_class .= ' no-breadcrumbs';
+        
         $js_scripts = '';
         if (self::$_render_js_strings) {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));

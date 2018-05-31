@@ -51,6 +51,7 @@ class Meta extends Window {
         if (!array_key_exists('site_parse_images', $configs)) $configs['site_parse_images'] = 1;
         if (!array_key_exists('site_records_grid', $configs)) $configs['site_records_grid'] = 1;
         if (!array_key_exists('records_sorting', $configs)) $configs['records_sorting'] = 'id';
+        if (!array_key_exists('enable_breadcrumbs', $configs)) $configs['enable_breadcrumbs'] = 1;
 
         $form->setValues($configs);
 

@@ -113,6 +113,9 @@
     font-size: 98%;
     overflow: hidden;
 }
+.field-search-form-wrapper .form-panel {
+    margin-top: 0;
+}
 .list .list-item.unpublished {
     opacity: .5;
     filter: alpha(opacity=50);

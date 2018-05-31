@@ -123,6 +123,15 @@ dt {
 .home-page .page-header {
     margin-top: 0px;
 }
+.breadcrumb-empty + article > .page-header:first-child,
+.breadcrumb-empty + article > .page-header:first-child > h1,
+.breadcrumb-empty + main > article > .page-header:first-child,
+.breadcrumb-empty + main > article > .page-header:first-child > h1 {
+    margin-top: 0;
+}
+main > article > .image:first-child {
+    margin-bottom: 14px;
+}
 .navbar-default {
     background-color: #D4D8E3;
     background-image: -webkit-linear-gradient(top, #FFFFFF 0, #D4D8E3 100%);
@@ -1775,6 +1784,9 @@ a.scroll-top.visible span {
 .messages-panel .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
     color: #DDD;
 }
+.messages-panel .navbar-default .navbar-toggle {
+    border-color: #999;
+}
 .messages-list li {
     border-bottom: 1px solid #4C5159;
     border-top: 1px solid #8F9090;
@@ -2229,11 +2241,13 @@ ul.vote-results li .vote-result {
         display: none;
     }
     ul#user-menu {
-        margin-right: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
         margin-bottom: 20px;
     }
     ul#language-switcher {
-        margin-right: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
     }
     #top-menu-wrapper {
         margin: 30px 15px 0px;
@@ -2311,6 +2325,12 @@ ul.vote-results li .vote-result {
     .comments .comments-item-nested-10 {
         margin-left: 200px;
     }
+    .messages-list .message-avatar a img {
+        max-width: 50px;
+    }
+    .messages-list .message-content {
+        margin-left: 60px;
+    }
 }
 @media (min-width: 768px) {
     .search-simple-form {
@@ -2318,6 +2338,9 @@ ul.vote-results li .vote-result {
     }
     .sidebar {
         margin-top: 43px;
+    }
+    .no-breadcrumbs .sidebar {
+        margin-top: 0;
     }
     .home-page .sidebar {
         margin-top: 0px;
@@ -2367,6 +2390,9 @@ ul.vote-results li .vote-result {
 @media (max-width: 479px) {
     .list .list-item a.list-thumb:link,
     .list .list-item a.list-thumb:visited {
+        float: none;
+    }
+    .compose-message-btn {
         float: none;
     }
 }

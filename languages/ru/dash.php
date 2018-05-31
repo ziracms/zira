@@ -425,5 +425,6 @@ return array(
     'Default' => 'По-умолчанию',
     '3D slider' => '3D слайдер',
     'Last records' => 'Последние записи',
-    'Background image' => 'Фоновое изображение'
+    'Background image' => 'Фоновое изображение',
+    'Enable breadcrumbs' => 'Включить хлебные крошки'
 );
