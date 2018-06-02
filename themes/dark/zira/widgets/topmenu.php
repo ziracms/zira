@@ -1,14 +1,14 @@
-<div id="top-menu-wrapper">
+<div <?php echo empty($custom_id) ? 'id="top-menu-wrapper"' : 'class="top-custom-menu-wrapper"'; ?>>
 <nav class="navbar navbar-default">
 <div class="container-fluid">
 <div class="navbar-header">
-<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-menu-container" aria-expanded="false">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#<?php echo empty($custom_id) ? 'top-menu-container' : 'top-custom-menu-container-'.$custom_id; ?>" aria-expanded="false">
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 <span class="icon-bar"></span>
 </button>
 </div>
-<div class="collapse navbar-collapse" id="top-menu-container">
+<div class="collapse navbar-collapse" <?php echo empty($custom_id) ? 'id="top-menu-container"' : 'id="top-custom-menu-container-'.$custom_id.'" class="top-custom-menu-container"'; ?>>
 <ul class="nav navbar-nav">
 <?php foreach($items as $item): ?>
 <?php $class = array('menu-item'); ?>

@@ -1,4 +1,4 @@
-<div id="secondary-menu-wrapper">
+<div <?php echo empty($custom_id) ? 'id="secondary-menu-wrapper"' : 'class="secondary-custom-menu-wrapper"'; ?>>
 <nav>
 <ul class="nav nav-pills nav-stacked">
 <?php foreach($items as $item): ?>

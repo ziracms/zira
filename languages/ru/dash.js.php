@@ -28,5 +28,6 @@ return array(
     'Sorry, but it seems that your browser is not supported.' => 'Извините, но похоже, ваш браузер не поддерживается.',
     'Author' => 'Автор',
     'Minimize all' => 'Свернуть всё',
-    'Page reload required. Reload now ?' => 'Нужно перезагрузить страницу. Перезагрузить сейчас ?'
+    'Page reload required. Reload now ?' => 'Нужно перезагрузить страницу. Перезагрузить сейчас ?',
+    'Delete menu' => 'Удалить меню'
 );

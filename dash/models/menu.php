@@ -11,6 +11,8 @@ use Zira;
 use Zira\Permission;
 
 class Menu extends Model {
+    const NEW_MENU_ID = 0;
+    
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));
         if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
@@ -183,5 +185,60 @@ class Menu extends Model {
             'secondary' => $secondory_items,
             'child' => $child_items
         );
+    }
+    
+    public static function createNewMenu() {
+        $max_id = Zira\Models\Menu::getCollection()->max('menu_id')->get('mx');
+        $new_id = ++$max_id;
+        $widget = Zira\Models\Widget::getCollection()
+                    ->where('name', '=', Zira\Menu::WIDGET_CLASS)
+                    ->and_where('params', '=', $new_id)
+                    ->get(0, true);
+               
+        if ($widget) {
+            $widgetObj = new Zira\Models\Widget();
+            $widgetObj->loadFromArray($widget);
+            $widgetObj->active = true;
+            $widgetObj->save();
+            return $new_id;
+        }
+        
+        $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+        $widget = new Zira\Models\Widget();
+        $widget->name = Zira\Menu::WIDGET_CLASS;
+        $widget->module = 'zira';
+        $widget->placeholder = Zira\View::VAR_SIDEBAR_RIGHT;
+        $widget->params = $new_id;
+        $widget->category_id = null;
+        $widget->sort_order = ++$max_order;
+        $widget->active = Zira\Models\Widget::STATUS_ACTIVE;
+        $widget->save();
+        
+        return $new_id;
+    }
+    
+    public function deleteMenu($menu_id) {
+        if (empty($menu_id) || !is_numeric($menu_id) || $menu_id == Zira\Menu::MENU_PRIMARY || $menu_id == Zira\Menu::MENU_SECONDARY || $menu_id == Zira\Menu::MENU_FOOTER || $menu_id == self::NEW_MENU_ID) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+
+        Zira\Models\Menu::getCollection()
+                ->delete()
+                ->where('menu_id','=',$menu_id)
+                ->execute();
+
+        Zira\Models\Widget::getCollection()
+                ->delete()
+                ->where('name','=',Zira\Menu::WIDGET_CLASS)
+                ->and_where('params','=',$menu_id)
+                ->execute();
+
+        Zira\Cache::clear();
+
+        return array('success'=>1);
     }
 }

@@ -41,6 +41,14 @@ class Menu extends Dash\Controller {
         }
     }
     
+    public function delete() {
+        if (Zira\Request::isPost()) {
+            $menu = Zira\Request::post('menu');
+            $response = $this->getWindowModel()->deleteMenu($menu);
+            Zira\Page::render($response);
+        }
+    }
+    
     public function info() {
         if (Zira\Request::isPost()) {
             $id = Zira\Request::post('id');

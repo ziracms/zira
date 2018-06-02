@@ -14,6 +14,8 @@ class Menu {
 
     const CACHE_KEY = 'menu';
     const USER_MENU_HOOK_NAME = 'zira_user_menu';
+    
+    const WIDGET_CLASS = '\Zira\Widgets\Custommenu';
 
     protected static $_initialized = false;
     protected static $_secondary_initialized = false;
@@ -225,7 +227,74 @@ class Menu {
             return array();
         }
     }
+    
+    public static function getCustomMenuItems($menu_id) {
+        $items = Models\Menu::getCollection()
+                ->open_query()
+                ->where('menu_id', '=', $menu_id)
+                ->and_where('language', 'is', null)
+                ->order_by('sort_order', 'asc')
+                ->close_query()
+                ->union()
+                ->open_query()
+                ->where('menu_id', '=', $menu_id)
+                ->and_where('language', '=', Locale::getLanguage())
+                ->order_by('sort_order', 'asc')
+                ->close_query()
+                ->get();
 
+        if (count($items)==0) return array();
+
+        usort($items, array(Models\Menu::getClass(), 'sortAsc'));
+
+        $menuitems = array();
+        $childs = array();
+        $active_url = null;
+        foreach($items as $item) {
+            if ($item->active != Models\Menu::STATUS_ACTIVE) continue;
+            if ($item->parent_id>0) {
+                if (!array_key_exists($item->parent_id, $childs)) $childs[$item->parent_id] = array();
+                $childs[$item->parent_id][]=$item;
+            } else {
+                $menuitems []= $item;
+            }
+
+            if (self::isURLActive($item->url) && (
+                !$active_url ||
+                mb_strlen($item->url, CHARSET)>mb_strlen($active_url, CHARSET)
+            )) {
+                $active_url = $item->url;
+            }
+        }
+
+        if (count($menuitems)==0) return;
+        
+        foreach($childs as $parent_id => $items) {
+            foreach($items as $item) {
+                if ($active_url!==null && $item->url == $active_url) {
+                    $item->active = true;
+                } else {
+                    $item->active = false;
+                }
+            }
+        }
+
+        foreach ($menuitems as $menuitem) {
+            if ($active_url!==null && $menuitem->url == $active_url) {
+                $menuitem->active = true;
+            } else {
+                $menuitem->active = false;
+            }
+            if (array_key_exists($menuitem->id, $childs)) {
+                $menuitem->dropdown = $childs[$menuitem->id];
+            } else {
+                $menuitem->dropdown = array();
+            }
+        }
+        
+        return $menuitems;
+    }
+    
     public static function isSysURL($url) {
         if (empty($url) || $url == '/') return true;
         if ($url=='javascript:void(0)' || substr($url, 0, 1) == '#') return false;

@@ -1030,6 +1030,8 @@
         zira_modal_create('zira-prompt-dialog', 'zira-prompt-modal', '', zira_modal_input(), zira_modal_cancel_btn()+zira_modal_ok_btn());
         // multi prompt dialog
         zira_modal_create('zira-multi-prompt-dialog', 'zira-prompt-modal', '', zira_modal_multi_input(), zira_modal_cancel_btn()+zira_modal_ok_btn());
+        // progress dialog
+        zira_modal_create('zira-progress-dialog', '', '', '', zira_modal_close_btn());
         if ($('.usermenu-popup').length>0) {
             zira_modal_create('zira-auth-dialog', '', '', '', '');
         }
@@ -1121,7 +1123,7 @@
     zira_modal_progress = function(title) {
         if (typeof(title)=="undefined") title = t('Sending');
         var progress = '<div class="progress xhr-progress-bar"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">0%</div></div>';
-        zira_modal(title, t('Please wait')+progress, null, true, 'zira-modal-dialog');
+        zira_modal(title, t('Please wait')+progress, null, true, 'zira-progress-dialog');
         zira_modal_disable_buttons();
     };
 
@@ -1130,7 +1132,7 @@
     };
 
     zira_modal_progress_hide = function(callback) {
-        var id = 'zira-modal-dialog';
+        var id = 'zira-progress-dialog';
         zira_modal_enable_buttons();
         if (typeof(callback)!="undefined" && callback!==null) {
             $('#'+id).bind('hidden.bs.modal', function() {

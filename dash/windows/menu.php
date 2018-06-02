@@ -20,8 +20,8 @@ class Menu extends Window {
     public $item;
 
     protected $menu;
-    protected $parent;
-    protected $language;
+    protected $parent = 0;
+    protected $language = '';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);
@@ -29,13 +29,6 @@ class Menu extends Window {
         $this->setBodyViewListVertical(true);
 
         $this->setEditActionWindowClass(Menuitem::getClass());
-
-        $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Top menu'), 'glyphicon glyphicon-chevron-up', 'desk_call(dash_menu_top, this);', 'menu', false, array('typo'=>'topmenu'))
-        );
-        $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Bottom menu'), 'glyphicon glyphicon-chevron-down', 'desk_call(dash_menu_bottom, this);', 'menu', false, array('typo'=>'bottommenu'))
-        );
 
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('New item'), 'glyphicon glyphicon-plus-sign', 'desk_window_create_item(this);', 'create')
@@ -53,6 +46,32 @@ class Menu extends Window {
         );
 
         $this->setDeleteActionEnabled(true);
+    }
+    
+    protected function _createSidebarItems() {
+        $widgets = Zira\Models\Widget::getCollection()
+                                ->where('name', '=', Zira\Menu::WIDGET_CLASS)
+                                ->get();
+        $items = array();
+        $params = array();
+        $items []= $this->createSidebarItem(Zira\Locale::t('Top menu'), 'glyphicon glyphicon-chevron-up', 'desk_call(dash_menu_top, this);', 'menu', false, array('typo'=>'topmenu', 'typoclass'=>'menu'));
+        $items []= $this->createSidebarItem(Zira\Locale::t('Bottom menu'), 'glyphicon glyphicon-chevron-down', 'desk_call(dash_menu_bottom, this);', 'menu', false, array('typo'=>'bottommenu', 'typoclass'=>'menu'));
+        foreach ($widgets as $widget) {
+            if ($widget->params == Zira\Menu::MENU_PRIMARY ||
+                $widget->params == Zira\Menu::MENU_SECONDARY || 
+                $widget->params == Zira\Menu::MENU_FOOTER || 
+                in_array($widget->params, $params)
+            ) {
+                continue;
+            }
+            $items []= $this->createSidebarItem(Zira\Locale::t('Menu').' #'.$widget->params, 'glyphicon glyphicon-chevron-right', 'desk_call(dash_menu_custom, this, '.$widget->params.');', 'menu', false, array('typo'=>'custommenu', 'typoclass'=>'menu', 'menu_id'=>$widget->params));
+            $params []= $widget->params;
+        }
+        $items []= $this->createSidebarItem(Zira\Locale::t('New widget'), 'glyphicon glyphicon-plus', 'desk_call(dash_menu_new, this);', 'menu', false, array('typo'=>'newmenu', 'typoclass'=>'menu'));
+        $items []= $this->createSidebarSeparator();
+        $items []= $this->createSidebarItem(Zira\Locale::t('Secondary menu'), 'glyphicon glyphicon-expand', 'desk_call(dash_menu_secondary, this);', 'edit', false, array('typo'=>'secondary'));
+        $items []= $this->createSidebarItem(Zira\Locale::t('Child items'), 'glyphicon glyphicon-collapse-down', 'desk_call(dash_menu_child, this);', 'edit', false, array('typo'=>'childitems'));
+        $this->setSidebarItems($items);
     }
 
     public function create() {
@@ -87,6 +106,12 @@ class Menu extends Window {
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_menu_page, this);', 'edit', true, array('typo'=>'newtab'))
         );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Delete menu'), 'glyphicon glyphicon-remove-circle', 'desk_call(dash_menu_delete, this);', 'create', true, array('typo'=>'menudelete'))
+        );
 
         $this->addDefaultContextMenuItem(
             $this->createContextMenuSeparator()
@@ -105,16 +130,6 @@ class Menu extends Window {
         );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_menu_page, this);', 'edit', true, array('typo'=>'newtab'))
-        );
-        
-        $this->addDefaultSidebarItem(
-            $this->createSidebarSeparator()
-        );
-        $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Secondary menu'), 'glyphicon glyphicon-expand', 'desk_call(dash_menu_secondary, this);', 'edit', false, array('typo'=>'secondary'))
-        );
-        $this->addDefaultSidebarItem(
-            $this->createSidebarItem(Zira\Locale::t('Child items'), 'glyphicon glyphicon-collapse-down', 'desk_call(dash_menu_child, this);', 'edit', false, array('typo'=>'childitems'))
         );
 
         $this->setOnOpenJSCallback(
@@ -139,6 +154,7 @@ class Menu extends Window {
             'dash_menu_primary_id' => Zira\Menu::MENU_PRIMARY,
             'dash_menu_secondary_id' => Zira\Menu::MENU_SECONDARY,
             'dash_menu_footer_id' => Zira\Menu::MENU_FOOTER,
+            'dash_menu_new_id' => \Dash\Models\Menu::NEW_MENU_ID,
             'dash_menu_blank_src' => Zira\Helper::imgUrl('blank.png'),
             'dash_menu_menuitem_wnd' => Dash::getInstance()->getWindowJSName(Menuitem::getClass()),
             'dash_menu_web_wnd' => Dash::getInstance()->getWindowJSName(Web::getClass())
@@ -151,16 +167,17 @@ class Menu extends Window {
         if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
             $this->setData(array(
                 'menu' => Zira\Menu::MENU_PRIMARY,
-                'parent' => null,
-                'language' => null
+                'parent' => 0,
+                'language' => ''
             ));
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
-        $menu = (int)Zira\Request::post('menu');
-        if ($menu == Zira\Menu::MENU_SECONDARY) $this->menu = Zira\Menu::MENU_SECONDARY;
-        else if ($menu == Zira\Menu::MENU_FOOTER) $this->menu = Zira\Menu::MENU_FOOTER;
-        else $this->menu = Zira\Menu::MENU_PRIMARY;
+        $this->menu = (int)Zira\Request::post('menu');
+        
+        if ($this->menu == \Dash\Models\Menu::NEW_MENU_ID) {
+            $this->menu = \Dash\Models\Menu::createNewMenu();
+        }
 
         $parent = (int)Zira\Request::post('parent');
         if ($parent) $this->parent = $parent;
@@ -249,6 +266,9 @@ class Menu extends Window {
         }
 
         $this->setMenuItems($menu);
+        
+        //sidebar
+        $this->_createSidebarItems();
 
         $this->setData(array(
             'menu' => $this->menu,

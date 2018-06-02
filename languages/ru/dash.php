@@ -426,5 +426,7 @@ return array(
     '3D slider' => '3D слайдер',
     'Last records' => 'Последние записи',
     'Background image' => 'Фоновое изображение',
-    'Enable breadcrumbs' => 'Включить хлебные крошки'
+    'Enable breadcrumbs' => 'Включить хлебные крошки',
+    'New widget' => 'Новый виджет',
+    'Delete menu' => 'Удалить меню'
 );

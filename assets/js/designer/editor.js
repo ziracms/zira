@@ -485,6 +485,11 @@
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open > a,header #top-menu-wrapper .navbar-default .navbar-nav > li > a:hover,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item:hover a.list-title', color1);
                     setColorStyle('header #top-menu-wrapper .form-control::placeholder', color2);
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
+                    // custom menu
+                    setColorStyle('#main-container .top-custom-menu-wrapper nav a:link,#main-container .top-custom-menu-wrapper nav a:visited,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a', color2);
+                    setColorStyle('#main-container .top-custom-menu-wrapper nav .btn-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle', color2);
+                    setColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open > a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav > li > a:hover', color1);
+                    setBackgroundColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
                 }, 'right', 'rgb');
                 
                 // header top menu background
@@ -522,7 +527,19 @@
                     setTextShadowStyle('header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
                     setFilterStyle('#top-menu-wrapper .navbar-default .navbar-nav .active a,#top-menu-wrapper .navbar-default .navbar-nav .open a', 'none');
                     setFilterStyle('#top-menu-wrapper nav .btn-default', 'none');
-                    
+                    // custom menu
+                    setBackgroundColorStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', hexColor(color1), true);
+                    setBackgroundGradientStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', color1, color2);
+                    setBackgroundStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a,#main-container .top-custom-menu-wrapper nav ul.dropdown-menu', hexColor(color2));
+                    setBackgroundStyle('#main-container .top-custom-menu-wrapper nav .btn-default', hexColor(color2));
+                    setBackgroundStyle('#main-container .top-custom-menu-wrapper ul.dropdown-menu li a:hover,#main-container .top-custom-menu-wrapper ul.dropdown-menu li a:focus,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover', hexColor(color1));
+                    setBackgroundColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle:focus,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle:hover', hexColor(color1), true);
+                    setBorderColorStyle('#main-container .top-custom-menu-wrapper nav.navbar-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active,#main-container .top-custom-menu-wrapper nav ul.dropdown-menu', hexColor(color1));
+                    setBorderColorStyle('#main-container .top-custom-menu-wrapper nav .btn-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle,#main-container .top-custom-menu-wrapper .navbar-default .navbar-collapse', hexColor(color1));                  
+                    setTextShadowStyle('#main-container .top-custom-menu-wrapper nav a:link', '0 1px 0 '+hexColor(color2));
+                    setTextShadowStyle('#main-container .top-custom-menu-wrapper nav a:visited,#main-container .top-custom-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color2));
+                    setFilterStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a', 'none');
+                    setFilterStyle('#main-container .top-custom-menu-wrapper nav .btn-default', 'none');
                 });
             }
 
@@ -795,6 +812,10 @@
                     setColorStyle('#footer-menu-wrapper ul.menu li.menu-item a.menu-link:hover,#footer-menu-wrapper ul.menu li.menu-item.active a.menu-link,#main-container footer ul.dropdown-menu li a:hover,#main-container footer ul.dropdown-menu li a:focus', color2);
                     setColorStyle('#footer-menu-wrapper ul.menu li.menu-item-separator::after', color1);
                     setFilterStyle('#main-container footer ul.dropdown-menu li:hover,#main-container footer ul.dropdown-menu li a:hover', 'none');
+                    // custom menu
+                    setColorStyle('.footer-custom-menu-wrapper ul.menu li.menu-item a.menu-link:link,.footer-custom-menu-wrapper ul.menu li.menu-item a.menu-link:visited', color1);
+                    setColorStyle('.footer-custom-menu-wrapper ul.menu li.menu-item a.menu-link:hover,.footer-custom-menu-wrapper ul.menu li.menu-item.active a.menu-link', color2);
+                    setColorStyle('.footer-custom-menu-wrapper ul.menu li.menu-item-separator::after', color1);
                 }, 'right', 'rgb');
             }
         }
@@ -1616,6 +1637,12 @@
                 setColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
                 setColorStyle('#secondary-menu-wrapper ul li.active a:link,#secondary-menu-wrapper ul li.active a:visited', color2);
                 setColorStyle('#secondary-menu-wrapper ul li a:hover,#secondary-menu-wrapper ul li.active a:hover', color2);
+                setColorStyle('#secondary-menu-wrapper ul li.parent a.menu-link', color2);
+                // custom menu
+                setColorStyle('.secondary-custom-menu-wrapper ul li a:link,.secondary-custom-menu-wrapper ul li a:visited', color1);
+                setColorStyle('.secondary-custom-menu-wrapper ul li.active a:link,.secondary-custom-menu-wrapper ul li.active a:visited', color2);
+                setColorStyle('.secondary-custom-menu-wrapper ul li a:hover,.secondary-custom-menu-wrapper ul li.active a:hover', color2);
+                setColorStyle('.secondary-custom-menu-wrapper ul li.parent a.menu-link', color2);
             }, 'right', 'rgb');
             
             // secondary menu background
@@ -1634,6 +1661,15 @@
                 $('#secondary-menu-wrapper ul li.active a').css('background', color2);
                 setBackgroundColorStyle('#secondary-menu-wrapper ul li a:link,#secondary-menu-wrapper ul li a:visited', color1);
                 setBackgroundColorStyle('#secondary-menu-wrapper ul li.active a:link,#secondary-menu-wrapper ul li.active a:visited,#secondary-menu-wrapper ul li a:hover', color2);
+                setBackgroundColorStyle('#secondary-menu-wrapper ul li.parent a.menu-link', color2);
+                setBackgroundImageStyle('#secondary-menu-wrapper ul li.parent a.menu-link', 'none');
+                setFilterStyle('#secondary-menu-wrapper ul li.parent a.menu-link', 'none');
+                // custom menu
+                setBackgroundColorStyle('.secondary-custom-menu-wrapper ul li a:link,.secondary-custom-menu-wrapper ul li a:visited', color1);
+                setBackgroundColorStyle('.secondary-custom-menu-wrapper ul li.active a:link,.secondary-custom-menu-wrapper ul li.active a:visited,.secondary-custom-menu-wrapper ul li a:hover', color2);
+                setBackgroundColorStyle('.secondary-custom-menu-wrapper ul li.parent a.menu-link', color2);
+                setBackgroundImageStyle('.secondary-custom-menu-wrapper ul li.parent a.menu-link', 'none');
+                setFilterStyle('.secondary-custom-menu-wrapper ul li.parent a.menu-link', 'none');
             }, 'right', 'rgb');
         }
         

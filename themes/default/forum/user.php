@@ -70,8 +70,8 @@
 <?php foreach($images as $filepath=>$filename): ?>
 <?php if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)): ?>
 <?php $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath); ?>
-<a class="forum-message-attach" data-lightbox="forum-message-<?php echo Zira\Helper::html($item->id) ?>" href="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>">
-<img src="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" alt="<?php echo Zira\Helper::html($filename) ?>" width="<?php echo Zira\Config::get('thumbs_width') ?>" />
+<a class="forum-message-attach" data-lightbox="forum-message-<?php echo Zira\Helper::html($item->id) ?>" href="<?php echo Zira\Helper::urlencode(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>">
+<img src="<?php echo Zira\Helper::urlencode(Zira\Helper::baseUrl($filesrc)) ?>" alt="<?php echo Zira\Helper::html($filename) ?>" width="<?php echo Zira\Config::get('thumbs_width') ?>" />
 </a>
 <?php else: ?>
 <?php echo '<span class="forum-message-attach">'.tm('File "%s" not found', 'forum', Zira\Helper::html($filename)).'</span>'; ?>
@@ -80,7 +80,7 @@
 <?php foreach($files as $filepath=>$filename): ?>
 <?php if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . $filepath)): ?>
 <?php $filesrc = UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $filepath); ?>
-<a class="forum-message-attach" href="<?php echo Zira\Helper::html(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>" download="<?php echo Zira\Helper::html($filename) ?>" target="_blank" rel="nofollow">
+<a class="forum-message-attach" href="<?php echo Zira\Helper::urlencode(Zira\Helper::baseUrl($filesrc)) ?>" title="<?php echo Zira\Helper::html($filename) ?>" download="<?php echo Zira\Helper::html($filename) ?>" target="_blank" rel="nofollow">
 <?php echo Zira\Helper::html($filename) ?>
 </a>
 <?php else: ?>

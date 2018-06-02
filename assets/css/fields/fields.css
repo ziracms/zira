@@ -143,6 +143,7 @@
     .record_fields_tabs_wrapper .nav-tabs>li>a:focus {
         border-radius: 0;
         border: none;
+        margin: 0;
     }
     .record_fields_tabs_wrapper .nav-tabs>li.active>a,
     .record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,

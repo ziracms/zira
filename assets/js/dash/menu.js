@@ -2,11 +2,6 @@ var dash_menu_open = function() {
     this.nested_level = 0;
     this.previous = [];
     desk_call(dash_menu_drag, this);
-    
-    var secondary = this.findSidebarItemByProperty('typo', 'secondary');
-    if (secondary) $(secondary.element).addClass('secondary-sidebar');
-    var childitems = this.findSidebarItemByProperty('typo', 'childitems');
-    if (childitems) $(childitems.element).addClass('childitems-sidebar');
 };
 
 var dash_menu_load = function() {
@@ -16,6 +11,15 @@ var dash_menu_load = function() {
         sidebarItem = this.findSidebarItemByProperty('typo','topmenu');
     } else if (menu == dash_menu_footer_id) {
         sidebarItem = this.findSidebarItemByProperty('typo','bottommenu');
+    } else {
+        var items = this.findAllSidebarItemByProperty('typo','custommenu');
+        for (var i=0; i<items.length; i++) {
+            if (typeof items[i].menu_id == "undefined") continue;
+            if (items[i].menu_id == menu) {
+                sidebarItem = items[i];
+                break;
+            }
+        }
     }
     if (sidebarItem) {
         $(sidebarItem.element).addClass('active');
@@ -30,6 +34,19 @@ var dash_menu_load = function() {
             $(this.options.bodyItems[i].element).addClass('inactive');
         }
     }
+    
+    if (menu != dash_menu_primary_id && 
+        menu != dash_menu_secondary_id && 
+        menu != dash_menu_footer_id && 
+        menu != dash_menu_new_id
+    ) {
+        this.enableItemsByProperty('typo', 'menudelete');
+    }
+    
+    var secondary = this.findSidebarItemByProperty('typo', 'secondary');
+    if (secondary) $(secondary.element).addClass('secondary-sidebar');
+    var childitems = this.findSidebarItemByProperty('typo', 'childitems');
+    if (childitems) $(childitems.element).addClass('childitems-sidebar');
     
     $(this.sidebar).find('.secondary-sidebar').parent('li').children('ul').remove();
     $(this.sidebar).find('.childitems-sidebar').parent('li').children('ul').remove(); 
@@ -146,12 +163,14 @@ var dash_menu_new_item = function() {
 
 var dash_menu_top = function() {
     if (this.options.data.menu == dash_menu_primary_id || this.options.data.menu == dash_menu_secondary_id) return;
+    var items = this.findAllSidebarItemByProperty('typoclass','menu');
+    for (var i=0; i<items.length; i++) {
+        $(items[i].element).removeClass('active');
+    }
     var topSidebarItem = this.findSidebarItemByProperty('typo','topmenu');
-    var bottomSidebarItem = this.findSidebarItemByProperty('typo','bottommenu');
     if (topSidebarItem) $(topSidebarItem.element).addClass('active');
-    if (bottomSidebarItem) $(bottomSidebarItem.element).removeClass('active');
     this.options.data.menu = dash_menu_primary_id;
-    this.options.data.parent = null;
+    this.options.data.parent = 0;
     this.nested_level = 0;
     this.previous = [];
     desk_window_reload(this);
@@ -159,15 +178,69 @@ var dash_menu_top = function() {
 
 var dash_menu_bottom = function() {
     if (this.options.data.menu == dash_menu_footer_id) return;
-    var topSidebarItem = this.findSidebarItemByProperty('typo','topmenu');
+    var items = this.findAllSidebarItemByProperty('typoclass','menu');
+    for (var i=0; i<items.length; i++) {
+        $(items[i].element).removeClass('active');
+    }
     var bottomSidebarItem = this.findSidebarItemByProperty('typo','bottommenu');
-    if (topSidebarItem) $(topSidebarItem.element).removeClass('active');
     if (bottomSidebarItem) $(bottomSidebarItem.element).addClass('active');
     this.options.data.menu = dash_menu_footer_id;
-    this.options.data.parent = null;
+    this.options.data.parent = 0;
     this.nested_level = 0;
     this.previous = [];
     desk_window_reload(this);
+};
+
+var dash_menu_custom = function(menu) {
+    if (typeof menu == "undefined") return
+    if (this.options.data.menu == menu) return;
+    var items = this.findAllSidebarItemByProperty('typoclass','menu');
+    for (var i=0; i<items.length; i++) {
+        $(items[i].element).removeClass('active');
+    }
+    items = this.findAllSidebarItemByProperty('typo','custommenu');
+    for (var i=0; i<items.length; i++) {
+        if (typeof items[i].menu_id == "undefined") continue;
+        if (items[i].menu_id == menu) {
+            $(items[i].element).addClass('active');
+            break;
+        }
+    }
+    this.options.data.menu = menu;
+    this.options.data.parent = 0;
+    this.nested_level = 0;
+    this.previous = [];
+    desk_window_reload(this);
+};
+
+var dash_menu_new = function() {
+    if (this.options.data.menu == dash_menu_new_id) return;
+    var items = this.findAllSidebarItemByProperty('typoclass','menu');
+    for (var i=0; i<items.length; i++) {
+        $(items[i].element).removeClass('active');
+    }
+    var newSidebarItem = this.findSidebarItemByProperty('typo','newmenu');
+    if (newSidebarItem) $(newSidebarItem.element).addClass('active');
+    this.options.data.menu = dash_menu_new_id;
+    this.options.data.parent = 0;
+    this.nested_level = 0;
+    this.previous = [];
+    desk_window_reload(this);
+};
+
+var dash_menu_delete = function () {
+    if (this.options.data.menu == dash_menu_primary_id) return;
+    if (this.options.data.menu == dash_menu_secondary_id) return;
+    if (this.options.data.menu == dash_menu_footer_id) return;
+    if (this.options.data.menu == dash_menu_new_id) return;
+    desk_confirm(t('Delete menu')+' #'+this.options.data.menu+' ?', zira_bind(this, function(){
+        desk_window_request(this, url('dash/menu/delete'),{'menu':this.options.data.menu},zira_bind(this, function(response){
+            if (!response) return;
+            if (typeof response.success != "undefined" && response.success) {
+                window.setTimeout(zira_bind(this, function() {desk_call(dash_menu_top, this); }), 100);
+            }
+        }));
+    }));
 };
 
 var dash_menu_language = function(element) {

@@ -1,4 +1,4 @@
-<div id="footer-menu-wrapper">
+<div <?php echo empty($custom_id) ? 'id="footer-menu-wrapper"' : 'class="footer-custom-menu-wrapper"'; ?>>
 <nav>
 <ul class="menu">
 <?php foreach($items as $index=>$item): ?>

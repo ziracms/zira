@@ -74,7 +74,8 @@ class Menuitem extends Form
     }
 
     public static function checkMenu($menu_id) {
-        return $menu_id == Zira\Menu::MENU_PRIMARY || $menu_id == Zira\Menu::MENU_SECONDARY || $menu_id == Zira\Menu::MENU_FOOTER;
+        //return $menu_id == Zira\Menu::MENU_PRIMARY || $menu_id == Zira\Menu::MENU_SECONDARY || $menu_id == Zira\Menu::MENU_FOOTER;
+        return is_numeric($menu_id) && $menu_id>0;
     }
 
     public static function checkParent($parent_id) {
