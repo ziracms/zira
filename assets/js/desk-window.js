@@ -682,7 +682,8 @@ DashWindow.prototype.updateWindowResizerPosition = function() {
 };
 
 DashWindow.prototype.updateSidebarResizerSize = function() {
-    if (this.sidebar!==null) {
+    if ($(this.sidebar_resizer).length>0) {
+        $(this.sidebar_resizer).css('height', 1);
         $(this.sidebar_resizer).css('height', $(this.content).get(0).scrollHeight);
     }
 };
@@ -1888,6 +1889,7 @@ DashWindow.prototype.createToolbar = function() {
                         $(item.element).removeClass('active');
                     }
                     this.body_view_list = false;
+                    this.updateSidebarResizerSize();
                     $(this.content).scrollTop(0);
                 }
             },{
@@ -1901,6 +1903,7 @@ DashWindow.prototype.createToolbar = function() {
                         $(item.element).removeClass('active');
                     }
                     this.body_view_list = true;
+                    this.updateSidebarResizerSize();
                     $(this.content).scrollTop(0);
                 }
             }
@@ -3087,6 +3090,7 @@ DashWindow.prototype.onLoadFinish = function() {
 
 DashWindow.prototype.onSpecialKey = function(item, operation) {
     // to override
+    return false;
 };
 
 DashWindow.prototype.error = function(message) {

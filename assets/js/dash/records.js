@@ -510,15 +510,20 @@ var desk_record_editor = function(item) {
 };
 
 var dash_records_special_key = function(item, operation) {
-    if (!item || !operation) return;
-    if (typeof item.data == "undefined" || typeof item.page == "undefined" || typeof item.parent == "undefined" || item.parent != 'record') return;
+    if (!item || !operation) return false;
+    if (typeof item.data == "undefined" || typeof item.page == "undefined" || typeof item.parent == "undefined" || item.parent != 'record') return false;
     var origin = item.page.split('/').slice(0, -1).join('/');
     var root = this.options.data.root;
     if (root.substr(0,1)=='/') root = root.substr(1);
     if (operation == 'copy') {
         desk_window_request(this, url('dash/records/copy'),{'root':root, 'item':item.data});
+        return true;
     } else if (operation == 'move') {
-        if (origin == root) return;
+        if (origin == root) return false;
         desk_window_request(this, url('dash/records/move'),{'root':root, 'item':item.data});
+        return true;
+    } else if (operation == 'copypress' || operation == 'movepress') {
+        return true;
     }
+    return false;
 };

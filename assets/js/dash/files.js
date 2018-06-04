@@ -223,14 +223,19 @@ var dash_files_edit = function() {
 };
 
 var dash_files_special_key = function(item, operation) {
-    if (!item || !operation) return;
-    if (typeof item.data == "undefined" || typeof item.parent == "undefined" || item.parent != 'files') return;
+    if (!item || !operation) return false;
+    if (typeof item.data == "undefined" || typeof item.parent == "undefined" || item.parent != 'files') return false;
     var origin = item.data.split(desk_ds).slice(0,-1).join(desk_ds);
     var root = this.options.data.root;
     if (operation == 'copy') {
         desk_window_request(this, url('dash/files/copy'),{'path':root, 'file':item.data});
+        return true;
     } else if (operation == 'move') {
-        if (origin == root) return;
+        if (origin == root) return false;
         desk_window_request(this, url('dash/files/move'),{'path':root, 'file':item.data});
+        return true;
+    } else if (operation == 'copypress' || operation == 'movepress') {
+        return true;
     }
+    return false;
 };

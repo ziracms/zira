@@ -417,8 +417,11 @@ var Desk = {
                 if (selected && selected.length==1) {
                     e.stopPropagation();
                     e.preventDefault();
-                    this.bufferItem = selected[0];
-                    this.bufferOperation = 'copy';
+                    if (active.onSpecialKey(selected[0], 'copypress')) {
+                        this.bufferItem = selected[0];
+                        this.bufferOperation = 'copy';
+                        $(active.content).find('ul li a').css('opacity', 1);
+                    }
                 }
             }
         } else if (e.keyCode == 88 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+x
@@ -428,19 +431,22 @@ var Desk = {
                 if (selected && selected.length==1) {
                     e.stopPropagation();
                     e.preventDefault();
-                    this.bufferItem = selected[0];
-                    this.bufferOperation = 'move';
+                    if (active.onSpecialKey(selected[0], 'movepress')) {
+                        this.bufferItem = selected[0];
+                        this.bufferOperation = 'move';
+                        $(active.content).find('ul li a').css('opacity', 1);
+                        $(selected[0].element).css('opacity', .5);
+                    }
                 }
             }
         } else if (e.keyCode == 86 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+v
             var active = this.findFocusedWindow();
             if (active instanceof DashWindow) {
                 if (this.bufferItem && this.bufferOperation) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    active.onSpecialKey(this.bufferItem, this.bufferOperation);
-                    this.bufferItem = null;
-                    this.bufferOperation = null;
+                    if (active.onSpecialKey(this.bufferItem, this.bufferOperation)) {
+                        this.bufferItem = null;
+                        this.bufferOperation = null;
+                    }
                 }
             }
         }
