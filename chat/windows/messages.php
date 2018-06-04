@@ -65,6 +65,10 @@ class Messages extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
+        }
         $chat = new \Chat\Models\Chat($this->item);
         if (!$chat->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
 
@@ -99,6 +103,7 @@ class Messages extends Dash\Windows\Window {
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order
         ));
     }

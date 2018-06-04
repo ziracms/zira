@@ -24,8 +24,8 @@ class Dash {
     const COOKIE_NAME = 'dash-cookie';
 
     const CONFIG_FRONTEND_PANEL_ENABLED = 'dash_panel_frontend';
-
     const NOTIFICATION_HOOK = 'dash_notifications';
+    const MAX_LIMIT = 1000;
 
     private static $_instance;
     protected $_styles = array();

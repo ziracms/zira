@@ -863,7 +863,7 @@ abstract class Window {
             $this->setSidebarItems($this->_default_sidebar);
         }
         if ($this->_help_url) {
-            $this->setOption('help_url', $this->_help_url);
+            //$this->setOption('help_url', $this->_help_url);
         }
         $js = 'var '.$this->getJSClassName().' = function(data) {'."\r\n\t";
         $js .= 'desk_window('.'\''.$this->getJSClassName().'\','."\r\n".$this->generateOptions().', data);'."\r\n";

@@ -1209,7 +1209,7 @@ footer a.rss-link:visited {
 }
 .zira-loader {
     font-size: 16px;
-    animation: loader 1s linear infinite;
+    animation: loader 2s linear infinite;
 }
 .search-simple-form .zira-loader {
     position: absolute;

@@ -153,6 +153,10 @@ class Topics extends Dash\Windows\Window {
         }
 
         $language = Zira\Request::post('language');
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
+        }
 
         $forum = new \Forum\Models\Forum($this->item);
         if (!$forum->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
@@ -230,6 +234,7 @@ class Topics extends Dash\Windows\Window {
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order,
             'category_id'=>$forum->category_id,
             'language' => $language

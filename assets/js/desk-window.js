@@ -779,7 +779,8 @@ DashWindow.prototype.isFooterHovered = function(pageX, pageY) {
 };
 
 DashWindow.prototype.isMovingHovered = function(pageX, pageY) {
-    return this.isHeaderHovered(pageX, pageY) || this.isFooterHovered(pageX, pageY);
+    //return this.isHeaderHovered(pageX, pageY) || this.isFooterHovered(pageX, pageY);
+    return this.isHeaderHovered(pageX, pageY);
 };
 
 DashWindow.prototype.isWindowResizerHovered = function(pageX, pageY) {
@@ -1887,6 +1888,7 @@ DashWindow.prototype.createToolbar = function() {
                         $(item.element).removeClass('active');
                     }
                     this.body_view_list = false;
+                    $(this.content).scrollTop(0);
                 }
             },{
                 'action': 'list-view',
@@ -1899,6 +1901,7 @@ DashWindow.prototype.createToolbar = function() {
                         $(item.element).removeClass('active');
                     }
                     this.body_view_list = true;
+                    $(this.content).scrollTop(0);
                 }
             }
         ]
@@ -3080,6 +3083,10 @@ DashWindow.prototype.onLoadError = function() {
 
 DashWindow.prototype.onLoadFinish = function() {
     this.setLoading(false);
+};
+
+DashWindow.prototype.onSpecialKey = function(item, operation) {
+    // to override
 };
 
 DashWindow.prototype.error = function(message) {

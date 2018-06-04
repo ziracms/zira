@@ -71,6 +71,7 @@ class Fields {
         Dash\Models\Records::registerRecordsDeleteHook($this, 'recordDeleteHook');
         Dash\Models\Records::registerRecordsPublishHook($this, 'recordPublishHook');
         Dash\Models\Records::registerRecordsUnpublishHook($this, 'recordUnpublishHook');
+        Dash\Models\Records::registerRecordCopyHook($this, 'recordCopyHook');
     }
     
     public static function dashRecordsMenuHook($window) {
@@ -102,6 +103,30 @@ class Fields {
     
     public static function recordUnpublishHook($record) {
         \Fields\Models\Search::updateRecordIndex($record->id, $record->published);
+    }
+    
+    public static function recordCopyHook($origin, $copy) {
+        \Fields\Models\Search::clearRecordIndex($copy->id);
+        $values = \Fields\Models\Value::getCollection()
+                    ->where('record_id', '=', $origin->id)
+                    ->get(null, true);
+        foreach($values as $value) {
+            unset($value['id']);
+            $value['record_id'] = $copy->id;
+            $valueObj = new \Fields\Models\Value();
+            $valueObj->loadFromArray($value);
+            $valueObj->save();
+        }
+        $indexes = \Fields\Models\Search::getCollection()
+                        ->where('record_id', '=', $origin->id)
+                        ->get(null, true);
+        foreach($indexes as $index) {
+            unset($index['id']);
+            $index['record_id'] = $copy->id;
+            $indexObj = new \Fields\Models\Search();
+            $indexObj->loadFromArray($index);
+            $indexObj->save();
+        }
     }
     
     public static function renderCallback() {

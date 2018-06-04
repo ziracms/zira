@@ -74,6 +74,7 @@ class Category extends Model {
             $category->save();
 
             Zira\Cache::clear();
+            Zira\Models\Option::raiseVersion();
 
             return array('message'=>Zira\Locale::t('Successfully saved'), 'close'=>true);
         } else {

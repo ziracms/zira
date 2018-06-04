@@ -153,6 +153,12 @@ class Records extends Window {
                 'desk_call(dash_records_delete, this);'
             )
         );
+        
+        $this->setOnOpenJSCallback(
+            $this->createJSCallback(
+                'desk_call(dash_records_open, this);'
+            )
+        );
 
         $this->addDefaultOnLoadScript(
             'desk_call(dash_records_load, this);'
@@ -226,6 +232,7 @@ class Records extends Window {
             $this->setData(array(
                 'page'=>1,
                 'pages'=>1,
+                'limit'=>$this->limit,
                 'order'=>$this->order,
                 'root'=>'',
                 'language'=>'',
@@ -243,6 +250,10 @@ class Records extends Window {
         $language= (string)Zira\Request::post('language');
         if (!empty($language) && !in_array($language, Zira\Config::get('languages'))) {
             $language = '';
+        }
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
         }
 
         // getting category id and titles chain
@@ -461,6 +472,7 @@ class Records extends Window {
             'search'=>$this->search,
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order,
             'root' => $root,
             'language' => $language,

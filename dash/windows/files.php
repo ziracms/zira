@@ -278,11 +278,16 @@ class Files extends Window {
             $this->setData(array(
                 'page'=>1,
                 'pages'=>1,
+                'limit'=>$this->limit,
                 'order'=>$this->order,
                 'root'=>UPLOADS_DIR
             ));
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
         }
         $root_dir = ROOT_DIR;
         $default_root = UPLOADS_DIR;
@@ -335,6 +340,7 @@ class Files extends Window {
         $this->setData(array(
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order,
             'root'=>$root
         ));

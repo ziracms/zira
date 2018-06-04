@@ -1,3 +1,7 @@
+var dash_records_open = function() {
+    this.onSpecialKey = dash_records_special_key;
+};
+
 var dash_records_load = function() {
     $(this.element).find('.record-infobar').html('');
     $(this.element).find('.sidebar-badge').remove();
@@ -503,4 +507,18 @@ var desk_record_category = function(item) {
 var desk_record_editor = function(item) {
     var data = {'items':[item]};
     desk_call(dash_records_record_html_wnd, null, {'data':data});
+};
+
+var dash_records_special_key = function(item, operation) {
+    if (!item || !operation) return;
+    if (typeof item.data == "undefined" || typeof item.page == "undefined" || typeof item.parent == "undefined" || item.parent != 'record') return;
+    var origin = item.page.split('/').slice(0, -1).join('/');
+    var root = this.options.data.root;
+    if (root.substr(0,1)=='/') root = root.substr(1);
+    if (operation == 'copy') {
+        desk_window_request(this, url('dash/records/copy'),{'root':root, 'item':item.data});
+    } else if (operation == 'move') {
+        if (origin == root) return;
+        desk_window_request(this, url('dash/records/move'),{'root':root, 'item':item.data});
+    }
 };

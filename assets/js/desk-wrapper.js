@@ -464,7 +464,53 @@ var desk_window_pagination_init = function(wnd) {
         }
         if (wnd.options.data.pages>1) {
             wnd.resetFooterContent();
-            wnd.appendFooterContent(wnd.options.data.page+' '+t('from')+' '+wnd.options.data.pages);
+            var footerContent = '<span contenteditable="true" class="footer-page-editable">'+wnd.options.data.page+'</span> <span>'+t('from')+' '+wnd.options.data.pages+'</span>';
+            if (typeof wnd.options.data.limit != "undefined") {
+                footerContent += '&nbsp;&nbsp;/&nbsp;&nbsp;<span contenteditable="true" class="footer-limit-editable">'+wnd.options.data.limit+'</span>';
+            }
+            wnd.appendFooterContent(footerContent);
+            $(wnd.footer).find('.footer-page-editable').keydown(zira_bind(wnd, function(e){
+                if (e.keyCode != 48 && e.keyCode != 49 && e.keyCode != 50 && e.keyCode != 51 && e.keyCode != 52 && e.keyCode != 53 && e.keyCode != 54 && e.keyCode != 55 && e.keyCode != 56 && e.keyCode != 57 && e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 39) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (e.keyCode == 13) {
+                        var page = $(this.footer).find('.footer-page-editable').text();
+                        if (page.length==0) page = this.options.data.page;
+                        page = parseInt(page);
+                        if (page<=1) page = 1;
+                        if (page>this.options.data.pages) page = this.options.data.pages;
+                        $(this.footer).find('.footer-page-editable').text(page);
+                        this.options.data.page = page;
+                        $(this.footer).find('.footer-page-editable').get(0).blur();
+                        this.loadBody();
+                    }
+                }
+            })).keyup(function(e){
+                e.stopPropagation();
+            }).blur(zira_bind(wnd, function(e){
+                $(this.footer).find('.footer-page-editable').text(this.options.data.page);
+            }));
+            $(wnd.footer).find('.footer-limit-editable').keydown(zira_bind(wnd, function(e){
+                if (e.keyCode != 48 && e.keyCode != 49 && e.keyCode != 50 && e.keyCode != 51 && e.keyCode != 52 && e.keyCode != 53 && e.keyCode != 54 && e.keyCode != 55 && e.keyCode != 56 && e.keyCode != 57 && e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 39) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (e.keyCode == 13) {
+                        var limit = $(this.footer).find('.footer-limit-editable').text();
+                        if (limit.length==0) limit = this.options.data.limit;
+                        limit = parseInt(limit);
+                        if (limit<=1) limit = 1;
+                        if (limit>1000) limit = 1000;
+                        $(this.footer).find('.footer-limit-editable').text(limit);
+                        this.options.data.limit = limit;
+                        $(this.footer).find('.footer-limit-editable').get(0).blur();
+                        this.loadBody();
+                    }
+                }
+            })).keyup(function(e){
+                e.stopPropagation();
+            }).blur(zira_bind(wnd, function(e){
+                $(this.footer).find('.footer-limit-editable').text(this.options.data.limit);
+            }));
         } else {
             wnd.resetFooterContent();
         }

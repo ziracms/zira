@@ -15,6 +15,7 @@ class Records extends Model {
     protected static $_records_unpublish_callbacks = array();
     protected static $_records_create_callbacks = array();
     protected static $_records_delete_callbacks = array();
+    protected static $_record_copy_callbacks = array();
             
     public function delete($data) {
         if (empty($data) || !is_array($data)) return array('error' => Zira\Locale::t('An error occurred'));
@@ -25,6 +26,7 @@ class Records extends Model {
         $types = Zira\Request::post('types');
 
         $category_error = false;
+        $category_deleted = 0;
         foreach($data as $i=>$id) {
             if (!array_key_exists($i, $types)) continue;
             if ($types[$i]=='category') {
@@ -88,6 +90,8 @@ class Records extends Model {
                         ->execute();
 
                     $category->delete();
+                    
+                    $category_deleted++;
                 } else {
                     $category_error = true;
                 }
@@ -171,6 +175,10 @@ class Records extends Model {
         }
 
         Zira\Cache::clear();
+        
+        if ($category_deleted>0) {
+            Zira\Models\Option::raiseVersion();
+        }
 
         if (!$category_error) {
             return array('reload' => $this->getJSClassName());
@@ -456,8 +464,8 @@ class Records extends Model {
 
         Zira\Models\Search::indexRecord($new);
 
-        // running create hook
-        self::runRecordCreateHook($new);
+        // running copy hook
+        self::runRecordCopyHook($record, $new);
                 
         Zira\Cache::clear();
 
@@ -488,6 +496,17 @@ class Records extends Model {
         $record = new Zira\Models\Record($id);
         if (!$record->loaded()) {
             return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $exists = Zira\Models\Record::getCollection()
+                        ->count()
+                        ->where('category_id','=',$category_id)
+                        ->and_where('language','=',$record->language)
+                        ->and_where('name','=',$record->name)
+                        ->get('co');
+        
+        if ($exists) {
+            return array('error' => Zira\Locale::t('Record with such name already exists'));
         }
 
         $record->category_id = $category_id;
@@ -608,6 +627,10 @@ class Records extends Model {
         self::$_records_delete_callbacks []= array($object, $method);
     }
     
+    public static function registerRecordCopyHook($object, $method) {
+        self::$_record_copy_callbacks []= array($object, $method);
+    }
+    
     public static function runRecordPublishHook($record) {
         foreach(self::$_records_publish_callbacks as $callback) {
             try {
@@ -642,6 +665,16 @@ class Records extends Model {
         foreach(self::$_records_delete_callbacks as $callback) {
             try {
                 call_user_func($callback, $record);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
+    }
+    
+    public static function runRecordCopyHook($origin, $copy) {
+        foreach(self::$_record_copy_callbacks as $callback) {
+            try {
+                call_user_func($callback, $origin, $copy);
             } catch (Exception $e) {
                 // ignore
             }

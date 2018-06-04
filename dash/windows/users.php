@@ -144,6 +144,7 @@ class Users extends Window {
             $this->setData(array(
                 'page'=>1,
                 'pages'=>1,
+                'limit'=>$this->limit,
                 'order'=>$this->order,
                 'group_id'=>0
             ));
@@ -151,6 +152,10 @@ class Users extends Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
+        }
         $group_id = intval(Zira\Request::post('group_id'));
         if (!empty($group_id)) {
             $group = new Zira\Models\Group($group_id);
@@ -198,6 +203,7 @@ class Users extends Window {
             'search'=>$this->search,
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order,
             'group_id'=>$group_id
         ));

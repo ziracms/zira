@@ -44,6 +44,8 @@ var Desk = {
     'formDataAppend': typeof(FormData)!="undefined" ? FormData.prototype.append : null,
     'parseJSON': $.parseJSON,
     'dockUpdated': false,
+    'bufferItem': null,
+    'bufferOperation': null,
     'initialize': function() {
         if (this.isFrame()) return;
         this.dashpanel = $('#'+this.dashpanel_id);
@@ -400,6 +402,46 @@ var Desk = {
             var active = this.findFocusedWindow();
             if (active instanceof DashWindow) {
                 active.selectNextBodyItem(e.keyCode == 37, e.keyCode == 39, e.keyCode == 38, e.keyCode == 40);
+            }
+        } else if (e.keyCode == 82 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+r
+            var active = this.findFocusedWindow();
+            if (active instanceof DashWindow) {
+                e.stopPropagation();
+                e.preventDefault();
+                active.loadBody();
+            }
+        } else if (e.keyCode == 67 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+c
+            var active = this.findFocusedWindow();
+            if (active instanceof DashWindow) {
+                var selected = active.getSelectedContentItems();
+                if (selected && selected.length==1) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.bufferItem = selected[0];
+                    this.bufferOperation = 'copy';
+                }
+            }
+        } else if (e.keyCode == 88 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+x
+            var active = this.findFocusedWindow();
+            if (active instanceof DashWindow) {
+                var selected = active.getSelectedContentItems();
+                if (selected && selected.length==1) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    this.bufferItem = selected[0];
+                    this.bufferOperation = 'move';
+                }
+            }
+        } else if (e.keyCode == 86 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+v
+            var active = this.findFocusedWindow();
+            if (active instanceof DashWindow) {
+                if (this.bufferItem && this.bufferOperation) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    active.onSpecialKey(this.bufferItem, this.bufferOperation);
+                    this.bufferItem = null;
+                    this.bufferOperation = null;
+                }
             }
         }
     },
