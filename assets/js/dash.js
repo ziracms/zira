@@ -222,7 +222,7 @@
             'top': t,
             'left': ($(window).width() - $(dn).outerWidth()) / 2
             //'left': $(window).width() - $(dn).outerWidth() - $('#dashboard-sidebar').outerWidth() - 20
-        }).fadeIn();
+        }).fadeIn(1000);
 
         $(dn).click(function() {
             desk_call(callback);
@@ -257,14 +257,18 @@
         if (!$(setter).length) return;
         $(setter).show().tooltip();
         $(setter).click(function(){
-            $('body.dashboard #dashboard-canvas-wrapper').removeClass('cover').css('background-image','none');
+            $('body.dashboard #dashboard-wallpaper').css('background-image','none').css('opacity',0);
             if (typeof callback != "undefined") callback.call(null, '');
             desk_file_selector(function(selected){
                 if (selected && selected.length>0 && (typeof(selected[0].type)!="undefined" && selected[0].type=='image')) {
                     var src = selected[0].data;
                     var regexp = new RegExp('\\'+desk_ds, 'g');
                     var url = encodeURI(baseUrl(src.replace(regexp,'/')));
-                    $('body.dashboard #dashboard-canvas-wrapper').addClass('cover').css('background-image', 'url('+url+')');
+                    var img = new Image();
+                    img.onload = function() {
+                        $('body.dashboard #dashboard-wallpaper').css('background-image', 'url('+img.src+')').css('opacity',1);
+                    };
+                    img.src = url;
                     if (typeof callback != "undefined") callback.call(null, url);
                 }
             });
@@ -273,7 +277,7 @@
         if (typeof bg != "undefined" && bg.length>0) {
             var img = new Image();
             img.onload = function() {
-                $('body.dashboard #dashboard-canvas-wrapper').addClass('cover').css('background-image', 'url('+img.src+')');
+                $('body.dashboard #dashboard-wallpaper').css('background-image', 'url('+img.src+')').css('opacity',1);
             };
             img.src = bg;
         }

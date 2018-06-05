@@ -1,5 +1,6 @@
 <div id="dashboard-wrapper">
 <div id="dashboard-canvas-wrapper"<?php if (Zira\Config::get('dash_bg')) echo ' data-bg="'.Zira\Helper::html(Zira\Config::get('dash_bg')).'"' ?>>
+    <div id="dashboard-wallpaper"></div>
     <div id="dashboard-sidebar">
         <div id="remote-clock-wrapper">
             <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>

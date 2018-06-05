@@ -156,7 +156,7 @@ main > article > .image:first-child {
 .navbar-default .navbar-nav > .active > a:focus,
 .navbar-default .navbar-nav > .open > a:focus {
     background: none;
-    background-color: #708087;
+    background-color: #696578;
     color: #fff;
     filter: none; /** ie **/
 }

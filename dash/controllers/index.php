@@ -16,12 +16,16 @@ class Index extends Dash\Controller {
 
         $script = Zira\Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'window.setTimeout(function(){';
         $script .= 'jQuery.post(\''.Zira\Helper::url('dash/index/notifications').'\',{\'token\':\''.Dash\Dash::getToken().'\'},function(response){';
         $script .= 'if (!response || typeof(response.notifications)=="undefined") return;';
         $script .= 'for (var i=0; i<response.notifications.length; i++){';
-        $script .= 'dashboard_notification(response.notifications[i].message,response.notifications[i].callback);';
+        $script .= 'window.setTimeout(zira_bind({message:response.notifications[i].message,callback:response.notifications[i].callback},function(){';
+        $script .= 'dashboard_notification(this.message,this.callback);';
+        $script .= '}), 500+500*i);';
         $script .= '}';
         $script .= '},\'json\');';
+        $script .= '}, 3000);';
         $script .= ' });';
         $script .= Zira\Helper::tag_close('script');
         //Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
