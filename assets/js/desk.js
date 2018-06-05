@@ -810,6 +810,7 @@ var Desk = {
         if (this.overlay_is_active) {
             this.overlay_is_active = false;
             $('body').css('overflow','auto');
+            $('body').css('overflow','');
             $('.'+this.dashpanel_overlay_class).remove();
             this.dock_close();
         }

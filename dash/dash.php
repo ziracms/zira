@@ -595,6 +595,8 @@ class Dash {
     }
 
     protected function registerPanelItems() {
+        $this->addPanelWebsiteGroupItem('glyphicon glyphicon-th-large', Zira\Locale::t('System dashboard'), Zira\Helper::url('dash'));
+        $this->addPanelWebsiteGroupSeparator();
         Zira\Helper::setAddingLanguageToUrl(true);
         $this->addPanelWebsiteGroupItem('glyphicon glyphicon-home', Zira\Locale::t('Home'), Zira\Helper::url('/'));
         $categories = Zira\Category::getCategoriesMap(true);
@@ -606,8 +608,6 @@ class Dash {
             }
         }
         Zira\Helper::setAddingLanguageToUrl(false);
-        $this->addPanelWebsiteGroupSeparator();
-        $this->addPanelWebsiteGroupItem('glyphicon glyphicon-th-large', Zira\Locale::t('System dashboard'), Zira\Helper::url('dash'));
         if (Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) {
             $this->addPanelSystemGroupItem('glyphicon glyphicon-book', Zira\Locale::t('Records'), null, 'dashRecordsWindow()');
         }

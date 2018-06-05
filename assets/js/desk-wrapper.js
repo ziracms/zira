@@ -716,6 +716,48 @@ var desk_window_form_init = function(window) {
                 var i_for_id = $(inline_label).attr('for');
                 $(inline_label).attr('for',i_for_id+'-'+window_id);
             }
+            
+            // pretty checkboxes
+            if ($(this).attr('type')=='checkbox') {
+                var checked = $(this).get(0).checked;
+                var checked_class = checked ? ' active' : '';
+                var checkbox_id = $(this).attr('id');
+                var pretty_id = checkbox_id + '-' + 'pretty';
+                $(this).hide();
+                if ($(this).parent().prop('tagName').toLowerCase()!='label') {
+                    $(this).after('<div id="'+pretty_id+'" data-checkbox="'+checkbox_id+'" class="pretty-checkbox'+checked_class+'"><div class="pretty-checkbox-line"></div><div class="pretty-checkbox-circle"></div></div>');
+                } else {
+                    $(this).after('<div id="'+pretty_id+'" data-checkbox="'+checkbox_id+'" class="pretty-checkbox-inline'+checked_class+'"><div class="pretty-checkbox-circle"></div></div>');
+                }
+                $(window.content).find('#'+pretty_id).click(function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var checkbox = $(this).data('checkbox');
+                    if (typeof checkbox == "undefined") return;
+                    if ($(window.content).find('#'+checkbox).length==0) return;
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active');
+                        $(window.content).find('#'+checkbox).get(0).checked = false;
+                    } else {
+                        $(this).addClass('active');
+                        $(window.content).find('#'+checkbox).get(0).checked = true;
+                    }
+                });
+                $(window.content).find('#'+checkbox_id).change(function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var id = $(this).attr('id');
+                    var pretty_id = id + '-' + 'pretty';
+                    var pretty = $(window.content).find('#'+pretty_id);
+                    if ($(pretty).length==0) return;
+                    var checked = $(this).get(0).checked;
+                    if (checked) {
+                        $(pretty).addClass('active');
+                    } else {
+                        $(pretty).removeClass('active');
+                    }
+                });
+            }
         });
     }
 };

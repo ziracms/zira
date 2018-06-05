@@ -1967,7 +1967,11 @@
     
     var setBackgroundImageStyle = function(element, value, addOnly) {
         if (typeof (addOnly) == "undefined") addOnly = false;
-        editorMap.set(element, 'bgimage', 'background-image:url(' + value + ');');
+        if (value != 'none') {
+            editorMap.set(element, 'bgimage', 'background-image:url(' + value + ');');
+        } else {
+            editorMap.set(element, 'bgimage', 'background-image:none;');
+        }
         if (!addOnly) {
             removeBackgroundGradientStyle(element);
             removeBackgroundStyle(element);

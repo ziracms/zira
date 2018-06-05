@@ -947,6 +947,7 @@ DashWindow.prototype.destroy = function() {
     
     if (this.maximized) {
         $('body').css('overflow','auto');
+        $('body').css('overflow','');
     }
 
     if (this.options.onClose!==null) {
@@ -1109,6 +1110,7 @@ DashWindow.prototype.animateMaximizing = function(callback) {
 DashWindow.prototype.unmaximize = function(unmaximize_only) {
     if (!this.initialized) return;
     $('body').css('overflow','auto');
+    $('body').css('overflow','');
     this.setWindowRect();
     this.maximized = false;
     $(this.element).removeClass(this.maximized_window_class);
