@@ -314,7 +314,8 @@ class Index extends Zira\Controller {
                             'category_title' => $forum->category_title,
                             'category_url' => Forum\Models\Category::generateUrl($forum->category_id),
                             'info' => $forum->info,
-                            'searchForm' => $searchForm
+                            'searchForm' => $searchForm,
+                            'limit' => $limit
                         );
         
         //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $contentData, 'forum/threads');

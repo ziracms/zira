@@ -22,6 +22,7 @@ class Topics extends Dash\Windows\Window {
     public $page = 0;
     public $pages = 0;
     public $order = 'desc';
+    public $search;
 
     protected  $limit = 50;
     protected $total = 0;
@@ -172,6 +173,10 @@ class Topics extends Dash\Windows\Window {
             $total_q->where('category_id','=',$forum->category_id)
                     ->and_where('forum_id','=',$forum->id);
         }
+        
+        if (!empty($this->search)) {
+            $total_q->and_where('title','like','%'.$this->search.'%');
+        }
                 
         $this->total = $total_q->get('co');
 
@@ -213,7 +218,11 @@ class Topics extends Dash\Windows\Window {
             $threads_q->where('category_id','=',$forum->category_id)
                     ->and_where('forum_id','=',$forum->id);
         }
-                                    
+                
+        if (!empty($this->search)) {
+            $threads_q->and_where('title','like','%'.$this->search.'%');
+        }
+        
         $threads = $threads_q->order_by('id', $this->order)
                             ->limit($this->limit, ($this->page - 1) * $this->limit)
                             ->get();
@@ -231,6 +240,7 @@ class Topics extends Dash\Windows\Window {
         $this->setTitle(Zira\Locale::t(self::$_title).' - '.$forum->title);
 
         $this->setData(array(
+            'search'=>$this->search,
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,

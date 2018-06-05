@@ -38,6 +38,9 @@
 <span class="list-info author"><span class="glyphicon glyphicon-user"></span> <?php echo Zira\User::generateUserProfileLink($item->last_user_id, $item->user_firstname, $item->user_secondname, $item->user_username) ?></span>
 <?php endif; ?>
 <span class="list-info counter"><span class="glyphicon glyphicon-comment"></span> <?php echo Zira\Helper::html(tm('Messages: %s', 'forum', $item->messages)) ?></span>
+<?php if (!empty($limit)): ?>
+<span class="list-info link"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::tag('a', tm('Last page', 'forum'), array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.(ceil($item->messages/$limit))))) ?></span>
+<?php endif; ?>
 </div>
 </li>
 <?php $co++; ?>
@@ -62,6 +65,9 @@
 <span class="list-info author"><span class="glyphicon glyphicon-user"></span> <?php echo Zira\User::generateUserProfileLink($item->last_user_id, $item->user_firstname, $item->user_secondname, $item->user_username) ?></span>
 <?php endif; ?>
 <span class="list-info counter"><span class="glyphicon glyphicon-comment"></span> <?php echo Zira\Helper::html(tm('Messages: %s', 'forum', $item->messages)) ?></span>
+<?php if (!empty($limit)): ?>
+<span class="list-info link"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::tag('a', tm('Last page', 'forum'), array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.(ceil($item->messages/$limit))))) ?></span>
+<?php endif; ?>
 </div>
 </li>
 <?php $co++; ?>

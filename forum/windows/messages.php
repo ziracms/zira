@@ -22,7 +22,8 @@ class Messages extends Dash\Windows\Window {
     public $page = 0;
     public $pages = 0;
     public $order = 'desc';
-
+    public $search;
+    
     protected  $limit = 50;
     protected $total = 0;
 
@@ -92,10 +93,16 @@ class Messages extends Dash\Windows\Window {
         $topic = new \Forum\Models\Topic($this->item);
         if (!$topic->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
 
-        $this->total = \Forum\Models\Message::getCollection()
+        $total_q= \Forum\Models\Message::getCollection()
                                     ->count()
                                     ->where('topic_id','=',$topic->id)
-                                    ->get('co');
+                                    ;
+        
+        if (!empty($this->search)) {
+            $total_q->and_where('content','like','%'.$this->search.'%');
+        }
+                                    
+        $this->total = $total_q->get('co');
 
         $this->pages = ceil($this->total / $this->limit);
         if ($this->page > $this->pages) $this->page = $this->pages;
@@ -107,14 +114,20 @@ class Messages extends Dash\Windows\Window {
             $_file_fields['file_'.$field] = $field;
         }
 
-        $messages = \Forum\Models\Message::getCollection()
+        $messages_q = \Forum\Models\Message::getCollection()
                                     ->select(\Forum\Models\Message::getFields())
                                     ->left_join(Zira\Models\User::getClass(), array('user_login'=>'username'))
                                     ->left_join(\Forum\Models\File::getClass(), $_file_fields)
                                     ->where('topic_id','=',$topic->id)
-                                    ->order_by('id', $this->order)
-                                    ->limit($this->limit, ($this->page - 1) * $this->limit)
-                                    ->get();
+                                    ;
+        
+        if (!empty($this->search)) {
+            $messages_q->and_where('content','like','%'.$this->search.'%');
+        }
+        
+        $messages = $messages_q->order_by('id', $this->order)
+                            ->limit($this->limit, ($this->page - 1) * $this->limit)
+                            ->get();
 
         $items = array();
         foreach($messages as $message) {
@@ -139,6 +152,7 @@ class Messages extends Dash\Windows\Window {
         $this->setTitle(Zira\Locale::t(self::$_title).' - '.$topic->title);
 
         $this->setData(array(
+            'search'=>$this->search,
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,

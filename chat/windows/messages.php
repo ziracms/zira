@@ -22,6 +22,7 @@ class Messages extends Dash\Windows\Window {
     public $page = 0;
     public $pages = 0;
     public $order = 'desc';
+    public $search;
 
     protected  $limit = 50;
     protected $total = 0;
@@ -72,22 +73,34 @@ class Messages extends Dash\Windows\Window {
         $chat = new \Chat\Models\Chat($this->item);
         if (!$chat->loaded()) return array('error'=>Zira\Locale::t('An error occurred'));
 
-        $this->total = \Chat\Models\Message::getCollection()
+        $total_q = \Chat\Models\Message::getCollection()
                                     ->count()
                                     ->where('chat_id','=',$chat->id)
-                                    ->get('co');
+                                    ;
+        
+        if (!empty($this->search)) {
+            $total_q->and_where('content','like','%'.$this->search.'%');
+        }
+        
+        $this->total = $total_q->get('co');
 
         $this->pages = ceil($this->total / $this->limit);
         if ($this->page > $this->pages) $this->page = $this->pages;
         if ($this->page < 1) $this->page = 1;
 
-        $messages = \Chat\Models\Message::getCollection()
+        $messages_q = \Chat\Models\Message::getCollection()
                                     ->select(\Chat\Models\Message::getFields())
                                     ->left_join(Zira\Models\User::getClass(), array('user_login'=>'username'))
                                     ->where('chat_id','=',$chat->id)
-                                    ->order_by('date_created', $this->order)
-                                    ->limit($this->limit, ($this->page - 1) * $this->limit)
-                                    ->get();
+                                    ;
+        
+        if (!empty($this->search)) {
+            $messages_q->and_where('content','like','%'.$this->search.'%');
+        }
+        
+        $messages = $messages_q->order_by('date_created', $this->order)
+                            ->limit($this->limit, ($this->page - 1) * $this->limit)
+                            ->get();
 
         $items = array();
         foreach($messages as $message) {
@@ -100,6 +113,7 @@ class Messages extends Dash\Windows\Window {
         $this->setTitle(Zira\Locale::t(self::$_title).' - '.$chat->title);
 
         $this->setData(array(
+            'search'=>$this->search,
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
