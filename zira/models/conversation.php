@@ -48,12 +48,6 @@ class Conversation extends Orm {
         $conversation->highlight = 0;
         $conversation->save();
         
-        $co=(int)self::getCollection()->count()->where('conversation_id','=',$conversation_id)->get('co');
-        if ($co!==1) {
-            \Zira\Db\Db::rollback();
-            throw new \Exception(\Zira\Locale::t('An error occurred'));
-        }
-
         $conversation = new self;
         $conversation->conversation_id = $conversation_id;
         $conversation->user_id = $recipient_id;
@@ -63,6 +57,11 @@ class Conversation extends Orm {
         $conversation->highlight = 1;
         $conversation->save();
         
+        $co=(int)self::getCollection()->count()->where('conversation_id','=',$conversation_id)->get('co');
+        if ($co!==2) {
+            \Zira\Db\Db::rollback();
+            throw new \Exception(\Zira\Locale::t('An error occurred'));
+        }
         \Zira\Db\Db::commit();
 
         return $conversation_id;
@@ -84,12 +83,6 @@ class Conversation extends Orm {
         $conversation->highlight = 0;
         $conversation->save();
 
-        $co=(int)self::getCollection()->count()->where('conversation_id','=',$conversation_id)->get('co');
-        if ($co!==1) {
-            \Zira\Db\Db::rollback();
-            throw new \Exception(\Zira\Locale::t('An error occurred'));
-        }
-        
         foreach ($recipient_ids as $recipient_id) {
             $conversation = new self;
             $conversation->conversation_id = $conversation_id;
@@ -101,6 +94,11 @@ class Conversation extends Orm {
             $conversation->save();
         }
         
+        $co=(int)self::getCollection()->count()->where('conversation_id','=',$conversation_id)->get('co');
+        if ($co!==count($recipient_ids)+1) {
+            \Zira\Db\Db::rollback();
+            throw new \Exception(\Zira\Locale::t('An error occurred'));
+        }
         \Zira\Db\Db::commit();
 
         return $conversation_id;
