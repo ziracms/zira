@@ -36,7 +36,7 @@ abstract class Window {
     protected $_save_action_enabled = false;
     protected $_delete_action_enabled = false;
     protected $_help_url = null;
-
+    
     protected $_options = array(
             'top' => null,
             'left' => null,
@@ -93,8 +93,10 @@ abstract class Window {
         $this->_js_name = Dash\Dash::getInstance()->getWindowJSName(self::getClass());
         if (empty($this->_js_name)) throw new \Exception('Failed to construct window: ' . self::getClass());
         
-        $maximized = (bool)Config::get('dashwindow_maximized');
+        $maximized = (bool)Config::get('dashwindow_maximized') || Dash\Dash::isMobile();
         $this->setMaximized($maximized);
+        
+        if (Dash\Dash::isMobile()) $this->setAnimating(false);
     }
 
     public function build() {
@@ -175,7 +177,7 @@ abstract class Window {
                 $this->createContextMenuItem($this->_delete_action_text, 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete')
             );
         }
-        if (property_exists($this, 'search')) {
+        if (property_exists($this, 'search') && !Dash\Dash::isMobile()) {
             $this->addDefaultToolbarItem(
                 $this->createToolbarInput(Locale::t('Search'), Locale::t('Search'), 'glyphicon glyphicon-search', 'var text=$(element).val();desk_window_search(this, text);', 'search')
             );

@@ -522,7 +522,7 @@ class Index extends Zira\Controller {
             $admin_icons = Zira\Helper::tag_open('div', array('class'=>'moderator-links-wrapper'));
             $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark topic', 'data-forum'=>$topic->forum_id, 'data-category'=>$topic->category_id, 'data-topic'=>$topic->id));
             $admin_icons .= '&nbsp;';
-            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file messages', 'data-topic'=>$topic->id));
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark messages', 'data-topic'=>$topic->id));
             $admin_icons .= Zira\Helper::tag_close('div');
         }
 

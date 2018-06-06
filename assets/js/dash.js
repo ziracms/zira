@@ -238,6 +238,12 @@
                 dashboard_notification_update_position();
             });
         });
+        
+        $(dn).hover(function(){
+            $(this).addClass('hover');
+        }, function() {
+            $(this).removeClass('hover');
+        });
 
         $(window).unbind('resize',dashboard_notification_update_position).resize(dashboard_notification_update_position);
     };

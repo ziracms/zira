@@ -294,7 +294,8 @@ DashWindow.prototype.focus = function() {
     }
     if (!this.focused && this.maximized && 
         this.window_left == this.options.edge_left && 
-        this.window_right == this.options.edge_right
+        this.window_right == this.options.edge_right && 
+        !this.isTouchesEnabled()
     ) {
         $('body').css('overflow','hidden');
     }
@@ -1023,7 +1024,7 @@ DashWindow.prototype.maximize = function(remember_position, disable_animation, c
         this.unmaximize_height = this.options.height;
     }
     
-    if (this.window_left == this.options.edge_left && this.window_right == this.options.edge_right) {
+    if (this.window_left == this.options.edge_left && this.window_right == this.options.edge_right && !this.isTouchesEnabled()) {
         $('body').css('overflow','hidden');
         this.setWindowRect();
     }
@@ -1645,6 +1646,7 @@ DashWindow.prototype.bindMenuElementsCallbacks = function(elements) {
             'element': element,
             'callback': elements[i].callback
         },function(e){
+            if (this.window.isTouchesEnabled()) return;
             if (typeof(e.originalEvent)=="undefined") {
                 e.stopPropagation();
                 e.preventDefault();
@@ -1661,6 +1663,21 @@ DashWindow.prototype.bindMenuElementsCallbacks = function(elements) {
             e.preventDefault();
         }));
         $(element).click(this.bind(this, function(e){
+            e.stopPropagation();
+            e.preventDefault();
+        }));
+        $(element).bind('touchstart', this.bind({'window': this,
+            'element': element,
+            'callback': elements[i].callback
+        },function(e){
+            if (!this.window.isTouchesEnabled()) return;
+            if (this.window.disabled) return;
+            if ($(this.element).parent('li').hasClass('disabled')) return;
+            this.callback.call(this.window, this.element);
+            this.window.hideMenuDropdown();
+            if (this.window.onMenuItemCallback !== null) {
+                this.window.onMenuItemCallback.call(this.window);
+            }
             e.stopPropagation();
             e.preventDefault();
         }));
@@ -2416,8 +2433,8 @@ DashWindow.prototype.bindBodyItemsCallbacks = function(elements) {
                 this.window.unselectContentItems();
                 this.window.selectContentItem(this.element);
                 this.window.setItemClicked(true);
-                this.callback.call(this.window, this.element);
-                this.window.unselectContentItems();
+                //this.callback.call(this.window, this.element);
+                //this.window.unselectContentItems();
             }
         }));
         $(element).contextmenu(this.bind({

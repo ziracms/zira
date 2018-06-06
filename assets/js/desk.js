@@ -284,7 +284,7 @@ var Desk = {
                     this.windows[id].setMoving(false);
                     this.windows[id].setWindowResizing(false);
                 }
-                if (this.windows[id].isContentClicked() && !this.windows[id].isItemClicked()) {
+                if (this.windows[id].isContentClicked() && !this.windows[id].isItemClicked() && !this.touchesEnabled) {
                     this.windows[id].unselectContentItems();
                 }
                 this.windows[id].setContentClicked(false);
@@ -292,7 +292,7 @@ var Desk = {
                 if (this.windows[id].isContextMenuOpened()) {
                     this.windows[id].hideContextMenu();
                 }
-                if (this.windows[id].isMenuDropdownOpened()) {
+                if (this.windows[id].isMenuDropdownOpened() && !this.touchesEnabled) {
                     this.windows[id].hideMenuDropdown();
                 }
                 this.windows[id].setHovered(false);
@@ -608,6 +608,7 @@ var Desk = {
         }
     },
     'openWnd': function(id, className, options) {
+        this.closeDashPanel();
         if (!this.initilized) {
             this.initialize();
         }
@@ -829,6 +830,9 @@ var Desk = {
         this.raiseZ(wnd);
         wnd.focus();
         this.doUpdateDock();
+    },
+    'closeDashPanel': function() {
+        $('#'+this.dashpanel_id).find('.dashpanel-wrapper').removeClass('in');
     },
     'isFrame': function() {
         return (window!=window.top);

@@ -52,6 +52,7 @@ class Dash {
     protected static $_dash_language = 'en';
     
     protected static $_render_js_callbacks = array();
+    protected static $_is_mobile = null;
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -877,5 +878,12 @@ class Dash {
             Zira\Router::addRoute('dash/js','dash/index/js');
             Zira\Router::addRoute('dash/jsp','dash/index/jsp');
         }
+    }
+    
+    public static function isMobile() {
+        if (self::$_is_mobile === null) {
+            self::$_is_mobile = Zira\Request::isMobile();
+        }
+        return self::$_is_mobile;
     }
 }
