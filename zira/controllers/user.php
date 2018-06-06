@@ -702,7 +702,9 @@ class User extends Zira\Controller {
                     $form->setFill(false);
                 }
             } catch(\Exception $e) {
-                Zira::getInstance()->exception($e);
+                if (!Zira\View::isAjax()) {
+                    Zira::getInstance()->exception($e);
+                }
                 $form->setError($e->getMessage());
             }
         }
@@ -768,7 +770,9 @@ class User extends Zira\Controller {
                     }
                 }
             } catch(\Exception $e) {
-                Zira::getInstance()->exception($e);
+                if (!Zira\View::isAjax()) {
+                    Zira::getInstance()->exception($e);
+                }
                 $form->setError($e->getMessage());
             }
         }
@@ -883,7 +887,9 @@ class User extends Zira\Controller {
                         $form->setMessage(Zira\Locale::t('Message sent'));
                     }
                 } catch(\Exception $e) {
-                    Zira::getInstance()->exception($e);
+                    if (!Zira\View::isAjax()) {
+                        Zira::getInstance()->exception($e);
+                    }
                     $form->setError($e->getMessage());
                 }
             }
