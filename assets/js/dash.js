@@ -216,7 +216,7 @@
 
         var t = $(window).height() - $(dn).outerHeight() - 40;
         if ($(last).length>0) {
-            t = $(last).offset().top - $(dn).outerHeight() - 10;
+            t = $(last).offset().top - $(dn).outerHeight() - 10 - $(document).scrollTop();
         }
         
         $(dn).css({

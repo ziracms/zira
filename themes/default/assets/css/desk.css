@@ -749,7 +749,7 @@ body.dashboard #dashboard-sidebar {
     color: #333;
 }
 body.dashboard #main-wrapper {
-    min-width: 800px;
+    min-width: 767px;
     min-height: 500px;
     background: #efebf0;
     background: -moz-linear-gradient(top, #efebf0 0%, #dfd1f0 100%);
@@ -776,7 +776,7 @@ body.dashboard #dashboard-wallpaper {
     background-position: 50% 50%;
     z-index: 1;
     opacity: 0;
-    transition: opacity 3s ease;
+    transition: opacity 5s ease;
 }
 body.dashboard #dashboard-sidebar {
     width: 280px;
@@ -864,6 +864,7 @@ body.dashboard .dashboard-notification {
     position: fixed;
     left: 9999px;
     width: 500px;
+    max-width: 90%;
     margin: 0px auto;
     font-size: 16px;
     padding: 20px;
@@ -873,7 +874,7 @@ body.dashboard .dashboard-notification {
     box-shadow: 0px 0px 2px #7F6A8F;
     cursor: pointer;
     text-shadow: 1px 1px 0px #3E354E;
-    transition: all 1s ease;
+    transition: left 1s ease, top .2s ease;
     z-index: 99999;
 }
 body.dashboard .dashboard-notification .dashboard-notification-close {
@@ -1018,5 +1019,17 @@ body.dashboard .tooltip-inner {
 @media (min-width: 992px) {
     #dashpanel-container .report {
         display: block;
+    }
+}
+@media (max-width: 766px) {
+    body.dashboard #main-wrapper {
+        min-width: inherit;
+        min-height: inherit;
+    }
+    body.dashboard #dashboard-sidebar {
+        display: none;
+    }
+    body.dashboard #dashboard-background-setter {
+        opacity: 0;
     }
 }
