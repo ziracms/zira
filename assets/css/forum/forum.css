@@ -239,6 +239,30 @@
     font-style: italic;
 }
 
+.moderator-links-wrapper {
+    font-size: 20px;
+    float: left;
+    margin-top: 5px;
+    margin-right: 10px;
+    display: none;
+}
+.moderator-links-wrapper.active {
+    display: block;
+}
+.moderator-links-wrapper.active span {
+    cursor: pointer;
+}
+.moderator-links-wrapper.active span.forum,
+.moderator-links-wrapper.active span.topic {
+    color: #5A86C8;
+}
+.moderator-links-wrapper.active span.messages {
+    color: #CFAE76;
+}
+.moderator-links-wrapper.active span:hover {
+    color: #5FB1A8;
+}
+
 @media (max-width: 639px) {
     .forum-message-wrapper .forum-avatar-wrapper {
         min-width: 40px;

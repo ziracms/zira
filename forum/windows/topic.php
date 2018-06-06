@@ -52,15 +52,15 @@ class Topic extends Dash\Windows\Window {
             $thread = new \Forum\Models\Topic($this->item);
             if (!$thread->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
             $form->setValues($thread->toArray());
+            $this->setTitle(Zira\Locale::tm(self::$_title,'forum').' - '.$thread->title);
         } else {
             $form->setValues(array(
                 'category_id' => $category_id,
                 'forum_id' => $forum_id,
                 'active' => 1
             ));
+            $this->setTitle(Zira\Locale::tm('New thread','forum').' - '.$forum->title);
         }
-
-        $this->setTitle(Zira\Locale::tm(self::$_title,'forum').' - '.$forum->title);
 
         $this->setBodyContent($form);
     }

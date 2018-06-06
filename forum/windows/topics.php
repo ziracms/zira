@@ -237,7 +237,7 @@ class Topics extends Dash\Windows\Window {
         }
         $this->setBodyItems($items);
 
-        $this->setTitle(Zira\Locale::t(self::$_title).' - '.$forum->title);
+        $this->setTitle(Zira\Locale::tm(self::$_title, 'forum').' - '.$forum->title);
 
         $this->setData(array(
             'search'=>$this->search,

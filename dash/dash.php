@@ -50,6 +50,8 @@ class Dash {
     protected static $_loaded_locale_strings = null;
     protected static $_loaded_js_strings = null;
     protected static $_dash_language = 'en';
+    
+    protected static $_render_js_callbacks = array();
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -398,6 +400,10 @@ class Dash {
         $js .= 'var desk_strings = {};'. "\r\n";
         return $js;
     }
+    
+    public static function registerRenderJSHook($object, $method) {
+        self::$_render_js_callbacks []= array($object, $method);
+    }
 
     public function getRenderScript($renderWindows = true) {
         $js ='';
@@ -450,6 +456,13 @@ class Dash {
         $js .= 'if (typeof(HTMLElement)=="undefined" || typeof(FormData)=="undefined") {'."\r\n";
         $js .= 'window.setTimeout("zira_error(t(\'Sorry, but it seems that your browser is not supported.\'));", 1000);'."\r\n";
         $js .= '}'."\r\n";
+        foreach(self::$_render_js_callbacks as $callback) {
+            try {
+                $js .= call_user_func($callback);
+            } catch (Exception $e) {
+                // ignore
+            }
+        }
         if ($renderWindows && !$this->isReferedFromDash()) {
             $js .= '})(jQuery);' . "\r\n";
         }

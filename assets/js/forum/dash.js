@@ -479,3 +479,40 @@ var dash_forum_forums_language = function(element) {
 var dash_forum_topics_language = function(element) {
     return dash_forum_categories_language.call(this, element);
 };
+
+var desk_forum_editor_forum_callback = function() {
+    var forum = $(this).data('forum');
+    if (typeof(forum)=="undefined") return;
+    var data = {
+        'data':{
+            'items': [forum]
+        }
+    };
+    desk_call(dash_forum_threads_wnd, null, data);
+};
+
+var desk_forum_editor_topic_callback = function() {
+    var forum = $(this).data('forum');
+    var category = $(this).data('category');
+    var topic = $(this).data('topic');
+    if (typeof(forum)=="undefined" || typeof(forum)=="category" || typeof(forum)=="topic") return;
+    var data = {
+        'data':{
+            'forum_id': forum,
+            'category_id': category,
+            'items': [topic]
+        }
+    };
+    desk_call(dash_forum_thread_wnd, null, data);
+};
+
+var desk_forum_editor_messages_callback = function() {
+    var topic = $(this).data('topic');
+    if (typeof(topic)=="undefined") return;
+    var data = {
+        'data':{
+            'items': [topic]
+        }
+    };
+    desk_call(dash_forum_messages_wnd, null, data);
+};

@@ -202,7 +202,7 @@ class Forums extends Dash\Windows\Window {
         $this->setMenuItems($menu);
 
         if (!empty($category_title)) {
-            $this->setTitle(Zira\Locale::t(self::$_title).' - '.$category_title);
+            $this->setTitle(Zira\Locale::tm(self::$_title, 'forum').' - '.$category_title);
         }
 
         $this->setData(array(

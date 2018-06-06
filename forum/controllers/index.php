@@ -305,6 +305,13 @@ class Index extends Zira\Controller {
 
         $searchForm = new Forum\Forms\Search();
         $searchForm->setValue('forum_id', $forum->id);
+        
+        $admin_icons = null;
+        if (Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            $admin_icons = Zira\Helper::tag_open('div', array('class'=>'moderator-links-wrapper'));
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark forum', 'data-forum'=>$forum->id));
+            $admin_icons .= Zira\Helper::tag_close('div');
+        }
 
         $contentData = array(
                             'top_items'=>$sticky,
@@ -324,7 +331,8 @@ class Index extends Zira\Controller {
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
             Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => $description,
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT => ''
+            Zira\Page::VIEW_PLACEHOLDER_CONTENT => '',
+            Zira\Page::VIEW_PLACEHOLDER_ADMIN_ICONS => $admin_icons
         ));
     }
 
@@ -508,6 +516,15 @@ class Index extends Zira\Controller {
 
         $searchForm = new Forum\Forms\Search();
         $searchForm->setValue('forum_id', $topic->forum_id);
+        
+        $admin_icons = null;
+        if (Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Forum\Forum::PERMISSION_MODERATE)) {
+            $admin_icons = Zira\Helper::tag_open('div', array('class'=>'moderator-links-wrapper'));
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-bookmark topic', 'data-forum'=>$topic->forum_id, 'data-category'=>$topic->category_id, 'data-topic'=>$topic->id));
+            $admin_icons .= '&nbsp;';
+            $admin_icons .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-file messages', 'data-topic'=>$topic->id));
+            $admin_icons .= Zira\Helper::tag_close('div');
+        }
 
         $contentData = array(
                             'items'=>$rows,
@@ -531,7 +548,8 @@ class Index extends Zira\Controller {
             Forum\Forum::VIEW_PLACEHOLDER_LABEL => $status,
             Zira\Page::VIEW_PLACEHOLDER_TITLE => $title,
             Zira\Page::VIEW_PLACEHOLDER_DESCRIPTION => $description,
-            Zira\Page::VIEW_PLACEHOLDER_CONTENT => ''
+            Zira\Page::VIEW_PLACEHOLDER_CONTENT => '',
+            Zira\Page::VIEW_PLACEHOLDER_ADMIN_ICONS => $admin_icons
         ));
     }
 

@@ -69,6 +69,8 @@ class Forum {
             Dash\Dash::getInstance()->registerModuleWindowClass('forumFilesWindow', 'Forum\Windows\Files', 'Forum\Models\Files');
             Dash\Dash::getInstance()->registerModuleWindowClass('forumSettingsWindow', 'Forum\Windows\Settings', 'Forum\Models\Settings');
             Dash\Dash::unloadDashLanguage();
+            
+            Dash\Dash::registerRenderJSHook(get_class(), 'moderatorJSHook');
         }
 
         if (Zira\User::isAuthorized()) {
@@ -78,6 +80,18 @@ class Forum {
             }
         }
         Zira\Hook::register(Zira\User::PROFILE_INFO_HOOK, array(get_class(), 'profileInfoHook'));
+    }
+    
+    public static function moderatorJSHook() {
+        $js = '$(document).ready(function(){';
+        $js .= 'if ($(\'.moderator-links-wrapper\').length>0){';
+        $js .= '$(\'.moderator-links-wrapper\').addClass(\'active\');';
+        $js .= '$(\'.moderator-links-wrapper\').children(\'.forum\').click(desk_forum_editor_forum_callback);';
+        $js .= '$(\'.moderator-links-wrapper\').children(\'.topic\').click(desk_forum_editor_topic_callback);';
+        $js .= '$(\'.moderator-links-wrapper\').children(\'.messages\').click(desk_forum_editor_messages_callback);';
+        $js .= '}';
+        $js .= '});'."\r\n";
+        return $js;
     }
 
     public static function profileLinksHook() {
