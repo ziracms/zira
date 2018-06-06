@@ -30,13 +30,14 @@
 <script type="text/javascript">
     (function($) {
         $(document).ready(function(){
-            $('#remote-clock-wrapper').show();
+            $('#remote-clock-wrapper').css('opacity',1);
             var date = new Date();
             dashboard_remote_clock.start_timestamp = Math.floor(date.getTime() / 1000);
             dashboard_remote_clock.remote_timestamp = <?php echo Zira\Datetime::getOffsetTime(); ?>;
             dashboard_clock();
             window.setInterval(dashboard_clock, 1000);
 
+            $('#memory-stick-wrapper').css('opacity',1);
             $('textarea[name=memory-stick]').keydown(function(){
                 $('#memory-stick-save').show();
             });

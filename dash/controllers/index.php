@@ -22,10 +22,10 @@ class Index extends Dash\Controller {
         $script .= 'for (var i=0; i<response.notifications.length; i++){';
         $script .= 'window.setTimeout(zira_bind({message:response.notifications[i].message,callback:response.notifications[i].callback},function(){';
         $script .= 'dashboard_notification(this.message,this.callback);';
-        $script .= '}), 500+500*i);';
+        $script .= '}), 5+200*i);';
         $script .= '}';
         $script .= '},\'json\');';
-        $script .= '}, 3000);';
+        $script .= '}, 1000);';
         $script .= ' });';
         $script .= Zira\Helper::tag_close('script');
         //Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);

@@ -220,7 +220,7 @@ textarea {
     background: rgba(45, 45, 45, .2);
     border-radius: 30px;
 }
-.list .list-info-wrapper span {
+.list .list-info-wrapper .list-info {
     white-space: nowrap;
 }
 .pagination > li > a,

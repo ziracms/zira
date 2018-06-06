@@ -212,17 +212,18 @@
         var last = $('.dashboard-notification:last-child');
         $('body').append('<div class="dashboard-notification"><span class="dashboard-notification-close glyphicon glyphicon-remove-sign"></span>'+message+'</div>');
 
-        var t = 60;
-        if ($(last).length>0) {
-            t = $(last).offset().top + $(last).outerHeight() + 10;
-        }
-
         var dn = $('.dashboard-notification:last-child');
+
+        var t = $(window).height() - $(dn).outerHeight() - 40;
+        if ($(last).length>0) {
+            t = $(last).offset().top - $(dn).outerHeight() - 10;
+        }
+        
         $(dn).css({
             'top': t,
-            'left': ($(window).width() - $(dn).outerWidth()) / 2
-            //'left': $(window).width() - $(dn).outerWidth() - $('#dashboard-sidebar').outerWidth() - 20
-        }).fadeIn(1000);
+            //'left': ($(window).width() - $(dn).outerWidth()) / 2
+            'left': $(window).width() - $(dn).outerWidth() - 20
+        });
 
         $(dn).click(function() {
             desk_call(callback);
@@ -242,17 +243,23 @@
     };
 
     dashboard_notification_update_position = function() {
-        var t = 60;
+        var t = null;
         $('.dashboard-notification').each(function(){
+            if (t===null) {
+                t = $(window).height() - $(this).outerHeight() - 40;
+            } else {
+                t -= ($(this).outerHeight() + 10);
+            }
             $(this).css({
                 'top': t,
-                'left': ($(window).width() - $('.dashboard-notification').outerWidth()) / 2
+                //'left': ($(window).width() - $('.dashboard-notification').outerWidth()) / 2
+                'left': $(window).width() - $(this).outerWidth() - 20
             });
-            t += $(this).outerHeight() + 10;
         });
     };
     
     dashboard_init_background_setter = function(callback) {
+        if (typeof desk_file_selector == "undefined") return;
         var setter = $('#dashboard-background-setter');
         if (!$(setter).length) return;
         $(setter).show().tooltip();

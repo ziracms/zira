@@ -789,10 +789,12 @@ body.dashboard #dashboard-sidebar {
     z-index: 2;
 }
 body.dashboard #remote-clock-wrapper {
-    display: none;
+    display: block;
     width: 230px;
     height: 230px;
     margin: 25px 0px 25px 25px;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 body.dashboard #remote-clock-wrapper canvas {
     display: block;
@@ -834,6 +836,8 @@ body.dashboard #memory-stick-wrapper {
     height: 300px;
     background: url(../images/dash-memo-stick.png) no-repeat 0 0;
     z-index: 2;
+    opacity: 0;
+    transition: opacity 1s ease;
 }
 body.dashboard #memory-stick-wrapper textarea {
     border: none;
@@ -856,8 +860,9 @@ body.dashboard #memory-stick-save span {
     cursor: pointer;
 }
 body.dashboard .dashboard-notification {
-    display: none;
+    display: block;
     position: fixed;
+    left: 9999px;
     width: 500px;
     margin: 0px auto;
     font-size: 16px;
@@ -868,8 +873,8 @@ body.dashboard .dashboard-notification {
     box-shadow: 0px 0px 2px #7F6A8F;
     cursor: pointer;
     text-shadow: 1px 1px 0px #3E354E;
-    transition: top .5s ease;
-    z-index: 3;
+    transition: all 1s ease;
+    z-index: 99999;
 }
 body.dashboard .dashboard-notification .dashboard-notification-close {
     float: right;
