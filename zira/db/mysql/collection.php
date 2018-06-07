@@ -30,6 +30,7 @@ class Collection implements \Zira\Db\Implement\Collection {
     protected $_update_data = array();
     protected $_query_prefix = '';
     protected $_query_suffix = '';
+    protected $_for_update = false;
 
     protected $_allowed_signs = array('=','<','>','<=','>=','<>','LIKE','NOT LIKE','IS','IS NOT','IN');
 
@@ -271,6 +272,11 @@ class Collection implements \Zira\Db\Implement\Collection {
         $this->_group_by[]=$field;
         return $this;
     }
+    
+    public function for_update() {
+        $this->_for_update = true;
+        return $this;
+    }
 
     public function toString() {
         $query = $this->_query_prefix;
@@ -368,6 +374,9 @@ class Collection implements \Zira\Db\Implement\Collection {
         }
         if ($this->_offset !== null) {
             $query .= ' OFFSET '.$this->_offset;
+        }
+        if ($this->_for_update) {
+            $query .= ' FOR UPDATE';
         }
         $query .= $this->_query_suffix;
         return $query;

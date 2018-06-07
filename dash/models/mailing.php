@@ -124,31 +124,42 @@ class Mailing extends Model {
                 $recipient->loadFromArray($_recipient);
                 $_content = str_replace('$user', Zira\User::getProfileName($recipient), $content);
 
-                $max_id = Zira\Models\Message::getCollection()->max('conversation_id')->get('mx');
-                $conversation_id = ++$max_id;
-
-                $conversation = new Zira\Models\Conversation();
-                $conversation->conversation_id = $conversation_id;
-                $conversation->user_id = $recipient->id;
-                $conversation->subject = $subject;
-                $conversation->creation_date = date('Y-m-d H:i:s');
-                $conversation->modified_date = date('Y-m-d H:i:s');
-                $conversation->highlight = 1;
-                $conversation->save();
-
-                if ($conversation_id) {
-                    $message = new Zira\Models\Message();
-                    $message->conversation_id = $conversation_id;
-                    $message->user_id = Zira\User::getCurrent()->id;
-                    $message->content = $_content;
-                    $message->creation_date = date('Y-m-d H:i:s');
-                    $message->save();
-                }
-                Zira\User::increaseMessagesCount($recipient);
+                $success = false;
+                Zira\Db\Db::begin();
                 try {
-                    Zira\Models\Message::notify($recipient, Zira\User::getCurrent());
-                } catch (\Exception $e) {
-                    Zira\Log::exception($e);
+                    $max_id = Zira\Models\Message::getCollection()->max('conversation_id')->for_update()->get('mx');
+                    $conversation_id = ++$max_id;
+
+                    $conversation = new Zira\Models\Conversation();
+                    $conversation->conversation_id = $conversation_id;
+                    $conversation->user_id = $recipient->id;
+                    $conversation->subject = $subject;
+                    $conversation->creation_date = date('Y-m-d H:i:s');
+                    $conversation->modified_date = date('Y-m-d H:i:s');
+                    $conversation->highlight = 1;
+                    $conversation->save();
+
+                    if ($conversation_id) {
+                        $message = new Zira\Models\Message();
+                        $message->conversation_id = $conversation_id;
+                        $message->user_id = Zira\User::getCurrent()->id;
+                        $message->content = $_content;
+                        $message->creation_date = date('Y-m-d H:i:s');
+                        $message->save();
+                    }
+
+                    Zira\Db\Db::commit();
+                    $success = true;
+                } catch(\Exception $e) {
+                    Zira\Db\Db::rollback();
+                }
+                if ($success) {
+                    Zira\User::increaseMessagesCount($recipient);
+                    try {
+                        Zira\Models\Message::notify($recipient, Zira\User::getCurrent());
+                    } catch (\Exception $e) {
+                        Zira\Log::exception($e);
+                    }
                 }
             }
 

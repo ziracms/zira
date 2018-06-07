@@ -173,6 +173,11 @@ interface Collection {
     public function group_by($field);
 
     /**
+     * MySQL's FOR UPDATE query
+     */
+    public function for_update();
+    
+    /**
      * Renders SQL query
      * @return string
      */

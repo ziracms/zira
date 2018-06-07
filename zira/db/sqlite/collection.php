@@ -276,6 +276,10 @@ class Collection implements \Zira\Db\Implement\Collection {
         $this->_group_by[]=$field;
         return $this;
     }
+    
+    public function for_update() {
+        return $this;
+    }
 
     public function toString() {
         $query = $this->_query_prefix;
