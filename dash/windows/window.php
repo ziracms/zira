@@ -94,9 +94,10 @@ abstract class Window {
         if (empty($this->_js_name)) throw new \Exception('Failed to construct window: ' . self::getClass());
         
         $maximized = (bool)Config::get('dashwindow_maximized') || Dash\Dash::isMobile();
-        $this->setMaximized($maximized);
-        
-        if (Dash\Dash::isMobile()) $this->setAnimating(false);
+        if ($maximized) {
+            $this->setMaximized(true);
+            $this->setAnimating(false);
+        }
     }
 
     public function build() {

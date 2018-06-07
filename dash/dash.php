@@ -288,8 +288,22 @@ class Dash {
     public static function isFrame() {
         return Zira\Request::get(self::GET_FRAME_PARAM)==self::GET_FRAME_VALUE;
     }
+    
+    public static function addAssetStyle($url) {
+        $attributes = array();
+        if (!isset($attributes['rel'])) $attributes['rel'] = 'stylesheet';
+        if (!isset($attributes['type'])) $attributes['type'] = 'text/css';
+        $attributes['href'] = rtrim(BASE_URL,'/') . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;
+        Zira\View::addHTML(Zira\Helper::tag_short('link', $attributes),Zira\View::VAR_STYLES);
+    }
 
-    protected static function addViewStyle($url) {
+    public static function addAssetScript($url) {
+        $attributes = array();
+        $attributes['src'] = rtrim(BASE_URL,'/') . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;
+        Zira\View::addHTML(Zira\Helper::tag('script', null, $attributes),Zira\View::VAR_SCRIPTS);
+    }
+
+    public static function addViewStyle($url) {
         $attributes = array();
         if (!isset($attributes['rel'])) $attributes['rel'] = 'stylesheet';
         if (!isset($attributes['type'])) $attributes['type'] = 'text/css';
@@ -301,12 +315,12 @@ class Dash {
         Zira\View::addHTML(Zira\Helper::tag_short('link', $attributes),Zira\View::VAR_STYLES);
     }
 
-    protected static function addViewScript($url) {
+    public static function addViewScript($url) {
         $attributes = array();
         if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR .$url)) {
-            $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url;
+            $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;
         } else {
-            $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url;
+            $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;
         }
         Zira\View::addHTML(Zira\Helper::tag('script', null, $attributes),Zira\View::VAR_SCRIPTS);
     }

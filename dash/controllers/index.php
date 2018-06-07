@@ -12,7 +12,7 @@ use Dash;
 
 class Index extends Dash\Controller {
     public function index() {
-        Zira\View::addScript('dash.js');
+        Dash\Dash::addAssetScript('dash.js');
 
         $script = Zira\Helper::tag_open('script', array('type'=>'text/javascript'));
         $script .= 'jQuery(document).ready(function(){ ';

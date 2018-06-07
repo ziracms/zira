@@ -243,14 +243,31 @@ body.dashboard-window-sidebar-resizing {
     margin-right: 20px;
     color: #4f494d;
 }
+.dashboard-window .dashboard-window-footer .dashboard-window-resizer,
+.dashboard-window .dashboard-window-content .dashboard-sidebar-resizer,
+.dashboard-window .dashboard-window-header a.dashboard-window-close-button:link,
+.dashboard-window .dashboard-window-header a.dashboard-window-close-button:visited,
+.dashboard-window .dashboard-window-header a.dashboard-window-maximize-button:link,
+.dashboard-window .dashboard-window-header a.dashboard-window-maximize-button:visited,
+.dashboard-window .dashboard-window-header a.dashboard-window-minimize-button:link,
+.dashboard-window .dashboard-window-header a.dashboard-window-minimize-button:visited,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-html,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-txt,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-archive,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-file,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-folder,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-audio,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-video,
+.dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-zira {
+    background-image: url(../images/dash-window-buttons-slice.png?t=1);
+    background-repeat: no-repeat;
+}
 .dashboard-window .dashboard-window-footer .dashboard-window-resizer {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 14px;
     height: 14px;
-    background-image: url(../images/dash-window-buttons-slice.png);
-    background-repeat: no-repeat;
     background-position: 0 0;
     cursor: nwse-resize;
 }
@@ -267,7 +284,6 @@ body.dashboard-window-sidebar-resizing {
     left: 0px;
     width: 4px;
     height: 230px;
-    background-image: url(../images/dash-window-buttons-slice.png);
     background-repeat: repeat-y;
     background-position: -78px 0px;
     cursor: ew-resize;
@@ -281,8 +297,6 @@ body.dashboard-window-sidebar-resizing {
     left: 7px;
     top: 7px;
     text-decoration: none;
-    background-image: url(../images/dash-window-buttons-slice.png);
-    background-repeat: no-repeat;
     background-position: -16px 0px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:link,
@@ -302,8 +316,6 @@ body.dashboard-window-sidebar-resizing {
     left: 45px;
     top: 7px;
     text-decoration: none;
-    background-image: url(../images/dash-window-buttons-slice.png);
-    background-repeat: no-repeat;
     background-position: -48px 0px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:link,
@@ -323,8 +335,6 @@ body.dashboard-window-sidebar-resizing {
     left: 26px;
     top: 7px;
     text-decoration: none;
-    background-image: url(../images/dash-window-buttons-slice.png);
-    background-repeat: no-repeat;
     background-position: -32px 0px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:link,
@@ -616,28 +626,28 @@ body.dashboard-window-sidebar-resizing {
     color: #888;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-html {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -277px;
+    background-position: 0px -277px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-txt {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -217px;
+    background-position: 0px -217px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-archive {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -152px;
+    background-position: 0px -152px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-file {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -32px;
+    background-position: 0px -32px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-folder {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -92px;
+    background-position: 0px -92px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-audio {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -338px;
+    background-position: 0px -338px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-video {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -397px;
+    background-position: 0px -397px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-zira {
-    background: url(../images/dash-window-buttons-slice.png) no-repeat 0px -456px;
+    background-position: 0px -456px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-blank {
     background: none;
