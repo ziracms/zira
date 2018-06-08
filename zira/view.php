@@ -38,6 +38,7 @@ class View {
     public static $view = null;
     public static $layout = null;
     public static $body_class = '';
+    public static $head_addon = '';
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();
@@ -399,6 +400,7 @@ class View {
     
     public static function finishLayout() {
         self::addThemeAssets();
+        self::addHTML(self::$head_addon, self::VAR_HEAD_BOTTOM);
         include(self::$layout);
     }
 

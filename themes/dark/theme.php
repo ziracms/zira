@@ -28,4 +28,7 @@
  * unset($widgets['sidebar_right']);
  */
 
+// adding ie8.css
+Zira\View::$head_addon .= '<!--[if lt IE 9]><link href="'.Zira\Helper::baseUrl(THEMES_DIR.'/'.Zira\View::getTheme().'/'.ASSETS_DIR.'/'.CSS_DIR.'/ie8.css').'" type="text/css" rel="stylesheet" /><![endif]-->';
+
 return true;

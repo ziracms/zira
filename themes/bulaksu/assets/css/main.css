@@ -473,7 +473,6 @@ ul#language-switcher li a.active {
 .image {
     max-width:100%;
     height:auto;
-    width: auto\9; /** ie8 hack **/
     display: inline-block;
     vertical-align: top;
     margin: 0px 22px 22px 0px;
@@ -748,7 +747,6 @@ article .rating .share-wrapper .share-btn {
 .list .list-item a.list-thumb img {
     border: none;
     max-width: 100%;
-    max-width: none\9; /** ie8 hack **/
     height: auto;
 }
 .list .list-item .list-content-wrapper p {
@@ -827,7 +825,6 @@ article .rating .share-wrapper .share-btn {
 .comments .comments-item .comment-avatar {
     max-width: 50px;
     height: auto;
-    width: auto\9;  /** ie8 hack **/
     display: block;
     float: left;
     border-radius: 5px;
@@ -954,9 +951,6 @@ pre {
     border: 1px solid #EEEEEE;
     background-color: #EBE6F0;
     padding: 2px;
-}
-.sidebar .list .list-item a.list-thumb img {
-    width: 100%\9; /** ie8 hack **/
 }
 .sidebar .list .list-item .list-info-wrapper {
     padding: 4px 0px;
@@ -1231,22 +1225,13 @@ a.scroll-top:visited {
     outline: none;
     text-decoration: none;
 }
-a.scroll-top span {
-    display: none\9; /** ie **/
-}
 a.scroll-top:hover {
     opacity: 1 !important;
     text-decoration: none;
 }
-a.scroll-top:hover span {
-    display: block\9; /** ie **/
-}
 a.scroll-top.visible:link,
 a.scroll-top.visible:visited {
     opacity: .6;
-}
-a.scroll-top.visible span {
-    display: block\9; /** ie **/
 }
 
 /** home page **/
@@ -1268,7 +1253,6 @@ a.scroll-top.visible span {
     vertical-align: top;
     margin-bottom: 8px;
     margin-right: 5px;
-    margin-right: 0\9; /** ie8 hack **/
 }
 .grid-category-wrapper .list-item.jsed {
     position: relative;
@@ -1731,7 +1715,6 @@ a.scroll-top.visible span {
     .grid-category-wrapper .list-item {
         margin-bottom: 5px;
         margin-right: 2px;
-        margin-right: 0\9; /** ie8 hack **/
     }
 }
 @media only screen and (max-width: 767px) {
