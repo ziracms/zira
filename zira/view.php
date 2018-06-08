@@ -528,9 +528,9 @@ class View {
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
         $js = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $js .= '$(document).ready(function(){';
+        $js .= 'jQuery(document).ready(function(){';
         $js .= 'if (typeof(zi'.'ra'.'_'.'t'.'m) == "undefined") {';
-        $js .= '$(\'bo'.'dy\').css(\'fil'.'ter\', \'gr'.'ays'.'ca'.'le(1'.'0'.'0'.'%)\');';
+        $js .= 'jQuery(\'bo'.'dy\').css(\'fil'.'ter\', \'gr'.'ays'.'ca'.'le(1'.'0'.'0'.'%)\');';
         $js .= '}';
         $js .= '});';
         $js .= Helper::tag_close('script')."\r\n";

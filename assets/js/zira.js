@@ -1274,6 +1274,10 @@
             html += '</div>';
             html += '</div>';
             $(this).html(html);
+            $(this).unbind('ready').on('ready', zira_bind(this, function(){
+                $(this).trigger('zira_calendar_month_change', [cmonth, cyear]);
+            }));
+            $(this).trigger('ready');
         }
         
         $(selector).each(function(index) {

@@ -428,5 +428,6 @@ return array(
     'Background image' => 'Фоновое изображение',
     'Enable breadcrumbs' => 'Включить хлебные крошки',
     'New widget' => 'Новый виджет',
-    'Delete menu' => 'Удалить меню'
+    'Delete menu' => 'Удалить меню',
+    'Calendar of publications' => 'Календарь публикаций'
 );
