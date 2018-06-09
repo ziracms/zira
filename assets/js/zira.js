@@ -32,7 +32,7 @@
         /**
          * gallery
          */
-        if ($('.container #content ul.gallery li').length>2) {
+        if ($('.container #content ul.gallery li').length>1) {
             zira_init_gallery();
             $(window).resize(zira_init_gallery);
         }

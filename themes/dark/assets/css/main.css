@@ -2422,6 +2422,11 @@ ul.vote-results li .vote-result {
     .list .list-item a.list-thumb:visited {
         float: none;
     }
+    .list .list-info-wrapper .list-info.comments-count,
+    .list .list-info-wrapper .list-info.likes-count,
+    .list .list-info-wrapper .list-info.counter {
+        display: none;
+    }
     .record_fields_tabs_wrapper .nav-tabs>li.active>a,
     .record_fields_tabs_wrapper .nav-tabs>li.active>a:focus,
     .record_fields_tabs_wrapper .nav-tabs>li.active>a:hover {

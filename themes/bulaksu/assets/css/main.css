@@ -1876,6 +1876,11 @@ a.scroll-top.visible:visited {
     .list .list-item a.list-thumb:visited {
         float: none;
     }
+    .list .list-info-wrapper .list-info.comments-count,
+    .list .list-info-wrapper .list-info.likes-count,
+    .list .list-info-wrapper .list-info.counter {
+        display: none;
+    }
     .compose-message-btn {
         float: none;
     }
