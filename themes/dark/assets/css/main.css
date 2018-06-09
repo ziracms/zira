@@ -2236,6 +2236,9 @@ ul.vote-results li .vote-result {
 .field-search-form-wrapper .form-group:last-child {
     background: none;
 }
+#zira-auth-dialog {
+    font-size: 90%;
+}
 
 /** mobile **/
 @media (max-width: 1199px) {

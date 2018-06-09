@@ -1,41 +1,44 @@
 <div id="dashboard-wrapper">
 <div id="dashboard-canvas-wrapper"<?php if (Zira\Config::get('dash_bg')) echo ' data-bg="'.Zira\Helper::html(Zira\Config::get('dash_bg')).'"' ?>>
-    <div id="dashboard-wallpaper"></div>
-    <div id="dashboard-sidebar">
-        <div id="remote-clock-wrapper">
-            <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
-        </div>
-        <?php if (isset($settings)): ?>
-        <div id="dashboard_stats">
-            <h3><span class="glyphicon glyphicon-stats"></span> <?php echo t('Statistics').':'; ?></h3>
-            <ul>
-            <?php if (isset($settings['records'])): ?>
-            <li><?php echo t('Records: %s', $settings['records']) ?></li>
-            <?php endif; ?>
-            <?php if (isset($settings['comments'])): ?>
-            <li><?php echo t('Comments: %s', $settings['comments']) ?></li>
-            <?php endif; ?>
-            </ul>
-        </div>
-        <?php endif; ?>
-    </div>
-    <div id="memory-stick-wrapper">
-        <textarea rows="10" cols="30" maxlength="255" name="memory-stick"><?php echo Zira\Helper::html(Zira\Config::get('memory_stick')) ?></textarea>
-        <div id="memory-stick-save"><span class="glyphicon glyphicon-floppy-disk"></span></div>
-    </div>
-    <?php if (isset($content)) echo $content; ?>
+<div id="dashboard-wallpaper"></div>
+<div id="dashboard-sidebar">
+<div id="remote-clock-wrapper">
+<canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
+</div>
+<?php if (isset($settings)): ?>
+<div id="dashboard_stats">
+<h3><span class="glyphicon glyphicon-stats"></span> <?php echo t('Statistics').':'; ?></h3>
+<ul>
+<?php if (isset($settings['records'])): ?>
+<li><?php echo t('Records: %s', $settings['records']) ?></li>
+<?php endif; ?>
+<?php if (isset($settings['comments'])): ?>
+<li><?php echo t('Comments: %s', $settings['comments']) ?></li>
+<?php endif; ?>
+</ul>
+</div>
+<?php endif; ?>
+</div>
+<div id="memory-stick-wrapper">
+<textarea rows="10" cols="30" maxlength="255" name="memory-stick"><?php echo Zira\Helper::html(Zira\Config::get('memory_stick')) ?></textarea>
+<div id="memory-stick-save"><span class="glyphicon glyphicon-floppy-disk"></span></div>
+</div>
+<?php if (isset($content)) echo $content; ?>
 </div>
 </div>
 <?php layout_js_begin(); ?>
 <script type="text/javascript">
     (function($) {
         $(document).ready(function(){
-            $('#remote-clock-wrapper').css('opacity',1);
-            var date = new Date();
-            dashboard_remote_clock.start_timestamp = Math.floor(date.getTime() / 1000);
-            dashboard_remote_clock.remote_timestamp = <?php echo Zira\Datetime::getOffsetTime(); ?>;
-            dashboard_clock();
-            window.setInterval(dashboard_clock, 1000);
+            var isMobile = <?php echo \Dash\Dash::isMobile() ? 'true' : 'false' ?>;
+            if (!isMobile) {
+                $('#remote-clock-wrapper').css('opacity',1);
+                var date = new Date();
+                dashboard_remote_clock.start_timestamp = Math.floor(date.getTime() / 1000);
+                dashboard_remote_clock.remote_timestamp = <?php echo Zira\Datetime::getOffsetTime(); ?>;
+                dashboard_clock();
+                window.setInterval(dashboard_clock, 1000);
+            }
 
             $('#memory-stick-wrapper').css('opacity',1);
             $('textarea[name=memory-stick]').keydown(function(){

@@ -48,6 +48,7 @@ var Desk = {
     'bufferOperation': null,
     'initialize': function() {
         if (this.isFrame()) return;
+        if (typeof window.ontouchstart != "undefined") this.touchesEnabled = true;
         this.dashpanel = $('#'+this.dashpanel_id);
         if ($(this.dashpanel).length>0) {
             this.dashpanel_height = $(this.dashpanel).height();
@@ -658,7 +659,15 @@ var Desk = {
                 Desk.deactivateOverlay();
                 Desk.dock_reset();
             }
+            $(this.getCloseButton()).unbind('touchstart');
         }));
+        if (this.touchesEnabled) {
+            $(this.windows[id].getCloseButton()).on('touchstart', this.bind(this.windows[id],function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $(this.getCloseButton()).trigger('mousedown');
+            }));
+        }
         $(this.windows[id].getMinimizeButton()).mousedown(this.bind(this.windows[id],function(e){
             e.stopPropagation();
             e.preventDefault();
@@ -698,6 +707,8 @@ var Desk = {
         }));
         if (this.touchesEnabled) {
             this.windows[id].setTouchesEnabled(true);
+            this.windows[id].getMinimizeButton().hide();
+            this.windows[id].getMaximizeButton().hide();
         }
         if (navigator.userAgent.match(/android/i)) {
             this.windows[id].hideSidebar();
