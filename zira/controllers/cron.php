@@ -36,7 +36,7 @@ class Cron extends Zira\Controller {
                         $response = Zira\Locale::t('An error occurred') . ': ' . $e->getMessage();
                         Zira\Log::exception($e);
                     }
-                    $output .= "\t" . $co . '. ' . $response . "\r\n";
+                    $output .= "\t" . $response . "\r\n";
                 }
             }
             Zira\Models\Option::write('cron_run', time());

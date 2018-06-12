@@ -1,7 +1,7 @@
 <?php
 /**
  * Zira project.
- * index.php
+ * dash.php
  * (c)2016 http://dro1d.ru
  */
 

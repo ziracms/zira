@@ -236,6 +236,11 @@ textarea {
 #zira-auth-dialog a {
     color: #073954;
 }
+.zira_bottom_counter {
+    text-align: right;
+    font-style: italic;
+    font-size: 90%;
+}
 
 @keyframes loader {
   0% { 
