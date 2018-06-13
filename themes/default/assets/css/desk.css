@@ -211,6 +211,12 @@ body.dashboard-window-sidebar-resizing {
     -ms-user-select: none;
     user-select: none;
 }
+.dashboard-window .dashboard-window-footer .footer-page-editable:focus,
+.dashboard-window .dashboard-window-footer .footer-limit-editable:focus,
+.dashboard-window .dashboard-window-footer .footer-page-editable.hover,
+.dashboard-window .dashboard-window-footer .footer-limit-editable.hover {
+    color: #333;
+}
 .dashboard-window-focused .dashboard-window-footer {
     border-top: 1px solid #ffffff;
 }

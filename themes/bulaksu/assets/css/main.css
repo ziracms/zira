@@ -290,6 +290,7 @@ main > article > .image:first-child {
     z-index: 999;
     font-size: 18px;
     color: #444444;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     text-decoration: none;
     background-image: -webkit-linear-gradient(top, #fff 0, #F0EDF5 100%);
     background-image: -o-linear-gradient(top, #fff 0, #F0EDF5 100%);
@@ -299,11 +300,11 @@ main > article > .image:first-child {
     padding: 8px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    box-shadow: 0px 0px 4px #e3e3e3;
+    box-shadow: 0px 0px 2px #a7a8b9;
 }
 #dashpanel-fixed-button:hover {
-    color: #000000;
-    box-shadow: 0px 0px 4px #d3d3d3;
+    border-top: 1px solid #fff;
+    height: 43px;
 }
 #dashpanel-fixed-button img {
     display: block;

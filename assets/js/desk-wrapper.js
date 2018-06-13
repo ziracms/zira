@@ -506,11 +506,14 @@ var desk_window_pagination_init = function(wnd) {
                         this.loadBody();
                     }
                 }
-            })).keyup(function(e){
-                e.stopPropagation();
-            }).blur(zira_bind(wnd, function(e){
+            })).blur(zira_bind(wnd, function(e){
                 $(this.footer).find('.footer-limit-editable').text(this.options.data.limit);
             }));
+            $(wnd.footer).find('.footer-page-editable,.footer-limit-editable').hover(function(){
+                $(this).addClass('hover');
+            },function(){
+                $(this).removeClass('hover');
+            });
         } else {
             wnd.resetFooterContent();
         }

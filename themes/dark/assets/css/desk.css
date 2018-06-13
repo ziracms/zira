@@ -220,6 +220,12 @@ body.dashboard-window-sidebar-resizing {
     -ms-user-select: none;
     user-select: none;
 }
+.dashboard-window .dashboard-window-footer .footer-page-editable:focus,
+.dashboard-window .dashboard-window-footer .footer-limit-editable:focus,
+.dashboard-window .dashboard-window-footer .footer-page-editable.hover,
+.dashboard-window .dashboard-window-footer .footer-limit-editable.hover {
+    color: #333;
+}
 .dashboard-window-focused .dashboard-window-footer {
     border-top: 1px solid #e0e2ed;
     background: #e0e2ed;
@@ -484,11 +490,11 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a:hover,
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.active {
-    background-color: #9395AE;
+    background-color: #6F7190;
     color: #FBFBFB;
     text-shadow: 0px 1px 1px #5C7D92;
     border-radius: 5px;
-    box-shadow: 0px 0px 7px #768EA7 inset;
+    box-shadow: 0px 0px 7px #5F5E81 inset;
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.disabled:link,
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper a.disabled:visited {
@@ -515,7 +521,7 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper .badge {
     float: right;
-    background: #65629c;
+    background: #8185b3;
     font-weight: normal;
     position: absolute;
     right: 4px;
