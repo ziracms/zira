@@ -244,21 +244,30 @@ class Form {
         $token = Request::get('token');
         if (!$token) return;
 
-        if (Zira\Locale::getLanguage()=='ru') {
+        $image = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
+        $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
+
+        $captcha_font = CAPTCHA_FONT;
+        $size = CAPTCHA_HEIGHT*.4;
+        putenv('GDFONTPATH=' . realpath(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . FONTS_DIR));
+
+        $bg = imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
+        
+        $ttf = true;
+        try {
+            imagettftext($image,$size,0,0,0,$bg,$captcha_font,' ');
+        } catch(\Exception $e) {
+            $ttf = false;
+        }
+        
+        imagefill($image,0,0,$bg);
+        
+        if ($ttf && Zira\Locale::getLanguage()=='ru') {
             $chars = array('А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я');
             $chars = array_merge($chars, range(0,9));
         } else {
             $chars = array_merge(range('A', 'Z'), range(0,9));
         }
-
-        $image = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
-        $image_copy = imagecreatetruecolor(CAPTCHA_WIDTH,CAPTCHA_HEIGHT);
-
-        $size = CAPTCHA_HEIGHT*.4;
-        putenv('GDFONTPATH=' . realpath(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . FONTS_DIR));
-
-        $bg = imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
-        imagefill($image,0,0,$bg);
 
         for ($i=0;$i<15;$i++) {
             $color= imagecolorallocate($image, rand(160,255), rand(160,255), rand(160,255));
@@ -266,9 +275,7 @@ class Form {
         }
         
         imagecopy($image_copy, $image, 0, 0, 0, 0, CAPTCHA_WIDTH, CAPTCHA_HEIGHT);
-
-        $captcha_font = CAPTCHA_FONT;
-
+        
         $str_co = 5;
         $result = '';
         for ($i=0; $i<$str_co; $i++) {
@@ -289,11 +296,14 @@ class Form {
             imagefilledellipse($image,rand(0,CAPTCHA_WIDTH),rand(0,CAPTCHA_HEIGHT),CAPTCHA_HEIGHT/10,CAPTCHA_HEIGHT/10,$color);
         }
         
-//        imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
-        imagecopymerge($image_copy, $image, 2, 0, 0, 1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 50);
-        imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
-        imagecopymerge($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 100);
-        imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
+        if ($ttf) {
+            imagecopymerge($image_copy, $image, 2, 0, 0, 1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 50);
+            imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4, 0, CAPTCHA_HEIGHT/4+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
+            imagecopymerge($image_copy, $image, 2, CAPTCHA_HEIGHT/2, 0, CAPTCHA_HEIGHT/2+1, CAPTCHA_WIDTH-2, CAPTCHA_HEIGHT/4-1, 100);
+            imagecopymerge($image_copy, $image, 4, CAPTCHA_HEIGHT/4*3, 0, CAPTCHA_HEIGHT/4*3+1, CAPTCHA_WIDTH-4, CAPTCHA_HEIGHT/4-1, 50);
+        } else {
+            imagecopy($image_copy, $image, 1, 0, 0, 0, CAPTCHA_WIDTH-1, CAPTCHA_HEIGHT);
+        }
         imagedestroy($image);
         imagejpeg($image_copy,null,50);
     }
