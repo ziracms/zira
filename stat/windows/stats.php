@@ -190,8 +190,13 @@ class Stats extends Dash\Windows\Window {
         
         if ($month_desktop_agents_co !== null && $month_mobile_agents_co !== null) {
             $month_all_agents_co = $month_desktop_agents_co + $month_mobile_agents_co;
-            $month_desktop_agents_percent = round($month_desktop_agents_co / $month_all_agents_co * 100);
-            $month_mobile_agents_percent = round($month_mobile_agents_co / $month_all_agents_co * 100);
+            if ($month_all_agents_co>0) {
+                $month_desktop_agents_percent = round($month_desktop_agents_co / $month_all_agents_co * 100);
+                $month_mobile_agents_percent = round($month_mobile_agents_co / $month_all_agents_co * 100);
+            } else {
+                $month_desktop_agents_percent = 0;
+                $month_mobile_agents_percent = 0;
+            }
             $content .= Zira\Helper::tag_open('div', array('style'=>'padding:14px;'));
             $content .= Zira\Locale::t('Browsers').':';
             $content .= Zira\Helper::tag('div', Zira\Locale::t('Desktop devices: %s', $month_desktop_agents_percent.'%'), array('style'=>'padding-left:20px'));
