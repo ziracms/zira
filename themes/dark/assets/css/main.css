@@ -783,6 +783,9 @@ header #top-menu-wrapper nav .btn-default {
     border: 1px solid #3B444A;
     border-radius: 3px;
 }
+.slider-wrapper .image {
+    margin-right: 0px;
+}
 .image-wrapper {
     max-width:100%;
     display: inline-block;
@@ -2365,6 +2368,12 @@ ul.vote-results li .vote-result {
     }
     .messages-list .message-content {
         margin-left: 60px;
+    }
+    article .datetime,
+    article .author {
+        float: none;
+        margin-right: 0px;
+        margin-left: 0px;
     }
 }
 @media (min-width: 768px) {

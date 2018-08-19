@@ -293,6 +293,15 @@
         if ($('form.xhr-form').length>0) {
             zira_init_xhr_form();
         }
+        /**
+         * dashpanel dropdown menu scrolling
+         */
+        if ($('#dashpanel-container').length>0) {
+            $('#dashpanel-container').find('.dropdown-toggle').parent().on('shown.bs.dropdown', function(){
+                zira_set_dashpanel_dropdown_height();
+            });
+            $(window).resize(zira_set_dashpanel_dropdown_height);
+        }
     });
 
     zira_resize_jplayer = function() {
@@ -1363,6 +1372,17 @@
                 }, 3000);
             });
         });
+    };
+    
+    zira_set_dashpanel_dropdown_height = function() {
+        var dropdown = $('#dashpanel-container').find('.open > .dropdown-menu');
+        if ($(dropdown).length>0) {
+            $(dropdown).css('height', 'auto');
+            var height = $(window).height() - $('#dashpanel-container').height();
+            if ($(dropdown).height()>height) {
+                $(dropdown).css('height', height);
+            }
+        }
     };
 
     /**

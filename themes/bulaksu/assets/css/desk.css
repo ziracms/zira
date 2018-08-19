@@ -34,6 +34,9 @@
     height: 40px;
     padding: 10px 15px;
 }
+#dashpanel-container .dropdown-menu {
+    overflow: auto;
+}
 #dashpanel-container .dropdown-menu li a {
     padding-top: 5px;
     padding-bottom: 5px;

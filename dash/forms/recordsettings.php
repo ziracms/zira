@@ -13,6 +13,9 @@ use Zira\Locale;
 
 class Recordsettings extends Form
 {
+    const THUMB_MIN_SIZE = 50;
+    const THUMB_MAX_SIZE = 600;
+    
     protected $_id = 'dash-recordsettings-form';
 
     protected $_label_class = 'col-sm-5 control-label';
@@ -39,8 +42,8 @@ class Recordsettings extends Form
             $q_arr[(string)$i] = $i.'%';
         }
         $html = $this->open();
-        $html .= $this->input(Locale::t('Thumbs width'), 'thumbs_width', array('placeholder'=>'50 - 500'));
-        $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>'50 - 500'));
+        $html .= $this->input(Locale::t('Thumbs width'), 'thumbs_width', array('placeholder'=>self::THUMB_MIN_SIZE.' - '.self::THUMB_MAX_SIZE));
+        $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>self::THUMB_MIN_SIZE.' - '.self::THUMB_MAX_SIZE));
         $html .= $this->select(Locale::t('Image quality'), 'jpeg_quality', $q_arr);
         $html .= $this->checkbox(Locale::t('Create thumbnails'), 'create_thumbnails', null, false);
         $html .= $this->select(Locale::t('Slider type'), 'slider_type', array('default'=>Locale::t('Default'), 'slider3d'=>Locale::t('3D slider')));
@@ -60,7 +63,7 @@ class Recordsettings extends Form
     protected function _validate() {
         $validator = $this->getValidator();
 
-        $validator->registerNumber('thumbs_width',50,500,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs width')));
-        $validator->registerNumber('thumbs_height',50,500,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs height')));
+        $validator->registerNumber('thumbs_width',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs width')));
+        $validator->registerNumber('thumbs_height',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs height')));
     }
 }

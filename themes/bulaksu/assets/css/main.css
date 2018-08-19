@@ -481,6 +481,9 @@ ul#language-switcher li a.active {
     border-radius: 3px;
     box-shadow: 0px 0px 2px #eeeeee;
 }
+.slider-wrapper .image {
+    margin-right: 0px;
+}
 .image-wrapper {
     max-width:100%;
     display: inline-block;
@@ -1827,6 +1830,12 @@ a.scroll-top.visible:visited {
     }
     .messages-list .message-content {
         margin-left: 60px;
+    }
+    article .datetime,
+    article .author {
+        float: none;
+        margin-right: 0px;
+        margin-left: 0px;
     }
 }
 @media (min-width: 768px) {
