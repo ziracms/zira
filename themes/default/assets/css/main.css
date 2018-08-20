@@ -124,35 +124,32 @@ main > article > .image:first-child {
     color: #555;
 }
 .dropdown-menu {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
+    animation: ziraFade .4s ease;
 }
 .form-panel {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
 }
 .btn-default {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	text-shadow:0 1px 0 #fff;
-	background-image:-webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image:-o-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#e0e0e0));
-	background-image:linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
-	background-repeat:repeat-x;
-	border-color:#dbdbdb;
-	border-color:#ccc;
+    text-shadow:0 1px 0 #fff;
+    background-image:-webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
+    background-image:-o-linear-gradient(top,#fff 0,#e0e0e0 100%);
+    background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#e0e0e0));
+    background-image:linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
+    background-repeat:repeat-x;
+    border-color:#dbdbdb;
+    border-color:#ccc;
 }
 .btn-primary {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color: #5E7987;
-	background-image:-webkit-linear-gradient(top,#5E7987 0, #3D475C 100%);
-	background-image:-o-linear-gradient(top,#5E7987 0,#3D475C 100%);
-	background-image:-webkit-gradient(linear,left top,left bottom,from(#5E7987),to(#3D475C));
-	background-image:linear-gradient(to bottom,#5E7987 0,#3D475C 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5E7987', endColorstr='#ff3D475C', GradientType=0);
-	background-repeat:repeat-x;
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    background-image:-webkit-linear-gradient(top,#5E7987 0, #3D475C 100%);
+    background-image:-o-linear-gradient(top,#5E7987 0,#3D475C 100%);
+    background-image:-webkit-gradient(linear,left top,left bottom,from(#5E7987),to(#3D475C));
+    background-image:linear-gradient(to bottom,#5E7987 0,#3D475C 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5E7987', endColorstr='#ff3D475C', GradientType=0);
+    background-repeat:repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 .btn-primary:hover, .btn-primary:focus {
     background-color: #3D475C;
@@ -546,6 +543,9 @@ ul#language-switcher li a.active {
     padding: 0;
     margin-left: 15px;
 }
+#top-menu-wrapper.fixed .dropdown-menu {
+    margin-top: 10px;
+}
 #top-menu-wrapper .dropdown-menu  > li > a {
     padding: 10px 20px;
     border-bottom: 1px solid #efefef;
@@ -889,7 +889,6 @@ article .rating .share-wrapper .share-btn {
     float: right;
 }
 .comments {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     list-style-type: none;
     margin: 20px 0px;
     padding: 0px;
@@ -1173,13 +1172,14 @@ pre {
 }
 #top-menu-container .zira-search-preview-wnd {
     position: absolute;
-    width: 450px;
+    width: 350px;
     right: 30px;
     top: 52px;
     z-index: 99;
     background-color: #f9f9f9;
     box-shadow: 0px 5px 10px rgba(113, 113, 113, 0.52);
     color: #333;
+    animation: ziraFade .4s ease;
 }
 .zira-search-preview-wnd .list {
     margin: 0px;
@@ -1909,10 +1909,23 @@ a.scroll-top.visible:visited {
     }
     #top-menu-wrapper {
         margin: 30px 15px 0px;
+        max-height: 100%;
+        overflow: auto;
     }
     #top-menu-wrapper .navbar-default .navbar-nav > .active {
         margin-top: 0px;
         border-top: 0px;
+    }
+    #top-menu-wrapper .dropdown-menu,
+    #top-menu-wrapper.fixed .dropdown-menu {
+        margin: 0;
+    }
+    #top-menu-wrapper .dropdown-menu:before,
+    #top-menu-wrapper .dropdown-menu:after {
+        display: none;
+    }
+    #top-menu-wrapper .dropdown-menu li a {
+        border-bottom: none;
     }
     .grid-category-wrapper .list-item {
         width: 100%;

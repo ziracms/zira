@@ -161,11 +161,10 @@ main > article > .image:first-child {
     filter: none; /** ie **/
 }
 .dropdown-menu {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
+    animation: ziraFade .4s ease;
 }
 .form-panel {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
 }
 .btn-default {
@@ -187,16 +186,15 @@ main > article > .image:first-child {
     color: #0A3241;
 }
 #main-container .btn-default {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	text-shadow: none;
+    text-shadow: none;
     background: #95A5AE;
-	background-image:-webkit-linear-gradient(top,#95A5AE 0,#5C657B 100%);
-	background-image:-o-linear-gradient(top,#95A5AE 0,#5C657B 100%);
-	background-image:-webkit-gradient(linear,left top,left bottom,from(#95A5AE),to(#5C657B));
-	background-image:linear-gradient(to bottom,#95A5AE 0,#5C657B 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff95A5AE', endColorstr='#ff5C657B', GradientType=0);
-	background-repeat:repeat-x;
-	border-color: rgb(57, 65, 71);
+    background-image:-webkit-linear-gradient(top,#95A5AE 0,#5C657B 100%);
+    background-image:-o-linear-gradient(top,#95A5AE 0,#5C657B 100%);
+    background-image:-webkit-gradient(linear,left top,left bottom,from(#95A5AE),to(#5C657B));
+    background-image:linear-gradient(to bottom,#95A5AE 0,#5C657B 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff95A5AE', endColorstr='#ff5C657B', GradientType=0);
+    background-repeat:repeat-x;
+    border-color: rgb(57, 65, 71);
     color: #E5F0F8;
 }
 #main-container .btn-default:focus,
@@ -251,7 +249,6 @@ main > article > .image:first-child {
     background-color: #6C747E;
 }
 .btn-primary {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color: #525C6F;
     background-image:-webkit-linear-gradient(top,#525C6F 0, #2D2D3B 100%);
     background-image:-o-linear-gradient(top,#525C6F 0,#2D2D3B 100%);
@@ -1211,7 +1208,6 @@ article .rating .share-wrapper .share-btn {
     float: right;
 }
 .comments {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     list-style-type: none;
     margin: 20px 0px;
     padding: 0px;
@@ -1506,7 +1502,7 @@ pre {
 }
 #top-menu-container .zira-search-preview-wnd {
     position: absolute;
-    width: 450px;
+    width: 350px;
     right: 30px;
     top: 52px;
     z-index: 99;
@@ -1514,6 +1510,7 @@ pre {
     border-right: 1px solid #2A2F32;
     border-bottom: 1px solid #2A2F32;
     color: #AFB9C0;
+    animation: ziraFade .4s ease;
 }
 .zira-search-preview-wnd .list {
     margin: 0px;
@@ -2378,10 +2375,20 @@ ul.vote-results li .vote-result {
     }
     #top-menu-wrapper {
         margin: 30px 15px 0px;
+        max-height: 100%;
+        overflow: auto;
     }
     #top-menu-wrapper .navbar-default .navbar-nav > .active {
         margin-top: 0px;
         border-top: 0px;
+    }
+    #top-menu-wrapper .dropdown-menu,
+    #top-menu-wrapper.fixed .dropdown-menu {
+        margin: 0;
+    }
+    #top-menu-wrapper .dropdown-menu:before,
+    #top-menu-wrapper .dropdown-menu:after {
+        display: none;
     }
     header .navbar-default .navbar-nav .open .dropdown-menu > li > a {
         color: #cccccc;

@@ -256,3 +256,12 @@ textarea {
       transform: rotate(360deg);
   }
 }
+
+@keyframes ziraFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
