@@ -11,10 +11,9 @@
 <?php if (!$item->dropdown): ?>
 <li<?php if (!empty($class)) echo ' class="'.implode(' ',$class).'"'; ?>><a href="<?php echo Zira\Helper::html(Zira\Menu::parseURL($item->url)) ?>"<?php if ($item->external) echo ' target="_blank"'; ?> title="<?php echo Zira\Helper::html(t($item->title)) ?>" class="<?php echo $class_a ?>"><?php echo Zira\Helper::html(t($item->title)) ?></a></li>
 <?php else: ?>
-<?php $class []= 'dropup'; ?>
 <li<?php echo ' class="'.implode(' ',$class).'"'; ?>>
-<a href="<?php echo Zira\Helper::html(Zira\Menu::parseURL($item->url)) ?>"<?php if ($item->external) echo ' target="_blank"'; ?> title="<?php echo Zira\Helper::html(t($item->title)) ?>" class="<?php echo $class_a ?> dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo Zira\Helper::html(t($item->title)) ?> <span class="caret"></span></a>
-<ul class="dropdown-menu">
+<a href="<?php echo Zira\Helper::html(Zira\Menu::parseURL($item->url)) ?>"<?php if ($item->external) echo ' target="_blank"'; ?> title="<?php echo Zira\Helper::html(t($item->title)) ?>" class="<?php echo $class_a ?>"><?php echo Zira\Helper::html(t($item->title)) ?> <span class="caret"></span></a>
+<ul class="footer-child-menu">
 <?php foreach($item->dropdown as $_item): ?>
 <?php $_class = array(); ?>
 <?php if ($_item->class) $_class []= Zira\Helper::html($_item->class); ?>
