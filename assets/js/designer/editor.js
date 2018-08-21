@@ -184,6 +184,9 @@
                     setFilterStyle('header', 'none');
                     setBackgroundColorStyle('header', color, true);
                 }
+                setBackgroundStyle('#top-menu-wrapper .top-menu-logo', 'none');
+                setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(color));
+                setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(color));
             }, 'right', false);
             
             // header bg gradient
@@ -200,6 +203,9 @@
                 $('header').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                 setBackgroundColorStyle('header', hexColor(color1), true);
                 setBackgroundGradientStyle('header', color1, color2);
+                setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(color1), true);
+                setBackgroundGradientStyle('#top-menu-wrapper .top-menu-logo', color1, color2);
+                setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(color1));
             });
             
             // header bg image
@@ -216,6 +222,9 @@
                 var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') no-repeat 50% 0%';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
+                setBackgroundStyle('#top-menu-wrapper .top-menu-logo', 'none');
+                setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(bg_color));
+                setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(bg_color));
             });
             
             // header bg pattern
@@ -232,6 +241,9 @@
                 var background = hexColor(bg_color) + ' url(\'' + url + '?t=' + t + '\') repeat 0 0';
                 $('header').css('background', background);
                 setBackgroundStyle('header', background);
+                setBackgroundStyle('#top-menu-wrapper .top-menu-logo', 'none');
+                setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(bg_color));
+                setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(bg_color));
             });
             
             // header logo
@@ -266,6 +278,11 @@
                     });
                     setColorStyle('#site-logo-wrapper a#site-logo:link,#site-logo-wrapper a#site-logo:visited', color1);
                     setColorStyle('#site-logo-wrapper a#site-logo:hover,#site-logo-wrapper a#site-logo.active', color2);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:link,#top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:visited', color1);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:hover', color2);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:link,#top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:visited', color1);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:hover', color2);
+                    setTextShadowStyle('header #top-menu-wrapper .top-menu-logo a:link,header #top-menu-wrapper .top-menu-logo a:visited', 'none');
                 }, 'left', 'rgb');
                 
                 // header logo font size
@@ -455,6 +472,8 @@
                     setBorderColorStyle('header,header ul#user-menu,header ul#user-menu ul.dropdown-menu', hexColor(color1));
                     setBorderBottomColorStyle('ul#user-menu .dropdown-menu:before', hexColor(color1));
                     setBorderBottomColorStyle('ul#user-menu .dropdown-menu:after', hexColor(color2));
+                    setBorderLeftColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(color1));
+                    setBorderLeftColorStyle('#top-menu-wrapper.fixed .navbar-collapse.collapsing,#top-menu-wrapper.fixed .navbar-collapse.in', hexColor(color1));
                 });
             }
 
@@ -532,6 +551,11 @@
                     setBorderBottomColorStyle('#top-menu-wrapper .dropdown-menu:before', hexColor(color1));
                     setBorderBottomColorStyle('#top-menu-wrapper .dropdown-menu:after', hexColor(color2));
                     setBorderBottomColorStyle('#top-menu-wrapper .dropdown-menu > li > a', hexColor(color1));
+                    setBackgroundStyle('#top-menu-wrapper .navbar-collapse.collapsing .dropdown.open > a,#top-menu-wrapper .navbar-collapse.in .dropdown.open > a', hexColor(color1));
+                    setBorderTopColorStyle('#top-menu-wrapper .navbar-collapse.collapsing li.menu-item,#top-menu-wrapper .navbar-collapse.in li.menu-item', hexColor(color2));
+                    setBorderBottomColorStyle('#top-menu-wrapper .navbar-collapse.collapsing li.menu-item,#top-menu-wrapper .navbar-collapse.in li.menu-item', hexColor(color1));
+                    setBorderTopColorStyle('#top-menu-wrapper.fixed .navbar-collapse.collapsing,#top-menu-wrapper.fixed .navbar-collapse.in', hexColor(color2));
+                    setBorderColorStyle('#top-menu-wrapper .navbar-default .navbar-collapse', hexColor(color1));
                     // custom menu
                     setBackgroundColorStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', hexColor(color1), true);
                     setBackgroundGradientStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', color1, color2);

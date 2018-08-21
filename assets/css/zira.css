@@ -265,3 +265,12 @@ textarea {
         opacity: 1;
     }
 }
+
+@keyframes ziraSlide {
+    from {
+        margin-top: -30px;
+    }
+    to {
+        margin-top: 0;
+    }
+}

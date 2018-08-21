@@ -32,7 +32,9 @@ class Topmenu extends Zira\Widget {
         }
         Zira\View::renderView(array(
             'items' => $items,
-            'search' => new Zira\Forms\Search()
+            'search' => new Zira\Forms\Search(),
+            'site_logo' => Zira\Config::get('site_logo'),
+            'site_name' => Zira\Locale::t(Zira\Config::get('site_name'))
         ), 'zira/widgets/topmenu');
     }
 }
