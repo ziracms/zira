@@ -131,15 +131,15 @@ class Page {
 
     public static function addOpenGraphTags($title, $description, $url = '', $image = null) {
         $description = str_replace("\r\n", ' ', $description);
-        if ($image === null) $image = Config::get('site_logo');
+        //if ($image === null) $image = Config::get('site_logo');
         $tags = array(
             'og:site_name' => Config::get('site_title') ? Locale::t(Config::get('site_title')) : Locale::t(Config::get('site_name')),
             'og:type' => 'website',
             'og:title' => $title,
             'og:description' => $description,
-            'og:url' => Helper::url($url, true, true),
-            'og:image' => Helper::baseUrl($image, true, true)
+            'og:url' => Helper::url($url, true, true)
         );
+        if ($image !== null) $tags['og:image'] = Helper::baseUrl($image, true, true);
         foreach($tags as $property=>$content) {
             View::addMeta(array('property'=>$property,'content'=>$content));
         }

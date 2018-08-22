@@ -99,13 +99,13 @@ class Page extends Zira\Page {
         else $meta_title = $row->title;
         if ($row->meta_description) $meta_description = $row->meta_description;
         else $meta_description = $row->description;
-        if ($row->thumb) $thumb = $row->thumb;
-        else $thumb = null;
+        if ($row->image) $image = $row->image;
+        else $image = null;
 
         static::addTitle($meta_title);
         static::setKeywords($row->meta_keywords);
         static::setDescription($meta_description);
-        static::addOpenGraphTags($meta_title, $meta_description, static::$_record_url, $thumb);
+        static::addOpenGraphTags($meta_title, $meta_description, static::$_record_url, $image);
         
         // checking permission for gallery, files, audio & video
         if (Zira\Category::current()) {

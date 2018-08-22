@@ -671,7 +671,7 @@ article .article-info {
     margin-bottom: 10px;
 }
 article .article {
-    margin: 30px 0px;
+    margin: 30px 0px 40px;
     overflow: hidden;
 }
 article .article p {
@@ -1408,7 +1408,14 @@ a.scroll-top.visible:visited {
 
 /** home page **/
 .home-category-wrapper {
-    margin: 40px 0px;
+    margin: 0px 0px 40px 0px;
+}
+.home-category-wrapper .page-header {
+    border: none;
+    margin-bottom: 0;
+}
+.home-category-wrapper .list {
+    margin-top: 0;
 }
 .home-category-wrapper .home-category-title,
 .home-category-wrapper .home-category-title a:link,

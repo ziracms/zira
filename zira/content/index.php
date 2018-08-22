@@ -44,7 +44,7 @@ class Index extends Zira\Page {
             if (!$meta_keywords) $meta_keywords = $record->meta_keywords;
             if ($record->thumb) $thumb = $record->thumb;
         } else {
-            if (!$title) $title = Zira\Config::get('site_name');
+            //if (!$title) $title = Zira\Config::get('site_name');
             if (!$meta_title) $meta_title = Zira\Config::get('site_title');
             if (!$meta_keywords) $meta_keywords = Zira\Config::get('site_keywords');
             if (!$meta_description) $meta_description = Zira\Config::get('site_description');
