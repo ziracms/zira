@@ -16,14 +16,16 @@ use Zira\View;
 class Search extends Form {
     protected $_id = 'search-form';
     protected $_extended = false;
+    protected $_mobile = false;
     
     protected static $_initialized = false;
 
-    public function __construct($id=null, $extended = false) {
+    public function __construct($id=null, $extended = false, $mobile = false) {
         $this->_is_token_unique = true;
         if ($id===null) $id = $this->_id;
         else $this->_id = $id;
         if ($extended) $this->_extended = true;
+        if ($mobile) $this->_mobile = true;
         parent::__construct($id);
     }
 
@@ -92,9 +94,11 @@ class Search extends Form {
     protected function _renderExtended() {
         $html = $this->open(array('class'=>'search-extended-form','role'=>'search'));
         $html .= Helper::tag_open('div',array('class'=>'form-group input-group'));
+        if (!$this->_mobile) {
         $html .= Helper::tag_open('span',array('class'=>'input-group-addon'));
         $html .= Helper::tag('span', null, array('class'=>'glyphicon glyphicon-search'));
         $html .= Helper::tag_close('span');
+        }
         $html .= $this->input(null,'text', array('class'=>$this->_input_class));
         $html .= Helper::tag_open('span',array('class'=>'input-group-btn'));
         $html .= Helper::tag_open('button',array('type'=>'submit','class'=>'btn btn-default'));

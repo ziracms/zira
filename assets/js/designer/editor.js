@@ -506,6 +506,7 @@
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open > a,header #top-menu-wrapper .navbar-default .navbar-nav > li > a:hover,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item:hover a.list-title', color1);
                     setColorStyle('header #top-menu-wrapper .form-control::placeholder', color2);
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', color2);
                     // custom menu
                     setColorStyle('#main-container .top-custom-menu-wrapper nav a:link,#main-container .top-custom-menu-wrapper nav a:visited,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a', color2);
                     setColorStyle('#main-container .top-custom-menu-wrapper nav .btn-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle', color2);
@@ -556,6 +557,7 @@
                     setBorderBottomColorStyle('#top-menu-wrapper .navbar-collapse.collapsing li.menu-item,#top-menu-wrapper .navbar-collapse.in li.menu-item', hexColor(color1));
                     setBorderTopColorStyle('#top-menu-wrapper.fixed .navbar-collapse.collapsing,#top-menu-wrapper.fixed .navbar-collapse.in', hexColor(color2));
                     setBorderColorStyle('#top-menu-wrapper .navbar-default .navbar-collapse', hexColor(color1));
+                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', 'none');
                     // custom menu
                     setBackgroundColorStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', hexColor(color1), true);
                     setBackgroundGradientStyle('#main-container .top-custom-menu-wrapper nav.navbar-default', color1, color2);
@@ -594,6 +596,7 @@
                     setColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle', color);
                     setColorStyle('header #top-menu-wrapper .form-control::placeholder', color);
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', color);
                 }, 'right', 'rgb');
                 
                 // header search background
@@ -619,6 +622,7 @@
                     setBorderColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form', hexColor(color));
                     setTextShadowStyle('header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color));
                     setFilterStyle('#top-menu-wrapper nav .btn-default', 'none');
+                    setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', 'none');
                 });
             }
         }

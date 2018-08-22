@@ -1310,6 +1310,25 @@ pre {
     overflow: hidden;
     font-size: 14px;
 }
+#top-menu-wrapper .mobile-search-button {
+    float: left;
+    color: #888;
+    border: none;
+    padding: 9px 15px;
+    margin: 5px 0px 0px 10px;
+}
+#top-menu-wrapper.fixed .mobile-search-button {
+    margin: 5px 0px 0px 0px;
+}
+#top-menu-wrapper .mobile-search-wrapper {
+    clear: both;
+    padding: 15px 15px 0px;
+}
+#top-menu-wrapper #form-mobile-search-form {
+    display: block;
+    border: none;
+    margin: 0px;
+}
 /** footer **/
 footer {
     min-height: 50px;
@@ -2098,6 +2117,9 @@ a.scroll-top.visible:visited {
 }
 @media (min-width: 768px) {
     .search-simple-form {
+        display: none;
+    }
+    #top-menu-wrapper .mobile-search-wrapper {
         display: none;
     }
 }
