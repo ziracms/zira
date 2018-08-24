@@ -231,7 +231,7 @@ class Index extends Zira\Page {
             } else {
                 // root category records
                 $records = Zira\Models\Record::getCollection()
-                    ->select('id', 'name', 'author_id', 'title', 'description', 'thumb', 'creation_date', 'rating', 'comments')
+                    ->select('id', 'name', 'author_id', 'title', 'description', 'image', 'thumb', 'creation_date', 'rating', 'comments')
                     ->join(Zira\Models\User::getClass(), array('author_username' => 'username', 'author_firstname' => 'firstname', 'author_secondname' => 'secondname'))
                     ->where('category_id', '=', Zira\Category::ROOT_CATEGORY_ID)
                     ->and_where('language', '=', Zira\Locale::getLanguage())

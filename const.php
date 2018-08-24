@@ -41,6 +41,7 @@ const DEFAULT_LANGUAGE = 'en';
 const DEFAULT_MODULE = 'zira';
 const DEFAULT_CONTROLLER = 'index';
 const DEFAULT_ACTION = 'index';
+const CUSTOM_THUMBS_ACTION = 'thumbnailer';
 const DEFAULT_THEME = 'default';
 const DEFAULT_TITLE = 'Zira';
 const FORMAT_GET_VAR = 'format';

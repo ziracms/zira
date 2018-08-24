@@ -14,6 +14,9 @@ class Image {
 
     const QUALITY_JPEG = 90;
     const QUALITY_PNG = 0;
+    
+    const CUSTOM_THUMB_MIN_WIDTH = 10;
+    const CUSTOM_THUMB_MIN_HEIGHT = 10;
 
     protected static function _imagecreate($src_path, &$src_image, &$type, &$size) {
         $size=@getimagesize($src_path);
@@ -304,5 +307,14 @@ class Image {
             $bg_color=imagecolorallocate($dst_image, 255, 255, 255);
             imagefill($dst_image, 0, 0, $bg_color);
         }
-    } 
+    }
+    
+    public static function getCustomThumbUrl($image, $width, $height) {
+        $image = trim($image, '/');
+        if (empty($image) || !is_numeric($width) || !is_numeric($height)) return;
+        if ($width < self::CUSTOM_THUMB_MIN_WIDTH || $height < self::CUSTOM_THUMB_MIN_HEIGHT) return;
+        if (strpos($image, UPLOADS_DIR.'/')!==0) return;
+        $path = substr($image, strlen(UPLOADS_DIR.'/'));
+        return UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'.intval($width).'x'.intval($height).'/'. Helper::urlencode($path);
+    }
 }

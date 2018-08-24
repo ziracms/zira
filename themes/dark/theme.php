@@ -15,6 +15,9 @@
  * Content view: Zira\View::$view;
  * Content layout: Zira\View::$layout;
  * 
+ * Custom thumbnail: 
+ * Zira\Helper::baseUrl(Zira\Image::getCustomThumbUrl($src, $width, $height));
+ * 
  * Example 1:
  * $layout_data = &Zira\View::getLayoutDataArray();
  * $layout_data['styles'] .= Zira\Helper::tag_short('link', array(

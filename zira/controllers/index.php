@@ -129,4 +129,54 @@ class Index extends Zira\Controller {
         readfile($real_path);
         exit;
     }
+    
+    /**
+     * Thumbs generator
+     */
+    function thumbnailer($uri) {
+        if (empty($uri)) exit;
+        $path = trim(rawurldecode($uri), '/');
+        if (strpos($path, UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/')!==0) exit;
+        $path = substr($path, strlen(UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'));
+        if (empty($path)) exit;
+        $parts = explode('/', $path);
+        if (count($parts)<2) exit;
+        $size=array_shift($parts);
+        $sizes = explode('x', $size);
+        if (count($sizes)!==2) exit;
+        $width = intval($sizes[0]);
+        $height = intval($sizes[1]);
+        if ($width < Zira\Image::CUSTOM_THUMB_MIN_WIDTH || $height < Zira\Image::CUSTOM_THUMB_MIN_HEIGHT) exit;
+        $size = $width.'x'.$height;
+        $path = UPLOADS_DIR.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $parts);
+        $src_path = ROOT_DIR . DIRECTORY_SEPARATOR . $path;
+        $ext = 'thumb';
+        $p = strrpos($src_path, '.');
+        if ($p!==false) $ext = strtolower(substr($src_path, $p+1));
+        if ($ext != 'jpg' && $ext != 'jpeg' && $ext != 'gif' && $ext != 'png') exit;
+        $_path = substr($path, 0, (int)strrpos($path, DIRECTORY_SEPARATOR));
+        $_path = substr($_path, strlen(UPLOADS_DIR . DIRECTORY_SEPARATOR));
+        $savedir = THUMBS_DIR . DIRECTORY_SEPARATOR . CUSTOM_THUMBS_ACTION . DIRECTORY_SEPARATOR . $size;
+        if (!empty($_path)) $savedir .= DIRECTORY_SEPARATOR . $_path;
+        $save_path = Zira\File::getAbsolutePath($savedir);
+        $name = ltrim(substr($path, (int)strrpos($path, DIRECTORY_SEPARATOR)), DIRECTORY_SEPARATOR);
+        if (file_exists($save_path . DIRECTORY_SEPARATOR . $name) && 
+            filesize($save_path . DIRECTORY_SEPARATOR . $name)>0
+        ) {
+            // why we are here ?
+            header('Content-Type: image/'.$ext);
+            echo file_get_contents($save_path . DIRECTORY_SEPARATOR . $name);
+            exit;
+        }
+        if (file_exists($src_path) && 
+            Zira\Image::createThumb($src_path, $save_path . DIRECTORY_SEPARATOR . $name, $width, $height) && 
+            file_exists($save_path . DIRECTORY_SEPARATOR . $name) && 
+            filesize($save_path . DIRECTORY_SEPARATOR . $name)>0
+        ) {
+            header('Content-Type: image/'.$ext);
+            echo file_get_contents($save_path . DIRECTORY_SEPARATOR . $name);
+            exit;
+        }
+        exit;
+    }
 }

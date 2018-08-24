@@ -213,11 +213,12 @@ class Router {
                 self::$param = $_param . self::$param;
             }
         }
-
+        
         if (!self::$language && count(Config::get('languages'))>1 &&
             !empty(self::$request) &&
             self::$module!='dash' &&
             self::$controller!='dash' && 
+            self::$module!=UPLOADS_DIR && 
             !in_array(self::$request, self::$all_languages_routes)
         ) {
             self::$language = Config::get('language');

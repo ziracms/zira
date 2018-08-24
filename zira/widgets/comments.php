@@ -50,7 +50,7 @@ class Comments extends Zira\Widget {
         if (!$comments) return array();
 
         $query = Zira\Models\Record::getCollection()
-                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+                        ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments')
                         ->left_join(Zira\Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
                         ;
 

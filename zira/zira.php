@@ -32,7 +32,16 @@ class Zira {
 
         self::beforeDispatch();
         Router::dispatch();
-        if (strpos(Router::getRequest(),UPLOADS_DIR.'/')===0) return; // removed image ?
+        if (Router::getModule() == UPLOADS_DIR && 
+            Router::getController() == THUMBS_DIR && 
+            Router::getAction() == CUSTOM_THUMBS_ACTION
+        ) {
+            $this->process();
+            return;
+        }
+        if (Router::getModule() == UPLOADS_DIR) {
+            return; // deleted image ?
+        }
 
         Dash::setDashLanguage(Config::get('dash_language', Config::get('language')));
         if (Router::getModule()!='dash') {
@@ -184,6 +193,7 @@ class Zira {
             $param = Router::getParam();
             // only numeric params allowed
             if ((count(explode('/',Router::getRequest()))!=1 || Router::getModule()!=DEFAULT_MODULE || Router::getController()!=DEFAULT_CONTROLLER || Router::getAction()!=DEFAULT_ACTION) &&
+                (Router::getModule()!=UPLOADS_DIR || Router::getController()!=THUMBS_DIR || Router::getAction()!=CUSTOM_THUMBS_ACTION) && 
                 !empty($param) && (!is_numeric($param) || intval($param)<=0)
             ) {
                 throw new \Exception('Bad request');
@@ -204,7 +214,16 @@ class Zira {
         } catch (\Exception $e) {
             $controller_obj = null;
             $param = null;
-            if (Category::current()) {
+            if (Router::getModule()==UPLOADS_DIR && 
+                Router::getController()==THUMBS_DIR && 
+                Router::getAction()==CUSTOM_THUMBS_ACTION
+            ) {
+                $controller_obj = new Controllers\Index();
+                Router::setModule(DEFAULT_MODULE);
+                Router::setController(DEFAULT_CONTROLLER);
+                Router::setAction(CUSTOM_THUMBS_ACTION);
+                $param = Request::uri();
+            } else if (Category::current()) {
                 $controller_obj = new Controllers\Index();
                 Router::setAction('page');
                 Router::setController(DEFAULT_CONTROLLER);

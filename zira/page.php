@@ -441,7 +441,7 @@ class Page {
         if (!$rows) return array();
         
         $query = Record::getCollection()
-                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+                        ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments')
                         ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
                         ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
                         ;
@@ -517,7 +517,7 @@ class Page {
         if (!$rows) return array();
 
         $query = Record::getCollection()
-                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+                        ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments')
                         ->join(Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
                         ->join(Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
                         ;
