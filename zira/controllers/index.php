@@ -135,7 +135,15 @@ class Index extends Zira\Controller {
      */
     function thumbnailer($uri) {
         if (empty($uri)) exit;
-        $path = trim(rawurldecode($uri), '/');
+        $path = trim(rawurldecode($uri));
+        $base_url = trim(BASE_URL,'/');
+        if (!empty($base_url)) {
+            $path = preg_replace('/^\/'.preg_quote($base_url).'(\/.*)$/iu','$1',$path);
+        }
+        if (strpos($path, '/index.php')===0) {
+            $path = preg_replace('/^\/index\.php(\/.*)$/iu','$1',$path);
+        }
+        $path = trim($path, '/');
         if (strpos($path, UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/')!==0) exit;
         $path = substr($path, strlen(UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'));
         if (empty($path)) exit;
@@ -163,7 +171,7 @@ class Index extends Zira\Controller {
         if (file_exists($save_path . DIRECTORY_SEPARATOR . $name) && 
             filesize($save_path . DIRECTORY_SEPARATOR . $name)>0
         ) {
-            // why we are here ?
+            // why we are here ? clean urls is off ?
             header('Content-Type: image/'.$ext);
             echo file_get_contents($save_path . DIRECTORY_SEPARATOR . $name);
             exit;

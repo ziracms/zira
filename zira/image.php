@@ -315,6 +315,8 @@ class Image {
         if ($width < self::CUSTOM_THUMB_MIN_WIDTH || $height < self::CUSTOM_THUMB_MIN_HEIGHT) return;
         if (strpos($image, UPLOADS_DIR.'/')!==0) return;
         $path = substr($image, strlen(UPLOADS_DIR.'/'));
-        return UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'.intval($width).'x'.intval($height).'/'. Helper::urlencode($path);
+        $url = UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'.intval($width).'x'.intval($height).'/'. Helper::urlencode($path);
+        if (!Config::get('clean_url') && !file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, UPLOADS_DIR.'/'.THUMBS_DIR.'/'.CUSTOM_THUMBS_ACTION.'/'.intval($width).'x'.intval($height).'/'. $path))) $url = 'index.php/'.$url;
+        return $url;
     }
 }
