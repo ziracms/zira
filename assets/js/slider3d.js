@@ -26,8 +26,10 @@
         this.direction = 1;
         this.inProgress = false;
         this.initialized = false;
-		this.enableIE = true;
-		this.isIE = false;
+        this.enableIE = true;
+        this.isIE = false;
+        this.touchX = null;
+        this.touchMinMove = 30;
         this.blank_src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
         this.transitionEndEvents = 'webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd';
         this.setOptions(options);
@@ -144,8 +146,55 @@
             $(this.element).find('li').css('transition','opacity '+this.transition_time+'ms ease');
         }
         if (this.images.length>1) {
+            $(this.element).bind('dragstart', function(e){
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            if (typeof window.ontouchstart == "undefined") {
+                $(this.element).unbind('mousedown').mousedown(this.bind(this, function(e){
+                    if (typeof e.pageX == "undefined") return;
+                    this.onDragStart(e.pageX);
+                }));
+                $(this.element).unbind('mousemove').mousemove(this.bind(this, function(e){
+                    if (typeof e.pageX == "undefined") return;
+                    this.onDragMove(e.pageX);
+                }));
+                $(this.element).unbind('mouseup').mouseup(this.bind(this, function(e){
+                    this.onDragEnd();
+                }));
+            } else {
+                $(this.element).unbind('touchstart').bind('touchstart', this.bind(this, function(e){
+                    if (typeof(e.originalEvent)=="undefined" || typeof(e.originalEvent.touches)=="undefined" || typeof(e.originalEvent.touches[0].pageX)=="undefined") return;
+                    this.onDragStart(e.originalEvent.touches[0].pageX);
+                }));
+                $(this.element).unbind('touchmove').bind('touchmove', this.bind(this, function(e){
+                    if (typeof(e.originalEvent)=="undefined" || typeof(e.originalEvent.touches)=="undefined" || typeof(e.originalEvent.touches[0].pageX)=="undefined") return;
+                    this.onDragMove(e.originalEvent.touches[0].pageX);
+                }));
+                $(this.element).unbind('touchend').bind('touchend', this.bind(this, function(e){
+                    this.onDragEnd();
+                }));
+            }
             this.startTimer();
         }
+    };
+    
+    ziraSlider.prototype.onDragStart = function(pageX) {
+        this.touchX = pageX;
+    };
+    
+    ziraSlider.prototype.onDragMove = function(pageX) {
+        if (this.touchX === null) return;
+        var dx = this.touchX - pageX;
+        if (Math.abs(dx) >= this.touchMinMove) {
+            if (dx<0) $(this.element).parent().children('.zs-nav-prev').trigger('click');
+            else $(this.element).parent().children('.zs-nav-next').trigger('click');
+            this.touchX = null;
+        }
+    };
+    
+    ziraSlider.prototype.onDragEnd = function() {
+        this.touchX = null;
     };
     
     ziraSlider.prototype.updateRect = function() {
@@ -225,9 +274,9 @@
     ziraSlider.prototype.rotateCubeLeft = function() {
         var container = $(this.element).parent().children('.zira-slider-box');
         $(container).children('.zs-cube-part-center').css('transform', 'rotate3d(0, 1, 0, -90deg)');
-		if (!this.isIE) {
-			$(container).children('.zs-cube-part-left').css('transform', 'rotate3d(0, 1, 0, -180deg)');
-		}
+        if (!this.isIE) {
+            $(container).children('.zs-cube-part-left').css('transform', 'rotate3d(0, 1, 0, -180deg)');
+        }
         $(container).children('.zs-cube-part-right').css('transform', 'rotate3d(0, 1, 0, 0deg)');
         $(container).children('.zs-cube-part-top').css('transform', 'translate3d(0, -'+Math.floor(this.width/2)+'px, -'+Math.floor(this.width/2)+'px) rotate3d(1, 0, 0, 90deg) rotate3d(0, 0, 1, 90deg)');
         $(container).children('.zs-cube-part-bottom').css('transform', 'translate3d(0, '+(this.part_height-this.width/2)+'px, -'+Math.floor(this.width/2)+'px) rotate3d(1, 0, 0, 90deg) rotate3d(0, 0, 1, 90deg)');
@@ -237,9 +286,9 @@
         var container = $(this.element).parent().children('.zira-slider-box');
         $(container).children('.zs-cube-part-center').css('transform', 'rotate3d(0, 1, 0, 90deg)');
         $(container).children('.zs-cube-part-left').css('transform', 'rotate3d(0, 1, 0, 0deg)');
-		if (!this.isIE) {
-			$(container).children('.zs-cube-part-right').css('transform', 'rotate3d(0, 1, 0, 180deg)');
-		}
+        if (!this.isIE) {
+            $(container).children('.zs-cube-part-right').css('transform', 'rotate3d(0, 1, 0, 180deg)');
+        }
         $(container).children('.zs-cube-part-top').css('transform', 'translate3d(0, -'+Math.floor(this.width/2)+'px, -'+Math.floor(this.width/2)+'px) rotate3d(1, 0, 0, 90deg) rotate3d(0, 0, 1, -90deg)');
         $(container).children('.zs-cube-part-bottom').css('transform', 'translate3d(0, '+(this.part_height-this.width/2)+'px, -'+Math.floor(this.width/2)+'px) rotate3d(1, 0, 0, 90deg) rotate3d(0, 0, 1, -90deg)');
     };
