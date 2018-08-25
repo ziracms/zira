@@ -12,7 +12,7 @@
 <?php if (empty($images) && empty($access_allowed)): ?>
 <div class="alert alert-warning" role="alert">
     <?php if (!Zira\User::isAuthorized()): ?>
-    <?php echo t('%s to view gallery', '<a href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRedirectUrl()).'">'.t('Login').'</a>') ?>
+    <?php echo t('%s to view gallery', '<a class="inline-login-link" href="'.Zira\Helper::url('user/login?redirect='.Zira\Page::getRedirectUrl()).'">'.t('Login').'</a>') ?>
     <?php else: ?>
     <?php echo t('You do not have permission to view gallery'); ?>
     <?php endif; ?>

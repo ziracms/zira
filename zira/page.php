@@ -37,6 +37,13 @@ class Page {
     const VIEW_PLACEHOLDER_FILES_DATA = 'files';
     const VIEW_PLACEHOLDER_COMMENTS_DATA = 'comments';
     const VIEW_PLACEHOLDER_CONTENT_VIEW_DATA = 'contentView';
+    
+    const VIEW_PLACEHOLDER_SLIDER_VIEW = 'zira/slider';
+    const VIEW_PLACEHOLDER_GALLERY_VIEW = 'zira/gallery';
+    const VIEW_PLACEHOLDER_VIDEO_VIEW = 'zira/videos';
+    const VIEW_PLACEHOLDER_AUDIO_VIEW = 'zira/audio';
+    const VIEW_PLACEHOLDER_FILES_VIEW = 'zira/files';
+    const VIEW_PLACEHOLDER_COMMENTS_VIEW = 'zira/comments';
 
     protected static $_view = 'page';
     protected static $_layout = null;

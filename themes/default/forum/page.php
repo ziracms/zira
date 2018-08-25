@@ -14,5 +14,5 @@
 <?php echo $content; ?>
 </div>
 <?php endif; ?>
-<?php if (!empty($contentView)) Zira\Page::renderContentView($contentView); ?>
+<?php renderContentView(); ?>
 </article>

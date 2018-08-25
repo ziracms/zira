@@ -17,6 +17,48 @@ function render($data, $view) {
     Zira\View::renderView($data, $view);
 }
 
+function renderSlider() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA], Zira\Page::VIEW_PLACEHOLDER_SLIDER_VIEW);
+    }
+}
+
+function renderVideo() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_VIDEO_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_VIDEO_DATA], Zira\Page::VIEW_PLACEHOLDER_VIDEO_VIEW);
+    }
+}
+
+function renderGallery() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_GALLERY_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_GALLERY_DATA], Zira\Page::VIEW_PLACEHOLDER_GALLERY_VIEW);
+    }
+}
+
+function renderAudio() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_AUDIO_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_AUDIO_DATA], Zira\Page::VIEW_PLACEHOLDER_AUDIO_VIEW);
+    }
+}
+
+function renderFiles() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_FILES_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_FILES_DATA], Zira\Page::VIEW_PLACEHOLDER_FILES_VIEW);
+    }
+}
+
+function renderComments() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_COMMENTS_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_COMMENTS_DATA], Zira\Page::VIEW_PLACEHOLDER_COMMENTS_VIEW);
+    }
+}
+
+function renderContentView() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA])) {
+        Zira\Page::renderContentView(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA]);
+    }
+}
+
 function layout_js_begin() {
     ob_start();
 }

@@ -1,5 +1,5 @@
-<?php if (!empty($slider)) render($slider, 'zira/slider'); ?>
-<?php if (!empty($videos)) render($videos, 'zira/videos'); ?>
+<?php renderSlider(); ?>
+<?php renderVideo(); ?>
 <main>
 <article>
 <?php if (!empty($image)): ?>
@@ -36,7 +36,7 @@
 <?php echo $content; ?>
 </div>
 <?php endif; ?>
-<?php if (!empty($contentView)) Zira\Page::renderContentView($contentView); ?>
+<?php renderContentView(); ?>
 <?php if (isset($rating)): ?>
 <div id="rating" class="rating">
 <a href="javascript:void(0)" class="like" data-value="1" data-type="record" data-id="<?php echo Zira\Page::getRecordId() ?>" data-token="<?php echo Zira\User::getToken() ?>" data-url="<?php echo Zira\Helper::url('poll') ?>">
@@ -50,7 +50,7 @@
 <?php if (isset($pagination)) echo $pagination; ?>
 </article>
 </main>
-<?php if (!empty($gallery)) render($gallery, 'zira/gallery'); ?>
-<?php if (!empty($audio)) render($audio, 'zira/audio'); ?>
-<?php if (!empty($files)) render($files, 'zira/files'); ?>
-<?php if (!empty($comments)) render($comments, 'zira/comments'); ?>
+<?php renderGallery(); ?>
+<?php renderAudio(); ?>
+<?php renderFiles(); ?>
+<?php renderComments(); ?>
