@@ -348,18 +348,27 @@
             if (!$(list).length) return true;
             var items = $(list).children('.list-item');
             if ($(items).length<2) return;
-            var prev = null;
+            var prev = 0;
             var co = 1;
+            var divider = 2;
+            if ($(this).hasClass('grid-col-3')) divider = 3;
+            else if ($(this).hasClass('grid-col-4')) divider = 4;
+            else if ($(this).hasClass('grid-col-5')) divider = 5;
             $(items).each(function(){
                 if ($(this).hasClass('jsed')) return true;
-                if (co%2==0) {
-                    if (prev && $(prev).offset().top == $(this).offset().top) {
-                        var h = Math.max($(prev).outerHeight(), $(this).outerHeight());
-                        $(prev).addClass('jsed').css('height',h);
-                        $(this).addClass('jsed').css('height',h);
+                if (co%divider==0 || (co==$(items).length && prev>0)) {
+                    var h = Math.max(prev, $(this).outerHeight());
+                    $(prev).addClass('jsed').css('height',h);
+                    $(this).addClass('jsed').css('height',h);
+                    var el = $(this);
+                    for (var y=0; y<divider-1; y++) {
+                        el = $(el).prev('.list-item');
+                        if ($(el).hasClass('jsed')) break;
+                        $(el).addClass('jsed').css('height',h);
                     }
-                } else {
-                    prev = $(this);
+                    prev = 0;
+                } else if ($(this).outerHeight()>prev) {
+                    prev = $(this).outerHeight();
                 }
                 co++;
             });

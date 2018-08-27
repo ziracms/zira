@@ -429,5 +429,6 @@ return array(
     'Enable breadcrumbs' => 'Включить хлебные крошки',
     'New widget' => 'Новый виджет',
     'Delete menu' => 'Удалить меню',
-    'Calendar of publications' => 'Календарь публикаций'
+    'Calendar of publications' => 'Календарь публикаций',
+    'Record columns count' => 'Число колонок записей'
 );

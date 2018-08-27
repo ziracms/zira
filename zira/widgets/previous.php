@@ -36,8 +36,7 @@ class Previous extends Zira\Widget {
         if (!$layout) $layout = Zira\Config::get('layout');
 
         $is_sidebar = $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_LEFT || $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_RIGHT;
-        //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
-        $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
+        $grid = Zira\Config::get('site_records_grid', 1);
 
         $records = Zira\Page::getWidgetRecords($category, false, $limit, $record_id, false);
         if (!count($records)) return;
@@ -46,11 +45,11 @@ class Previous extends Zira\Widget {
             'title' => Zira\Locale::t('View also'),
             'url' => '',
             'records' => $records,
-            'grid' => $is_grid,
+            'grid' => !$is_sidebar ? $grid : 0,
             'settings' => array(
                 'comments_enabled' => $comments_enabled,
                 'rating_enabled' => $rating_enabled,
-                'display_author' => $display_author && !$is_grid,
+                'display_author' => $display_author && !$is_sidebar && !$grid,
                 'display_date' => $display_date,
                 'sidebar' => $is_sidebar
             )

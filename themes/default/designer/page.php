@@ -1,5 +1,5 @@
 <!--home page-->
-<div class="home-category-wrapper grid-category-wrapper">
+<div class="home-category-wrapper grid-category-wrapper grid-col-2">
 <div class="page-header">
 <h2 class="home-category-title"><span class="glyphicon glyphicon-link"></span> Lorem ipsum</h2>
 </div>

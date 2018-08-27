@@ -23,9 +23,8 @@ class Comments extends Zira\Widget {
         if (!$layout) $layout = Zira\Config::get('layout');
 
         $is_sidebar = $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_LEFT || $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_RIGHT;
-        $is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
 
-        return self::CACHE_PREFIX.'.'.strtolower(str_replace('\\','.',get_class($this))).'.side'.intval($is_sidebar).'.grid'.intval($is_grid).'.'.Zira\Locale::getLanguage();
+        return self::CACHE_PREFIX.'.'.strtolower(str_replace('\\','.',get_class($this))).'.side'.intval($is_sidebar).'.'.Zira\Locale::getLanguage();
     }
 
     public static function getLastCommentsRecordsList($limit = null, $last_id = null) {
@@ -106,8 +105,7 @@ class Comments extends Zira\Widget {
         if (!$layout) $layout = Zira\Config::get('layout');
 
         $is_sidebar = $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_LEFT || $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_RIGHT;
-        //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS && !$is_sidebar;
-        $is_grid = Zira\Config::get('site_records_grid', 1) && !$is_sidebar;
+        $grid = Zira\Config::get('site_records_grid', 1);
 
         $records = self::getLastCommentsRecordsList($limit);
         if (empty($records)) return;
@@ -116,7 +114,7 @@ class Comments extends Zira\Widget {
             'title' => Zira\Locale::t('Last comments'),
             'url' => '',
             'records' => $records,
-            'grid' => $is_grid,
+            'grid' => !$is_sidebar ? $grid : 0,
             'settings' => array(
                 'sidebar' => $is_sidebar
             )

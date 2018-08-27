@@ -1,4 +1,4 @@
-<div class="block<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
+<div class="block<?php if (!empty($grid)) echo ' grid-category-wrapper grid-col-'.(intval($grid)+1) ?>">
 <?php if (!empty($title)): ?>
 <div class="page-header">
 <h2 class="widget-title"><?php echo Zira\Helper::html($title) ?></h2>

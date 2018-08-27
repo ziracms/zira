@@ -1803,7 +1803,7 @@ a.scroll-top.visible:visited {
     text-decoration: none;
 }
 .grid-category-wrapper .list-item {
-    width: 49%;
+    width: 49.2%;
     display: inline-block;
     vertical-align: top;
     margin-bottom: 8px;
@@ -1816,7 +1816,25 @@ a.scroll-top.visible:visited {
     position: absolute;
     bottom: 0px;
 }
-.grid-category-wrapper .list-item:nth-child(2) {
+.grid-category-wrapper.grid-col-2 .list-item:nth-child(2n) {
+    margin-right: 0px;
+}
+.grid-category-wrapper.grid-col-3 .list-item {
+    width: 32.5%;
+}
+.grid-category-wrapper.grid-col-3 .list-item:nth-child(3n) {
+    margin-right: 0px;
+}
+.grid-category-wrapper.grid-col-4 .list-item {
+    width: 24%;
+}
+.grid-category-wrapper.grid-col-4 .list-item:nth-child(4n) {
+    margin-right: 0px;
+}
+.grid-category-wrapper.grid-col-5 .list-item {
+    width: 19%;
+}
+.grid-category-wrapper.grid-col-5 .list-item:nth-child(5n) {
     margin-right: 0px;
 }
 
@@ -2282,7 +2300,8 @@ ul.vote-results li .vote-result {
 }
 .jplayer-audio-wrapper {
     display: none;
-    margin-bottom: 14px;
+    margin-top: 30px;
+    margin-bottom: 20px;
     overflow: hidden;
     border-radius: 8px;
     border: 1px solid #3B3E41;
@@ -2297,7 +2316,7 @@ ul.vote-results li .vote-result {
 }
 .jplayer-video-wrapper {
     display: none;
-    margin-bottom: 14px;
+    margin-bottom: 24px;
     overflow: hidden;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;

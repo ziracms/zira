@@ -18,14 +18,13 @@ class Index extends Zira\Controller {
         $layout = Zira\Page::getLayout();
         if (!$layout) $layout = Zira\Config::get('layout');
 
-        //$is_grid = $layout && $layout != Zira\View::LAYOUT_ALL_SIDEBARS;
-        $is_grid = Zira\Config::get('site_records_grid', 1);
+        $grid = Zira\Config::get('site_records_grid', 1);
 
         Zira\Page::setTitle(Zira\Locale::tm('Featured records', 'featured'));
 
         Zira\Page::setContentView(array(
             'records' => $rows,
-            'grid' => $is_grid
+            'grid' => $grid
         ),'featured/page', 'featured');
 
         Zira\Page::render(array(

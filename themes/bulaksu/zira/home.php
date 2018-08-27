@@ -1,7 +1,7 @@
 <?php if (!empty($categories)): ?>
 <?php foreach($categories as $category): ?>
 <?php if (empty($category['records'])) continue; ?>
-<div class="home-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
+<div class="home-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper grid-col-'.(intval($grid)+1) ?>">
 <?php if (!empty($category['title'])): ?>
 <div class="page-header">
 <?php if (!empty($category['url'])): ?>

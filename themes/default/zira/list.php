@@ -1,5 +1,5 @@
 <?php if (!empty($records)): ?>
-<ul class="list<?php if (!empty($grid)) echo ' grid-category-wrapper' ?><?php if (isset($class)) echo ' '.$class ?>">
+<ul class="list<?php if (!empty($grid)) echo ' grid-category-wrapper grid-col-'.(intval($grid)+1) ?><?php if (isset($class)) echo ' '.$class ?>">
 <?php $co = 0; ?>
 <?php foreach($records as $record): ?>
 <li class="list-item <?php echo $record->thumb ? 'with-thumb' : 'no-thumb' ?>">

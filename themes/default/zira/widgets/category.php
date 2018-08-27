@@ -1,4 +1,4 @@
-<div class="block widget-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper' ?>">
+<div class="block widget-category-wrapper<?php if (!empty($grid)) echo ' grid-category-wrapper grid-col-'.(intval($grid)+1) ?>">
 <?php if (!empty($title)): ?>
 <div class="page-header">
 <?php if (!empty($url)): ?>

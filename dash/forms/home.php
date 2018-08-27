@@ -44,7 +44,7 @@ class Home extends Form
         $html .= $this->select(Locale::t('Sort records'), 'home_records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
         $html .= $this->input(Locale::t('Records limit'), 'home_records_limit');
         $html .= $this->checkbox(Locale::t('Display records'), 'home_records_enabled', null, false);
-        $html .= $this->checkbox(Locale::t('Display records list in %s columns', 2), 'home_site_records_grid', null, false);
+        $html .= $this->radioButton(Locale::t('Record columns count'), 'home_site_records_grid', array('0'=>'1','1'=>'2','2'=>'3','3'=>'4','4'=>'5'));
         $html .= $this->input(Locale::t('Link record'), 'home_record_name', array('placeholder'=>Locale::t('Enter system name')));
         $html .= $this->close();
         return $html;
