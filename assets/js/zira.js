@@ -340,6 +340,32 @@
     };
 
     zira_init_grid = function() {
+        var wnd_w = $(window).width();
+        if (wnd_w<992) {
+            $('.container #content .grid-category-wrapper').each(function(){
+                if ($(this).hasClass('grid-col-3') && !$(this).hasClass('grid-col-4-bp')) {
+                    $(this).removeClass('grid-col-3').addClass('grid-col-3-bp').addClass('grid-col-2');
+                }
+                if ($(this).hasClass('grid-col-4') && !$(this).hasClass('grid-col-5-bp')) {
+                    $(this).removeClass('grid-col-4').addClass('grid-col-4-bp').addClass('grid-col-3');
+                }
+                if ($(this).hasClass('grid-col-5')) {
+                    $(this).removeClass('grid-col-5').addClass('grid-col-5-bp').addClass('grid-col-4');
+                }
+            });
+        } else {
+            $('.container #content .grid-category-wrapper').each(function(){
+                if ($(this).hasClass('grid-col-3-bp')) {
+                    $(this).removeClass('grid-col-3-bp').removeClass('grid-col-2').addClass('grid-col-3');
+                }
+                if ($(this).hasClass('grid-col-4-bp')) {
+                    $(this).removeClass('grid-col-4-bp').removeClass('grid-col-3').addClass('grid-col-4');
+                }
+                if ($(this).hasClass('grid-col-5-bp')) {
+                    $(this).removeClass('grid-col-5-bp').removeClass('grid-col-4').addClass('grid-col-5');
+                }
+            });
+        }
         $('.container #content .grid-category-wrapper .list-item').removeClass('jsed').css('height','auto');
 
         $('.container #content .grid-category-wrapper').each(function(){
@@ -358,13 +384,19 @@
                 if ($(this).hasClass('jsed')) return true;
                 if (co%divider==0 || (co==$(items).length && prev>0)) {
                     var h = Math.max(prev, $(this).outerHeight());
-                    $(prev).addClass('jsed').css('height',h);
-                    $(this).addClass('jsed').css('height',h);
+                    var eltop = $(this).offset().top;
                     var el = $(this);
+                    var cols = 0;
                     for (var y=0; y<divider-1; y++) {
                         el = $(el).prev('.list-item');
-                        if ($(el).hasClass('jsed')) break;
-                        $(el).addClass('jsed').css('height',h);
+                        if ($(el).length==0 || $(el).hasClass('jsed')) break;
+                        if ($(el).offset().top==eltop) {
+                            $(el).addClass('jsed').css('height',h);
+                            cols++;
+                        }
+                    }
+                    if (cols>0) {
+                        $(this).addClass('jsed').css('height',h);
                     }
                     prev = 0;
                 } else if ($(this).outerHeight()>prev) {
