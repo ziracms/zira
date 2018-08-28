@@ -21,7 +21,7 @@ class Designer extends Dash\Models\Model {
         if (!$id) return array('error' => Zira\Locale::t('An error occurred'));
         
         $content = trim(strip_tags(Zira\Request::post('content')));
-        if (empty($content)) return;
+        if (empty($content)) return array('error' => Zira\Locale::t('Style has no changes'));
         
         $style = new \Designer\Models\Style($id);
         if (!$style->loaded()) return array('error' => Zira\Locale::t('An error occurred'));

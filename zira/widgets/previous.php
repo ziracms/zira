@@ -29,7 +29,8 @@ class Previous extends Zira\Widget {
 
         $comments_enabled = $category->comments_enabled !== null ? $category->comments_enabled : Zira\Config::get('comments_enabled', 1);
         $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);
-        $display_author = $category->display_author !== null ? $category->display_author : Zira\Config::get('display_author', 0);
+        //$display_author = $category->display_author !== null ? $category->display_author : Zira\Config::get('display_author', 0);
+        $display_author = false; // disabled
         $display_date = $category->display_date !== null ? $category->display_date : Zira\Config::get('display_date', 0);
 
         $layout = Zira\Page::getLayout();

@@ -240,6 +240,7 @@ textarea {
     text-align: right;
     font-style: italic;
     font-size: 90%;
+    margin: 20px 10px 30px;
 }
 
 @keyframes loader {

@@ -39,9 +39,6 @@
 <?php if (!empty($category['settings']['rating_enabled'])): ?>
 <span class="list-info likes-count"><span class="glyphicon glyphicon-thumbs-up"></span> <?php echo $record->rating ?></span>
 <?php endif; ?>
-<?php if ($record->category_name && $record->category_title): ?>
-<span class="list-info category"><span class="glyphicon glyphicon-tag"></span> <a href="<?php echo Zira\Helper::url(Zira\Page::generateCategoryUrl($record->category_name)) ?>" title="<?php echo Zira\Helper::html(t($record->category_title)) ?>"><?php echo Zira\Helper::html(t($record->category_title)) ?></a></span>
-<?php endif; ?>
 </div>
 </li>
 <?php endforeach; ?>

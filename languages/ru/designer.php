@@ -12,5 +12,6 @@ return array(
     'Syntax error' => 'Синтаксическая ошибка',
     'main style' => 'основной стиль',
     'Color' => 'Цвет',
-    'Theme font' => 'Шрифт темы'
+    'Theme font' => 'Шрифт темы',
+    'Style has no changes' => 'Нет изменений в стиле'
 );

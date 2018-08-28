@@ -705,9 +705,9 @@
                     $('#article-info-designer-colorpicker').tooltip();
                     designer_colorpicker($('#article-info-designer-colorpicker'), article_info_color, function(color){
                         $('#content main article .article-info .datetime,#content main article .article-info .author').css('color', color);
-                        $('.page-header').css('borderBottom', '1px solid '+color);
+                        //$('.sidebar .page-header').css('borderBottom', '1px solid '+color);
                         setColorStyle('#content main article .article-info .datetime,#content main article .article-info .author', color);
-                        setBorderBottomStyle('.page-header', '1px solid '+color);
+                        setBorderBottomColorStyle('.page-header', color);
                         setBorderBottomStyle('.user-profile h2', '1px solid '+color);
                     });
 
@@ -2508,7 +2508,11 @@
                     regexp3 = new RegExp('^([a-z\-]+)[\(](.+)[\)][\x20]*$','gi');
                     m3 = regexp3.exec(value);
                     if (!m3) {
-                        setBackgroundStyle(element, value, true);
+                        if (prop == 'background-image') {
+                            setBackgroundImageStyle(element, value, true);
+                        } else if (prop == 'background') {
+                            setBackgroundStyle(element, value, true);
+                        }
                     } else if (m3[1] == 'url') {
                         setBackgroundImageStyle(element, m3[2], true);
                     } else if (m3[1] == 'linear-gradient' && (m4 = parseGradient(m3[2]))) {
@@ -2517,7 +2521,11 @@
                                 m3[1] != '-webkit-gradient' && 
                                 m3[1] != '-o-linear-gradient'
                         ) {
-                        setBackgroundStyle(element, value, true);
+                        if (prop == 'background-image') {
+                            setBackgroundImageStyle(element, value, true);
+                        } else if (prop == 'background') {
+                            setBackgroundStyle(element, value, true);
+                        }
                     }
                 } else if (prop == 'background-color') {
                     setBackgroundColorStyle(element, value, true);
