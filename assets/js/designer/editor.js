@@ -584,7 +584,7 @@
                         $('#search-color-designer-colorpicker').hide();
                         return;
                     }
-                    var search_cx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                    var search_cx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2-1.75*colorpicker_size;
                     var search_cy = $('header #top-menu-wrapper #form-search-form').offset().top+($('header #top-menu-wrapper #form-search-form').outerHeight()-colorpicker_size)/2;
                     $('#search-color-designer-colorpicker').css({'left':search_cx,'top':search_cy});
                     $('#search-color-designer-colorpicker').show();
@@ -607,7 +607,7 @@
                         $('#search-bg-designer-colorpicker').hide();
                         return;
                     }
-                    var search_gx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                    var search_gx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2-.25*colorpicker_size;
                     var search_gy = $('header #top-menu-wrapper #form-search-form').offset().top+($('header #top-menu-wrapper #form-search-form').outerHeight()-colorpicker_size)/2;
                     $('#search-bg-designer-colorpicker').css({'left':search_gx,'top':search_gy});
                     $('#search-bg-designer-colorpicker').show();
@@ -623,6 +623,25 @@
                     setTextShadowStyle('header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default', '0 1px 0 '+hexColor(color));
                     setFilterStyle('#top-menu-wrapper nav .btn-default', 'none');
                     setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', 'none');
+                });
+
+                // header search border color
+                var search_border_color = '#efefef';
+                $('body').append('<div class="designer_colorpicker" id="search-border-designer-colorpicker" title="'+t('Search border color')+'"></div>');
+                designer_positions['search_border'] = function() {
+                    if ($('header #top-menu-wrapper #form-search-form').css('display')=='none' || $('header #top-menu-wrapper #form-search-form').css('visibility')=='hidden') {
+                        $('#search-border-designer-colorpicker').hide();
+                        return;
+                    }
+                    var search_gx = $('header #top-menu-wrapper #form-search-form').offset().left+($('header #top-menu-wrapper #form-search-form').outerWidth()-colorpicker_size)/2+1.25*colorpicker_size;
+                    var search_gy = $('header #top-menu-wrapper #form-search-form').offset().top+($('header #top-menu-wrapper #form-search-form').outerHeight()-colorpicker_size)/2;
+                    $('#search-border-designer-colorpicker').css({'left':search_gx,'top':search_gy});
+                    $('#search-border-designer-colorpicker').show();
+                };
+                $('#search-border-designer-colorpicker').tooltip();
+                designer_colorpicker($('#search-border-designer-colorpicker'), search_border_color, function(color){
+                    $('header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color);
+                    setBorderColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle,header .navbar-default .navbar-collapse,.navbar-default .navbar-form', hexColor(color));
                 });
             }
         }
@@ -1352,7 +1371,7 @@
             $('body').append('<div class="designer_colorpicker" id="lists-color-designer-gradientpicker" title="'+t('Records text color')+'"></div><div class="designer_gradientpicker_hidden" id="lists-color-designer-gradientpicker-hidden"></div>');
             designer_positions['lists_txt'] = function() {
                 var lists_tx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
-                var lists_ty = $('.home-list').offset().top-3*colorpicker_size;
+                var lists_ty = $('.home-list').offset().top-2*colorpicker_size;
                 $('#lists-color-designer-gradientpicker').css({'left':lists_tx,'top':lists_ty});
                 $('#lists-color-designer-gradientpicker-hidden').css({'left':lists_tx+colorpicker_wnd_size,'top':lists_ty});
             };
@@ -1442,7 +1461,7 @@
             $('body').append('<div class="designer_gradientpicker" id="lists-bg-designer-gradientpicker" title="'+t('Records background')+'"></div><div class="designer_gradientpicker_hidden" id="lists-bg-designer-gradientpicker-hidden"></div>');
             designer_positions['lists_bg'] = function() {
                 var lists_bx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
-                var lists_by = $('.home-list').offset().top-3*colorpicker_size;
+                var lists_by = $('.home-list').offset().top-2*colorpicker_size;
                 $('#lists-bg-designer-gradientpicker').css({'left':lists_bx,'top':lists_by});
                 $('#lists-bg-designer-gradientpicker-hidden').css({'left':lists_bx+colorpicker_wnd_size,'top':lists_by});
             };
@@ -1558,6 +1577,46 @@
                 setBackgroundStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
                 setBorderColorStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color1);
             }, 'right', 'rgb');
+
+            // lists border color
+            var lists_border_color = '#efefef';
+            $('body').append('<div class="designer_colorpicker" id="lists-border-designer-colorpicker" title="'+t('Records border color')+'"></div>');
+            designer_positions['lists_border'] = function() {
+                var lists_bx = $('.home-list').offset().left+($('.home-list').outerWidth()-colorpicker_size)/2+2.25*colorpicker_size;
+                var lists_by = $('.home-list').offset().top-2*colorpicker_size;
+                $('#lists-border-designer-colorpicker').css({'left':lists_bx,'top':lists_by});
+            };
+            $('#lists-border-designer-colorpicker').tooltip();
+            designer_colorpicker($('#lists-border-designer-colorpicker'), lists_border_color, function(color){
+                $('#main-container .list-item').css('borderColor', color);
+                $('#main-container .list-item .list-title-wrapper').css('borderColor', color);
+                $('.sidebar .page-header,.sidebar .list .list-item').css('borderColor', color);
+                $('.sidebar .list .list-item a.list-thumb:link, .sidebar .list .list-item a.list-thumb:visited').css('borderColor', color);
+                $('.pagination > li > a,.pagination > li > span').css('borderColor', color);
+                $('.pagination > .active > a,.pagination > .active > span').css('borderColor', color);
+                
+                removeBorderColorStyle('.sidebar .list .list-item');
+                removeBorderColorStyle('.sidebar .list .list-item .list-title-wrapper');
+                removeBorderColorStyle('.sidebar .page-header');
+                removeBorderColorStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited');
+                removeBorderColorStyle('.sidebar .list .list-item');
+                removeBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-dows-wrapper');
+                removeBorderColorStyle('.sidebar .zira-calendar-wrapper .zira-calendar-days-wrapper');
+                    
+                setBorderColorStyle('.list .list-item', color);
+                setBorderColorStyle('.list .list-item .list-title-wrapper', color);
+                setBorderColorStyle('.sidebar .page-header', color);
+                setBorderColorStyle('.sidebar .list .list-item a.list-thumb:link,.sidebar .list .list-item a.list-thumb:visited', color);
+                setBorderColorStyle('.sidebar .list .list-item', color);
+                setBorderColorStyle('.image-wrapper', color);
+                
+                setBorderColorStyle('.messages-panel .navbar', color);
+
+                setBorderColorStyle('.pagination > li > a,.pagination > li > span', color);
+                setBorderColorStyle('.pagination > li > a:focus,.pagination > li > a:hover,.pagination > li > span:focus,.pagination > li > span:hover', color);
+                setBorderColorStyle('.pagination > .active > a,.pagination > .active > a:focus,.pagination > .active > a:hover,.pagination > .active > span,.pagination > .active > span:focus,.pagination > .active > span:hover', color);
+                setBorderColorStyle('.pagination > .disabled > a,.pagination > .disabled > a:focus,.pagination > .disabled > a:hover,.pagination > .disabled > span,.pagination > .disabled > span:focus,.pagination > .disabled > span:hover', color);
+            }, 'right', false);
         }
 
         // sidebar lists

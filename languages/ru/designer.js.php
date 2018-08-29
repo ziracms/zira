@@ -71,6 +71,8 @@ return array(
     'Widgets background' => 'Фон виджетов',
     'This style belongs to another theme.' => 'Этот стиль принадлежит другой теме.',
     'Sorry, your current theme is not supported.' => 'Извините, ваша текущая тема не поддерживается.',
-    'Search' => 'Поиск'
+    'Search' => 'Поиск',
+    'Records border color' => 'Цвет рамок записей',
+    'Search border color' => 'Цвет рамок поиска'
 );
 
