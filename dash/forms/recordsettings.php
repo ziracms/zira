@@ -21,6 +21,7 @@ class Recordsettings extends Form
     protected $_label_class = 'col-sm-5 control-label';
     protected $_input_wrap_class = 'col-sm-7';
     protected $_input_offset_wrap_class = 'col-sm-offset-5 col-sm-7';
+    protected $_select_wrapper_class = 'col-sm-5';
 
     protected $_checkbox_inline_label = false;
 
@@ -46,7 +47,7 @@ class Recordsettings extends Form
         $html .= $this->input(Locale::t('Thumbs height'), 'thumbs_height', array('placeholder'=>self::THUMB_MIN_SIZE.' - '.self::THUMB_MAX_SIZE));
         $html .= $this->select(Locale::t('Image quality'), 'jpeg_quality', $q_arr);
         $html .= $this->checkbox(Locale::t('Create thumbnails'), 'create_thumbnails', null, false);
-        $html .= $this->select(Locale::t('Slider type'), 'slider_type', array('default'=>Locale::t('Default'), 'slider3d'=>Locale::t('3D slider')));
+        $html .= $this->select(Locale::t('Slider type'), 'slider_type', array('default'=>Locale::t('Default'), 'slider3d'=>Locale::t('3D slider'), 'fullscreen'=>Locale::t('Fullscreen slider')));
         $html .= $this->radioButton(Locale::t('Slider mode'), 'slider_mode', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'));
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);

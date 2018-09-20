@@ -195,7 +195,7 @@ class Index extends Zira\Page {
                         $video_co = 0;
                     }
 
-                    if ($slides_co > 0) static::setSlider($slides);
+                    if ($slides_co > 0) static::setSlider($slides, true);
                     if ($images_co > 0) static::setGallery($images, $access_gallery);
                     if ($audio_co > 0) static::setAudio($audio, $access_audio);
                     if ($video_co > 0) static::setVideo($video, $access_video, $record->image);

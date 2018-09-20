@@ -211,8 +211,8 @@ class Page {
         return Dash::isFrame() && Permission::check(Permission::TO_ACCESS_DASHBOARD);
     }
 
-    public static function setSlider(array $images) {
-        View::addSlider('slider', View::getSliderSettings());
+    public static function setSlider(array $images, $is_home = false) {
+        View::addSlider('slider', View::getSliderSettings($is_home), $is_home);
         //View::addPlaceholderView(View::VAR_CONTENT_TOP, array('images'=>$images), 'zira/slider');
         self::$_placeholders_data[self::VIEW_PLACEHOLDER_SLIDER_DATA] = array('images'=>$images);
     }

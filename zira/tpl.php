@@ -18,6 +18,22 @@ function render($data, $view) {
 }
 
 function renderSlider() {
+    $type = Zira\Config::get('slider_type');
+    if (!Zira\Router::getRequest() && Zira\Router::getModule()==DEFAULT_MODULE && Zira\Router::getController()==DEFAULT_CONTROLLER && Zira\Router::getAction()==DEFAULT_ACTION) {
+        $type = Zira\Config::get('home_slider_type', $type);
+    }
+    if ($type == 'fullscreen') return;
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA], Zira\Page::VIEW_PLACEHOLDER_SLIDER_VIEW);
+    }
+}
+
+function renderFullscreenSlider() {
+    $type = Zira\Config::get('slider_type');
+    if (!Zira\Router::getRequest() && Zira\Router::getModule()==DEFAULT_MODULE && Zira\Router::getController()==DEFAULT_CONTROLLER && Zira\Router::getAction()==DEFAULT_ACTION) {
+        $type = Zira\Config::get('home_slider_type', $type);
+    }
+    if ($type != 'fullscreen') return;
     if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA])) {
         render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_SLIDER_DATA], Zira\Page::VIEW_PLACEHOLDER_SLIDER_VIEW);
     }
@@ -87,6 +103,7 @@ function layout_head() {
 
 function layout_body_top() {
     echo Zira\View::getLayoutData(Zira\View::VAR_BODY_TOP);
+    renderFullscreenSlider();
     Zira\View::includePlaceholderViews(Zira\View::VAR_BODY_TOP);
     Zira\View::renderWidgets(Zira\View::VAR_BODY_TOP);
 }

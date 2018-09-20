@@ -1,0 +1,233 @@
+.carousel-slider-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #070D11;
+    overflow: hidden;
+}
+.carousel-slider {
+    display: none;
+}
+.carousel-slider-wrapper .carousel-slider-btn:link,
+.carousel-slider-wrapper .carousel-slider-btn:visited {
+    display: block;
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    background-image: url(../images/zs-nav.png);
+    background-repeat: no-repeat;
+    text-decoration: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 1s ease;
+    outline: none;
+    cursor: default;
+}
+.carousel-slider-wrapper .carousel-slider-btn.enabled:link,
+.carousel-slider-wrapper .carousel-slider-btn.enabled:visited {
+    opacity: .7;
+    cursor: pointer;
+}
+.carousel-slider-wrapper .carousel-slider-btn.enabled:hover {
+    opacity: 1;
+}
+.carousel-slider-wrapper .carousel-slider-prev-btn:link,
+.carousel-slider-wrapper .carousel-slider-prev-btn:visited {
+    top: 0;
+    left: 0;
+    background-position: top left;
+}
+.carousel-slider-wrapper .carousel-slider-next-btn:link,
+.carousel-slider-wrapper .carousel-slider-next-btn:visited {
+    top: 0;
+    right: 0;
+    background-position: top right;
+}
+.carousel-slider-wrapper .carousel-slider-loader-outer {
+    display: none;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: none;
+    border-top: 1px solid #213ea2;
+    border-left: 1px solid #8505a7;
+    border-right: 1px solid #A8950E;
+    border-bottom: 1px solid #0a6334;
+    border-radius: 100px;
+    animation: ziraCarouselSliderLoader 5s linear infinite;
+}
+.carousel-slider-wrapper .carousel-slider-loader {
+    display: none;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: none;
+    border-top: 3px solid #1041EC;
+    border-left: 3px solid #B90DE4;
+    border-right: 3px solid #EFD40F;
+    border-bottom: 3px solid transparent;
+    border-radius: 80px;
+    animation: ziraCarouselSliderLoader 1.5s linear infinite;
+}
+.carousel-slider-wrapper .carousel-slider-loader-inner {
+    width: 30px;
+    height: 30px;
+    margin: 8px;
+    background: none;
+    border-top: 3px solid #7276D7;
+    border-left: 3px solid #18E646;
+    border-right: 3px solid #DD118B;
+    border-bottom: 3px solid #EFD519;
+    border-radius: 30px;
+    animation: ziraCarouselSliderLoader .5s linear infinite;
+}
+.carousel-slider-wrapper .carousel-slider-loader-point {
+    width: 6px;
+    height: 6px;
+    margin: 6px;
+    background: #F2871E;
+    border-radius: 6px;
+    animation: ziraCarouselSliderLoader .4s linear infinite;
+}
+@keyframes ziraCarouselSliderLoader {
+    from {
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+@keyframes ziraCarouselSliderFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes ziraCarouselSliderFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+@keyframes ziraCarouselSliderSlideUp {
+    from {
+        margin-bottom: -50%;
+        opacity: 0;
+    }
+    to {
+        margin-bottom: 0;
+        opacity: 1;
+    }
+}
+@keyframes ziraCarouselSliderSlideDown {
+    from {
+        margin-bottom: 0;
+        opacity: 1;
+    }
+    to {
+        margin-bottom: -50%;
+        opacity: 0;
+    }
+}
+.carousel-slider-wrapper .carousel-slider-box {
+    display: none;
+    width: 100%;
+    height: 100%;
+    animation: ziraCarouselSliderFadeIn 2s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    transition: filter .3s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active {
+    display: block;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.animating {
+    display: block;
+    filter: brightness(80%);
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active.animating {
+    display: block;
+    filter: brightness(100%);
+}
+.carousel-slider-wrapper .carousel-slider-box-item p {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    background-color: #104838;
+    background-color: rgba(16, 71, 55, 0.8);
+    background-color: #10483899;
+    margin: 0;
+    box-shadow: 0px 0px 20px #000;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active p {
+    display: block;
+    animation: ziraCarouselSliderSlideUp 1s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active.animating p {
+    display: block;
+    animation: ziraCarouselSliderSlideDown 1s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item p span {
+    display: block;
+    padding: 30px 30px 90px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0px 0px 1px #000;
+}
+.carousel-slider-wrapper .carousel-slider-box-item a:link,
+.carousel-slider-wrapper .carousel-slider-box-item a:visited {
+    display: none;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 300px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #0a5c98;
+    background: linear-gradient(#0a5c98, #133853);
+    background: linear-gradient(#0a5c9899, #133853b3);
+    border: 1px solid #0c8993;
+    text-decoration: none;
+    box-shadow: 0px 0px 10px #0d5999;
+    text-shadow: 0px 0px 1px #000;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active a:link,
+.carousel-slider-wrapper .carousel-slider-box-item.active a:visited {
+    display: block;
+    animation: ziraCarouselSliderSlideUp 1s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item.active.animating a:link,
+.carousel-slider-wrapper .carousel-slider-box-item.active.animating a:visited {
+    display: block;
+    animation: ziraCarouselSliderSlideDown 1s ease;
+}
+.carousel-slider-wrapper .carousel-slider-box-item a:hover {
+    background-color: #118ede;
+}
+
+@media screen and (orientation: portrait) {
+    .carousel-slider-wrapper {
+        height: 50% !important;
+    }
+}

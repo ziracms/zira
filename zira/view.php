@@ -323,6 +323,8 @@ class View {
     public static function renderLayout() {
         require_once(ROOT_DIR . DIRECTORY_SEPARATOR . 'zira' . DIRECTORY_SEPARATOR . 'tpl.php');
         
+        $slider_type = Config::get('slider_type');
+        
         if (Router::getModule()!=DEFAULT_MODULE) {
             self::$body_class = Router::getModule().'-page';
         } else if (Router::getRequest() && Page::getRecordId()) {
@@ -331,11 +333,19 @@ class View {
             self::$body_class = 'category-page';
         } else if (!Router::getRequest() && Router::getModule()==DEFAULT_MODULE && Router::getController()==DEFAULT_CONTROLLER && Router::getAction()==DEFAULT_ACTION) {
             self::$body_class = 'home-page';
+            $slider_type = Config::get('home_slider_type', $slider_type);
         } else {
             self::$body_class = 'zira-page';
         }
         
         if (!Config::get('enable_breadcrumbs', 1)) self::$body_class .= ' no-breadcrumbs';
+        if ($slider_type == 'fullscreen' && !empty(self::$data[Page::VIEW_PLACEHOLDER_SLIDER_DATA])) {
+            self::$body_class .= ' fullscreen-slider';
+            $body_css_height = Helper::tag_open('style');
+            $body_css_height .= 'html,body{height:100%}';
+            $body_css_height .= Helper::tag_close('style');
+            self::addHTML($body_css_height, self::VAR_HEAD_BOTTOM);
+        }
         
         $js_scripts = '';
         if (self::$_render_js_strings) {
@@ -600,11 +610,14 @@ class View {
         self::$_lightbox_added = true;
     }
 
-    public static function addSliderAssets() {
+    public static function addSliderAssets($is_home=false) {
         if (self::$_slider_added) return;
         $type = Config::get('slider_type');
+        if ($is_home) $type = Config::get('home_slider_type', $type);
         if ($type == 'slider3d') {
             self::add3DSliderAssets();
+        } else if ($type == 'fullscreen') {
+            self::addFullscreenSliderAssets();
         } else {
             self::addDefaultSliderAssets();
         }
@@ -621,11 +634,19 @@ class View {
         self::addScript('slider3d.js');
     }
     
-    public static function addSlider($id, array $options=null) {
-        self::addSliderAssets();
+    public static function addFullscreenSliderAssets() {
+        self::addStyle('carousel.slider.css');
+        self::addScript('carousel.slider.js');
+    }
+    
+    public static function addSlider($id, array $options=null, $is_home=false) {
+        self::addSliderAssets($is_home);
         $type = Config::get('slider_type');
+        if ($is_home) $type = Config::get('home_slider_type', $type);
         if ($type == 'slider3d') {
             self::add3DSlider($id, $options);
+        } else if ($type == 'fullscreen') {
+            self::addFullscreenSlider($id, $options);
         } else {
             self::addDefaultSlider($id, $options);
         }
@@ -679,13 +700,41 @@ class View {
         self::addBodyBottomScript($script);
     }
     
-    public static function getSliderSettings() {
+    public static function addFullscreenSlider($id, array $options=null) {
+        $script = Helper::tag_open('script',array('type'=>'text/javascript'));
+        $script .= 'jQuery(document).ready(function(){ ';
+        $script .= 'jQuery(\'#'.Helper::html($id).'\').ziraCarouselSlider({';
+        if ($options) {
+            $_options = array();
+            foreach($options as $k=>$v) {
+                if (is_bool($v)) {
+                    $_options[]="'".Helper::html($k)."': ".($v ? 'true' : 'false');
+                } else if (is_int($v)) {
+                    $_options[]="'".Helper::html($k)."': ".Helper::html($v);
+                } else {
+                    $_options[]="'".Helper::html($k)."': '".Helper::html($v)."'";
+                }
+            }
+            $script .= implode(', ',$_options);
+        }
+        $script .= '});';
+        $script .= ' });';
+        $script .= Helper::tag_close('script');
+        //self::addHTML($script, self::VAR_HEAD_BOTTOM);
+        self::addBodyBottomScript($script);
+    }
+    
+    public static function getSliderSettings($is_home=false) {
         $mode = Config::get('slider_mode', 3);
+        if ($is_home) $mode = Config::get('home_slider_mode', $mode);
         if ($mode<1) $mode = 1;
         if ($mode>5) $mode = 5;
         $type = Config::get('slider_type');
+        if ($is_home) $type = Config::get('home_slider_type', $type);
         if ($type == 'slider3d') {
             return self::get3DSliderSettings($mode);
+        } else if ($type == 'fullscreen') {
+            return self::getFullscreenSliderSettings($mode);
         } else {
             return self::getDefaultSliderSettings($mode);
         }
@@ -736,6 +785,43 @@ class View {
         } else if ($mode == 5) {
             $settings['parts'] = 9;
             $settings['delay_time'] = 100;
+        }
+        return $settings;
+    }
+    
+    public static function getFullscreenSliderSettings($mode) {
+        $settings = array(
+            'timeout' => 12000,
+            'speed' => 1200,
+            'beforeTransitionDelay' => 600,
+            'frontWidthPercent' => 85,
+            'backWidthPercent' => 70,
+            'linkText' => Locale::t('Read more')
+        );
+        
+        if ($mode == 1) {
+            $settings['timeout'] = 8000;
+            $settings['speed'] = 1200;
+            $settings['beforeTransitionDelay'] = 0;
+            $settings['frontWidthPercent'] = 100;
+            $settings['backWidthPercent'] = 100;
+            $settings['leftOffsetXPercent'] = 100;
+            $settings['rightOffsetXPercent'] = 0;
+            $settings['animationEasing'] = false;
+        } else if ($mode == 2) {
+            $settings['timeout'] = 8000;
+            $settings['speed'] = 600;
+            $settings['beforeTransitionDelay'] = 300;
+        } else if ($mode == 4) {
+            $settings['timeout'] = 8000;
+            $settings['speed'] = 600;
+            $settings['beforeTransitionDelay'] = 0;
+            $settings['frontWidthPercent'] = 100;
+            $settings['backWidthPercent'] = 40;
+        } else if ($mode == 5) {
+            $settings['beforeTransitionDelay'] = 0;
+            $settings['frontWidthPercent'] = 100;
+            $settings['backWidthPercent'] = 40;
         }
         return $settings;
     }

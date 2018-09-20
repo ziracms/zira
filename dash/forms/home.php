@@ -41,6 +41,8 @@ class Home extends Form
         $html .= $this->input(Locale::t('Window title'), 'home_window_title', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Keywords'), 'home_keywords', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Description'), 'home_description', array('placeholder'=>Locale::t('max. %s characters', 255)));
+        $html .= $this->select(Locale::t('Slider type'), 'home_slider_type', array('default'=>Locale::t('Default'), 'slider3d'=>Locale::t('3D slider'), 'fullscreen'=>Locale::t('Fullscreen slider')));
+        $html .= $this->radioButton(Locale::t('Slider mode'), 'home_slider_mode', array('1'=>'1','2'=>'2','3'=>'3','4'=>'4','5'=>'5'));
         $html .= $this->select(Locale::t('Sort records'), 'home_records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
         $html .= $this->input(Locale::t('Records limit'), 'home_records_limit');
         $html .= $this->checkbox(Locale::t('Display records'), 'home_records_enabled', null, false);

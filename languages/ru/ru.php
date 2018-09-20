@@ -151,5 +151,6 @@ return array(
     'CAPTCHA' => 'CAPTCHA',
     'Recently published' => 'Последние публикации',
     'Last comments' => 'Последние комментарии',
-    'Anti-Bot' => 'Анти-Бот'
+    'Anti-Bot' => 'Анти-Бот',
+    'Read more' => 'Подробнее'
 );

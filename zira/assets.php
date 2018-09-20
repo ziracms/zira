@@ -35,6 +35,7 @@ class Assets {
         'lightbox.css',
         'bxslider.css',
         'slider3d.css',
+        'carousel.slider.css',
         'jplayer.css',
         'zira.css'
     );
@@ -49,6 +50,7 @@ class Assets {
         'cropper.js',
         'bxslider.min.js',
         'slider3d.js',
+        'carousel.slider.js',
         'md5.js',
         'parse.js',
         'upload.inc.js',

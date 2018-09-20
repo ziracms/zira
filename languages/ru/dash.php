@@ -430,5 +430,6 @@ return array(
     'New widget' => 'Новый виджет',
     'Delete menu' => 'Удалить меню',
     'Calendar of publications' => 'Календарь публикаций',
-    'Record columns count' => 'Число колонок записей'
+    'Record columns count' => 'Число колонок записей',
+    'Fullscreen slider' => 'Полноэкранный слайдер'
 );

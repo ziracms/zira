@@ -242,6 +242,13 @@ textarea {
     font-size: 90%;
     margin: 20px 10px 30px;
 }
+.fullscreen-slider .slider-wrapper {
+    height: 100%;
+    background-color: #070D11;
+}
+.fullscreen-slider .slider-wrapper .slider {
+    display: none;
+}
 
 @keyframes loader {
   0% { 
