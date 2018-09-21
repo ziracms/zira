@@ -103,7 +103,6 @@ function layout_head() {
 
 function layout_body_top() {
     echo Zira\View::getLayoutData(Zira\View::VAR_BODY_TOP);
-    renderFullscreenSlider();
     Zira\View::includePlaceholderViews(Zira\View::VAR_BODY_TOP);
     Zira\View::renderWidgets(Zira\View::VAR_BODY_TOP);
 }

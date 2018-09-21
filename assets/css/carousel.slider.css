@@ -43,6 +43,22 @@
     right: 0;
     background-position: top right;
 }
+.carousel-slider-wrapper .carousel-slider-close-btn:link,
+.carousel-slider-wrapper .carousel-slider-close-btn:visited {
+    display: block;
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    opacity: .7;
+    background: url(../images/close-small.png) no-repeat 0 0;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    transition: opacity .5s ease;
+}
+.carousel-slider-wrapper .carousel-slider-close-btn:hover {
+    opacity: 1;
+}
 .carousel-slider-wrapper .carousel-slider-loader-outer {
     display: none;
     position: absolute;
@@ -226,8 +242,17 @@
     background-color: #118ede;
 }
 
-@media screen and (orientation: portrait) {
-    .carousel-slider-wrapper {
-        height: 50% !important;
+@media only screen and (max-width: 767px) {
+    .carousel-slider-wrapper .carousel-slider-box-item p span {
+        font-size: 16px;
+        padding: 10px 20px 56px;
+    }
+    .carousel-slider-wrapper .carousel-slider-box-item a:link,
+    .carousel-slider-wrapper .carousel-slider-box-item a:visited {
+        font-size: 12px;
+        width: 200px;
+        height: 34px;
+        line-height: 34px;
+        bottom: 10px;
     }
 }

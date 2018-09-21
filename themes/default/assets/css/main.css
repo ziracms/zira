@@ -360,6 +360,9 @@ header .header-top-buttons .header-top-button .social-btn {
     box-shadow: none;
     margin-top: -5px;
 }
+.fullscreen-slider header {
+    z-index: 1;
+}
 ul#user-menu {
     list-style-type: none;
     display: block;
@@ -2253,5 +2256,14 @@ a.scroll-top.visible:visited {
 @media (min-width: 1200px) {
     .container {
         width: 1180px;
+    }
+}
+
+@media screen and (orientation: portrait) {
+    .fullscreen-slider .slider-wrapper {
+        position: fixed;
+        bottom: 0;
+        height: 50% !important;
+        border-top: 5px solid #d4d4d4;
     }
 }

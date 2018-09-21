@@ -7,6 +7,7 @@
 <?php layout_head() ?>
 </head>
 <body class="<?php echo Zira\Helper::html(Zira\View::$body_class); ?>">
+<?php renderFullscreenSlider(); ?>
 <?php layout_body_top() ?>
 <div id="main-container-wrapper"><div id="main-container">
 <header>

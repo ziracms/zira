@@ -578,6 +578,9 @@ header .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
     border-color: #ABABAB;
 }
+.fullscreen-slider header {
+    z-index: 1;
+}
 ul#user-menu {
     list-style-type: none;
     display: block;
@@ -2742,5 +2745,14 @@ ul.vote-results li .vote-result {
 @media (min-width: 1200px) {
     .container {
         width: 1180px;
+    }
+}
+
+@media screen and (orientation: portrait) {
+    .fullscreen-slider .slider-wrapper {
+        position: fixed;
+        bottom: 0;
+        height: 50% !important;
+        border-top: 5px solid #424044;
     }
 }

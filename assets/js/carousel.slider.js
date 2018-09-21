@@ -214,6 +214,8 @@
                 this.loopTimer = window.setInterval(this.bind(this, this.animate), this.options.interval);
             }
         }
+        $(this.container).append('<a class="carousel-slider-close-btn" href="javascript:void(0)"></a>');
+        $(this.container).children('.carousel-slider-close-btn').click(this.bind(this, this.destroy));
     };
     
     ziraCarouselSlider.prototype.bindItemsTouchEvents = function() {
@@ -628,6 +630,18 @@
         return function(arg1, arg2) {
             method.call(object, arg1, arg2);
         };
+    };
+    
+    ziraCarouselSlider.prototype.destroy = function() {
+        this.initialized = false;
+        this.stopTimer();
+        try {
+            window.clearInterval(this.loopTimer);
+        } catch (err) {};
+        $(this.container).trigger('carousel.slider.destroy');
+        $(this.container).animate({height: 0}, 500, this.bind(this, function() {
+            $(this.container).remove();
+        }));
     };
     
     $.fn.ziraCarouselSlider = function(opts) {
