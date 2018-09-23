@@ -251,26 +251,34 @@
             var zira_fullscreen_slider_parallax = function(){
                 if (zira_fullscreen_slider_destroyed) {
                     $('header').css('marginTop', 0);
-                    $('header').css('filter', 'brightness(100%)');
                     return;
                 }
                 if (zira_fullscreen_slider_window_width>zira_fullscreen_slider_window_height) {
                     var top = $(window).scrollTop();
-                    var marginTop = zira_fullscreen_slider_header_height - top;
+                    var heightOffset = zira_fullscreen_slider_window_height * .7;
+                    var marginTop = heightOffset - top;
                     if (marginTop<0) marginTop = 0;
-                    var brightness = Math.round(top / zira_fullscreen_slider_header_height * 100);
+                    var brightness = Math.round(top / heightOffset * 100);
                     if (brightness > 100) brightness = 100;
-                    $('header').css('marginTop', -1*marginTop);
-                    $('header').css('filter', 'brightness('+brightness+'%)');
+                    var sliderFilter = 'brightness('+(100-brightness/2)+'%)';
+                    var shadowOffset = 50-brightness/2;
+                    var sliderShadow = '0px '+shadowOffset+'px '+shadowOffset+'px rgba(0,0,0,.7)';
+                    if (top == 0) {
+                        sliderFilter = 'none';
+                        sliderShadow = 'none';
+                    }
+                    $('header').css('marginTop', -.4*marginTop);
+                    $('.fullscreen-slider .slider-wrapper').css('filter', sliderFilter);
+                    $('.fullscreen-slider .slider-wrapper').css('box-shadow', sliderShadow);
                 } else {
                     $('header').css('marginTop', 0);
-                    $('header').css('filter', 'brightness(100%)');
+                    $('.fullscreen-slider .slider-wrapper').css('filter', 'none');
+                    $('.fullscreen-slider .slider-wrapper').css('box-shadow', 'none');
                 }
             };
             var zira_fullscreen_slider_get_heights = function(){
                 zira_fullscreen_slider_window_width = $(window).width();
                 zira_fullscreen_slider_window_height = $(window).height();
-                zira_fullscreen_slider_header_height = $('header').outerHeight();
             };
             zira_fullscreen_slider_get_heights();
             zira_fullscreen_slider_destroyed = false;
