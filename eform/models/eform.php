@@ -11,6 +11,8 @@ use Zira;
 use Zira\Orm;
 
 class Eform extends Orm {
+    const WIDGET_CLASS = '\Eform\Widgets\Eform';
+    
     public static $table = 'eforms';
     public static $pk = 'id';
     public static $alias = 'efm';

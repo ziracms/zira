@@ -214,3 +214,10 @@ var dash_eform_page = function() {
         window.location.href=url(dash_eform_route+'/'+selected[0].page);
     }
 };
+
+var dash_eform_widget = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('eform/dash/widget'),{'item':selected[0].data});
+    }
+};

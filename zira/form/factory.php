@@ -459,6 +459,7 @@ class Factory {
         $id = $name.'-datepicker';
         if ($attributes === null) $attributes = array();
         if (!isset($attributes['class'])) $attributes['class'] = $this->_input_class;
+        if (!isset($attributes['placeholder'])) $attributes['placeholder'] = Zira\Locale::t(Zira\Config::get('datepicker_date_format'));
         $error_class = '';
         if ($this->isErrorField($name)) $error_class=' '.$this->_field_error_class;
         $label = Form::label($label, $name, array('class'=>$this->_label_class));

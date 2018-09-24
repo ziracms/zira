@@ -152,5 +152,6 @@ return array(
     'Recently published' => 'Последние публикации',
     'Last comments' => 'Последние комментарии',
     'Anti-Bot' => 'Анти-Бот',
-    'Read more' => 'Подробнее'
+    'Read more' => 'Подробнее',
+    'DD.MM.YYYY' => 'ДД.ММ.ГГГГ'
 );

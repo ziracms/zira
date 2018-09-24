@@ -160,7 +160,7 @@ class View {
         } else {
             $attributes['src'] = Helper::jsThemeUrl($url);
         }
-        self::addHTML(Helper::tag('script', null, $attributes),self::VAR_SCRIPTS);
+        self::addHTML(Helper::tag('script', null, $attributes),(!self::$_render_started ? self::VAR_SCRIPTS : self::VAR_BODY_BOTTOM));
     }
 
     public static function addThemeScript($url, array $attributes = null) {
