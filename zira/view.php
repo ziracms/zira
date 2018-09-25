@@ -67,6 +67,7 @@ class View {
     protected static $_jplayer_assets_added = false;
     protected static $_colorpicker_assets_added = false;
     protected static $_colorpicker_added = false;
+    protected static $_upload_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -135,7 +136,7 @@ class View {
         self::addHTML($html,self::VAR_META);
     }
 
-    public static function addStyle($url, $theme = false, array $attributes = null) {
+    public static function addStyle($url, $theme = false, array $attributes = null, $bodyAllowed = false) {
         if (Assets::isActive() && Assets::isMergedCSS($url)) return;
         if (!$attributes) $attributes = array();
         if (!isset($attributes['rel'])) $attributes['rel'] = 'stylesheet';
@@ -145,7 +146,16 @@ class View {
         } else {
             $attributes['href'] = Helper::cssThemeUrl($url);
         }
-        self::addHTML(Helper::tag_short('link', $attributes),self::VAR_STYLES);
+        if (self::$_render_started && $bodyAllowed) {
+            $js = Helper::tag_open('script', array('type'=>'text/javascript'));
+            $js .= 'jQuery(document).ready(function(){';
+            $js .= 'zira_load_stylesheet(\''.$attributes['href'].'\');';
+            $js .= '});';
+            $js .= Helper::tag_close('script');
+            self::addHTML($js, self::VAR_BODY_BOTTOM);
+        } else {
+            self::addHTML(Helper::tag_short('link', $attributes),self::VAR_STYLES);
+        }
     }
 
     public static function addThemeStyle($url, array $attributes = null) {
@@ -352,7 +362,7 @@ class View {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
             $js_scripts .= 'zira_base = \''.Helper::baseUrl('').'\';';
             if (Config::get('captcha_type', Models\Captcha::TYPE_DEFAULT)==Models\Captcha::TYPE_RECAPTCHA) {
-                $js_scripts .= 'zira_recaptcha_url = \''.Models\Captcha::RECAPTCHA_JS_URL.'?hl='.(Locale::getLanguage()).'\';';
+                $js_scripts .= 'zira_recaptcha_url = \''.Models\Captcha::RECAPTCHA_JS_URL.'?hl='.(Locale::getLanguage()).'&render=explicit&onload=zira_recaptcha_onload\';';
             }
             $js_scripts .= 'zira_scroll_effects_enabled = '.(Config::get('site_scroll_effects',1) ? 'true' : 'false').';';
             $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';
@@ -597,6 +607,13 @@ class View {
         if (self::$_jquery_added) return;
         self::addScript('jquery.min.js');
         self::$_jquery_added = true;
+    }
+    
+    public static function addUploadJS() {
+        if (self::$_upload_added) return;
+        self::addScript('upload.inc.js');
+        self::addScript('upload.js');
+        self::$_upload_added = true;
     }
 
     public static function addLightbox() {
@@ -894,7 +911,7 @@ class View {
 
     public static function addDatepickerAssets() {
         if (self::$_datepicker_assets_added) return;
-        self::addStyle('bootstrap-datetimepicker.min.css');
+        self::addStyle('bootstrap-datetimepicker.min.css', false, null, true);
         self::addScript('moment.min.js');
         if (Locale::getLanguage()=='ru') self::addScript('moment-locale-ru.js');
         else if (Locale::getLanguage()!='en' && file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR . 'moment-locale-' . Locale::getLanguage() . '.js')) {

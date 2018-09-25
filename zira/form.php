@@ -15,8 +15,7 @@ abstract class Form extends Form\Factory {
         $this->_init();
 
         if ($this->_ajax) {
-            View::addScript('upload.inc.js');
-            View::addScript('upload.js');
+            View::addUploadJS();
         }
     }
 

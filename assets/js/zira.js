@@ -1430,12 +1430,26 @@
         if (typeof zira_load_recaptcha.loaded != 'undefined') return;
         zira_load_recaptcha.loaded = true;
         $('body').append('<script src="'+zira_recaptcha_url+'"></script>');
-
+    };
+    
+    zira_recaptcha_onload = function() {
+        var grecaptcha_co = 0;
         $('.g-recaptcha').each(function(){
+            grecaptcha_co++;
+            var id = 'grecaptcha-'+grecaptcha_co;
+            $(this).attr('id', id);
+            var site_key = $(this).data('sitekey');
+            var size = $(this).data('size');
+            var grecaptchaId = grecaptcha.render(id, {
+                'site_key': site_key,
+                'size': size
+            });
+            $(this).data('grecaptcha_id', grecaptchaId);
             $(this).parents('form.xhr-form').submit(function(){
+                var grecaptcha_el = $(this).find('.g-recaptcha');
                 window.setTimeout(function(){
                     try {
-                        grecaptcha.reset();
+                        grecaptcha.reset($(grecaptcha_el).data('grecaptcha_id'));
                     } catch(err) {}
                 }, 3000);
             });
@@ -1451,6 +1465,15 @@
                 $(dropdown).css('height', height);
             }
         }
+    };
+    
+    zira_load_stylesheet = function(href) {
+        if (typeof zira_load_stylesheet.hrefs == "undefined") zira_load_stylesheet.hrefs = [];
+        for (var i=0; i<zira_load_stylesheet.hrefs.length; i++) {
+            if (zira_load_stylesheet.hrefs[i] == href) return;
+        }
+        zira_load_stylesheet.hrefs.push(href);
+        $('head').append('<link rel="stylesheet" type="text/css" href="'+href+'" />');
     };
 
     /**

@@ -354,7 +354,7 @@ header .header-top-buttons .header-top-button .social-btn {
     margin-top: -5px;
 }
 .fullscreen-slider header {
-    z-index: 1;
+    z-index: 3;
 }
 ul#user-menu {
     list-style-type: none;

@@ -30,13 +30,14 @@ class Submit extends Form
     protected $_has_required = false;
     protected $_has_file = false;
 
-    public function __construct($eform, $fields, $has_required, $has_file)
+    public function __construct($eform, $fields, $has_required, $has_file, $ajax = false)
     {
         $this->_eform = $eform;
         $this->_fields = $fields;
         $this->_has_required = $has_required;
         $this->_has_file = $has_file;
-        parent::__construct($this->_id);
+        if ($ajax) $this->setAjax(true);
+        parent::__construct($this->_id.'-'.$this->_eform->name);
     }
 
     protected function _init()

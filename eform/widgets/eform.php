@@ -66,9 +66,8 @@ class Eform extends Widget {
             if ($field->field_type == 'file') $has_file = true;
         }
 
-        $form = new \Eform\Forms\Submit($eform, $fields, $has_required, $has_file);
+        $form = new \Eform\Forms\Submit($eform, $fields, $has_required, $has_file, true);
         $form->setUrl(\Eform\Eform::ROUTE.'/'.$eform->name);
-        $form->setAjax(true);
         if ($eform->description) {
             $form->setDescription(Zira\Locale::t($eform->description));
         }

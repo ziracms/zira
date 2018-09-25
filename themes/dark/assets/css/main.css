@@ -579,7 +579,7 @@ header .navbar-default .navbar-collapse,
     border-color: #ABABAB;
 }
 .fullscreen-slider header {
-    z-index: 1;
+    z-index: 3;
 }
 ul#user-menu {
     list-style-type: none;
