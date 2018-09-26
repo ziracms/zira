@@ -19,7 +19,7 @@ class Button extends Widget {
         $this->setEditable(true);
         $this->setDynamic(true);
         $this->setCaching(false);
-        $this->setPlaceholder(View::VAR_CONTENT_BOTTOM);
+        $this->setPlaceholder(View::VAR_CONTENT);
     }
     
     protected function getTitles() {

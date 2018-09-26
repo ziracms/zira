@@ -98,7 +98,7 @@ class Eforms extends Dash\Models\Model {
         $widget = new Zira\Models\Widget();
         $widget->name = Eform\Models\Eform::WIDGET_CLASS;
         $widget->module = 'eform';
-        $widget->placeholder = Zira\View::VAR_CONTENT_BOTTOM;
+        $widget->placeholder = Zira\View::VAR_CONTENT;
         $widget->params = $eform->id;
         $widget->category_id = null;
         $widget->sort_order = ++$max_order;
@@ -124,7 +124,7 @@ class Eforms extends Dash\Models\Model {
         $widget = new Zira\Models\Widget();
         $widget->name = Eform\Models\Eform::BUTTON_CLASS;
         $widget->module = 'eform';
-        $widget->placeholder = Zira\View::VAR_CONTENT_BOTTOM;
+        $widget->placeholder = Zira\View::VAR_CONTENT;
         $widget->params = $eform->id;
         $widget->category_id = null;
         $widget->sort_order = ++$max_order;
