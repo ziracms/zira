@@ -1,7 +1,7 @@
 <?php
 /**
  * Zira project.
- * eform.php
+ * button.php
  * (c)2018 http://dro1d.ru
  */
 
@@ -11,8 +11,8 @@ use Zira;
 use Zira\View;
 use Zira\Widget;
 
-class Eform extends Widget {
-    protected $_title = 'Email form';
+class Button extends Widget {
+    protected $_title = 'Email form button';
     protected static $_titles;
 
     protected function _init() {
@@ -38,7 +38,7 @@ class Eform extends Widget {
         if (is_numeric($id)) {
             $titles = $this->getTitles();
             if (empty($titles) || !array_key_exists($id, $titles)) return parent::getTitle();
-            return Zira\Locale::tm('Email form', 'eform') . ' - ' . $titles[$id];
+            return Zira\Locale::tm('Email form button', 'eform') . ' - ' . $titles[$id];
         } else {
             return parent::getTitle();
         }
@@ -69,12 +69,14 @@ class Eform extends Widget {
 
         $form = new \Eform\Forms\Submit($eform, $fields, $has_required, $has_file, true);
         $form->setUrl(\Eform\Eform::ROUTE.'/'.$eform->name);
+        $form->setRenderPanel(false);
         if ($eform->description) {
             $form->setDescription(Zira\Locale::t($eform->description));
         }
         
         Zira\View::renderView(array(
+            'eform' => $eform,
             'form' => $form
-        ),'eform/widget');
+        ),'eform/button');
     }
 }

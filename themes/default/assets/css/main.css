@@ -1995,6 +1995,23 @@ a.scroll-top.visible:visited {
 #zira-auth-dialog {
     font-size: 90%;
 }
+.zira-eform-modal {
+    font-size: 90%;
+    z-index: 999 !important;
+}
+.zira-eform-modal .modal-content .modal-description {
+    margin-bottom: 20px;
+}
+#content .eform-button {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0px 0px 4px #aaa;
+}
 
 /** mobile **/
 @media (max-width: 1199px) {

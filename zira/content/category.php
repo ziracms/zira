@@ -113,7 +113,8 @@ class Category extends Zira\Page {
         );
 
         if (!$is_ajax) {
-            Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
+            //Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, $data, 'zira/list');
+            Zira\Page::setContentView($data, 'zira/list');
             $_data = array(
                 static::VIEW_PLACEHOLDER_TITLE => Zira\Locale::t($title)
             );

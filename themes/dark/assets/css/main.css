@@ -1167,25 +1167,30 @@ article .rating .share-wrapper .share-btn {
 }
 #emoji-modal-dialog .modal-content,
 #zira-auth-dialog .modal-content,
-#zira-progress-dialog .modal-content {
+#zira-progress-dialog .modal-content,
+.zira-eform-modal .modal-content {
     background-color: #51545d;
     color: #fff;
 }
 #emoji-modal-dialog .modal-header,
 #zira-auth-dialog .modal-header,
-#zira-progress-dialog .modal-header {
+#zira-progress-dialog .modal-header,
+.zira-eform-modal .modal-header {
     border-bottom: 1px solid #48444e;
 }
 #emoji-modal-dialog .modal-footer,
 #zira-auth-dialog .modal-footer,
-#zira-progress-dialog .modal-footer {
+#zira-progress-dialog .modal-footer,
+.zira-eform-modal .modal-footer {
     border-top: 1px solid #48444e;
 }
-#zira-auth-dialog .input-group-addon {
+#zira-auth-dialog .input-group-addon,
+.zira-eform-modal .input-group-addon {
     background-color: #42464B;
     border-color: #727272;
 }
-#zira-auth-dialog .form-control {
+#zira-auth-dialog .form-control,
+.zira-eform-modal .form-control {
     background: #42464B;
     border: 1px solid #727272;
     color: #eee;
@@ -2460,6 +2465,23 @@ ul.vote-results li .vote-result {
 }
 #zira-auth-dialog {
     font-size: 90%;
+}
+.zira-eform-modal {
+    font-size: 90%;
+    z-index: 999 !important;
+}
+.zira-eform-modal .modal-content .modal-description {
+    margin-bottom: 20px;
+}
+#content .eform-button {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0px 0px 4px #555;
 }
 
 /** mobile **/

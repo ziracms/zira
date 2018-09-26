@@ -53,4 +53,5 @@
 <?php renderGallery(); ?>
 <?php renderAudio(); ?>
 <?php renderFiles(); ?>
+<?php renderContentWidgets(); ?>
 <?php renderComments(); ?>

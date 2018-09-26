@@ -39,6 +39,7 @@ class View {
     public static $layout = null;
     public static $body_class = '';
     public static $head_addon = '';
+    public static $content_widgets_rendered = false;
 
     protected static $_layout_data = array();
     protected static $_placeholder_views = array();

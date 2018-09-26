@@ -221,3 +221,10 @@ var dash_eform_widget = function() {
         desk_window_request(this, url('eform/dash/widget'),{'item':selected[0].data});
     }
 };
+
+var dash_eform_button = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_window_request(this, url('eform/dash/button'),{'item':selected[0].data});
+    }
+};

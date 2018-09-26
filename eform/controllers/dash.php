@@ -51,4 +51,12 @@ class Dash extends \Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function button() {
+        if (Zira\Request::isPost()) {
+            $id = Zira\Request::post('item');
+            $response = $this->getFormWindowModel()->createButton($id);
+            Zira\Page::render($response);
+        }
+    }
 }

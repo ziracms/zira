@@ -75,6 +75,12 @@ function renderContentView() {
     }
 }
 
+function renderContentWidgets() {
+    if (Zira\View::$content_widgets_rendered) return;
+    Zira\View::$content_widgets_rendered = true;
+    Zira\View::renderWidgets(Zira\View::VAR_CONTENT);
+}
+
 function layout_js_begin() {
     ob_start();
 }
@@ -153,6 +159,6 @@ function layout_footer() {
 function layout_content() {
     echo Zira\View::getLayoutData(Zira\View::VAR_CONTENT);
     Zira\View::renderContent(Zira\View::$data, Zira\View::$view);
-    Zira\View::renderWidgets(Zira\View::VAR_CONTENT);
+    renderContentWidgets();
     Zira\View::includePlaceholderViews(Zira\View::VAR_CONTENT);
 }

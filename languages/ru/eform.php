@@ -37,5 +37,7 @@ return array(
     'Yes' => 'Да',
     'No' => 'Нет',
     'Sent on %s' => 'Отправлено %s',
-    'Sorry, something went wrong. Try later' => 'Извините, но что-то пошло не так. Попробуйте позже'
+    'Sorry, something went wrong. Try later' => 'Извините, но что-то пошло не так. Попробуйте позже',
+    'Create button' => 'Создать кнопку',
+    'Email form button' => 'Кнопка почтовой формы'
 );

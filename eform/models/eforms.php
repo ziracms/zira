@@ -109,4 +109,30 @@ class Eforms extends Dash\Models\Model {
 
         return array('message' => Zira\Locale::t('Activated %s widgets', 1));
     }
+    
+    public function createButton($id) {
+        if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::tm('Permission denied', 'dash'));
+        }
+
+        $eform = new Eform\Models\Eform(intval($id));
+        if (!$eform->loaded()) return array('error' => Zira\Locale::t('An error occurred'));
+
+        $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+        $widget = new Zira\Models\Widget();
+        $widget->name = Eform\Models\Eform::BUTTON_CLASS;
+        $widget->module = 'eform';
+        $widget->placeholder = Zira\View::VAR_CONTENT_BOTTOM;
+        $widget->params = $eform->id;
+        $widget->category_id = null;
+        $widget->sort_order = ++$max_order;
+        $widget->active = Zira\Models\Widget::STATUS_ACTIVE;
+        $widget->save();
+
+        Zira\Cache::clear();
+
+        return array('message' => Zira\Locale::t('Activated %s widgets', 1));
+    }
 }

@@ -39,7 +39,13 @@ class Eforms extends Dash\Windows\Window {
             $this->createMenuDropdownItem(Zira\Locale::tm('Form fields','eform'), 'glyphicon glyphicon-list', 'desk_call(dash_eform_fields, this);', 'edit', true, array('typo'=>'fields'))
         );
         $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Create widget'), 'glyphicon glyphicon-modal-window', 'desk_call(dash_eform_widget, this);', 'edit', true, array('typo'=>'widget'))
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::tm('Create button', 'eform'), 'glyphicon glyphicon-modal-window', 'desk_call(dash_eform_button, this);', 'edit', true, array('typo'=>'button'))
         );
         
         $this->addDefaultMenuDropdownItem(
