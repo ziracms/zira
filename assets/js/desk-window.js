@@ -1585,7 +1585,7 @@ DashWindow.prototype.createMenu = function() {
             },{
                 'action': 'close',
                 'icon_class': 'glyphicon glyphicon-remove-sign',
-                'title': this.t('Close'),
+                'title': this.t('Close')+' <span class="help">(Esc)</span>',
                 'callback': function() {
                     $(this.getCloseButton()).trigger('mousedown');
                 }

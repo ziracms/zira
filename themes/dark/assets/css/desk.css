@@ -415,7 +415,8 @@ body.dashboard-window-sidebar-resizing {
     border-top-right-radius: 0px;
     font-size: 14px;
 }
-.dashboard-window .dashboard-window-menu .help {
+.dashboard-window .dashboard-window-menu .help,
+.dashboard-window-contextmenu .help {
     color: #999;
 }
 .dashboard-window .dashboard-window-toolbar {

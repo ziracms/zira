@@ -121,7 +121,7 @@ abstract class Window {
         }
         if (!empty($this->_options['onSave'])) {
             $this->addDefaultMenuDropdownItem(
-                $this->createMenuDropdownItem($this->_save_action_text, 'glyphicon glyphicon-floppy-disk', 'desk_window_save(this);', 'save')
+                $this->createMenuDropdownItem($this->_save_action_text.' <span class="help">(Ctrl + s)</span>', 'glyphicon glyphicon-floppy-disk', 'desk_window_save(this);', 'save')
             );
             $this->addDefaultToolbarItem(
                 $this->createToolbarButton($this->_save_action_text, $this->_save_action_text, 'glyphicon glyphicon-floppy-disk', 'desk_window_save(this);', 'save')
@@ -172,10 +172,10 @@ abstract class Window {
         }
         if (!empty($this->_options['onDeleteItems'])) {
             $this->addDefaultMenuDropdownItem(
-                $this->createMenuDropdownItem($this->_delete_action_text, 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete')
+                $this->createMenuDropdownItem($this->_delete_action_text.' <span class="help">(Del)</span>', 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete')
             );
             $this->addDefaultContextMenuItem(
-                $this->createContextMenuItem($this->_delete_action_text, 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete')
+                $this->createContextMenuItem($this->_delete_action_text.' <span class="help">(Del)</span>', 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete')
             );
         }
         if (property_exists($this, 'search') && !Dash\Dash::isMobile()) {
@@ -850,7 +850,7 @@ abstract class Window {
                 );
             }
             $this->addDefaultContextMenuItem(
-                $this->createContextMenuItem(Locale::t('Select all'), 'glyphicon glyphicon-ok-sign', 'desk_window_select_items(this);', 'select')
+                $this->createContextMenuItem(Locale::t('Select all').' <span class="help">(Ctrl + a)</span>', 'glyphicon glyphicon-ok-sign', 'desk_window_select_items(this);', 'select')
             );
             $this->addDefaultContextMenuItem(
                 $this->createContextMenuItem(Locale::t('Unselect all'), 'glyphicon glyphicon-ok-circle', 'desk_window_unselect_items(this);', 'select')
