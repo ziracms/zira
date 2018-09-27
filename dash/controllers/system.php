@@ -24,6 +24,15 @@ class System extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function dashtheme() {
+        if (Zira\Request::isPost()) {
+            $theme = Zira\Request::post('theme');
+            $model = new Dash\Models\Themes(new Dash\Windows\Themes());
+            $response = $model->dashtheme($theme);
+            Zira\Page::render($response);
+        }
+    }
 
     public function module() {
         if (Zira\Request::isPost()) {

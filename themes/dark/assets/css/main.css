@@ -523,15 +523,15 @@ a.label-info:visited {
     padding: 8px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    background-color: #666D81;
-    background-image: -webkit-linear-gradient(top, #666D81 0, #5A5F6C 100%);
-    background-image: -o-linear-gradient(top, #666D81 0, #5A5F6C 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#666D81), to(#5A5F6C));
-    background-image: linear-gradient(to bottom, #666D81 0, #5A5F6C 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff666D81', endColorstr='#ff5A5F6C', GradientType=0);
-    border-left: 1px solid #414853;
-    border-right: 1px solid #414853;
-    border-bottom: 1px solid #414853;
+    background-color: #5a5e6c;
+    background-image: -webkit-linear-gradient(top, #5a5e6c 0, #2c2f35 100%);
+    background-image: -o-linear-gradient(top, #5a5e6c 0, #2c2f35 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5a5e6c), to(#2c2f35));
+    background-image: linear-gradient(to bottom, #5a5e6c 0, #2c2f35 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5a5e6c', endColorstr='#ff2c2f35', GradientType=0);
+    border-left: 1px solid #3f4246;
+    border-right: 1px solid #3f4246;
+    border-bottom: 1px solid #3f4246;
 }
 #dashpanel-fixed-button:hover {
     border-top: 1px solid #666D81;

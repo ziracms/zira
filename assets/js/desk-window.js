@@ -189,7 +189,7 @@ var DashWindow = function(id, className, options) {
     this.content_clicked = false;
     this.item_clicked = false;
     this.maximized_array = [];
-    this.minimized_array = null;
+    this.minimized_array = [];
     this.menu_clicked = false;
     this.menu_opened = false;
     this.context_menu_opened = false;
@@ -711,7 +711,7 @@ DashWindow.prototype.updateContentPosition = function() {
 };
 
 DashWindow.prototype.updateInnerSize = function() {
-    var h = this.options.height - this.options.header_height - this.options.menu_height - this.options.toolbar_height - this.options.footer_height;
+    var h = this.options.height - this.options.header_height - this.options.menu_height - this.options.toolbar_height - this.options.footer_height - 2;
     $(this.content).css('height', h);
     this.updateContentPosition();
     if (this.sidebar!==null) {

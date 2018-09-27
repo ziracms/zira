@@ -35,6 +35,8 @@ class Themes extends Window {
         $this->setContextMenuItems(array(
             $this->createContextMenuItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok-circle', 'desk_call(dash_themes_activate, this);', 'edit', true, array('typo'=>'activate')),
             $this->createContextMenuSeparator(),
+            $this->createContextMenuItem(Zira\Locale::t('Use for dash panel'), 'glyphicon glyphicon-wrench', 'desk_call(dash_themes_panel, this);', 'edit', true, array('typo'=>'panel')),
+            $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Preview'), 'glyphicon glyphicon-zoom-in', 'desk_call(dash_themes_preview, this);', 'edit', true, array('typo'=>'preview'))
         ));
 
@@ -95,7 +97,11 @@ class Themes extends Window {
 
             $active = '';
             if ($key == $current_theme) $active = ' *';
-            $items[]=$this->createBodyItem(Zira\Helper::html($meta['name']).$active, $author, $preview, $key, null, false, array('activated'=>($key==$current_theme)));
+            
+            $dash_theme = Zira\Config::get('theme');
+            $dash_theme = Zira\Config::get('dashtheme', $dash_theme);
+        
+            $items[]=$this->createBodyItem(Zira\Helper::html($meta['name']).$active, $author, $preview, $key, null, false, array('activated'=>($key==$current_theme), 'is_panel_theme'=>($key==$dash_theme)));
         }
 
         $this->setBodyItems($items);

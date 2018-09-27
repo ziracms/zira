@@ -307,7 +307,13 @@ class Dash {
         $attributes = array();
         if (!isset($attributes['rel'])) $attributes['rel'] = 'stylesheet';
         if (!isset($attributes['type'])) $attributes['type'] = 'text/css';
-        if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$url)) {
+        
+        $dash_theme = Zira\Config::get('theme');
+        $dash_theme = Zira\Config::get('dashtheme', $dash_theme);
+        
+        if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . $dash_theme . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$url)) {
+            $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . $dash_theme . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;
+        } else if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . CSS_DIR . DIRECTORY_SEPARATOR .$url)) {
             $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;
         } else {
             $attributes['href'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . CSS_DIR . '/' .$url.'?t='.Zira::VERSION;

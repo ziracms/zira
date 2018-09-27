@@ -204,7 +204,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-footer {
     position: relative;
     width: 100%;
-    height: 16px;
+    height: 14px;
     border-top: 1px solid #efefef;
     overflow: hidden;
     -webkit-touch-callout: none;
@@ -504,7 +504,7 @@ body.dashboard-window-sidebar-resizing {
     border-radius: 0;
     box-shadow: none;
 }
-.dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper span.devider {
+.dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper .devider {
     height: 1px;
     border-bottom: 1px solid #EDEDF6;
     border-top: 1px solid #B3B6D1;
@@ -990,8 +990,8 @@ body.dashboard .tooltip-inner {
     transition: background .2s linear;
 }
 .pretty-checkbox.active .pretty-checkbox-line {
-    border-color: #2599da;
-    background: #41a4ec;
+    border-color: #9aa6e0;
+    background: #94a0dc;
 }
 .pretty-checkbox .pretty-checkbox-circle {
     position: absolute;
@@ -1034,8 +1034,8 @@ body.dashboard .tooltip-inner {
     transition: background-color .2s linear;
 }
 .pretty-checkbox-inline.active .pretty-checkbox-circle {
-    border-color: #2599da;
-    background-color: #41a4ec;
+    border-color: #9aa6e0;
+    background-color: #94a0dc;
 }
 
 @media (min-width: 768px) {

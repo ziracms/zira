@@ -69,9 +69,8 @@ body.dashboard-window-sidebar-resizing {
     min-height: 70px;
     background-color: #e6e6e6;
     border: 1px solid #cccccc;
-    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), inset 0px 0px 3px #ffffff;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.21), inset 0px 0px 3px #ffffff;
+    border-radius: 3px;
     z-index: 999;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
@@ -88,7 +87,7 @@ body.dashboard-window-sidebar-resizing {
 }
 .dashboard-window-focused {
     background-color: #f9f9f9;
-    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.41), 0px 0px 3px #FFF inset;
+    box-shadow: 0px 0px 4px rgba(85, 70, 113, 0.21), 0px 0px 3px #FFF inset;
 }
 .dashboard-window-disabled {
     background-color: #E7DDE6;
@@ -204,7 +203,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-footer {
     position: relative;
     width: 100%;
-    height: 16px;
+    height: 14px;
     border-top: 1px solid #efefef;
     overflow: hidden;
     -webkit-touch-callout: none;
@@ -504,10 +503,10 @@ body.dashboard-window-sidebar-resizing {
     border-radius: 0;
     box-shadow: none;
 }
-.dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper span.devider {
+.dashboard-window .dashboard-window-sidebar .dashboard-sidebar-content-wrapper .devider {
     height: 1px;
-    border-bottom: 1px solid #EDEDF6;
-    border-top: 1px solid #B3B6D1;
+    border-bottom: 1px solid #e1e4f5;
+    border-top: 1px solid #b6c7d4;
     padding: 0px;
     margin: 3px 14px;
 }
@@ -990,8 +989,8 @@ body.dashboard .tooltip-inner {
     transition: background .2s linear;
 }
 .pretty-checkbox.active .pretty-checkbox-line {
-    border-color: #1dc525;
-    background: #55c832;
+    border-color: #86b8e2;
+    background: #a5b4fb;
 }
 .pretty-checkbox .pretty-checkbox-circle {
     position: absolute;
@@ -1034,8 +1033,8 @@ body.dashboard .tooltip-inner {
     transition: background-color .2s linear;
 }
 .pretty-checkbox-inline.active .pretty-checkbox-circle {
-    border-color: #1dc525;
-    background-color: #55c832;
+    border-color: #86b8e2;
+    background-color: #a5b4fb;
 }
 
 @media (min-width: 768px) {
