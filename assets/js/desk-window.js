@@ -188,12 +188,14 @@ var DashWindow = function(id, className, options) {
     this.selected = [];
     this.content_clicked = false;
     this.item_clicked = false;
+    this.maximized_array = null;
     this.minimized_array = null;
     this.menu_clicked = false;
     this.menu_opened = false;
     this.context_menu_opened = false;
     this.focusedElement = null;
     this.keys = null;
+    this.maximized_type = null;
 
     this.onFocusCallback = null;
     this.onBlurCallback = null;
@@ -220,7 +222,7 @@ var DashWindow = function(id, className, options) {
 DashWindow.prototype.bind = function(object, method) {
     return function(arg) {
         return method.call(object,arg);
-    }
+    };
 };
 
 DashWindow.prototype.getId = function() {
@@ -293,8 +295,6 @@ DashWindow.prototype.focus = function() {
         this.options.onFocus.call(this);
     }
     if (!this.focused && this.maximized && 
-        this.window_left == this.options.edge_left && 
-        this.window_right == this.options.edge_right && 
         !this.isTouchesEnabled()
     ) {
         $('body').css('overflow','hidden');
@@ -341,6 +341,10 @@ DashWindow.prototype.enableWindow = function() {
 
 DashWindow.prototype.setTouchesEnabled = function(enabled) {
     this.touchesEnabled = enabled;
+};
+
+DashWindow.prototype.setMaximizedArray = function(arr) {
+    this.maximized_array = arr;
 };
 
 DashWindow.prototype.setMinimizedArray = function(arr) {
@@ -462,9 +466,9 @@ DashWindow.prototype.create = function() {
     this.menu = $(this.element).children('.'+this.menu_class);
     this.content = $(this.element).children('.'+this.content_class);
     this.footer = $(this.element).children('.'+this.footer_class);
-    $(this.header).append('<a href="javascript:void(0)" class="'+this.close_button_class+'"></a>');
-    $(this.header).append('<a href="javascript:void(0)" class="'+this.minimize_button_class+'"></a>');
-    $(this.header).append('<a href="javascript:void(0)" class="'+this.maximize_button_class+'"></a>');
+    $(this.header).append('<a href="javascript:void(0)" class="'+this.close_button_class+'" title="Esc"></a>');
+    $(this.header).append('<a href="javascript:void(0)" class="'+this.minimize_button_class+'" title="Ctrl + &dArr;"></a>');
+    $(this.header).append('<a href="javascript:void(0)" class="'+this.maximize_button_class+'" title="Ctrl + &uArr;"></a>');
     this.close_button = $(this.header).children('.'+this.close_button_class);
     this.minimize_button = $(this.header).children('.'+this.minimize_button_class);
     this.maximize_button = $(this.header).children('.'+this.maximize_button_class);
@@ -949,6 +953,11 @@ DashWindow.prototype.destroy = function() {
     if (this.maximized) {
         $('body').css('overflow','auto');
         $('body').css('overflow','');
+        
+        var maximized = this.findMaximizedArrayIndex();
+        if (maximized!==null) {
+            this.maximized_array.splice(maximized, 1);
+        }
     }
 
     if (this.options.onClose!==null) {
@@ -1018,15 +1027,26 @@ DashWindow.prototype.maximize = function(remember_position, disable_animation, c
 
     if (typeof(remember_position)=="undefined") remember_position = true;
     if (remember_position) {
+        this.maximized_array.push(this);
         this.unmaximize_left = this.options.left;
         this.unmaximize_top = this.options.top;
         this.unmaximize_width = this.options.width;
         this.unmaximize_height = this.options.height;
     }
     
-    if (this.window_left == this.options.edge_left && this.window_right == this.options.edge_right && !this.isTouchesEnabled()) {
+    if (this.window_left == this.options.edge_left && this.window_right == this.options.edge_right) {
+        this.maximized_type = 'all';
+    }
+    
+    if (!this.isTouchesEnabled()) {
         $('body').css('overflow','hidden');
         this.setWindowRect();
+        if (this.maximized_type == 'left') {
+            this.window_right = this.window_width / 2;
+        }
+        if (this.maximized_type == 'right') {
+            this.window_left = this.window_width / 2;
+        }
     }
 
     this.options.left = this.window_left;
@@ -1066,6 +1086,7 @@ DashWindow.prototype.maximizeLeft = function(remember_position, disable_animatio
     if (this.maximized) {
         this.unmaximize(true);
     }
+    this.maximized_type = 'left';
     this.window_right = this.window_width / 2;
     this.maximize(remember_position, disable_animation, callback);
 };
@@ -1075,6 +1096,7 @@ DashWindow.prototype.maximizeRight = function(remember_position, disable_animati
     if (this.maximized) {
         this.unmaximize(true);
     }
+    this.maximized_type = 'right';
     this.window_left = this.window_width / 2;
     this.maximize(remember_position, disable_animation, callback);
 };
@@ -1110,17 +1132,28 @@ DashWindow.prototype.animateMaximizing = function(callback) {
 
 DashWindow.prototype.unmaximize = function(unmaximize_only) {
     if (!this.initialized) return;
-    $('body').css('overflow','auto');
-    $('body').css('overflow','');
-    this.setWindowRect();
     this.maximized = false;
     $(this.element).removeClass(this.maximized_window_class);
     this.options.left = this.unmaximize_left;
     this.options.top = this.unmaximize_top;
     this.options.width = this.unmaximize_width;
     this.options.height = this.unmaximize_height;
-
+    
+    var maximized = this.findMaximizedArrayIndex();
+    if (maximized!==null) {
+        this.maximized_array.splice(maximized, 1);
+    }
+    
+    var edges = this.getMaximizedEdges();
+    if (!edges.left && !edges.right) {
+        $('body').css('overflow','auto');
+        $('body').css('overflow','');
+        this.setWindowRect();
+    }
+    
     if (typeof(unmaximize_only)!="undefined" && unmaximize_only) return;
+
+    this.maximized_type = null;
 
     this.checkPositionEdge();
     this.checkSidebarWidth();
@@ -1160,6 +1193,18 @@ DashWindow.prototype.animateUnmaximizing = function() {
             $(this.element).removeClass(this.animating_window_class);
         })
     });
+};
+
+DashWindow.prototype.findMaximizedArrayIndex = function() {
+    var maximized = null;
+    for (var i=0; i<this.maximized_array.length; i++) {
+        if (!(this.maximized_array[i] instanceof DashWindow)) continue;
+        if (this.maximized_array[i].id == this.id) {
+            maximized = i;
+            break;
+        }
+    }
+    return maximized;
 };
 
 DashWindow.prototype.findMinimizedArrayIndex = function() {
@@ -1383,6 +1428,21 @@ DashWindow.prototype.shiftMinimized = function(start) {
     }
 };
 
+DashWindow.prototype.getMaximizedEdges = function() {
+    var left_edge = false;
+    var right_edge = false;
+    for (var i=0; i<this.maximized_array.length; i++) {
+        if (!(this.maximized_array[i] instanceof DashWindow)) continue;
+        if (this.maximized_array[i].window_left==this.options.edge_left) left_edge = true;
+        if (this.maximized_array[i].window_right==this.options.edge_right) right_edge = true;
+        if (left_edge && right_edge) break;
+    }
+    return {
+        'left': left_edge,
+        'right': right_edge
+    };
+};
+
 DashWindow.prototype.show_hide_sidebar = function() {
     if (this.sidebar!==null) {
         this.hideSidebar();
@@ -1500,14 +1560,14 @@ DashWindow.prototype.createMenu = function() {
             },{
                 'action': 'maximize-left',
                 'icon_class': 'glyphicon glyphicon-menu-left',
-                'title': t('Snap to left side'),
+                'title': t('Snap to left side')+' <span class="help">(Ctrl + &lArr;)</span>',
                 'callback': function() {
                     this.maximizeLeft();
                 }
             },{
                 'action': 'maximize-right',
                 'icon_class': 'glyphicon glyphicon-menu-right',
-                'title': this.t('Snap to right side'),
+                'title': this.t('Snap to right side')+' <span class="help">(Ctrl + &rArr;)</span>',
                 'callback': function() {
                     this.maximizeRight();
                 }

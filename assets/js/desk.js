@@ -11,6 +11,7 @@ var Desk = {
     'dragY': 0,
     'windows': {},
     'classNames': {},
+    'maximized': [],
     'minimized': [],
     'active_windows_count': 0,
     'overlay_is_active': false,
@@ -622,7 +623,7 @@ var Desk = {
                 } else {
                     this.windows[_id].blur(false);
                 }
-                positions.push(this.windows[_id].options.top+'-'+this.windows[_id].options.left)
+                positions.push(this.windows[_id].options.top+'-'+this.windows[_id].options.left);
             }
         }
         if (typeof(this.windows[id])!="undefined" && (this.windows[id] instanceof DashWindow)) {
@@ -713,6 +714,7 @@ var Desk = {
         if (navigator.userAgent.match(/android/i)) {
             this.windows[id].hideSidebar();
         }
+        this.windows[id].setMaximizedArray(this.maximized);
         this.windows[id].setMinimizedArray(this.minimized);
         this.windows[id].setKeysArr(this.keysArr);
         this.windows[id].onFocusCallback = this.bind(this, this.forceUpdateDockFocus);
