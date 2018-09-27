@@ -126,6 +126,15 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function addimages() {
+        if (Zira\Request::isPost()) {
+            $folder = Zira\Request::post('folder');
+            $id = Zira\Request::post('item');
+            $response = $this->getImagesModel()->addFolderImages($id, $folder);
+            Zira\Page::render($response);
+        }
+    }
 
     public function imagedesc() {
         if (Zira\Request::isPost()) {
@@ -141,6 +150,15 @@ class Records extends Dash\Controller {
             $images = Zira\Request::post('images');
             $id = Zira\Request::post('item');
             $response = $this->getSlidesModel()->addRecordSlides($id, $images);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addslides() {
+        if (Zira\Request::isPost()) {
+            $folder = Zira\Request::post('folder');
+            $id = Zira\Request::post('item');
+            $response = $this->getSlidesModel()->addFolderSlides($id, $folder);
             Zira\Page::render($response);
         }
     }
@@ -172,6 +190,15 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function addfiles() {
+        if (Zira\Request::isPost()) {
+            $folder = Zira\Request::post('folder');
+            $id = Zira\Request::post('item');
+            $response = $this->getFilesModel()->addFolderFiles($id, $folder);
+            Zira\Page::render($response);
+        }
+    }
 
     public function filedesc() {
         if (Zira\Request::isPost()) {
@@ -189,6 +216,15 @@ class Records extends Dash\Controller {
             $code = Zira\Request::post('code');
             $id = Zira\Request::post('item');
             $response = $this->getAudioModel()->addRecordAudio($id, $files, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addaudios() {
+        if (Zira\Request::isPost()) {
+            $folder = Zira\Request::post('folder');
+            $id = Zira\Request::post('item');
+            $response = $this->getAudioModel()->addFolderAudio($id, $folder);
             Zira\Page::render($response);
         }
     }
@@ -219,6 +255,15 @@ class Records extends Dash\Controller {
             $code = Zira\Request::post('code');
             $id = Zira\Request::post('item');
             $response = $this->getVideoModel()->addRecordVideos($id, $files, $url, $code);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function addvideos() {
+        if (Zira\Request::isPost()) {
+            $folder = Zira\Request::post('folder');
+            $id = Zira\Request::post('item');
+            $response = $this->getVideoModel()->addFolderVideos($id, $folder);
             Zira\Page::render($response);
         }
     }

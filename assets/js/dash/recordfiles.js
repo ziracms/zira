@@ -19,8 +19,12 @@ var dash_recordfiles_desc = function() {
 var dash_recordfiles_drop = function(element) {
     if (element instanceof FileList) return;
     if (typeof(element.parent)=="undefined" || element.parent!='files') return;
-    if (typeof(element)!="object" || typeof(element.type)=="undefined" || element.type=='folder' || typeof(element.data)=="undefined") return;
-    desk_window_request(this, url('dash/records/addfile'),{'files':[element.data], 'item':this.options.data.items[0]});
+    if (typeof(element)!="object" || typeof(element.type)=="undefined" || typeof(element.data)=="undefined") return;
+    if (element.type!='folder') {
+        desk_window_request(this, url('dash/records/addfile'),{'files':[element.data], 'item':this.options.data.items[0]});
+    } else {
+        desk_window_request(this, url('dash/records/addfiles'),{'folder':element.data, 'item':this.options.data.items[0]});
+    }
 };
 
 var dash_recordfiles_add = function() {

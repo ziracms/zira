@@ -19,8 +19,12 @@ var dash_recordimages_desc = function() {
 var dash_recordimages_drop = function(element) {
     if (element instanceof FileList) return;
     if (typeof(element.parent)=="undefined" || element.parent!='files') return;
-    if (typeof(element)!="object" || typeof(element.type)=="undefined" || element.type!='image' || typeof(element.data)=="undefined") return;
-    desk_window_request(this, url('dash/records/addimage'),{'images':[element.data], 'item':this.options.data.items[0]});
+    if (typeof(element)!="object" || typeof(element.type)=="undefined" || typeof(element.data)=="undefined") return;
+    if (element.type=='image') {
+        desk_window_request(this, url('dash/records/addimage'),{'images':[element.data], 'item':this.options.data.items[0]});
+    } else if (element.type=='folder') {
+        desk_window_request(this, url('dash/records/addimages'),{'folder':element.data, 'item':this.options.data.items[0]});
+    }
 };
 
 var dash_recordimages_add = function() {
