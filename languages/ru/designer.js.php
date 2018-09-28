@@ -73,6 +73,7 @@ return array(
     'Sorry, your current theme is not supported.' => 'Извините, ваша текущая тема не поддерживается.',
     'Search' => 'Поиск',
     'Records border color' => 'Цвет рамок записей',
-    'Search border color' => 'Цвет рамок поиска'
+    'Search border color' => 'Цвет рамок поиска',
+    'Breadcrumbs border color' => 'Цвет рамок хлебных крошек'
 );
 

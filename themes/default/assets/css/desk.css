@@ -34,12 +34,70 @@
     height: 40px;
     padding: 10px 15px;
 }
+#dashpanel-container .navbar-default {
+    background-color: #F0EDF5;
+    background-image: -webkit-linear-gradient(top, #FFFFFF 0, #F0EDF5 100%);
+    background-image: -o-linear-gradient(top, #FFFFFF 0, #F0EDF5 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#F0EDF5));
+    background-image: linear-gradient(to bottom, #FFFFFF 0, #F0EDF5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffFFFFFF', endColorstr='#ffF0EDF5', GradientType=0);
+    border: 1px solid #e7e7e7;
+}
+#dashpanel-container .navbar-default .navbar-brand,
+#dashpanel-container .navbar-default .navbar-nav li a {
+    color: #333;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.52);
+}
+#dashpanel-container .navbar-default .navbar-nav > li > a:focus,
+#dashpanel-container .navbar-default .navbar-nav > li > a:hover {
+    color: #000;
+}
+#dashpanel-container .navbar-default .navbar-nav > .active > a,
+#dashpanel-container .navbar-default .navbar-nav > .open > a,
+#dashpanel-container .navbar-default .navbar-nav > .active > a:hover,
+#dashpanel-container .navbar-default .navbar-nav > .open > a:hover,
+#dashpanel-container .navbar-default .navbar-nav > .active > a:focus,
+#dashpanel-container .navbar-default .navbar-nav > .open > a:focus {
+    background-color: #dbdbdb;
+    background-image: -webkit-linear-gradient(top, #dbdbdb 0, #e2e2e2 100%);
+    background-image: -o-linear-gradient(top, #dbdbdb 0, #e2e2e2 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#dbdbdb), to(#e2e2e2));
+    background-image: linear-gradient(to bottom, #dbdbdb 0, #e2e2e2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdbdbdb', endColorstr='#ffe2e2e2', GradientType=0);
+    color: #000;
+}
+#dashpanel-container .navbar-default .navbar-collapse,
+#dashpanel-container .navbar-default .navbar-form {
+    border-color: #efefef;
+}
+#dashpanel-container .navbar-default .navbar-toggle {
+    border-color: #dfdfdf;
+}
+#dashpanel-container .navbar-default .navbar-toggle:focus,
+#dashpanel-container .navbar-default .navbar-toggle:hover {
+    background-color: #e2e2e2;
+}
+#dashpanel-container .navbar-default .navbar-toggle .icon-bar {
+    background-color: #aaa;
+}
 #dashpanel-container .dropdown-menu {
     overflow: auto;
+    background-color: #fff;
+}
+#dashpanel-container .navbar-default .navbar-nav .dropdown-menu li a {
+    color: #555;
 }
 #dashpanel-container .dropdown-menu li a {
     padding-top: 5px;
     padding-bottom: 5px;
+}
+#dashpanel-container .dropdown-menu li a:focus, 
+#dashpanel-container .dropdown-menu li a:hover {
+    background: #eee;
+    filter: none; /** ie **/
+}
+#dashpanel-container .dropdown-menu .divider {
+    background: #eee;
 }
 #dashpanel-container .navbar-toggle {
     margin-top: 2px;

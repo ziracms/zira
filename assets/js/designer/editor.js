@@ -889,7 +889,7 @@
                     $('#breadcrumbs-designer-gradientpicker-hidden').hide();
                     return;
                 }
-                var breadcrumbs_cx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
+                var breadcrumbs_cx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()+2*colorpicker_size)-.75*colorpicker_size;
                 var breadcrumbs_cy = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
                 $('#breadcrumbs-designer-gradientpicker').css({'left':breadcrumbs_cx,'top':breadcrumbs_cy});
                 $('#breadcrumbs-designer-gradientpicker-hidden').css({'left':breadcrumbs_cx+colorpicker_wnd_size,'top':breadcrumbs_cy});
@@ -900,8 +900,9 @@
             designer_gradientpicker($('#breadcrumbs-designer-gradientpicker'), $('#breadcrumbs-designer-gradientpicker-hidden'), breadcrumbs_color1, breadcrumbs_color2, function(color1, color2){
                 $('.breadcrumb a').css('color', color1);
                 $('.breadcrumb li.active').css('color', color2);
-                setColorStyle('.breadcrumb a:link,.breadcrumb a:visited', color1);
-                setColorStyle('.breadcrumb,.breadcrumb .active,.breadcrumb li a:before', color2);
+                setColorStyle('.breadcrumb li a:link,.breadcrumb li a:visited', color1);
+                setColorStyle('.breadcrumb li a:hover', color2);
+                setColorStyle('.breadcrumb li,.breadcrumb li.active,.breadcrumb li a:before', color2);
                 setColorStyle('.breadcrumb li + li::before', color2);
             }, 'right', 'rgb');
 
@@ -913,7 +914,7 @@
                     $('#breadcrumbs-designer-colorpicker').hide();
                     return;
                 }
-                var breadcrumbs_fx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
+                var breadcrumbs_fx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()+2*colorpicker_size)+.75*colorpicker_size;
                 var breadcrumbs_fy = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
                 $('#breadcrumbs-designer-fontpicker').css({'left':breadcrumbs_fx,'top':breadcrumbs_fy});
                 $('#breadcrumbs-designer-colorpicker').show();
@@ -921,38 +922,53 @@
             $('#breadcrumbs-designer-fontpicker').tooltip();
             designer_fontpicker($('#breadcrumbs-designer-fontpicker'), breadcrumbs_font, designer_positions, function(size){
                 $('.breadcrumb,.breadcrumb a:link,.breadcrumb a:visited').css('fontSize', size);
-                setFontSizeStyle('.breadcrumb,.breadcrumb a:link,.breadcrumb a:visited', size);
+                setFontSizeStyle('.breadcrumb li,.breadcrumb li a:link,.breadcrumb li a:visited', size);
                 $(window).trigger('resize');
             });
             
             // breadcrumbs background color
             var breadcrumbs_bg_color = extractBgColor($('.breadcrumb'));
-            if (breadcrumbs_bg_color != 'transparent') {
-                $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
-                designer_positions['breadcrumbs_bg_color'] = function() {
-                    if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
-                        $('#breadcrumbs-bg-designer-colorpicker').hide();
-                        return;
-                    }
-                    var breadcrumbs_bx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()-colorpicker_size)/2+3*colorpicker_size;
-                    var breadcrumbs_by = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
-                    $('#breadcrumbs-bg-designer-colorpicker').css({'left':breadcrumbs_bx,'top':breadcrumbs_by});
-                    $('#breadcrumbs-bg-designer-colorpicker').show();
-                };
-                $('#breadcrumbs-bg-designer-colorpicker').tooltip();
-                designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
-                    $('.breadcrumb').css('background-color', color);
-                    //$('.breadcrumb').css('padding', '10px 15px');
-                    if (color.indexOf('rgba')==0) {
-                        setBackgroundColorStyle('.breadcrumb', hexColor(color));
-                        setBackgroundStyle('.breadcrumb', color, true);
-                        setFilterStyle('.breadcrumb', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
-                    } else {
-                        setBackgroundStyle('.breadcrumb', color);
-                    }
-                    //setPaddingStyle('.breadcrumb', '10px 15px');
-                }, 'right', false);
-            }
+            $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
+            designer_positions['breadcrumbs_bg_color'] = function() {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                    $('#breadcrumbs-bg-designer-colorpicker').hide();
+                    return;
+                }
+                var breadcrumbs_bx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()+2*colorpicker_size)+3*colorpicker_size;
+                var breadcrumbs_by = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                $('#breadcrumbs-bg-designer-colorpicker').css({'left':breadcrumbs_bx,'top':breadcrumbs_by});
+                $('#breadcrumbs-bg-designer-colorpicker').show();
+            };
+            $('#breadcrumbs-bg-designer-colorpicker').tooltip();
+            designer_colorpicker($('#breadcrumbs-bg-designer-colorpicker'), breadcrumbs_bg_color, function(color){
+                $('.breadcrumb').css('background', color);
+                //$('.breadcrumb').css('padding', '10px 15px');
+                if (color.indexOf('rgba')==0) {
+                    setBackgroundColorStyle('.breadcrumb', hexColor(color));
+                    setBackgroundStyle('.breadcrumb', color, true);
+                    setFilterStyle('.breadcrumb', 'progid:DXImageTransform.Microsoft.gradient(startColorstr=' + rgbaToHexIE(color) + ',endColorstr=' + rgbaToHexIE(color) + ',GradientType=0)');
+                } else {
+                    setBackgroundStyle('.breadcrumb', color);
+                }
+                //setPaddingStyle('.breadcrumb', '10px 15px');
+            }, 'right', false);
+            
+            // breadcrumbs border color
+            var breadcrumb_border_color = '#efefef';
+            $('body').append('<div class="designer_colorpicker" id="breadcrumb-border-designer-colorpicker" title="'+t('Breadcrumbs border color')+'"></div>');
+            designer_positions['breadcrumbs_border'] = function() {
+                var breadcrumb_bbx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()+2*colorpicker_size)+4.5*colorpicker_size;
+                var breadcrumb_bby = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
+                $('#breadcrumb-border-designer-colorpicker').css({'left':breadcrumb_bbx,'top':breadcrumb_bby});
+            };
+            $('#breadcrumb-border-designer-colorpicker').tooltip();
+            designer_colorpicker($('#breadcrumb-border-designer-colorpicker'), breadcrumb_border_color, function(color){
+                $('.breadcrumb').css('borderColor', color);
+                $('.breadcrumb li').css('borderColor', 'transparent');
+                setBorderColorStyle('.breadcrumb', color);
+                setBorderColorStyle('.breadcrumb li', 'transparent');
+                setBorderColorStyle('.breadcrumb li:first-child,.breadcrumb li:last-child', 'transparent');
+            }, 'right', false);
         }
 
         // gallery background color

@@ -63,6 +63,20 @@
     color: #fff;
     filter: none; /** ie **/
 }
+#dashpanel-container .navbar-default .navbar-collapse,
+#dashpanel-container .navbar-default .navbar-form {
+    border-color: #40434d;
+}
+#dashpanel-container .navbar-default .navbar-toggle {
+    border-color: #636577;
+}
+#dashpanel-container .navbar-default .navbar-toggle:focus,
+#dashpanel-container .navbar-default .navbar-toggle:hover {
+    background-color: #2b2e35;
+}
+#dashpanel-container .navbar-default .navbar-toggle .icon-bar {
+    background-color: #ddd;
+}
 #dashpanel-container .dropdown-menu {
     overflow: auto;
     background-color: #5a5e6c;

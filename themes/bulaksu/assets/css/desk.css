@@ -34,12 +34,75 @@
     height: 40px;
     padding: 10px 15px;
 }
+#dashpanel-container .navbar-default {
+    background-color: #d3dafb;
+    background-image: -webkit-linear-gradient(top, #f1f7fd 0, #d3dafb 100%);
+    background-image: -o-linear-gradient(top, #f1f7fd 0, #d3dafb 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f1f7fd), to(#d3dafb));
+    background-image: linear-gradient(to bottom, #f1f7fd 0, #d3dafb 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff1f7fd', endColorstr='#ffd3dafb', GradientType=0);
+    border: 1px solid #cee3fd;
+}
+#dashpanel-container .navbar-default .navbar-brand,
+#dashpanel-container .navbar-default .navbar-nav li a {
+    color: #000;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.52);
+}
+#dashpanel-container .navbar-default .navbar-nav > li > a:focus,
+#dashpanel-container .navbar-default .navbar-nav > li > a:hover {
+    color: #000;
+}
+#dashpanel-container .navbar-default .navbar-nav > .active > a,
+#dashpanel-container .navbar-default .navbar-nav > .open > a,
+#dashpanel-container .navbar-default .navbar-nav > .active > a:hover,
+#dashpanel-container .navbar-default .navbar-nav > .open > a:hover,
+#dashpanel-container .navbar-default .navbar-nav > .active > a:focus,
+#dashpanel-container .navbar-default .navbar-nav > .open > a:focus {
+    background-color: #1497e4;
+    background-image: -webkit-linear-gradient(top, #5fb9f9 0, #1497e4 100%);
+    background-image: -o-linear-gradient(top, #5fb9f9 0, #1497e4 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5fb9f9), to(#1497e4));
+    background-image: linear-gradient(to bottom, #5fb9f9 0, #1497e4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5fb9f9', endColorstr='#ff1497e4', GradientType=0);
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(50, 55, 55, 0.52);
+}
+#dashpanel-container .navbar-default .navbar-collapse,
+#dashpanel-container .navbar-default .navbar-form {
+    border-color: #d0e0ea;
+}
+#dashpanel-container .navbar-default .navbar-toggle {
+    border-color: #b4cbda;
+}
+#dashpanel-container .navbar-default .navbar-toggle:focus,
+#dashpanel-container .navbar-default .navbar-toggle:hover {
+    background-color: #bfd4e2;
+}
+#dashpanel-container .navbar-default .navbar-toggle .icon-bar {
+    background-color: #7fa1b7;
+}
 #dashpanel-container .dropdown-menu {
     overflow: auto;
+    background-color: #e9edfd;
+}
+#dashpanel-container .navbar-default .navbar-nav .dropdown-menu li a {
+    color: #111;
+}
+#dashpanel-container .navbar-default .navbar-nav .dropdown-menu li a:hover {
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(50, 55, 55, 0.52);
 }
 #dashpanel-container .dropdown-menu li a {
     padding-top: 5px;
     padding-bottom: 5px;
+}
+#dashpanel-container .dropdown-menu li a:focus, 
+#dashpanel-container .dropdown-menu li a:hover {
+    background: #1497e4;
+    filter: none; /** ie **/
+}
+#dashpanel-container .dropdown-menu .divider {
+    background: #cfdfe4;
 }
 #dashpanel-container .navbar-toggle {
     margin-top: 2px;
@@ -306,6 +369,7 @@ body.dashboard-window-sidebar-resizing {
     top: 7px;
     text-decoration: none;
     background-position: -16px 0px;
+    border-radius: 2px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:link,
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-close-button:visited {
@@ -325,6 +389,7 @@ body.dashboard-window-sidebar-resizing {
     top: 7px;
     text-decoration: none;
     background-position: -48px 0px;
+    border-radius: 2px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:link,
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-maximize-button:visited {
@@ -344,6 +409,7 @@ body.dashboard-window-sidebar-resizing {
     top: 7px;
     text-decoration: none;
     background-position: -32px 0px;
+    border-radius: 2px;
 }
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:link,
 .dashboard-window-classic .dashboard-window-header a.dashboard-window-minimize-button:visited {
