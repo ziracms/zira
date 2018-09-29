@@ -37,7 +37,7 @@ class Widgets extends Window {
                 $this->createMenuDropdownItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok-circle', 'desk_call(dash_widgets_activate, this);', 'delete', true, array('typo'=>'activate')),
                 $this->createMenuDropdownSeparator(),
                 $this->createMenuDropdownItem(Zira\Locale::t('Edit'), 'glyphicon glyphicon-pencil', 'desk_call(dash_widgets_edit, this);', 'edit', true, array('typo'=>'edit')),
-                $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_widgets_copy, this);', 'edit', true, array('typo'=>'copy')),
+                $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_widgets_copy, this);', 'delete', true, array('typo'=>'copy')),
                 $this->createMenuDropdownItem($this->_delete_action_text, 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete'),
                 $this->createMenuDropdownSeparator(),
                 $this->createMenuDropdownItem(Zira\Locale::t('Up'), 'glyphicon glyphicon-triangle-top', 'desk_call(dash_widgets_up, this);', 'edit', true, array('typo'=>'up')),
@@ -51,7 +51,7 @@ class Widgets extends Window {
             $this->createContextMenuItem(Zira\Locale::t('Activate'), 'glyphicon glyphicon-ok-circle', 'desk_call(dash_widgets_activate, this);', 'delete', true, array('typo'=>'activate')),
             $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Edit'), 'glyphicon glyphicon-pencil', 'desk_call(dash_widgets_edit, this);', 'edit', true, array('typo'=>'edit')),
-            $this->createContextMenuItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_widgets_copy, this);', 'edit', true, array('typo'=>'copy')),
+            $this->createContextMenuItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_widgets_copy, this);', 'delete', true, array('typo'=>'copy')),
             $this->createContextMenuItem($this->_delete_action_text, 'glyphicon glyphicon-remove-circle', 'desk_window_delete_items(this);', 'delete'),
             $this->createContextMenuSeparator(),
             $this->createContextMenuItem(Zira\Locale::t('Up'), 'glyphicon glyphicon-triangle-top', 'desk_call(dash_widgets_up, this);', 'edit', true, array('typo'=>'up')),
@@ -82,7 +82,7 @@ class Widgets extends Window {
 
         $this->setOnOpenJSCallback(
             $this->createJSCallback(
-                'desk_call(dash_widgets_drag, this);'
+                'desk_call(dash_widgets_open, this);'
             )
         );
 
@@ -205,7 +205,7 @@ class Widgets extends Window {
             } else if ($widget->url) {
                 $suffix .= ' - '.$widget->url;
             }
-            $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
+            $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('parent'=>'widgets','activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
         }
         foreach ($other_widgets as $class=>$widget) {
             if (!$widget->isEditable() || $widget->isDynamic()) continue;

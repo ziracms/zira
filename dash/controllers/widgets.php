@@ -61,6 +61,14 @@ class Widgets extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function copies() {
+        if (Zira\Request::isPost()) {
+            $widgets = Zira\Request::post('widgets');
+            $response = $this->getWindowModel()->copies($widgets);
+            Zira\Page::render($response);
+        }
+    }
 
     public function block() {
         if (Zira\Request::isPost()) {

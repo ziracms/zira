@@ -163,10 +163,27 @@ class Widgets extends Model {
 
         return array('reload'=>$this->getJSClassName());
     }
+    
+    public function copies($ids) {
+        if (empty($ids) || !is_array($ids)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $result = array();
+        foreach($ids as $id) {
+            $_result = $this->copy($id, true);
+            if (is_array($_result)) {
+                $result = $_result;
+                if (array_key_exists('error', $_result)) break;
+            }
+        }
+        return $result;
+    }
 
-    public function copy($id) {
+    public function copy($id, $ignoreError=false) {
         if (empty($id) || !is_numeric($id)) {
-            return array('error' => Zira\Locale::t('An error occurred'));
+            if (!$ignoreError) return array('error' => Zira\Locale::t('An error occurred'));
+            else return array('reload'=>$this->getJSClassName());
         }
         if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
@@ -177,10 +194,12 @@ class Widgets extends Model {
         $widget = new Zira\Models\Widget($id);
 
         if (!$widget->loaded() || !array_key_exists($widget->name, $available_widgets)) {
-            return array('error' => Zira\Locale::t('An error occurred'));
+            if (!$ignoreError) return array('error' => Zira\Locale::t('An error occurred'));
+            else return array('reload'=>$this->getJSClassName());
         }
         if (!$available_widgets[$widget->name]->isEditable()) {
-            return array('error' => Zira\Locale::t('An error occurred'));
+            if (!$ignoreError) return array('error' => Zira\Locale::t('An error occurred'));
+            else return array('reload'=>$this->getJSClassName());
         }
 
         $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');

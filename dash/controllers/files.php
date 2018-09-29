@@ -124,12 +124,30 @@ class Files extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function copies() {
+        if (Zira\Request::isPost()) {
+            $files = Zira\Request::post('files');
+            $dir = trim(Zira\Request::post('path'));
+            $response = $this->getWindowModel()->copies($files, $dir);
+            Zira\Page::render($response);
+        }
+    }
 
     public function move() {
         if (Zira\Request::isPost()) {
             $file = Zira\Request::post('file');
             $dir = trim(Zira\Request::post('path'));
             $response = $this->getWindowModel()->move($file, $dir);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function moves() {
+        if (Zira\Request::isPost()) {
+            $files = Zira\Request::post('files');
+            $dir = trim(Zira\Request::post('path'));
+            $response = $this->getWindowModel()->moves($files, $dir);
             Zira\Page::render($response);
         }
     }

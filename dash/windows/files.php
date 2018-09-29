@@ -49,10 +49,10 @@ class Files extends Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_files_copy, this);', 'call')
+            $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_files_copy, this);', 'delete')
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Move'), 'glyphicon glyphicon-scissors', 'desk_call(dash_files_move, this);', 'call')
+            $this->createMenuDropdownItem(Zira\Locale::t('Move'), 'glyphicon glyphicon-scissors', 'desk_call(dash_files_move, this);', 'delete')
         );
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Rename'), 'glyphicon glyphicon-tag', 'desk_call(dash_files_rename, this);', 'call')
@@ -73,7 +73,7 @@ class Files extends Window {
             $this->createContextMenuSeparator()
         );
         $this->addDefaultContextMenuItem(
-            $this->createContextMenuItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_files_copy, this);', 'call')
+            $this->createContextMenuItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_files_copy, this);', 'delete')
         );
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Rename'), 'glyphicon glyphicon-tag', 'desk_call(dash_files_rename, this);', 'call')

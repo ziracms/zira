@@ -45,6 +45,8 @@ var dash_records_select = function() {
     this.disableItemsByProperty('typo','audio');
     this.disableItemsByProperty('typo','video');
     this.disableItemsByProperty('typo','rethumb');
+    this.disableItemsByProperty('typo','copy');
+    this.disableItemsByProperty('typo','move');
     if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo == 'record') {
         this.enableItemsByProperty('typo','editor');
         this.enableItemsByProperty('typo','preview');
@@ -79,6 +81,8 @@ var dash_records_select = function() {
         for (var i=0; i<selected.length; i++) {
             if (selected[i].typo == 'record') {
                 this.enableItemsByProperty('typo','rethumb');
+                this.enableItemsByProperty('typo','copy');
+                this.enableItemsByProperty('typo','move');
                 break;
             }
         }
@@ -190,27 +194,51 @@ var dash_records_delete = function() {
 
 var dash_records_copy = function() {
     var selected = this.getSelectedContentItems();
-    if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
-        desk_prompt(t('Enter category'), this.bind(this, function(name){
-            desk_window_request(this, url('dash/records/copy'),{'root':name, 'item':selected[0].data});
-        }));
-        var root = this.options.data.root;
-        if (root.substr(0,1)=='/') root = root.substr(1);
-        $('#zira-prompt-dialog input[name=modal-input]').val(root);
+    if (selected && selected.length>0) {
+        var _selected = [];
+        for (var i=0; i<selected.length; i++) {
+            if (typeof(selected[i].typo)!="undefined" && selected[i].typo=='record') {
+                _selected.push(selected[i].data);
+            }
+        }
+        if (_selected.length>0) {
+            desk_prompt(t('Enter category'), this.bind(this, function(name){
+                if (_selected.length==1) {
+                    desk_window_request(this, url('dash/records/copy'),{'root':name, 'item':_selected[0]});
+                } else {
+                    desk_window_request(this, url('dash/records/copies'),{'root':name, 'items':_selected});
+                }
+            }));
+            var root = this.options.data.root;
+            if (root.substr(0,1)=='/') root = root.substr(1);
+            $('#zira-prompt-dialog input[name=modal-input]').val(root);
+        }
     }
 };
 
 var dash_records_move = function() {
     var selected = this.getSelectedContentItems();
-    if (selected && selected.length==1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=='record') {
-        desk_prompt(t('Enter category'), this.bind(this, function(name){
-            if (name.length>0 && name.substr(0,1)!='/') name = '/'+name;
-            if (name == this.options.data.root) return;
-            desk_window_request(this, url('dash/records/move'),{'root':name, 'item':selected[0].data});
-        }));
-        var root = this.options.data.root;
-        if (root.substr(0,1)=='/') root = root.substr(1);
-        $('#zira-prompt-dialog input[name=modal-input]').val(root);
+    if (selected && selected.length>0) {
+        var _selected = [];
+        for (var i=0; i<selected.length; i++) {
+            if (typeof(selected[i].typo)!="undefined" && selected[i].typo=='record') {
+                _selected.push(selected[i].data);
+            }
+        }
+        if (_selected.length>0) {
+            desk_prompt(t('Enter category'), this.bind(this, function(name){
+                if (name.length>0 && name.substr(0,1)!='/') name = '/'+name;
+                if (name == this.options.data.root) return;
+                if (_selected.length==1) {
+                    desk_window_request(this, url('dash/records/move'),{'root':name, 'item':_selected[0]});
+                } else {
+                    desk_window_request(this, url('dash/records/moves'),{'root':name, 'items':_selected});
+                }
+            }));
+            var root = this.options.data.root;
+            if (root.substr(0,1)=='/') root = root.substr(1);
+            $('#zira-prompt-dialog input[name=modal-input]').val(root);
+        }
     }
 };
 
@@ -509,18 +537,27 @@ var desk_record_editor = function(item) {
     desk_call(dash_records_record_html_wnd, null, {'data':data});
 };
 
-var dash_records_special_key = function(item, operation) {
-    if (!item || !operation) return false;
-    if (typeof item.data == "undefined" || typeof item.page == "undefined" || typeof item.parent == "undefined" || item.parent != 'record') return false;
-    var origin = item.page.split('/').slice(0, -1).join('/');
+var dash_records_special_key = function(items, operation) {
+    if (!items || !operation) return false;
+    if (items.length==0) return false;
+    var origin = null;
     var root = this.options.data.root;
     if (root.substr(0,1)=='/') root = root.substr(1);
+    var records = [];
+    for (var i=0; i<items.length; i++) {
+    if (typeof items[i].data == "undefined" || typeof items[i].page == "undefined" || typeof items[i].parent == "undefined" || items[i].parent != 'record') return false;
+        var _origin = items[i].page.split('/').slice(0, -1).join('/');
+        if (origin != _origin && origin!==null) return false;
+        origin = _origin;
+        records.push(items[i].data);
+    }
+    if (records.length==0) return false;
     if (operation == 'copy') {
-        desk_window_request(this, url('dash/records/copy'),{'root':root, 'item':item.data});
+        desk_window_request(this, url('dash/records/copies'),{'root':root, 'items':records});
         return true;
     } else if (operation == 'move') {
         if (origin == root) return false;
-        desk_window_request(this, url('dash/records/move'),{'root':root, 'item':item.data});
+        desk_window_request(this, url('dash/records/moves'),{'root':root, 'items':records});
         return true;
     } else if (operation == 'copypress' || operation == 'movepress') {
         return true;

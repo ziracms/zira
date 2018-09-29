@@ -147,9 +147,13 @@ var dash_files_download = function() {
     
 var dash_files_copy = function() {
     var selected = desk_window_selected(this);
-    if (typeof(selected.items)!="undefined" && selected.items.length==1) {
+    if (typeof(selected.items)!="undefined" && selected.items.length>0) {
         desk_prompt(t('Enter folder path'), this.bind(this, function(path){
-            desk_window_request(this, url('dash/files/copy'),{'path':path, 'file':selected.items[0]});
+            if (selected.items.length==1) {
+                desk_window_request(this, url('dash/files/copy'),{'path':path, 'file':selected.items[0]});
+            } else {
+                desk_window_request(this, url('dash/files/copies'),{'path':path, 'files':selected.items});
+            }
         }));
         $('#zira-prompt-dialog input[name=modal-input]').val(selected.items[0].split(desk_ds).slice(0,-1).join(desk_ds));
     }
@@ -157,9 +161,13 @@ var dash_files_copy = function() {
 
 var dash_files_move = function() {
     var selected = desk_window_selected(this);
-    if (typeof(selected.items)!="undefined" && selected.items.length==1) {
+    if (typeof(selected.items)!="undefined" && selected.items.length>0) {
         desk_prompt(t('Enter folder path'), this.bind(this, function(path){
-            desk_window_request(this, url('dash/files/move'),{'path':path, 'file':selected.items[0]});
+            if (selected.items.length==1) {
+                desk_window_request(this, url('dash/files/move'),{'path':path, 'file':selected.items[0]});
+            } else {
+                desk_window_request(this, url('dash/files/moves'),{'path':path, 'files':selected.items});
+            }
         }));
         $('#zira-prompt-dialog input[name=modal-input]').val(selected.items[0].split(desk_ds).slice(0,-1).join(desk_ds));
     }
@@ -222,17 +230,26 @@ var dash_files_edit = function() {
     }
 };
 
-var dash_files_special_key = function(item, operation) {
-    if (!item || !operation) return false;
-    if (typeof item.data == "undefined" || typeof item.parent == "undefined" || item.parent != 'files') return false;
-    var origin = item.data.split(desk_ds).slice(0,-1).join(desk_ds);
+var dash_files_special_key = function(items, operation) {
+    if (!items || !operation) return false;
+    if (items.length==0) return false;
+    var origin = null;
     var root = this.options.data.root;
+    var files = [];
+    for (var i=0; i<items.length; i++) {
+        if (typeof items[i].data == "undefined" || typeof items[i].parent == "undefined" || items[i].parent != 'files') return false;
+        var _origin = items[i].data.split(desk_ds).slice(0,-1).join(desk_ds);
+        if (origin != _origin && origin!==null) return false;
+        origin = _origin;
+        files.push(items[i].data);
+    }
+    if (files.length==0) return false;
     if (operation == 'copy') {
-        desk_window_request(this, url('dash/files/copy'),{'path':root, 'file':item.data});
+        desk_window_request(this, url('dash/files/copies'),{'path':root, 'files':files});
         return true;
     } else if (operation == 'move') {
         if (origin == root) return false;
-        desk_window_request(this, url('dash/files/move'),{'path':root, 'file':item.data});
+        desk_window_request(this, url('dash/files/moves'),{'path':root, 'files':files});
         return true;
     } else if (operation == 'copypress' || operation == 'movepress') {
         return true;

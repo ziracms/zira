@@ -281,6 +281,22 @@ class Files extends Model {
         }
         return array('reload' => $this->getJSClassName());
     }
+    
+    public function copies($files, $dir) {
+        if (empty($files) || !is_array($files)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_UPLOAD_FILES) && !Permission::check(Permission::TO_UPLOAD_IMAGES)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $result = array();
+        foreach($files as $file) {
+            $_result = $this->copy($file, $dir);
+            if (is_array($_result)) {
+                $result = $_result;
+                if (array_key_exists('error', $_result)) break;
+            }
+        }
+        return $result;
+    }
 
     public function copy($file, $dir) {
         if (!Permission::check(Permission::TO_UPLOAD_FILES) && !Permission::check(Permission::TO_UPLOAD_IMAGES)) {
@@ -343,6 +359,22 @@ class Files extends Model {
             }
         }
         return array('reload' => $this->getJSClassName());
+    }
+    
+    public function moves($files, $dir) {
+        if (empty($files) || !is_array($files)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_UPLOAD_FILES) && !Permission::check(Permission::TO_UPLOAD_IMAGES)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $result = array();
+        foreach($files as $file) {
+            $_result = $this->move($file, $dir);
+            if (is_array($_result)) {
+                $result = $_result;
+                if (array_key_exists('error', $_result)) break;
+            }
+        }
+        return $result;
     }
 
     public function move($file, $dir) {

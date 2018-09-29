@@ -1,3 +1,8 @@
+var dash_widgets_open = function() {
+    this.onSpecialKey = dash_widgets_special_key;
+    desk_call(dash_widgets_drag, this);
+};
+
 var dash_widgets_load = function() {
     for (var i=0; i<this.options.bodyItems.length; i++) {
         if (typeof(this.options.bodyItems[i].activated)!="undefined" && this.options.bodyItems[i].activated==dash_widget_status_not_active_id) {
@@ -34,9 +39,7 @@ var dash_widgets_select = function() {
         for (var i=0; i<selected.length; i++) {
             if (typeof(selected[i].installed)!="undefined" && selected[i].installed) {
                 this.enableItemsByProperty('action','delete');
-                if (selected && selected.length==1) {
-                    this.enableItemsByProperty('typo','copy');
-                }
+                this.enableItemsByProperty('typo','copy');
                 break;
             }
         }
@@ -47,10 +50,10 @@ var dash_widgets_select = function() {
             if (typeof(selected[i].activated)!="undefined" && selected[i].activated!=dash_widget_status_not_active_id) {
                 this.enableItemsByProperty('typo','deactivate');
                 this.enableItemsByProperty('action','delete');
+                this.enableItemsByProperty('typo','copy');
                 if (selected && selected.length==1) {
                     this.enableItemsByProperty('typo','up');
                     this.enableItemsByProperty('typo','down');
-                    this.enableItemsByProperty('typo','copy');
                 }
                 break;
             }
@@ -119,8 +122,16 @@ var dash_widgets_placeholders_filter = function(element) {
 
 var dash_widgets_copy = function() {
     var selected = this.getSelectedContentItems();
-    if (selected && selected.length==1) {
-        desk_window_request(this, url('dash/widgets/copy'),{'widget':selected[0].data});
+    if (selected && selected.length>0) {
+        var widgets = [];
+        for (var i=0; i<selected.length; i++) {
+            widgets.push(selected[i].data);
+        }
+        if (widgets.length==1) {
+            desk_window_request(this, url('dash/widgets/copy'),{'widget':widgets[0]});
+        } else {
+            desk_window_request(this, url('dash/widgets/copies'),{'widgets':widgets});
+        }
     }
 };
 
@@ -218,4 +229,24 @@ var dash_widgets_drop = function(element) {
         var path = element.data;
         desk_window_request(this, url('dash/widgets/block'),{'path':path});
     }
+};
+
+var dash_widgets_special_key = function(items, operation) {
+    if (!items || !operation) return false;
+    if (items.length==0) return false;
+    var widgets = [];
+    for (var i=0; i<items.length; i++) {
+        if (typeof items[i].data == "undefined" || typeof items[i].parent == "undefined" || items[i].parent != 'widgets') return false;
+        widgets.push(items[i].data);
+    }
+    if (widgets.length==0) return false;
+    if (operation == 'copy') {
+        desk_window_request(this, url('dash/widgets/copies'),{'widgets':widgets});
+        return true;
+    } else if (operation == 'move') {
+        return false;
+    } else if (operation == 'copypress' || operation == 'movepress') {
+        return true;
+    }
+    return false;
 };

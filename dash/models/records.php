@@ -316,6 +316,22 @@ class Records extends Model {
 
         return array('reload' => $this->getJSClassName(),'message' => Zira\Locale::t('Updated %s thumbs', $co));
     }
+    
+    public function copyRecords($root, $ids) {
+        if (empty($ids) || !is_array($ids)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CREATE_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $result = array();
+        foreach($ids as $id) {
+            $_result = $this->copyRecord($root, $id);
+            if (is_array($_result)) {
+                $result = $_result;
+                if (array_key_exists('error', $_result)) break;
+            }
+        }
+        return $result;
+    }
 
     public function copyRecord($root, $id) {
         if (empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
@@ -470,6 +486,22 @@ class Records extends Model {
         Zira\Cache::clear();
 
         return array('reload' => $this->getJSClassName());
+    }
+    
+    public function moveRecords($root, $ids) {
+        if (empty($ids) || !is_array($ids)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_EDIT_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $result = array();
+        foreach($ids as $id) {
+            $_result = $this->moveRecord($root, $id);
+            if (is_array($_result)) {
+                $result = $_result;
+                if (array_key_exists('error', $_result)) break;
+            }
+        }
+        return $result;
     }
 
     public function moveRecord($root, $id) {

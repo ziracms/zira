@@ -92,12 +92,30 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function copies() {
+        if (Zira\Request::isPost()) {
+            $root = Zira\Request::post('root');
+            $ids = Zira\Request::post('items');
+            $response = $this->getWindowModel()->copyRecords($root, $ids);
+            Zira\Page::render($response);
+        }
+    }
 
     public function move() {
         if (Zira\Request::isPost()) {
             $root = Zira\Request::post('root');
             $id = Zira\Request::post('item');
             $response = $this->getWindowModel()->moveRecord($root, $id);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function moves() {
+        if (Zira\Request::isPost()) {
+            $root = Zira\Request::post('root');
+            $ids = Zira\Request::post('items');
+            $response = $this->getWindowModel()->moveRecords($root, $ids);
             Zira\Page::render($response);
         }
     }

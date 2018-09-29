@@ -3167,7 +3167,7 @@ DashWindow.prototype.onLoadFinish = function() {
     this.setLoading(false);
 };
 
-DashWindow.prototype.onSpecialKey = function(item, operation) {
+DashWindow.prototype.onSpecialKey = function(items, operation) {
     // to override
     return false;
 };

@@ -45,7 +45,7 @@ var Desk = {
     'formDataAppend': typeof(FormData)!="undefined" ? FormData.prototype.append : null,
     'parseJSON': $.parseJSON,
     'dockUpdated': false,
-    'bufferItem': null,
+    'bufferItems': null,
     'bufferOperation': null,
     'initialize': function() {
         if (this.isFrame()) return;
@@ -416,11 +416,11 @@ var Desk = {
             var active = this.findFocusedWindow();
             if (active instanceof DashWindow) {
                 var selected = active.getSelectedContentItems();
-                if (selected && selected.length==1) {
+                if (selected && selected.length>0) {
                     e.stopPropagation();
                     e.preventDefault();
-                    if (active.onSpecialKey(selected[0], 'copypress')) {
-                        this.bufferItem = selected[0];
+                    if (active.onSpecialKey(selected, 'copypress')) {
+                        this.bufferItems = selected;
                         this.bufferOperation = 'copy';
                         $(active.content).find('ul li a').css('opacity', 1);
                     }
@@ -430,23 +430,25 @@ var Desk = {
             var active = this.findFocusedWindow();
             if (active instanceof DashWindow) {
                 var selected = active.getSelectedContentItems();
-                if (selected && selected.length==1) {
+                if (selected && selected.length>0) {
                     e.stopPropagation();
                     e.preventDefault();
-                    if (active.onSpecialKey(selected[0], 'movepress')) {
-                        this.bufferItem = selected[0];
+                    if (active.onSpecialKey(selected, 'movepress')) {
+                        this.bufferItems = selected;
                         this.bufferOperation = 'move';
                         $(active.content).find('ul li a').css('opacity', 1);
-                        $(selected[0].element).css('opacity', .5);
+                        for (var y=0; y<selected.length; y++) {
+                            $(selected[y].element).css('opacity', .5);
+                        }
                     }
                 }
             }
         } else if (e.keyCode == 86 && this.ctrl_pressed && this.keys_pressed==2) { // ctrl+v
             var active = this.findFocusedWindow();
             if (active instanceof DashWindow) {
-                if (this.bufferItem && this.bufferOperation) {
-                    if (active.onSpecialKey(this.bufferItem, this.bufferOperation)) {
-                        this.bufferItem = null;
+                if (this.bufferItems && this.bufferOperation) {
+                    if (active.onSpecialKey(this.bufferItems, this.bufferOperation)) {
+                        this.bufferItems = null;
                         this.bufferOperation = null;
                     }
                 }

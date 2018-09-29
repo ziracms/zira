@@ -107,10 +107,10 @@ class Records extends Window {
             $this->createMenuDropdownSeparator()
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_records_copy, this);', 'edit', true, array('typo'=>'editor'))
+            $this->createMenuDropdownItem(Zira\Locale::t('Copy'), 'glyphicon glyphicon-duplicate', 'desk_call(dash_records_copy, this);', 'delete', true, array('typo'=>'copy'))
         );
         $this->addDefaultMenuDropdownItem(
-            $this->createMenuDropdownItem(Zira\Locale::t('Move'), 'glyphicon glyphicon-share', 'desk_call(dash_records_move, this);', 'edit', true, array('typo'=>'editor'))
+            $this->createMenuDropdownItem(Zira\Locale::t('Move'), 'glyphicon glyphicon-share', 'desk_call(dash_records_move, this);', 'edit', true, array('typo'=>'move'))
         );
 
         $this->addDefaultContextMenuItem(
