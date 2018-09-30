@@ -50,7 +50,9 @@ class Recordsettings extends Window {
         if (!array_key_exists('create_thumbnails', $configs)) $configs['create_thumbnails'] = 1;
         if (!array_key_exists('slider_type', $configs)) $configs['slider_type'] = 'default';
         if (!array_key_exists('slider_mode', $configs)) $configs['slider_mode'] = 3;
-
+        if (!array_key_exists('gallery_thumbs_width', $configs)) $configs['gallery_thumbs_width'] = Zira\Config::get('thumbs_width');
+        if (!array_key_exists('gallery_thumbs_height', $configs)) $configs['gallery_thumbs_height'] = Zira\Config::get('thumbs_height');
+        
         $form = new \Dash\Forms\Recordsettings();
         $form->setValues($configs);
 

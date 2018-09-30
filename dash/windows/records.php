@@ -34,7 +34,7 @@ class Records extends Window {
         $this->setIconClass(self::$_icon_class);
         $this->setTitle(Zira\Locale::t(self::$_title));
         $this->setViewSwitcherEnabled(true);
-        $this->setSelectionLinksEnabled(true);
+        $this->setSelectionLinksEnabled(false);
         $this->setReloadButtonEnabled(false);
         $this->setBodyViewListVertical(true);
 
@@ -131,6 +131,17 @@ class Records extends Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('Publish'), 'glyphicon glyphicon-ok', 'desk_call(dash_records_record_publish, this);', 'edit', true, array('typo'=>'publish'))
         );
+        
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuSeparator()
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('View page'), 'glyphicon glyphicon-eye-open', 'desk_call(dash_records_record_view, this);', 'edit', true, array('typo'=>'preview'))
+        );
+        $this->addDefaultContextMenuItem(
+            $this->createContextMenuItem(Zira\Locale::t('Open page'), 'glyphicon glyphicon-new-window', 'desk_call(dash_records_record_page, this);', 'edit', true, array('typo'=>'record'))
+        );
+
         // extra context menu items
         $extra_items = \Zira\Hook::run(self::RECORDS_CONTEXT_MENU_HOOK, $this);
         if (!empty($extra_items)) {

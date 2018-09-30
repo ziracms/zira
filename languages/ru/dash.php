@@ -431,5 +431,7 @@ return array(
     'Delete menu' => 'Удалить меню',
     'Calendar of publications' => 'Календарь публикаций',
     'Record columns count' => 'Число колонок записей',
-    'Fullscreen slider' => 'Полноэкранный слайдер'
+    'Fullscreen slider' => 'Полноэкранный слайдер',
+    'Gallery thumbs width' => 'Ширина миниатюр галереи',
+    'Gallery thumbs height' => 'Высота миниатюр галереи',
 );

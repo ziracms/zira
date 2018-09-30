@@ -358,7 +358,13 @@ class Page {
                 $name = 'img' . uniqid() . '.' . $ext;
             }
         } while(file_exists($save_path . DIRECTORY_SEPARATOR . $name));
-        if (file_exists($src_path) && Image::createThumb($src_path, $save_path . DIRECTORY_SEPARATOR . $name, Config::get('thumbs_width'), Config::get('thumbs_height'))) {
+        $thumbs_width = Config::get('thumbs_width');
+        $thumbs_height = Config::get('thumbs_height');
+        if ($gallery) {
+            $thumbs_width = Config::get('gallery_thumbs_width', $thumbs_width);
+            $thumbs_height = Config::get('gallery_thumbs_height', $thumbs_height);
+        }
+        if (file_exists($src_path) && Image::createThumb($src_path, $save_path . DIRECTORY_SEPARATOR . $name, $thumbs_width, $thumbs_height)) {
             return UPLOADS_DIR . '/' . str_replace(DIRECTORY_SEPARATOR, '/', $savedir) . '/' . $name;
         } else {
             return false;
