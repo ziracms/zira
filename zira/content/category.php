@@ -231,9 +231,14 @@ class Category extends Zira\Page {
                         $slides_co = 0;
                     }
 
+                    $images_limit = intval(Zira\Config::get('gallery_limit', 0));
                     if ($gallery_enabled && $access_gallery) {
-                        $images = static::getRecordImages($record->id);
-                        $images_co = count($images);
+                        $images_co = static::getRecordImagesCount($record->id);
+                        if ($images_co>0) {
+                            $images = static::getRecordImages($record->id, $images_limit);
+                        } else {
+                            $images = array();
+                        }
                     } else if ($gallery_enabled && !$access_gallery) {
                         $images = array();
                         $images_co = static::getRecordImagesCount($record->id);
@@ -276,7 +281,7 @@ class Category extends Zira\Page {
                     }
 
                     if ($slides_co > 0) static::setSlider($slides);
-                    if ($images_co > 0) static::setGallery($images, $access_gallery);
+                    if ($images_co > 0) static::setGallery($images, $access_gallery, $images_limit, $images_co, $record->id);
                     if ($audio_co > 0) static::setAudio($audio, $access_audio);
                     if ($video_co > 0) static::setVideo($video, $access_video, $record->image);
                     if ($files_co > 0) static::setFiles($files, $access_files);

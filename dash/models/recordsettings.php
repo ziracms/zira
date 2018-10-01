@@ -35,6 +35,7 @@ class Recordsettings extends Model {
                 'slider_mode'=>'int',
                 'gallery_thumbs_width'=>'int',
                 'gallery_thumbs_height'=>'int',
+                'gallery_limit'=>'int'
             );
 
             $config_ids = array();

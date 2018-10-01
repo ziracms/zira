@@ -7,6 +7,11 @@
 <?php endforeach; ?>
 </ul>
 </div>
+<?php if (!empty($limit) && !empty($count) && !empty($record_id) && $count>$limit): ?>
+<div class="gallery-view-more-wrapper">
+<button class="btn btn-primary gallery-view-more" type="button" data-url="<?php echo Zira\Helper::url('zira/records/images') ?>" data-record="<?php echo $record_id ?>" data-pages="<?php echo $pages = ceil($count / $limit); ?>"><?php echo t('View more') ?>&nbsp;&rsaquo;&rsaquo;</button>
+</div>
+<?php endif; ?>
 <?php endif; ?>
 
 <?php if (empty($images) && empty($access_allowed)): ?>

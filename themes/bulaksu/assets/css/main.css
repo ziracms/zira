@@ -417,6 +417,10 @@ header .header-top-buttons .header-top-button .social-btn {
     box-shadow: none;
     margin-top: -5px;
 }
+.fullscreen-slider .slider-wrapper,
+.carousel-slider-wrapper {
+    background-color: #011b1f;
+}
 .fullscreen-slider header {
     z-index: 3;
 }
@@ -867,6 +871,9 @@ article .rating .share-wrapper .share-btn {
 }
 .gallery-wrapper {
     margin: 30px 0px 20px;
+}
+.gallery-view-more-wrapper {
+    margin-bottom: 20px;
 }
 .gallery {
     display: block;

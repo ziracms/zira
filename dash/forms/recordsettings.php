@@ -52,7 +52,7 @@ class Recordsettings extends Form
         $html .= $this->checkbox(Locale::t('Show slider'), 'slider_enabled', null, false);
         $html .= $this->input(Locale::t('Gallery thumbs width'), 'gallery_thumbs_width', array('placeholder'=>self::THUMB_MIN_SIZE.' - '.self::THUMB_MAX_SIZE));
         $html .= $this->input(Locale::t('Gallery thumbs height'), 'gallery_thumbs_height', array('placeholder'=>self::THUMB_MIN_SIZE.' - '.self::THUMB_MAX_SIZE));
-        
+        $html .= $this->input(Locale::t('Gallery limit'), 'gallery_limit');
         $html .= $this->checkbox(Locale::t('Show gallery'), 'gallery_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show files'), 'files_enabled', null, false);
         $html .= $this->checkbox(Locale::t('Show audio'), 'audio_enabled', null, false);
@@ -69,5 +69,8 @@ class Recordsettings extends Form
 
         $validator->registerNumber('thumbs_width',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs width')));
         $validator->registerNumber('thumbs_height',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Thumbs height')));
+        $validator->registerNumber('gallery_thumbs_width',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Gallery thumbs width')));
+        $validator->registerNumber('gallery_thumbs_height',self::THUMB_MIN_SIZE,self::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Gallery thumbs height')));
+        $validator->registerNumber('gallery_limit',0,1000,true,Locale::t('Invalid value "%s"',Locale::t('Gallery limit')));
     }
 }

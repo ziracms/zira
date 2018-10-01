@@ -49,6 +49,12 @@
             zira_init_records_more();
         }
         /**
+         * more gallery images
+         */
+        if ($('.container #content .gallery-view-more-wrapper').length>0) {
+            zira_init_gallery_more();
+        }
+        /**
          * share buttons
          */
         if ($('.share-btn').length>0) {
@@ -586,6 +592,53 @@
                 $('.container #content .list-view-more').trigger('click');
                 zira_init_records_scroll.co++;
             }
+        });
+    };
+    
+    zira_init_gallery_more = function() {
+        $('.container #content').on('click', '.gallery-view-more', function(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            var url = $(this).data('url');
+            var record_id = $(this).data('record');
+            var page = $(this).data('page');
+            var pages = $(this).data('pages');
+
+            if (typeof(url)=="undefined" ||
+                typeof(record_id)=="undefined" ||
+                typeof(pages)=="undefined"
+            ) {
+                return;
+            }
+            
+            if (typeof page == "undefined" || page<2) page = 2;
+
+            $(this).attr('disabled','disabled');
+            $(this).parent('.gallery-view-more-wrapper').append('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> '+t('Please wait')+'...</div>');
+
+            $.post(url, {
+                'record_id': record_id,
+                'page': page
+            }, zira_bind(this, function(response){
+                if (!response || !response.length) {
+                    $(this).parent('.gallery-view-more-wrapper').remove();
+                    return;
+                }
+                var r = new RegExp('<ul[^>]*>([\\s\\S]+)</ul>([\\s\\S]*?)$','g');
+                var m = r.exec(response);
+                if (m) {
+                    $(this).parent('.gallery-view-more-wrapper').prev('.gallery-wrapper').children('ul').append(m[1]);
+                    $(this).parent('.gallery-view-more-wrapper').children('.zira-loader-wrapper').remove();
+                    if (page<pages) {    
+                        $(this).data('page', page+1);
+                        $(this).removeAttr('disabled');
+                    } else {
+                        $(this).parent('.gallery-view-more-wrapper').remove();
+                    }
+                    zira_init_gallery();
+                }
+            }),'html');
         });
     };
 

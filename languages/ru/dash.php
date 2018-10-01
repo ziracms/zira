@@ -434,4 +434,5 @@ return array(
     'Fullscreen slider' => 'Полноэкранный слайдер',
     'Gallery thumbs width' => 'Ширина миниатюр галереи',
     'Gallery thumbs height' => 'Высота миниатюр галереи',
+    'Gallery limit' => 'Лимит галереи'
 );

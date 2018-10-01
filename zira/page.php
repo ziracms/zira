@@ -217,10 +217,10 @@ class Page {
         self::$_placeholders_data[self::VIEW_PLACEHOLDER_SLIDER_DATA] = array('images'=>$images);
     }
 
-    public static function setGallery(array $images, $access_allowed = true) {
+    public static function setGallery(array $images, $access_allowed = true, $limit = 0, $count = 0, $record_id = 0) {
         View::addLightbox();
         //View::addPlaceholderView(View::VAR_CONTENT, array('images'=>$images, 'access_allowed' => $access_allowed), 'zira/gallery');
-        self::$_placeholders_data[self::VIEW_PLACEHOLDER_GALLERY_DATA] = array('images'=>$images, 'access_allowed' => $access_allowed);
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_GALLERY_DATA] = array('images'=>$images, 'access_allowed' => $access_allowed, 'limit' => $limit, 'count' => $count, 'record_id' => $record_id);
     }
     
     public static function setFiles(array $files, $access_allowed = true) {
@@ -595,11 +595,14 @@ class Page {
                             ->get('co');
     }
     
-    public static function getRecordImages($record_id) {
-        return Models\Image::getCollection()
-                            ->where('record_id', '=', $record_id)
-                            ->order_by('id', 'asc')
-                            ->get();
+    public static function getRecordImages($record_id, $limit=0, $offset=0) {
+        $q = Models\Image::getCollection()
+                            ->where('record_id', '=', $record_id);
+        if ($limit>0) {
+            $q->limit($limit, $offset);
+        }
+        return $q->order_by('id', 'asc')
+                    ->get();
     }
     
     public static function getRecordImagesCount($record_id) {
