@@ -69,7 +69,8 @@ class Recordslides extends Window {
         );
 
         $this->addStrings(array(
-            'Enter description'
+            'Enter description',
+            'Enter URL address'
         ));
 
         $this->includeJS('dash/recordslides');

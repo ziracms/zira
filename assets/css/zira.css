@@ -251,6 +251,14 @@ textarea {
 .fullscreen-slider .slider-wrapper .slider {
     display: none;
 }
+.carousel {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.carousel li {
+    display: inline-block;
+}
 
 @keyframes loader {
   0% { 

@@ -52,7 +52,9 @@ class Meta extends Window {
         if (!array_key_exists('site_records_grid', $configs)) $configs['site_records_grid'] = 1;
         if (!array_key_exists('records_sorting', $configs)) $configs['records_sorting'] = 'id';
         if (!array_key_exists('enable_breadcrumbs', $configs)) $configs['enable_breadcrumbs'] = 1;
-
+        if (!array_key_exists('carousel_thumbs_width', $configs)) $configs['carousel_thumbs_width'] = Zira\Config::get('thumbs_width');
+        if (!array_key_exists('carousel_thumbs_height', $configs)) $configs['carousel_thumbs_height'] = Zira\Config::get('thumbs_height');
+        
         $form->setValues($configs);
 
         $this->setBodyContent($form);

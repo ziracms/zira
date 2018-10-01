@@ -717,6 +717,7 @@ class Dash {
                 $this->registerWindowClass('dashTextWindow', 'Dash\Windows\Text', 'Dash\Models\Text');
                 $this->registerWindowClass('DashHTMLWindow', 'Dash\Windows\Html', 'Dash\Models\Html');
             }
+            $this->registerWindowClass('dashCarouselWindow', 'Dash\Windows\Carousel', 'Dash\Models\Files');
         }
         if (Zira\Permission::check(Zira\Permission::TO_CREATE_USERS) || Zira\Permission::check(Zira\Permission::TO_EDIT_USERS)) {
             $this->registerWindowClass('dashUsersWindow', 'Dash\Windows\Users', 'Dash\Models\Users');

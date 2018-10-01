@@ -55,24 +55,27 @@ var dash_files_select = function() {
     if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || selected[0].type!='image') {
         this.disableItemsByProperty('typo','show_image');
     }
+    if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || selected[0].type!='folder') {
+        this.disableItemsByProperty('typo','carousel');
+    }
     if (selected && selected.length && selected.length==1 && (typeof(this.info_last_item)=="undefined" || this.info_last_item!=selected[0].data || $(this.element).find('.filemanager-infobar').html().length==0)) {
         this.info_last_item = selected[0].data;
-    $(this.element).find('.filemanager-infobar').html('');
-    try { window.clearTimeout(this.timer); } catch(err) {};
-    this.timer = window.setTimeout(this.bind(this,function(){
         $(this.element).find('.filemanager-infobar').html('');
-        var selected = this.getSelectedContentItems();
-        if (!selected || !selected.length || selected.length!=1) return;
-        desk_post(url('dash/files/info'),{'dirroot':this.options.data.root,'file':selected[0].data, 'token':token()}, this.bind(this, function(response){
-            if (response && response.length>0) {
-                $(this.element).find('.filemanager-infobar').append('<div style="cursor:default;padding:0px;margin:5px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
-                $(this.element).find('.filemanager-infobar').append('<div class="devider" style="height:1px;padding:0px;margin:5px 0px"></div>');
-                for (var i=0; i<response.length; i++) {
-                    $(this.element).find('.filemanager-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');
+        try { window.clearTimeout(this.timer); } catch(err) {};
+        this.timer = window.setTimeout(this.bind(this,function(){
+            $(this.element).find('.filemanager-infobar').html('');
+            var selected = this.getSelectedContentItems();
+            if (!selected || !selected.length || selected.length!=1) return;
+            desk_post(url('dash/files/info'),{'dirroot':this.options.data.root,'file':selected[0].data, 'token':token()}, this.bind(this, function(response){
+                if (response && response.length>0) {
+                    $(this.element).find('.filemanager-infobar').append('<div style="cursor:default;padding:0px;margin:5px 0px 0px"><span class="glyphicon glyphicon-info-sign"></span> '+t('Information')+':</div>');
+                    $(this.element).find('.filemanager-infobar').append('<div class="devider" style="height:1px;padding:0px;margin:5px 0px"></div>');
+                    for (var i=0; i<response.length; i++) {
+                        $(this.element).find('.filemanager-infobar').append('<div style="font-weight:normal;padding:2px 0px;cursor:default;text-overflow:ellipsis;overflow:hidden" title="'+response[i].split('>').slice(-1)[0]+'">'+response[i]+'</div>');
+                    }
                 }
-            }
-        }));
-    }),1000);
+            }));
+        }),1000);
     }
 };
 
@@ -227,7 +230,79 @@ var dash_files_edit = function() {
         desk_html_editor(data);
     } else if (typeof(selected[0].type)!="undefined" && selected[0].type=='image') {
         desk_image_editor(data);
+    } else if (typeof(selected[0].is_widget)!="undefined" && selected[0].is_widget) {
+        dash_files_carousel_wnd_open(data);
     }
+};
+
+var dash_files_carousel = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected.length==1 && typeof(selected[0].type)!="undefined" && selected[0].type=='folder') {
+        desk_prompt(t('Enter title'), this.bind(this, function(title){
+            desk_window_request(this, url('dash/files/carousel'),{'title':title, 'folder':selected[0].data}, this.bind(this, function(){
+                this.options.data.root=dash_files_widgets_folder_name;
+                this.options.data.page=1;
+                window.setTimeout(this.bind(this, function(){
+                    desk_window_reload(this);
+                }), 100);
+            }));
+        }));
+        $('#zira-prompt-dialog input[name=modal-input]').val('');
+    }
+};  
+
+var dash_files_carousel_wnd_open = function(item) {
+    if (typeof(item)!="undefined") {
+        var data = {'items':[item]};
+        desk_call(dash_files_carousel_wnd, null, {
+            data: data
+        });
+    }
+};
+
+var dash_files_carousel_load = function() {
+    if (typeof this.options.data.widget_exists == "undefined") return;
+    this.disableItemsByProperty('typo','widget');
+    if (!this.options.data.widget_exists) {
+        this.enableItemsByProperty('typo','widget');
+    }
+};
+
+var dash_files_carousel_title = function() {
+    if (typeof this.options.data.items == "undefined" || this.options.data.items.length!=1) return;
+    if (typeof this.options.data.widget_title == "undefined") return;
+    desk_prompt(t('Enter title'), this.bind(this, function(title){
+        desk_window_request(this, url('dash/files/carouseltitle'),{'title':title, 'widget':this.options.data.items[0]});
+    }));
+    $('#zira-prompt-dialog input[name=modal-input]').val(this.options.data.widget_title);
+};
+
+var dash_files_carousel_desc = function() {
+    if (typeof this.options.data.items == "undefined" || this.options.data.items.length!=1) return;
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1 && typeof(selected[0].description)!="undefined") {
+        desk_prompt(t('Enter description'), this.bind(this, function(desc){
+            desk_window_request(this, url('dash/files/carouseldesc'),{'description':desc, 'item':selected[0].data, 'widget':this.options.data.items[0]});
+        }));
+        $('#zira-prompt-dialog input[name=modal-input]').val(selected[0].description);
+    }
+};
+
+var dash_files_carousel_link = function() {
+    if (typeof this.options.data.items == "undefined" || this.options.data.items.length!=1) return;
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1 && typeof(selected[0].link)!="undefined") {
+        desk_prompt(t('Enter URL address'), this.bind(this, function(link){
+            desk_window_request(this, url('dash/files/carousellink'),{'link':link, 'item':selected[0].data, 'widget':this.options.data.items[0]});
+        }));
+        $('#zira-prompt-dialog input[name=modal-input]').val(selected[0].link);
+    }
+};
+
+var dash_files_carousel_widget = function() {
+    if (typeof this.options.data.items == "undefined" || this.options.data.items.length!=1) return;
+    if (typeof this.options.data.widget_exists == "undefined" || this.options.data.widget_exists) return;
+    desk_window_request(this, url('dash/files/carouselwidget'),{'widget':this.options.data.items[0]});
 };
 
 var dash_files_special_key = function(items, operation) {

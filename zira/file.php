@@ -8,6 +8,9 @@
 namespace Zira;
 
 class File {
+    const WIDGET_CLASS = '\Zira\Widgets\Carousel';
+    const WIDGETS_FOLDER = 'widgets';
+    
     public static function getAbsolutePath($dir) {
         $uploads_dir = ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR;
         if (empty($dir)) return $uploads_dir;

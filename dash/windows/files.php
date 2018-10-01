@@ -57,6 +57,7 @@ class Files extends Window {
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Rename'), 'glyphicon glyphicon-tag', 'desk_call(dash_files_rename, this);', 'call')
         );
+        
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::t('New folder'), 'glyphicon glyphicon-folder-close', 'desk_call(dash_files_mkdir, this);', 'create')
         );
@@ -147,6 +148,13 @@ class Files extends Window {
             );
         }
 
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownSeparator()
+        );
+        $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Create carousel widget'), 'glyphicon glyphicon-modal-window', 'desk_call(dash_files_carousel, this);', 'call', false, array('typo'=>'carousel'))
+        );
+
         $this->setMenuItems(array(
             $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown()),
             $this->createMenuItem(Zira\Locale::t('File'), array(
@@ -168,8 +176,14 @@ class Files extends Window {
             'Enter name',
             'Enter URL address',
             'Enter folder path',
-            'Enter archive name'
+            'Enter archive name',
+            'Enter title'
         ));
+        
+        $this->addVariables(array(
+            'dash_files_widgets_folder_name' => UPLOADS_DIR . DIRECTORY_SEPARATOR . Zira\File::WIDGETS_FOLDER,
+            'dash_files_carousel_wnd' => Dash\Dash::getInstance()->getWindowJSName(Carousel::getClass())
+        ), true);
 
         $this->includeJS('dash/files');
     }
@@ -272,6 +286,10 @@ class Files extends Window {
         return in_array($ext, array('webm', 'mp4', 'mkv', 'flv', 'vob', 'avi', 'wmv', 'mpeg', '3gp', 'webmv', 'ogv', 'm4v',
                                     'WEBM', 'MP4', 'MKV', 'FLV', 'VOB', 'AVI', 'WMV', 'MPEG', '3GP', 'WEBMV', 'OGV', 'M4V'));
     }
+    
+    public static function is_widget($file) {
+        return substr($file,-7)=='.widget';
+    }
 
     public function load() {
         if (!Permission::check(Permission::TO_VIEW_FILES) && !Permission::check(Permission::TO_VIEW_IMAGES)) {
@@ -331,6 +349,8 @@ class Files extends Window {
                     $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'txt', 'parent'=>'files'), $fsize);
                 } else if (self::is_html($file)) {
                     $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'html', 'parent'=>'files'), $fsize);
+                } else if (self::is_widget($file)) {
+                    $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files', 'is_widget'=>true), $fsize);
                 } else {
                     $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files'), $fsize);
                 }

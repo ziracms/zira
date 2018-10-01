@@ -166,6 +166,7 @@ class Files extends Model {
         }
         $dirs = array();
         $files = array();
+        $widgets = array();
         foreach($data as $item) {
             $item = trim((string)$item,DIRECTORY_SEPARATOR);
             if (strpos($item,'..')!==false || strpos($item,UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0) {
@@ -214,6 +215,11 @@ class Files extends Model {
                         $files[]=$_path;
                     }
                 }
+                if (strpos($item, UPLOADS_DIR . DIRECTORY_SEPARATOR . Zira\File::WIDGETS_FOLDER . DIRECTORY_SEPARATOR)===0 &&
+                    strlen($item)>7 && substr($item, -7) == '.widget'
+                ) {
+                    $widgets []= Zira\Helper::basename($item);
+                }
             }
         }
         $dirs=array_reverse($dirs);
@@ -224,6 +230,13 @@ class Files extends Model {
             } else {
                 if (!@unlink($path)) return array('error' => Zira\Locale::t('An error occurred'));
             }
+        }
+        foreach($widgets as $widget) {
+            Zira\Models\Widget::getCollection()
+                                ->where('name','=',Zira\File::WIDGET_CLASS)
+                                ->and_where('params','=',$widget)
+                                ->delete()
+                                ->execute();
         }
         return array('reload' => $this->getJSClassName());
     }
@@ -512,5 +525,290 @@ class Files extends Model {
         $zip->extractTo(ROOT_DIR . DIRECTORY_SEPARATOR . $root);
         $zip->close();
         return array('reload'=>$this->getJSClassName());
+    }
+    
+    public function createCarousel($folder, $title='') {
+        if (empty($folder)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_UPLOAD_FILES) && !Permission::check(Permission::TO_UPLOAD_IMAGES)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . Zira\File::WIDGETS_FOLDER) && !@mkdir(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . Zira\File::WIDGETS_FOLDER)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $folder = trim((string)$folder,DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        if (strpos($folder, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($folder,'..')!==false || strpos($folder,UPLOADS_DIR.DIRECTORY_SEPARATOR.Dash\Windows\Files::THUMBS_FOLDER)===0) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $folder = trim($folder,DIRECTORY_SEPARATOR);
+        if ($folder==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
+        $title = strip_tags(trim($title));
+        $path = ROOT_DIR . DIRECTORY_SEPARATOR . $folder;
+        if (!file_exists($path) || !is_readable($path)) return array('error' => Zira\Locale::t('An error occurred'));
+        $name = Zira\Helper::basename($folder).'.widget';
+        $widget_path_prefix = ROOT_DIR.DIRECTORY_SEPARATOR.UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER;
+        $i=0;
+        while (file_exists($widget_path_prefix.DIRECTORY_SEPARATOR.$name)) {
+            $i++;
+            $p=strrpos($name,'.');
+            if ($p!==false) {
+                $name = substr($name,0,$p).'-'.$i.substr($name,$p);
+            } else {
+                $name = $name.'-'.$i;
+            }
+        }
+        if (file_exists($widget_path_prefix.DIRECTORY_SEPARATOR.$name)) return array('error' => Zira\Locale::t('File or directory already exists'));
+
+        $data = new \stdClass();
+        $data->title = $title;
+        $data->path = $folder;
+        $data->links = array();
+        $data->descriptions = array();
+        $content = serialize($data);
+        $f = @fopen($widget_path_prefix.DIRECTORY_SEPARATOR.$name, 'wb');
+        if (!$f) return array('error' => Zira\Locale::t('An error occurred'));
+        fwrite($f, $content);
+        fclose($f);
+        
+        $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+        $widget = new Zira\Models\Widget();
+        $widget->name = Zira\File::WIDGET_CLASS;
+        $widget->module = 'zira';
+        $widget->placeholder = Zira\View::VAR_CONTENT_BOTTOM;
+        $widget->params = $name;
+        $widget->category_id = null;
+        $widget->sort_order = ++$max_order;
+        $widget->active = Zira\Models\Widget::STATUS_ACTIVE;
+        $widget->save();
+
+        Zira\Cache::clear();
+        
+        return array('message' => Zira\Locale::t('Created widget "%s" in widgets folder', $name));
+    }
+    
+    public function saveCarouselTitle($widget, $title) {
+        if (empty($widget)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $file = trim($widget,DIRECTORY_SEPARATOR);
+        if ($file==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
+        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER)!==0) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $content = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $file);
+        if (empty($content)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data = @unserialize($content);
+        if (!is_object($data) || !$data->path) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data->path = trim($data->path, DIRECTORY_SEPARATOR);
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_dir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+
+        $data->title =  strip_tags(trim($title));
+
+        $content = serialize($data);
+        $f = @fopen($file, 'wb');
+        if (!$f) return array('error' => Zira\Locale::t('An error occurred'));
+        fwrite($f, $content);
+        fclose($f);
+
+        return array('reload' => Dash\Dash::getInstance()->getWindowJSName(Dash\Windows\Carousel::getClass()),'message'=>Zira\Locale::t('Successfully saved'));
+    }
+    
+    public function saveCarouselDescription($widget, $id, $description) {
+        if (empty($widget) || empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $file = trim($widget,DIRECTORY_SEPARATOR);
+        if ($file==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
+        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER)!==0) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $content = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $file);
+        if (empty($content)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data = @unserialize($content);
+        if (!is_object($data) || !$data->path) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data->path = trim($data->path, DIRECTORY_SEPARATOR);
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_dir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!is_array($data->descriptions)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path);
+        if (!$d) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $images = array();
+        while(($f = readdir($d))!==false) {
+            if ($f=='.' || $f=='..') continue;
+            $path = ROOT_DIR . DIRECTORY_SEPARATOR . $data->path . DIRECTORY_SEPARATOR . $f;
+            if (is_dir($path)) continue;
+            $ext = '';
+            $p=strrpos($f,'.');
+            if ($p!==false) {
+                $ext = strtolower(substr($f,$p+1));
+            }
+            if (!in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) continue;
+            $images []= str_replace(DIRECTORY_SEPARATOR, '/', $data->path . DIRECTORY_SEPARATOR . $f);
+        }
+        closedir($d);
+        
+        if (!in_array($id, $images)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $data->descriptions[Zira\Helper::urlencode($id)] = Zira\Helper::utf8Clean(strip_tags($description));
+
+        $content = serialize($data);
+        $f = @fopen($file, 'wb');
+        if (!$f) return array('error' => Zira\Locale::t('An error occurred'));
+        fwrite($f, $content);
+        fclose($f);
+
+        return array('reload' => Dash\Dash::getInstance()->getWindowJSName(Dash\Windows\Carousel::getClass()),'message'=>Zira\Locale::t('Successfully saved'));
+    }
+    
+    public function saveCarouselLink($widget, $id, $link) {
+        if (empty($widget) || empty($id)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $file = trim($widget,DIRECTORY_SEPARATOR);
+        if ($file==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
+        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER)!==0) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $content = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $file);
+        if (empty($content)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data = @unserialize($content);
+        if (!is_object($data) || !$data->path) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data->path = trim($data->path, DIRECTORY_SEPARATOR);
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_dir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!is_array($data->links)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path);
+        if (!$d) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $images = array();
+        while(($f = readdir($d))!==false) {
+            if ($f=='.' || $f=='..') continue;
+            $path = ROOT_DIR . DIRECTORY_SEPARATOR . $data->path . DIRECTORY_SEPARATOR . $f;
+            if (is_dir($path)) continue;
+            $ext = '';
+            $p=strrpos($f,'.');
+            if ($p!==false) {
+                $ext = strtolower(substr($f,$p+1));
+            }
+            if (!in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) continue;
+            $images []= str_replace(DIRECTORY_SEPARATOR, '/', $data->path . DIRECTORY_SEPARATOR . $f);
+        }
+        closedir($d);
+        
+        if (!in_array($id, $images)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $data->links[Zira\Helper::urlencode($id)] = strip_tags($link);
+
+        $content = serialize($data);
+        $f = @fopen($file, 'wb');
+        if (!$f) return array('error' => Zira\Locale::t('An error occurred'));
+        fwrite($f, $content);
+        fclose($f);
+
+        return array('reload' => Dash\Dash::getInstance()->getWindowJSName(Dash\Windows\Carousel::getClass()),'message'=>Zira\Locale::t('Successfully saved'));
+    }
+    
+    public function createCarouselWidget($widget) {
+        if (empty($widget)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_CHANGE_LAYOUT)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $file = trim($widget,DIRECTORY_SEPARATOR);
+        if ($file==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
+        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER)!==0) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $content = file_get_contents(ROOT_DIR . DIRECTORY_SEPARATOR . $file);
+        if (empty($content)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data = @unserialize($content);
+        if (!is_object($data) || !$data->path) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        $data->path = trim($data->path, DIRECTORY_SEPARATOR);
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_dir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+
+        $widgets = array();
+        $rows = Zira\Models\Widget::getCollection()
+                                ->where('name','=',Zira\File::WIDGET_CLASS)
+                                ->get()
+                                ;
+        foreach($rows as $row) {
+            $widgets[] = $row->params;
+        }
+        
+        if (in_array(Zira\Helper::basename($file),$widgets)) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $max_order = Zira\Models\Widget::getCollection()->max('sort_order')->get('mx');
+
+        $widget = new Zira\Models\Widget();
+        $widget->name = Zira\File::WIDGET_CLASS;
+        $widget->module = 'zira';
+        $widget->placeholder = Zira\View::VAR_CONTENT_BOTTOM;
+        $widget->params = Zira\Helper::basename($file);
+        $widget->category_id = null;
+        $widget->sort_order = ++$max_order;
+        $widget->active = Zira\Models\Widget::STATUS_ACTIVE;
+        $widget->save();
+
+        Zira\Cache::clear();
+
+        return array('reload' => Dash\Dash::getInstance()->getWindowJSName(Dash\Windows\Carousel::getClass()),'message' => Zira\Locale::t('Activated %s widgets', 1));
     }
 }

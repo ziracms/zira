@@ -44,7 +44,9 @@ class Meta extends Model {
                 'site_parse_images'=>'int',
                 'site_records_grid'=>'int',
                 'records_sorting'=>'string',
-                'enable_breadcrumbs'=>'int'
+                'enable_breadcrumbs'=>'int',
+                'carousel_thumbs_width'=>'int',
+                'carousel_thumbs_height'=>'int'
             );
 
             $config_ids = array();

@@ -54,6 +54,8 @@ class Meta extends Form
         $html .= $this->checkbox(Locale::t('Show image descriptions'), 'site_parse_images', null, false);
         $html .= $this->radioButton(Locale::t('Record columns count'), 'site_records_grid', array('0'=>'1','1'=>'2','2'=>'3','3'=>'4','4'=>'5'));
         $html .= $this->select(Locale::t('Sort records'), 'records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
+        $html .= $this->input(Locale::t('Carousel thumbs width'), 'carousel_thumbs_width', array('placeholder'=>Recordsettings::THUMB_MIN_SIZE.' - '.Recordsettings::THUMB_MAX_SIZE));
+        $html .= $this->input(Locale::t('Carousel thumbs height'), 'carousel_thumbs_height', array('placeholder'=>Recordsettings::THUMB_MIN_SIZE.' - '.Recordsettings::THUMB_MAX_SIZE));
         
         $html .= Zira\Helper::tag_open('div', array('id'=>'dashmetaform_access_button'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));
@@ -106,7 +108,9 @@ class Meta extends Form
         $validator->registerUtf8('site_copyright',Locale::t('Invalid value "%s"',Locale::t('Copyright string')));
         $validator->registerString('layout', 0, 0, true, Locale::t('Invalid value "%s"',Locale::t('Default layout')));
         $validator->registerCustom(array(get_class(), 'checkLayout'), 'layout', Locale::t('Invalid value "%s"',Locale::t('Default layout')));
-
+        $validator->registerNumber('carousel_thumbs_width',Recordsettings::THUMB_MIN_SIZE,Recordsettings::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Carousel thumbs width')));
+        $validator->registerNumber('carousel_thumbs_height',Recordsettings::THUMB_MIN_SIZE,Recordsettings::THUMB_MAX_SIZE,true,Locale::t('Invalid value "%s"',Locale::t('Carousel thumbs height')));
+        
         $logo = $this->getValue('site_logo');
         if (!empty($logo)) {
             $logo = trim($logo,'/');

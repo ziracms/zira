@@ -170,6 +170,52 @@ class Files extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function carousel() {
+        if (Zira\Request::isPost()) {
+            $title = (string)Zira\Request::post('title');
+            $folder = (string)Zira\Request::post('folder');
+            $response = $this->getWindowModel()->createCarousel($folder, $title);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function carouseltitle() {
+        if (Zira\Request::isPost()) {
+            $title = Zira\Request::post('title');
+            $widget = Zira\Request::post('widget');
+            $response = $this->getWindowModel()->saveCarouselTitle($widget, $title);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function carouseldesc() {
+        if (Zira\Request::isPost()) {
+            $description = Zira\Request::post('description');
+            $item = Zira\Request::post('item');
+            $widget = Zira\Request::post('widget');
+            $response = $this->getWindowModel()->saveCarouselDescription($widget, $item, $description);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function carousellink() {
+        if (Zira\Request::isPost()) {
+            $link = Zira\Request::post('link');
+            $item = Zira\Request::post('item');
+            $widget = Zira\Request::post('widget');
+            $response = $this->getWindowModel()->saveCarouselLink($widget, $item, $link);
+            Zira\Page::render($response);
+        }
+    }
+    
+    public function carouselwidget() {
+        if (Zira\Request::isPost()) {
+            $widget = Zira\Request::post('widget');
+            $response = $this->getWindowModel()->createCarouselWidget($widget);
+            Zira\Page::render($response);
+        }
+    }
 
     public function info() {
         if (Zira\Request::isPost()) {

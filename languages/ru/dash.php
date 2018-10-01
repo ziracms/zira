@@ -434,5 +434,11 @@ return array(
     'Fullscreen slider' => 'Полноэкранный слайдер',
     'Gallery thumbs width' => 'Ширина миниатюр галереи',
     'Gallery thumbs height' => 'Высота миниатюр галереи',
-    'Gallery limit' => 'Лимит галереи'
+    'Gallery limit' => 'Лимит галереи',
+    'Create carousel widget' => 'Создать виджет карусели',
+    'Enter title' => 'Введите заголовок',
+    'Created widget "%s" in widgets folder' => 'Создан виджет "%s" в папке widgets',
+    'Carousel' => 'Карусель',
+    'Carousel thumbs width' => 'Ширина миниатюр карусели',
+    'Carousel thumbs height' => 'Высота миниатюр карусели'
 );
