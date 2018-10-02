@@ -1,7 +1,9 @@
 <?php if (!empty($images)): ?>
-<div class="block carousel-wrapper">
+<div class="block carousel-wrapper<?php if (!empty($title)) echo ' with-title';?>">
 <?php if (!empty($title)): ?>
-<h2><?php echo Zira\Helper::html($title) ?></h2>
+<div class="page-header">
+<h2 class="widget-title"><?php echo Zira\Helper::html($title) ?></h2>
+</div>
 <?php endif; ?>
 <?php $id = uniqid('carousel_'); ?>
 <ul class="carousel<?php if (!empty($sidebar)) echo ' carousel-small'; ?>">

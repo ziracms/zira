@@ -17,6 +17,7 @@ class Carousel extends Zira\Widget {
         $this->setCaching(false);
         $this->setOrder(0);
         $this->setPlaceholder(Zira\View::VAR_CONTENT_BOTTOM);
+        Zira\View::addSlickAssets();
     }
 
     public function getTitle() {

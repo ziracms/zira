@@ -46,7 +46,7 @@ var dash_files_select = function() {
     if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || selected[0].type!='archive') {
         this.disableItemsByProperty('typo','archive');
     }
-    if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || (selected[0].type!='image' && selected[0].type!='txt' && selected[0].type!='html')) {
+    if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || (selected[0].type!='image' && selected[0].type!='txt' && selected[0].type!='html' && (typeof selected[0].is_widget == "undefined" || !selected[0].is_widget))) {
         this.disableItemsByProperty('action','edit');
     }
     if (!selected || selected.length!=1 || typeof(selected[0].type)=="undefined" || selected[0].type=='folder' || selected[0].type=='image'|| selected[0].type=='archive') {

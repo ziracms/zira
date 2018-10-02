@@ -36,6 +36,7 @@ class Assets {
         'bxslider.css',
         'slider3d.css',
         'carousel.slider.css',
+        'slick.css',
         'jplayer.css',
         'zira.css'
     );
@@ -51,6 +52,7 @@ class Assets {
         'bxslider.min.js',
         'slider3d.js',
         'carousel.slider.js',
+        'slick.min.js',
         'md5.js',
         'parse.js',
         'upload.inc.js',

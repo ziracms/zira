@@ -255,9 +255,27 @@ textarea {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 .carousel li {
     display: inline-block;
+    margin: 0;
+}
+.carousel li a {
+    margin: 0;
+    padding: 0;
+}
+.carousel .image {
+    margin: 0px 0px;
+}
+.carousel .slick-arrow {
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.sidebar .carousel-wrapper.with-title .carousel {
+    margin: 10px 0px 0px;
 }
 
 @keyframes loader {

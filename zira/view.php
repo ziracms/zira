@@ -69,6 +69,7 @@ class View {
     protected static $_colorpicker_assets_added = false;
     protected static $_colorpicker_added = false;
     protected static $_upload_added = false;
+    protected static $_slick_added = false;
 
     protected static $_render_js_strings = true;
     protected static $_render_breadcrumbs = true;
@@ -1126,6 +1127,13 @@ class View {
         //self::addHTML($script, self::VAR_HEAD_BOTTOM);
         self::addBodyBottomScript($script);
         self::$_colorpicker_added = true;
+    }
+    
+    public static function addSlickAssets() {
+        if (self::$_slick_added) return;
+        self::addStyle('slick.css', false, null, true);
+        self::addScript('slick.min.js');
+        self::$_slick_added = true;
     }
 
     public static function addAutoCompleter() {

@@ -335,6 +335,12 @@
             });
             $(window).resize(zira_set_dashpanel_dropdown_height);
         }
+        /**
+         * carousel
+         */
+        if ($('.carousel-wrapper').length>0) {
+            zira_init_carousel();
+        }
     });
 
     zira_resize_jplayer = function() {
@@ -1149,6 +1155,31 @@
             }
         } else if ($('.captcha-refresh-btn').length>0) {
             zira_init_captcha();
+        }
+    };
+    
+    zira_init_carousel = function() {
+        /**
+         * Checking IE version
+         */
+        var ieV = null;
+        var navR = new RegExp('msie ([0-9]+)','gi');
+        var navM = navR.exec(navigator.userAgent);
+        if (navM) ieV = navM[1];
+        /**
+         * Carousel
+         */
+        if ((ieV === null || ieV > 8) && $('.carousel-wrapper .carousel').length>0) {
+            $('.carousel-wrapper .carousel').slick({
+                dots: false,
+                infinite: true,
+                speed: 300,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                slidesToScroll: 1,
+                variableWidth: true,
+                adaptiveHeight: false
+            });
         }
     };
 

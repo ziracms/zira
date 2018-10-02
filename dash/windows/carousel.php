@@ -87,7 +87,7 @@ class Carousel extends Window {
         
         $file = trim($this->item,DIRECTORY_SEPARATOR);
         if ($file==UPLOADS_DIR) return array('error' => Zira\Locale::t('An error occurred'));
-        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER)!==0) {
+        if (strpos($file, UPLOADS_DIR.DIRECTORY_SEPARATOR)!==0 || strpos($file,'..')!==false || strpos($file,UPLOADS_DIR.DIRECTORY_SEPARATOR.Zira\File::WIDGETS_FOLDER.DIRECTORY_SEPARATOR)!==0) {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
         if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $file) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $file)) {
@@ -103,7 +103,7 @@ class Carousel extends Window {
         }
         $data->path = trim($data->path, DIRECTORY_SEPARATOR);
         if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_readable(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path) || !is_dir(ROOT_DIR . DIRECTORY_SEPARATOR . $data->path)) {
-            return array('error' => Zira\Locale::t('An error occurred'));
+            return array('error' => Zira\Locale::t('Folder not found'));
         }
         
         $thumbs_width = Zira\Config::get('thumbs_width');
