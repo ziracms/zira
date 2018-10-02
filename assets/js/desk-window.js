@@ -1969,6 +1969,7 @@ DashWindow.prototype.createToolbar = function() {
                     }
                     this.body_view_list = false;
                     this.updateSidebarResizerSize();
+                    this.fixBodyItemsImages();
                     $(this.content).scrollTop(0);
                 }
             },{
@@ -1983,6 +1984,7 @@ DashWindow.prototype.createToolbar = function() {
                     }
                     this.body_view_list = true;
                     this.updateSidebarResizerSize();
+                    this.fixBodyItemsImages();
                     $(this.content).scrollTop(0);
                 }
             }
@@ -2414,46 +2416,77 @@ DashWindow.prototype.createBodyItems = function(elements) {
 };
 
 DashWindow.prototype.initBodyItemsImages = function() {
+    var wnd = this;
     $(this.content).find('img.'+this.body_item_images_class).each(function(){
         var image = this;
         var src = $(image).data('src');
-        $(this).unbind('load').load(function() {
+        $(this).unbind('load').load(wnd.bind(wnd, function() {
             $(image).css('opacity',1);
-            try {
-                var cw = $(image).width();
-                var ch = $(image).height();
-                var nw = $(image).get(0).naturalWidth;
-                var nh = $(image).get(0).naturalHeight;
-                var w, h, m;
-                if (cw/ch != nw/nh) {
-                    if (cw/ch < nw/nh) {
-                        w = cw;
-                        h = w * nh/nw;
-                        m = (ch - h) / 2;
-                        $(image).css({
-                            'width': w,
-                            'height': h,
-                            'marginTop': m,
-                            'marginBottom': m
-                        });
-                    } else {
-                        h = ch;
-                        w = h * nw/nh;
-                        m = (cw - w) / 2;
-                        $(image).css({
-                            'width': w,
-                            'height': h,
-                            'marginLeft': m,
-                            'marginRight': m,
-                        });
-                    }
-
-                }
-            } catch(err) {}
-        });
+            this.fixBodyItemsImage(image);
+        }));
+        $(image).css('transition','opacity .4s ease');
         $(image).css('opacity',0);
         $(image).attr('src', src);
     });
+};
+
+DashWindow.prototype.fixBodyItemsImages = function(image) {
+    var wnd = this;
+    $(this.content).find('img.'+this.body_item_images_class).each(function(){
+        wnd.fixBodyItemsImage(this);
+    });
+};
+
+DashWindow.prototype.fixBodyItemsImage = function(image) {
+    try {
+        $(image).css({
+            width: '',
+            height: ''
+        });
+        
+        var cw = $(image).width();
+        var ch = $(image).height();
+        var nw = $(image).get(0).naturalWidth;
+        var nh = $(image).get(0).naturalHeight;
+        
+        var wnd_body_item_image_fix_left = 8;
+        var wnd_body_item_image_fix_right = 8;
+        var wnd_body_item_image_fix_top = 8;
+        var wnd_body_item_image_fix_bottom = 8;
+        
+        if (this.body_view_list) {
+            wnd_body_item_image_fix_left = 2;
+            wnd_body_item_image_fix_right = 8;
+            wnd_body_item_image_fix_top = 0;
+            wnd_body_item_image_fix_bottom = 0;
+        }
+        
+        var w, h, m;
+        if (cw/ch != nw/nh) {
+            if (cw/ch < nw/nh) {
+                w = cw;
+                h = w * nh/nw;
+                m = (ch - h) / 2;
+                $(image).css({
+                    'width': w,
+                    'height': h,
+                    'marginTop': m+wnd_body_item_image_fix_top,
+                    'marginBottom': m+wnd_body_item_image_fix_bottom
+                });
+            } else {
+                h = ch;
+                w = h * nw/nh;
+                m = (cw - w) / 2;
+                $(image).css({
+                    'width': w,
+                    'height': h,
+                    'marginLeft': m+wnd_body_item_image_fix_left,
+                    'marginRight': m+wnd_body_item_image_fix_right
+                });
+            }
+
+        }
+    } catch(err) {}
 };
 
 DashWindow.prototype.bindBodyItemsCallbacks = function(elements) {

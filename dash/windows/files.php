@@ -350,7 +350,7 @@ class Files extends Window {
                 } else if (self::is_html($file)) {
                     $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'html', 'parent'=>'files'), $fsize);
                 } else if (self::is_widget($file)) {
-                    $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files', 'is_widget'=>true), $fsize);
+                    $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'zira', 'parent'=>'files', 'is_widget'=>true), $fsize);
                 } else {
                     $bodyItems[]=$this->createBodyFileItem($filename, $filename, $root . DIRECTORY_SEPARATOR . $file, $this->get_body_item_callback_js(), false, array('type'=>'file', 'parent'=>'files'), $fsize);
                 }

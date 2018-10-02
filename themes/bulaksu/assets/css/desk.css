@@ -639,7 +639,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-grid li a:link,
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-grid li a:visited {
     display: block;
-    padding: 13px;
+    padding: 5px;
     width: 86px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -664,6 +664,7 @@ body.dashboard-window-sidebar-resizing {
     width: 60px;
     height: 60px;
     border: none;
+    margin: 8px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li {
     display: block;
@@ -686,7 +687,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li img,
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list .dashwindow-content-icon {
     float: left;
-    margin-right: 10px;
+    margin: 0px 10px 0px 0px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li.dashwindow-content-column-row a:link,
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper ul.dashwindow-content-list li.dashwindow-content-column-row a:visited {
@@ -725,7 +726,7 @@ body.dashboard-window-sidebar-resizing {
     background-position: 0px -397px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-zira {
-    background-position: 0px -456px;
+    background-position: 0px -454px;
 }
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-blank {
     background: none;

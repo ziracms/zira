@@ -62,9 +62,13 @@ class Carousel extends Zira\Widget {
             
             if (is_array($data->descriptions) && array_key_exists(Zira\Helper::urlencode($image), $data->descriptions)) {
                 $descriptions []= $data->descriptions[Zira\Helper::urlencode($image)];
+            } else {
+                $descriptions []= '';
             }
             if (is_array($data->links) && array_key_exists(Zira\Helper::urlencode($image), $data->links)) {
                 $links []= $data->links[Zira\Helper::urlencode($image)];
+            } else {
+                $links []= '';
             }
         }
         closedir($d);
