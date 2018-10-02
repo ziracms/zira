@@ -9,7 +9,6 @@ return array(
     'Subject' => 'Тема',
     'Multiple selection' => 'Множественный выбор',
     'Widget placeholder' => 'Расположение виджета',
-    'Activated %s widgets' => array('Активирован %s виджет', 'Активировано %s виджета', 'Активировано %s виджетов'),
     'Vote options' => 'Опции для выбора',
     'Add vote option' => 'Добавить опцию выбора',
     'Enter text' => 'Введите текст',

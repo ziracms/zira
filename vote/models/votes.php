@@ -97,7 +97,7 @@ class Votes extends Dash\Models\Model {
 
         Zira\Cache::clear();
 
-        return array('message' => Zira\Locale::t('Activated %s widgets', $co), 'reload'=>$this->getJSClassName());
+        return array('message' => Zira\Locale::tm('Activated %s widgets', 'dash', $co), 'reload'=>$this->getJSClassName());
     }
 
     public function delete($data) {

@@ -52,7 +52,7 @@ class Chats extends Dash\Models\Model {
 
             Zira\Cache::clear();
 
-            return array('message'=>Zira\Locale::t('Activated %s widgets', 1), 'close'=>true);
+            return array('message'=>Zira\Locale::tm('Activated %s widgets', 'dash', 1), 'close'=>true);
         } else {
             return array('error'=>$form->getError());
         }
@@ -127,6 +127,6 @@ class Chats extends Dash\Models\Model {
 
         Zira\Cache::clear();
 
-        return array('message' => Zira\Locale::t('Activated %s widgets', $co), 'reload'=>$this->getJSClassName());
+        return array('message' => Zira\Locale::tm('Activated %s widgets', 'dash', $co), 'reload'=>$this->getJSClassName());
     }
 }

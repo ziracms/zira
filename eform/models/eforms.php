@@ -107,7 +107,7 @@ class Eforms extends Dash\Models\Model {
 
         Zira\Cache::clear();
 
-        return array('message' => Zira\Locale::t('Activated %s widgets', 1));
+        return array('message' => Zira\Locale::tm('Activated %s widgets', 'dash', 1));
     }
     
     public function createButton($id) {
@@ -133,6 +133,6 @@ class Eforms extends Dash\Models\Model {
 
         Zira\Cache::clear();
 
-        return array('message' => Zira\Locale::t('Activated %s widgets', 1));
+        return array('message' => Zira\Locale::tm('Activated %s widgets', 'dash', 1));
     }
 }

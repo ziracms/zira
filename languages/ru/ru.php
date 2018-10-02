@@ -153,5 +153,6 @@ return array(
     'Last comments' => 'Последние комментарии',
     'Anti-Bot' => 'Анти-Бот',
     'Read more' => 'Подробнее',
-    'DD.MM.YYYY' => 'ДД.ММ.ГГГГ'
+    'DD.MM.YYYY' => 'ДД.ММ.ГГГГ',
+    'Permission denied' => 'Нет прав доступа'
 );
