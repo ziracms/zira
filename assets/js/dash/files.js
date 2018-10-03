@@ -14,6 +14,13 @@ var dash_files_load = function() {
     var pi = this.options.data.root.replace(r,'_');
     if(pi.length == 0) pi = '_';
     this.parent_pages[pi] = this.options.data.page;
+    
+    for (var i=0; i<this.options.bodyItems.length; i++) {
+        if (typeof(this.options.bodyItems[i].is_widget)=="undefined" || !this.options.bodyItems[i].is_widget) continue;
+        if (typeof(this.options.bodyItems[i].inactive)!="undefined" && this.options.bodyItems[i].inactive) {
+            $(this.options.bodyItems[i].element).addClass('inactive');
+        }
+    }
 };
 
 var dash_files_open = function() {
@@ -231,7 +238,7 @@ var dash_files_edit = function() {
     } else if (typeof(selected[0].type)!="undefined" && selected[0].type=='image') {
         desk_image_editor(data);
     } else if (typeof(selected[0].is_widget)!="undefined" && selected[0].is_widget) {
-        dash_files_carousel_wnd_open(data);
+        desk_call(dash_files_carousel_wnd_open, this, data);
     }
 };
 
@@ -253,10 +260,16 @@ var dash_files_carousel = function() {
 
 var dash_files_carousel_wnd_open = function(item) {
     if (typeof(item)!="undefined") {
-        var data = {'items':[item]};
-        desk_call(dash_files_carousel_wnd, null, {
-            data: data
-        });
+        var data = {
+            'data':{
+                'items':[item]
+            },
+            'reload': this.className,
+            'onClose':function(){
+                desk_window_reload_all(this.options.reload);
+            }
+        };
+        desk_call(dash_files_carousel_wnd, null, data);
     }
 };
 

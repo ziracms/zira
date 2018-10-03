@@ -333,7 +333,7 @@ body.dashboard-window-sidebar-resizing {
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-audio,
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-video,
 .dashboard-window .dashboard-window-content .dashboard-body-content-wrapper .dashwindow-content-icon-zira {
-    background-image: url(../images/dash-window-buttons-slice.png?t=1);
+    background-image: url(../images/dash-window-buttons-slice.png?t=2);
     background-repeat: no-repeat;
 }
 .dashboard-window .dashboard-window-footer .dashboard-window-resizer {
