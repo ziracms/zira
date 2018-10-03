@@ -14,25 +14,41 @@
         uploadApi.onSuccess=bind_xhr_callback(xhrSendSuccess,this);
         uploadApi.onError=bind_xhr_callback(xhrSendError,this);
         uploadApi.init($(this).get(0));
+        
+        var progress = false;
+        var enctype = $(this).attr('enctype');
+        if (typeof enctype != "undefined" && enctype == 'multipart/form-data') {
+            progress = true;
+        }
+        $(this).data('progress', progress);
 
-        try {
-            desk_modal_progress();
-        } catch (err) {
-            zira_modal_progress();
+        if (progress) {
+            try {
+                desk_modal_progress();
+            } catch (err) {
+                zira_modal_progress();
+            }
+        } else {
+            $(this).find('input[type=submit],button[type=submit]').eq(0).after('<div class="zira-loader-wrapper"><span class="zira-loader glyphicon glyphicon-refresh"></span> <span class="percent"></span></div>');
         }
     }
 
     function bind_xhr_callback(method,object) {
         return function(arg1,arg2) {
             return method.call(object,arg1,arg2);
-        }
+        };
     }
 
     function xhrSendProgress(percent) {
-        try {
-            desk_modal_progress_update(percent);
-        } catch (err) {
-            zira_modal_progress_update(percent);
+        var progress = $(this).data('progress');
+        if (typeof progress != "undefined" && progress) {
+            try {
+                desk_modal_progress_update(percent);
+            } catch (err) {
+                zira_modal_progress_update(percent);
+            }
+        } else {
+            $(this).find('.zira-loader-wrapper .percent').text(percent+'%');
         }
     }
 
@@ -52,23 +68,41 @@
                 //console.log(err);
             }
         }
-
-        try {
-            desk_modal_progress_hide(function(){
-                if (response.error && response.error.length>0) {
+        
+        var progress = $(this).data('progress');
+        if (typeof progress != "undefined" && progress) {
+            try {
+                desk_modal_progress_hide(function(){
+                    if (response.error && response.error.length>0) {
+                        desk_error(response.error);
+                    } else if(response.message && response.message.length>0) {
+                        desk_message(response.message);
+                    }
+                });
+            } catch (err) {
+                zira_modal_progress_hide(function(){
+                    if (response.error && response.error.length>0) {
+                        zira_error(response.error);
+                    } else if(response.message && response.message.length>0) {
+                        zira_message(response.message);
+                    }
+                });
+            }
+        } else {
+            $(this).find('.zira-loader-wrapper').remove();
+            if (response.error && response.error.length>0) {
+                try {
                     desk_error(response.error);
-                } else if(response.message && response.message.length>0) {
-                    desk_message(response.message);
-                }
-            });
-        } catch (err) {
-            zira_modal_progress_hide(function(){
-                if (response.error && response.error.length>0) {
+                } catch (err) {
                     zira_error(response.error);
-                } else if(response.message && response.message.length>0) {
+                }
+            } else if(response.message && response.message.length>0) {
+                try {
+                    desk_message(response.message);
+                } catch (err) {
                     zira_message(response.message);
                 }
-            });
+            }
         }
 
         if (response.error) {
