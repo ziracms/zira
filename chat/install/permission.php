@@ -53,7 +53,7 @@ class Permission extends \Zira\Install\Permission {
                     ->execute();
     }
 
-    public function dump($delimiter) {
+    public function dump($delimiter, $limit=1000, $flush = false) {
         return '';
     }
 }

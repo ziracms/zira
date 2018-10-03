@@ -31,8 +31,8 @@ class System extends Model {
                 if (empty($create_sql)) continue;
                 echo '-- Table '.$table->getName()."\r\n";
                 echo $create_sql.";\r\n\r\n";
-                echo $table->dump("\r\n")."\r\n";
-                echo "\r\n";
+                $table->dump("\r\n", 1000, true);
+                echo "\r\n\r\n";
                 flush();
             }
         }

@@ -57,7 +57,9 @@ interface Table {
     /**
      * Returns table dump
      * @param $delimiter
+     * @param $limit
+     * @param $flush
      * @return string
      */
-    public function dump($delimiter);
+    public function dump($delimiter, $limit=1000, $flush = false);
 }

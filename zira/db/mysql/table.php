@@ -114,25 +114,36 @@ abstract class Table implements \Zira\Db\Implement\Table {
         Db::query($query);
     }
 
-    public function dump($delimiter) {
+    public function dump($delimiter, $limit=1000, $flush = false) {
+        $offset = 0;
         $sql = '';
-        $stmt = DB::query('SELECT * FROM '.DB::escapeIdentifier($this->_table));
-        while ($row=Db::fetch($stmt,true)) {
-            $columns = array_keys($row);
-            for($i=0; $i<count($columns); $i++) {
-                $columns[$i] = DB::escapeIdentifier($columns[$i]);
-            }
-            $values = array_values($row);
-            for($i=0; $i<count($values); $i++) {
-                if (is_null($values[$i])) {
-                    $values[$i] = 'NULL';
-                } else {
-                    $values[$i] = DB::escape($values[$i]);
+        do {
+            $has_rows = false;
+            $stmt = DB::query('SELECT * FROM '.DB::escapeIdentifier($this->_table).' LIMIT '.intval($limit).' OFFSET '.intval($offset));
+            while ($row=Db::fetch($stmt,true)) {
+                $has_rows = true;
+                $columns = array_keys($row);
+                for($i=0; $i<count($columns); $i++) {
+                    $columns[$i] = DB::escapeIdentifier($columns[$i]);
                 }
+                $values = array_values($row);
+                for($i=0; $i<count($values); $i++) {
+                    if (is_null($values[$i])) {
+                        $values[$i] = 'NULL';
+                    } else {
+                        $values[$i] = DB::escape($values[$i]);
+                    }
+                }
+                $sql .= 'INSERT INTO '.DB::escapeIdentifier($this->_table).' ('.implode(', ',$columns).') VALUES ('.implode(', ',$values).');'.$delimiter;
             }
-            $sql .= 'INSERT INTO '.DB::escapeIdentifier($this->_table).' ('.implode(', ',$columns).') VALUES ('.implode(', ',$values).');'.$delimiter;
-        }
-        Db::free($stmt);
-        return $sql;
+            Db::free($stmt);
+            $offset += $limit;
+            if ($flush) {
+                echo $sql;
+                flush();
+                $sql = '';
+            }
+        } while($has_rows);
+        if (!$flush) return $sql;
     }
 }
