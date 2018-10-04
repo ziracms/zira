@@ -441,5 +441,6 @@ return array(
     'Carousel' => 'Карусель',
     'Carousel thumbs width' => 'Ширина миниатюр карусели',
     'Carousel thumbs height' => 'Высота миниатюр карусели',
-    'Update thumbnails' => 'Обновить миниатюры'
+    'Update thumbnails' => 'Обновить миниатюры',
+    'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика'
 );

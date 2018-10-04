@@ -46,7 +46,8 @@ class Meta extends Model {
                 'records_sorting'=>'string',
                 'enable_breadcrumbs'=>'int',
                 'carousel_thumbs_width'=>'int',
-                'carousel_thumbs_height'=>'int'
+                'carousel_thumbs_height'=>'int',
+                'dev_copyright'=>'int'
             );
 
             $config_ids = array();

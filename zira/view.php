@@ -530,35 +530,13 @@ class View {
     }
 
     public static function addCR() {
-        $c = Locale::t(Config::get('s'.'i'.  't'.'e'.'_'  .'c'.'o'."p"  .'y'.'r'.'i'  .'g'.'h'.'t'));
-        if (!self::checkLK() && Router::getModule()!='dash') {
-            self::addMeta(array('name'=>'gene'.  "rator",'content'=>'Zir'.  'a C'."MS"));
+        $c = Locale::t(Config::get('site_copyright'));
+        if (Config::get('dev_copyright', 1) && Router::getModule()!='dash') {
+            self::addMeta(array('name'=>'generator','content'=>'Zira CMS'));
             if (!empty($c)) $c .= ' ';
-            $s = 'P' . 'o' . "w" .  'e' . 'r' . 'e' .  'd' . ' ' . "b" .  'y' . ' ' . '%s';
-            $t = Helper::tag('a', 'Z' . "i" .   'r' . 'a' . ' ' .  "C" . 'M' .  'S', array('href' => 'h'."t".'t'  .'p'.':'.'/'  .'/'.'d'."r"  .'o'.'1'.'d'  .'.'  .'r'."u"));
-            $_t = '%tag%';
-            $_c = Locale::t($s, $_t);
-            if (strpos($_c, $_t)!==false) {
-                $_c = str_replace($_t, $t, $_c);
-            } else {
-                $_c = str_replace('%s', $t, $s);
-            }
-            $c .= $_c;
-            self::addLayoutContent(self::VAR_FOOTER, Helper::tag('script', 'zi'.'ra'.'_'.'t'.'m='.time().';', array('type'=>'text/javascript')));
-        } else {
-            self::$_body_bottom_scripts = array_merge(array(Helper::tag('script', 'zi'.'ra'.'_'.'t'.'m='.time().';', array('type'=>'text/javascript'))), self::$_body_bottom_scripts);
+            $c .= Locale::t('Powered by %s', Helper::tag('a', 'Zira CMS', array('href' => 'http://dro1d.ru')));
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
-        $js = Helper::tag_open('script', array('type'=>'text/javascript'));
-        $js .= 'jQuery(document).ready(function(){';
-        $js .= 'if (typeof(zi'.'ra'.'_'.'t'.'m) == "undefined") {';
-        $js .= 'jQuery(\'bo'.'dy\').css(\'fil'.'ter\', \'gr'.'ays'.'ca'.'le(1'.'0'.'0'.'%)\');';
-        $js .= '}';
-        $js .= '});';
-        $js .= Helper::tag_close('script')."\r\n";
-        if (!defined('ZIRA_INSTALL') && !defined('ZIRA_UPDATE')) {
-            self::addBodyBottomScript($js);
-        }
     }
 
     public static function checkLK() {

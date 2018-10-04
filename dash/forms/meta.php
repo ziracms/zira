@@ -49,6 +49,7 @@ class Meta extends Form
         $html .= $this->input(Locale::t('Keywords'), 'site_keywords', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Description'), 'site_description', array('placeholder'=>Locale::t('max. %s characters', 255)));
         $html .= $this->input(Locale::t('Copyright string'), 'site_copyright', array('placeholder'=>Locale::t('max. %s characters', 255)));
+        $html .= $this->checkbox(Locale::t('Show link to developer\'s website'), 'dev_copyright', null, false);
         $html .= $this->checkbox(Locale::t('Show website name in window title'), 'site_window_title', null, false);
         $html .= $this->checkbox(Locale::t('Enable scroll effects'), 'site_scroll_effects', null, false);
         $html .= $this->checkbox(Locale::t('Show image descriptions'), 'site_parse_images', null, false);

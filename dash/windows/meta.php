@@ -54,6 +54,7 @@ class Meta extends Window {
         if (!array_key_exists('enable_breadcrumbs', $configs)) $configs['enable_breadcrumbs'] = 1;
         if (!array_key_exists('carousel_thumbs_width', $configs)) $configs['carousel_thumbs_width'] = Zira\Config::get('thumbs_width');
         if (!array_key_exists('carousel_thumbs_height', $configs)) $configs['carousel_thumbs_height'] = Zira\Config::get('thumbs_height');
+        if (!array_key_exists('dev_copyright', $configs)) $configs['dev_copyright'] = 1;
         
         $form->setValues($configs);
 

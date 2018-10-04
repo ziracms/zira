@@ -466,9 +466,6 @@ class Dash {
             $js .= '$(\'.editor-links-wrapper\').children(\'.record\').click(desk_editor_record_callback);';
             $js .= '}';
         }
-        $js .= 'if (typeof(zi'.'ra'.'_'.'t'.'m) == "undefined") {';
-        $js .= '$(\'#'.'con'.'tent\').ani'.'mate({op'.'aci'.'ty:.2}, 3000);';
-        $js .= '}';
         $js .= '});'."\r\n";
         $js .= 'window.setInterval("dashPinger=$.get(\''.Zira\Helper::url('dash/index/ping').'?'.FORMAT_GET_VAR.'='.FORMAT_JSON.'\').always(function(xhr){if (dashPinger.status!=200) jQuery(\'#dashpanel-container nav\').addClass(\'disabled\'); else $(\'#dashpanel-container nav\').removeClass(\'disabled\'); });",600000);'."\r\n"; // keep session alive
         if (defined('DEBUG') && DEBUG) {
