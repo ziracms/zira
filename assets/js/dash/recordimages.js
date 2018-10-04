@@ -42,3 +42,17 @@ var dash_recordimages_add = function() {
         desk_window_request(this, url('dash/records/addimage'),{'images':images, 'item':this.options.data.items[0]});
     }));
 };
+
+var dash_recordimages_update = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length>0) {
+        var images = [];
+        for (var i=0; i<selected.length; i++) {
+            if (typeof(selected[i].data)=="undefined") continue;
+            images.push(selected[i].data);
+        }
+        if (images.length>0) {
+            desk_window_request(this, url('dash/records/imageupdate'), {'images':images, 'item':this.options.data.items[0]});
+        }
+    }
+};

@@ -293,7 +293,7 @@ class Records extends Model {
             $old_thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $record->thumb);
 
             if ($record->image) {
-                $thumb = Zira\Page::createRecordThumb(ROOT_DIR . DIRECTORY_SEPARATOR . $record->image, $record->category_id, $record->id);
+                $thumb = Zira\Page::createRecordThumb(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $record->image), $record->category_id, $record->id);
             } else if (preg_match('/<img[\x20][^>]*?src[\x20]*[=][\x20]*(?:\'|")([^\'"]+)/',$record->content, $m)) {
                 if (strpos($m[1], BASE_URL) === 0) $m[1] = substr($m[1], strlen(BASE_URL));
                 $path = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $m[1]);

@@ -440,5 +440,6 @@ return array(
     'Created widget "%s" in widgets folder' => 'Создан виджет "%s" в папке widgets',
     'Carousel' => 'Карусель',
     'Carousel thumbs width' => 'Ширина миниатюр карусели',
-    'Carousel thumbs height' => 'Высота миниатюр карусели'
+    'Carousel thumbs height' => 'Высота миниатюр карусели',
+    'Update thumbnails' => 'Обновить миниатюры'
 );

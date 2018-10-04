@@ -151,4 +151,46 @@ class Recordimages extends Model {
 
         return array('reload' => $this->getJSClassName());
     }
+    
+    public function updateThumbs($id, $images) {
+        if (empty($id) || empty($images) || !is_array($images)) return array('error' => Zira\Locale::t('An error occurred'));
+        if (!Permission::check(Permission::TO_EDIT_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        $record = new Zira\Models\Record($id);
+        if (!$record->loaded()) {
+            return array('error' => Zira\Locale::t('An error occurred'));
+        }
+        
+        $co = 0;
+        foreach($images as $image_id) {
+            $image = new Zira\Models\Image($image_id);
+            if (!$image->loaded()) {
+                return array('error' => Zira\Locale::t('An error occurred'));
+            }
+
+            if (!$image->thumb || !$image->image) continue;
+            
+            $old_thumb = ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->thumb);
+
+            $thumb = Zira\Page::createRecordThumb(ROOT_DIR . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $image->image), $record->category_id, $record->id, true);
+            if (!$thumb) continue;
+
+            $image->thumb = $thumb;
+            $image->save();
+
+            if (file_exists($old_thumb)) @unlink($old_thumb);
+
+            $co++;
+        }
+
+        Zira\Cache::clear();
+
+        return array('reload' => $this->getJSClassName(),'message' => Zira\Locale::t('Updated %s thumbs', $co));
+        
+        
+        
+        
+        
+    }
 }

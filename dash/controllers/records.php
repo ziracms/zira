@@ -162,6 +162,15 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+    
+    public function imageupdate() {
+        if (Zira\Request::isPost()) {
+            $id = Zira\Request::post('item');
+            $images = Zira\Request::post('images');
+            $response = $this->getImagesModel()->updateThumbs($id, $images);
+            Zira\Page::render($response);
+        }
+    }
 
     public function addslide() {
         if (Zira\Request::isPost()) {

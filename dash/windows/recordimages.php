@@ -28,6 +28,9 @@ class Recordimages extends Window {
             $this->createMenuDropdownItem(Zira\Locale::t('Add image'), 'glyphicon glyphicon-plus-sign', 'desk_call(dash_recordimages_add, this);', 'create')
         );
         $this->addDefaultMenuDropdownItem(
+            $this->createMenuDropdownItem(Zira\Locale::t('Update thumbnails'), 'glyphicon glyphicon-refresh', 'desk_call(dash_recordimages_update, this);', 'delete', true, array('typo'=>'rethumb'))
+        );
+        $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownItem(Zira\Locale::t('Description'), 'glyphicon glyphicon-list-alt', 'desk_window_edit_item(this);', 'edit', true)
         );
 
