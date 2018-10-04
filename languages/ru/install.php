@@ -2,18 +2,18 @@
 
 return array(
     'Installation' => 'Установка',
-    'Welcome to Zira CMS installer' => 'Добро пожаловать в установщик Zira CMS',
+    'Welcome to Zira CMS installer!' => 'Добро пожаловать в установщик Zira CMS!',
     'Backward' => 'Назад',
     'Forward' => 'Дальше',
     'Install' => 'Установить',
-    'Zira CMS is a lightweight, flexible and easy to use content management system.' => 'Zira CMS - это лёгкая, простая в управлении, и в то-же время гибкая система управления сайтом.',
-    'Installing Zira CMS, you get the most commonly used features right out of the box.' => 'Устанавливая Zira CMS, вы получаете наиболее часто используемые функции сразу из коробки.',
-    'No need for extra downloads and plugins setup.' => 'Нет необходимости в дополнительном скачивании и настройке плагинов.',
-    'Zira CMS brings desktop experience to your website - no web development skills required!' => 'Zira CMS привносит возможности рабочего стола в ваш сайт - нет необходимости иметь опыт веб-разработки!',
+    'Zira CMS is a lightweight, flexible and easy to use content management system.' => 'Zira CMS - это лёгкая, простая в управлении и в то же время гибкая система управления сайтом.',
+    'Installing Zira CMS, you get the most commonly used features right out of the box.' => 'Устанавливая Zira CMS, Вы получаете наиболее часто используемые функции сразу из коробки.',
+    'No need for extra downloads and plugins setup.' => 'Не нужно  скачивать и настраивать дополнительные плагины.',
+    'Zira CMS brings desktop experience to your website - no development skills required!' => 'Zira CMS привносит возможности рабочего стола в ваш вебсайт - нет необходимости иметь опыт разработки!',
     'Main features:' => 'Основные достоинства:',
     'Simple management' => 'Простое управление',
     'Fast and flexible' => 'Быстрота и гибкость',
-    'SEO friendly' => 'Дружелюбность к SEO',
+    'SEO friendly' => 'Дружелюбность к поисковикам',
     'Free of charge' => 'Не требует денег',
     'Error' => 'Ошибка',
     'Message' => 'Сообщение',
@@ -117,5 +117,9 @@ return array(
     'Our website is now open for visitors.' => 'Наш вебсайт теперь открыт для посетителей.',
     'File' => 'Файл',
     'Type' => 'Тип',
-    'Failed to create database file.' => 'Невозможно создать файл базы данных.'
+    'Failed to create database file.' => 'Невозможно создать файл базы данных.',
+    'USSR' => 'СССР',
+    'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!',
+    'In the victory of the immortal ideas of communism we see the future of our country!' => 'В победе бессмертных идей коммунизма мы видим грядущее нашей страны!',
+    'My homeland is the USSR' => 'Моя родина - СССР'
 );

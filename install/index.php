@@ -96,12 +96,12 @@ $html .= Zira\Helper::tag_close('ul');
 Zira\View::addHTML($html, Zira\View::VAR_HEADER);
 
 $init_content = Zira\Helper::tag_open('div', array('id'=>'zira-install-container')).
-                Zira\Helper::tag('h2', Zira\Locale::t('Welcome to Zira CMS installer')).
+                Zira\Helper::tag('h2', Zira\Locale::t('Welcome to Zira CMS installer!')).
                 Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
                 Zira\Helper::tag('p', Zira\Locale::t('Zira CMS is a lightweight, flexible and easy to use content management system.')).
                 Zira\Helper::tag('p', Zira\Locale::t('Installing Zira CMS, you get the most commonly used features right out of the box.')).
                 Zira\Helper::tag('p', Zira\Locale::t('No need for extra downloads and plugins setup.')).
-                Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no web development skills required!')).
+                Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no development skills required!')).
                 Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
                 Zira\Helper::tag('p', Zira\Locale::t('Main features:')).
                 Zira\Helper::tag_open('ul').

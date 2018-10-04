@@ -5,8 +5,27 @@
 <link rel="shortcut icon" href="<?php echo Zira\Helper::baseUrl('favicon.ico') ?>" type="image/x-icon"/>
 <?php layout_head() ?>
 <style>
+body {
+background-color: #edfff4;
+}
 header {
 min-height: 160px;
+background-color: #2582af;
+border-color: #30b1ce;
+}
+ul#language-switcher li a.active {
+background-color: #30b1ce;
+}
+#content .page-header {
+border-bottom: 1px solid #bffbbb;
+}
+#content .page-header h1 {
+margin-bottom: 20px;
+color: #334c6c;
+}
+#content h2 {
+font-size: 22px;
+color: #6f4960;
 }
 </style>
 </head>
