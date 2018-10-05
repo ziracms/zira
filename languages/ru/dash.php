@@ -442,5 +442,6 @@ return array(
     'Carousel thumbs width' => 'Ширина миниатюр карусели',
     'Carousel thumbs height' => 'Высота миниатюр карусели',
     'Update thumbnails' => 'Обновить миниатюры',
-    'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика'
+    'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика',
+    'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!'
 );

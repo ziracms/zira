@@ -853,7 +853,7 @@ body.dashboard #dashboard-wrapper {
     background: url(../images/dash-pattern.png) repeat 0 0;
 }
 body.dashboard #dashboard-canvas-wrapper {
-    background: url(../images/dash-wallpaper.png) no-repeat 50% 50%;
+    background: url(../images/dash-wallpaper.png) no-repeat 40% 50%;
     position: relative;
     overflow: hidden;
 }
@@ -950,6 +950,44 @@ body.dashboard #memory-stick-save {
 }
 body.dashboard #memory-stick-save span {
     cursor: pointer;
+}
+body.dashboard #ussr-flag {
+    position: absolute;
+    right: 304px;
+    top: 24px;
+    width: 300px;
+    height: 150px;
+    background: url(../images/simbols/flag.jpg) no-repeat 0 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+body.dashboard #ussr-flag span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url(../images/simbols/flag-gradient.png) no-repeat 100% 0%;
+    opacity: .5;
+}
+body.dashboard #ussr-flag.locked span:first-child {
+    animation: flag 60s linear infinite;
+    opacity: .8;
+}
+body.dashboard #ussr-flag.locked span:last-child {
+    animation: flag 60s linear infinite;
+    animation-direction: reverse;
+    opacity: .8;
+}
+@keyframes flag {
+    from {
+        background-position: 100% 0%;
+    }
+    to {
+        background-position: 0 0;
+    }
 }
 body.dashboard .dashboard-notification {
     display: block;
@@ -1133,5 +1171,10 @@ body.dashboard .tooltip-inner {
     }
     body.dashboard #dashboard-background-setter {
         opacity: 0;
+    }
+}
+@media (max-width: 960px) {
+    body.dashboard #ussr-flag {
+        display: none;
     }
 }

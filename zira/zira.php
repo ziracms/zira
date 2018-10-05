@@ -10,7 +10,7 @@ namespace Zira;
 use Dash\Dash;
 
 class Zira {
-    const VERSION = '1.2.2';
+    const VERSION = '1.3.0';
     private static $_instance;
 
     public static function getInstance() {

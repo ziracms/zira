@@ -23,6 +23,7 @@
 <textarea rows="10" cols="30" maxlength="255" name="memory-stick"><?php echo Zira\Helper::html(Zira\Config::get('memory_stick')) ?></textarea>
 <div id="memory-stick-save"><span class="glyphicon glyphicon-floppy-disk"></span></div>
 </div>
+<div id="ussr-flag" title="<?php echo t('WORKERS OF THE WORLD, UNITE!'); ?>"><span></span><span></span></div>
 <?php if (isset($content)) echo $content; ?>
 </div>
 </div>
@@ -52,6 +53,26 @@
                         desk_timeout_message('<?php echo t('Successfully saved'); ?>');
                     }
                 },'json');
+            });
+            $('#ussr-flag').css({'opacity':1,'cursor':'pointer'});
+            $('#ussr-flag').click(function(){
+                if ($(this).hasClass('locked')) {
+                    $(this).removeClass('locked');
+                    try {
+                        $('audio#anthem').get(0).pause();
+                    } catch(err) {}
+                } else {
+                    $(this).addClass('locked');
+                    if ($('audio#anthem').length==0) {
+                        $('body').append('<audio id="anthem"><source src="<?php echo Zira\Helper::baseUrl('assets/simbols/anthem.mp3')?>" type="audio/mp3" /></audio>');
+                        $('audio#anthem').bind('ended',function(){
+                            $('#ussr-flag').removeClass('locked');
+                        });
+                    }
+                    try {
+                        $('audio#anthem').get(0).play();
+                    } catch(err) {}
+                }
             });
 
             Desk.dock_open = Dock.show;
