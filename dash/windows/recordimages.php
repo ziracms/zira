@@ -16,6 +16,13 @@ class Recordimages extends Window {
 
     protected $_help_url = 'zira/help/record-gallery';
 
+    public $page = 0;
+    public $pages = 0;
+    public $order = 'desc';
+
+    protected  $limit = 50;
+    protected $total = 0;
+    
     public $item;
 
     public function init() {
@@ -70,14 +77,31 @@ class Recordimages extends Window {
         ));
 
         $this->includeJS('dash/recordimages');
+        
+        $this->setData(array(
+            'page'=>1,
+            'pages'=>1,
+            'order'=>$this->order
+        ));
     }
 
     public function load() {
         if (empty($this->item) || !is_numeric($this->item)) {
+            $this->setData(array(
+                'page'=>1,
+                'pages'=>1,
+                'limit'=>$this->limit,
+                'order'=>$this->order
+            ));
             return array('error'=>Zira\Locale::t('An error occurred'));
         }
         if (!Permission::check(Permission::TO_CREATE_RECORDS) || !Permission::check(Permission::TO_EDIT_RECORDS)) {
             return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
         }
 
         $record = new Zira\Models\Record($this->item);
@@ -85,10 +109,20 @@ class Recordimages extends Window {
             return array('error'=>Zira\Locale::t('An error occurred'));
         }
         $this->setTitle(Zira\Locale::t(self::$_title) .' - ' . $record->title);
+        
+        $this->total = Zira\Models\Image::getCollection()
+                            ->count()
+                            ->where('record_id','=',$record->id)
+                            ->get('co');
+
+        $this->pages = ceil($this->total/$this->limit);
+        if ($this->page>$this->pages) $this->page = $this->pages;
+        if ($this->page<1) $this->page=1;
 
         $images = Zira\Models\Image::getCollection()
                             ->where('record_id','=',$record->id)
-                            ->order_by('id', 'asc')
+                            ->order_by('id', $this->order)
+                            ->limit($this->limit, ($this->page - 1) * $this->limit)
                             ->get();
 
         $items = array();
@@ -101,7 +135,11 @@ class Recordimages extends Window {
         $this->setBodyItems($items);
 
         $this->setData(array(
-            'items' => array($this->item)
+            'items' => array($this->item),
+            'page'=>$this->page,
+            'pages'=>$this->pages,
+            'limit'=>$this->limit,
+            'order'=>$this->order
         ));
     }
 }
