@@ -154,5 +154,15 @@ return array(
     'Anti-Bot' => 'Анти-Бот',
     'Read more' => 'Подробнее',
     'DD.MM.YYYY' => 'ДД.ММ.ГГГГ',
-    'Permission denied' => 'Нет прав доступа'
+    'Permission denied' => 'Нет прав доступа',
+    'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!',
+    'Happy New Year!' => 'С Новым Годом!',
+    'Day of the Soviet Army and Navy of the USSR' => 'День Советской Армии и Военно-Морского Флота СССР',
+    'International Women\'s Day' => 'Международный Женский День',
+    'Cosmonautics Day' => 'День Космонавтики',
+    'International Workers\' Day' => 'День Международной Солидарности Трудящихся',
+    'Victory Day of the Soviet People in the Great Patriotic War' => 'День Победы Советского Народа в Великой Отечественной Войне',
+    'USSR Constitution Day' => 'День Конституции СССР',
+    'Anniversary of the Great October Socialist Revolution' => 'Годовщина Великой Октябрьской Социалистической Революции',
+    'Glory to the CPSU! Hurray comrades!' => 'Слава КПСС! Ура, товарищи!'
 );

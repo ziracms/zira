@@ -53,6 +53,7 @@ class Recordsettings extends Window {
         if (!array_key_exists('gallery_thumbs_width', $configs)) $configs['gallery_thumbs_width'] = Zira\Config::get('thumbs_width');
         if (!array_key_exists('gallery_thumbs_height', $configs)) $configs['gallery_thumbs_height'] = Zira\Config::get('thumbs_height');
         if (!array_key_exists('gallery_limit', $configs)) $configs['gallery_limit'] = 0;
+        if (!array_key_exists('gallery_sorting', $configs)) $configs['gallery_sorting'] = 'asc';
         
         $form = new \Dash\Forms\Recordsettings();
         $form->setValues($configs);

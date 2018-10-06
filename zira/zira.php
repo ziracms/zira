@@ -79,6 +79,8 @@ class Zira {
 
         Session::remove(Response::SESSION_REDIRECT);
         Locale::remember();
+        
+        $this->whatDateToday();
 
         if (self::isOnline()) {
             $this->process();
@@ -101,6 +103,32 @@ class Zira {
         return (!Config::get('site_offline') || 
                 Permission::check(Permission::TO_ACCESS_DASHBOARD) ||
                 Request::isAjax());
+    }
+    
+    protected function whatDateToday() {
+        if (!Config::get('congratulate') && !Permission::check(Permission::TO_ACCESS_DASHBOARD)) return;
+        
+        $time = time();
+        $day = date('j',$time);
+        $month = date('n',$time);
+        
+        $holidays = array(
+            '1.1' => 'Happy New Year!',
+            '23.2' => 'Day of the Soviet Army and Navy of the USSR',
+            '8.3' => 'International Women\'s Day',
+            '12.4' => 'Cosmonautics Day',
+            '1.5' => 'International Workers\' Day',
+            '9.5' => 'Victory Day of the Soviet People in the Great Patriotic War',
+            '7.10' => 'USSR Constitution Day',
+            '7.11' => 'Anniversary of the Great October Socialist Revolution'
+        );
+        
+        if (!Cookie::get('zira_celebration') && array_key_exists($day.'.'.$month, $holidays)) {
+            View::setCelebration(true);
+            View::setCelebrationDate(date(Config::get('date_format'), $time).' - '.Locale::t($holidays[$day.'.'.$month]));
+            View::setCelebrationMessage(Locale::t('Glory to the CPSU! Hurray comrades!'));
+            Cookie::set('zira_celebration', '1', 86400);
+        }
     }
 
     protected function registerDbWidgets() {

@@ -64,7 +64,7 @@
                 } else {
                     $(this).addClass('locked');
                     if ($('audio#anthem').length==0) {
-                        $('body').append('<audio id="anthem"><source src="<?php echo Zira\Helper::baseUrl('assets/simbols/anthem.mp3')?>" type="audio/mp3" /></audio>');
+                        $('body').append('<audio id="anthem"><source src="<?php echo Zira\Helper::baseUrl('assets/simbols/anthem.mp3'); ?>" type="audio/mp3" /></audio>');
                         $('audio#anthem').bind('ended',function(){
                             $('#ussr-flag').removeClass('locked');
                         });

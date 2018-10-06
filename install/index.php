@@ -176,7 +176,7 @@ $init_js = Zira\Helper::tag_open('script',array('type'=>'text/javascript')).
             'eval(response.script);'.
             '}'.
             '}, \'json\').always(function(){'.
-            'if (zira_install_xhr.status != 200) zira_error(\''.Zira\Locale::t('An error occurred').'\'+\'. \'+\''.Zira\Locale::t('File config.php should be empty.').'\');'.
+            'if (zira_install_xhr.status != 200) zira_error(\''.Zira\Locale::t('An error occurred').'\');'.
             '});'.
             '};'.
             '$(document).ready(function(){'.
@@ -200,7 +200,7 @@ $layout_file = ROOT_DIR . DIRECTORY_SEPARATOR .
 Zira\View::addBodyBottomScript($init_js);
 
 Zira\View::$data = array(
-    Zira\View::VAR_TITLE => Zira\Locale::t('Installation'),
+    Zira\View::VAR_TITLE => Zira\Locale::t('%s installation','Zira CMS '.Zira::VERSION),
     Zira\View::VAR_CONTENT => $init_content
 );
 

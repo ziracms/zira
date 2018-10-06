@@ -278,6 +278,51 @@ textarea {
     margin: 10px 0px 0px;
 }
 
+.zira-celebration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999999;
+    background-color: rgb(60, 0, 0);
+    background-color: rgba(60, 0, 0, .8);
+    border-top: 7px solid #d4230a;
+    border-bottom: 7px solid #d4230a;
+    animation: ziraFade 3s ease;
+}
+.zira-celebration .celebration-image {
+    display: block;
+    width: 600px;
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;
+}
+.zira-celebration .celebration-date,
+.zira-celebration .celebration-message {
+    width: 100%;
+    min-height: 75px;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+    padding: 20px;
+}
+.zira-celebration .celebration-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 19px;
+    height: 19px;
+    background: url(../images/close-small.png) no-repeat 0 0;
+    cursor: pointer;
+}
+
+@media (min-width: 992px) {
+    .zira-celebration {
+        position: fixed;
+    }
+}
+
 @keyframes loader {
   0% { 
       -webkit-transform: rotate(-360deg);

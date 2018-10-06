@@ -57,6 +57,7 @@ class Meta extends Form
         $html .= $this->select(Locale::t('Sort records'), 'records_sorting', array('id'=>Locale::t('by creation date'),'rating'=>Locale::t('by rating'),'comments'=>Locale::t('by comments count')));
         $html .= $this->input(Locale::t('Carousel thumbs width'), 'carousel_thumbs_width', array('placeholder'=>Recordsettings::THUMB_MIN_SIZE.' - '.Recordsettings::THUMB_MAX_SIZE));
         $html .= $this->input(Locale::t('Carousel thumbs height'), 'carousel_thumbs_height', array('placeholder'=>Recordsettings::THUMB_MIN_SIZE.' - '.Recordsettings::THUMB_MAX_SIZE));
+        $html .= $this->checkbox(Locale::t('Congratulate visitors'), 'congratulate', null, false);
         
         $html .= Zira\Helper::tag_open('div', array('id'=>'dashmetaform_access_button'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));

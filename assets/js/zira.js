@@ -341,6 +341,12 @@
         if ($('.carousel-wrapper').length>0) {
             zira_init_carousel();
         }
+        /**
+         * celebration
+         */
+        if ($('.zira-celebration').length>0) {
+            zira_celebrate();
+        }
     });
 
     zira_resize_jplayer = function() {
@@ -1182,6 +1188,26 @@
             });
         }
     };
+    
+    function zira_celebrate() {
+        var asrc = $('.zira-celebration').data('asrc');
+        $('.zira-celebration').click(function(){
+            if ($('audio#anthem').length==0) return;
+            try {
+                if (!$('audio#anthem').get(0).paused) return;
+                $('audio#anthem').get(0).play();
+            } catch (err) {}
+        });
+        $('.zira-celebration .celebration-close').click(function(){
+            $('.zira-celebration').remove();
+        });
+        if (typeof asrc != "undefined" && asrc.length>0) {
+            $('body').append('<audio id="anthem"><source src="'+asrc+'" type="audio/mp3" /></audio>');
+            try {
+                $('audio#anthem').get(0).play();
+            } catch(err) {}
+        }
+    }
 
     /**
      * modal

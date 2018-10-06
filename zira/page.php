@@ -596,12 +596,15 @@ class Page {
     }
     
     public static function getRecordImages($record_id, $limit=0, $offset=0) {
+        $order = Config::get('gallery_sorting');
+        if (!in_array($order, array('asc','desc','ASC','DESC'))) $order = 'asc';
+        
         $q = Models\Image::getCollection()
                             ->where('record_id', '=', $record_id);
         if ($limit>0) {
             $q->limit($limit, $offset);
         }
-        return $q->order_by('id', 'asc')
+        return $q->order_by('id', $order)
                     ->get();
     }
     

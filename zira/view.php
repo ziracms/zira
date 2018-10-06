@@ -88,6 +88,10 @@ class View {
 
     protected static $_body_bottom_scripts = array();
     protected static $_before_render_callbacks = array();
+    
+    protected static $_is_celebration = false;
+    protected static $_celebration_date = null;
+    protected static $_celebration_message = null;
 
     public static function isInitialized() {
         return self::$_theme !== null;
@@ -186,6 +190,18 @@ class View {
 
     public static function isRenderStarted() {
         return self::$_render_started;
+    }
+    
+    public static function setCelebration($is_celebration) {
+        self::$_is_celebration = $is_celebration;
+    }
+    
+    public static function setCelebrationDate($celebration_date) {
+        self::$_celebration_date = $celebration_date;
+    }
+    
+    public static function setCelebrationMessage($celebration_msg) {
+        self::$_celebration_message = $celebration_msg;
     }
 
     public static function setKeywordsAdded($value) {
@@ -423,6 +439,9 @@ class View {
     public static function finishLayout() {
         self::addThemeAssets();
         self::addHTML(self::$head_addon, self::VAR_HEAD_BOTTOM);
+        if (self::$_is_celebration) {
+            self::addHTML(self::celebrate(self::$_celebration_date, self::$_celebration_message), self::VAR_BODY_TOP);
+        }
         include(self::$layout);
     }
 
@@ -1333,5 +1352,15 @@ class View {
             }
         }
         unset(self::$_db_widget_objects[$placeholder]);
+    }
+    
+    public static function celebrate($date, $message) {
+        $html = Helper::tag_open('div',array('class'=>'zira-celebration', 'title'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'data-asrc'=>Helper::baseUrl('assets/simbols/anthem.mp3')));
+        $html .= Helper::tag('div', $date, array('class'=>'celebration-date'));
+        $html .= Helper::tag_short('img', array('src'=>Helper::baseUrl('assets/simbols/ussr.jpg'), 'alt'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'title'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'class'=>'celebration-image'));
+        $html .= Helper::tag('div', $message, array('class'=>'celebration-message'));
+        $html .= Helper::tag('div', null, array('class'=>'celebration-close'));
+        $html .= Helper::tag_close('div');
+        return $html;
     }
 }

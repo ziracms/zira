@@ -443,5 +443,8 @@ return array(
     'Carousel thumbs height' => 'Высота миниатюр карусели',
     'Update thumbnails' => 'Обновить миниатюры',
     'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика',
-    'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!'
+    'Gallery sorting' => 'Сортировка галереи',
+    'Ascending' => 'Возрастающая',
+    'Descending' => 'Убывающая',
+    'Congratulate visitors' => 'Поздравлять посетителей'
 );

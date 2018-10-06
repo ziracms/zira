@@ -47,7 +47,8 @@ class Meta extends Model {
                 'enable_breadcrumbs'=>'int',
                 'carousel_thumbs_width'=>'int',
                 'carousel_thumbs_height'=>'int',
-                'dev_copyright'=>'int'
+                'dev_copyright'=>'int',
+                'congratulate'=>'int'
             );
 
             $config_ids = array();
