@@ -344,7 +344,9 @@
         /**
          * celebration
          */
-        if ($('.zira-celebration').length>0) {
+        if ($('.zira-celebration').length>0 && 
+            typeof(designer_style_theme)=="undefined"
+        ) {
             zira_celebrate();
         }
     });
@@ -1190,6 +1192,19 @@
     };
     
     function zira_celebrate() {
+        var zira_celebrate_pos = function() {
+            var ch = $('.zira-celebration').outerHeight();
+            var wh = $(window).height();
+            if (wh > ch) {
+                var ct = (wh - ch)/2;
+            } else {
+                var ct = 0;
+            }
+            $('.zira-celebration').css('top',ct);
+        };
+        zira_celebrate_pos();
+        $(window).resize(zira_celebrate_pos);
+        
         var asrc = $('.zira-celebration').data('asrc');
         $('.zira-celebration').click(function(){
             if ($('audio#anthem').length==0) return;
@@ -1200,13 +1215,32 @@
         });
         $('.zira-celebration .celebration-close').click(function(){
             $('.zira-celebration').remove();
+            $('.zira-celebration-bg').remove();
+            if ($('audio#anthem').length==0) return;
+            try {
+                if ($('audio#anthem').get(0).ended) return;
+                $('audio#anthem').get(0).pause();
+            } catch (err) {}
         });
-        if (typeof asrc != "undefined" && asrc.length>0) {
+        
+        if (typeof asrc != "undefined" && asrc.length>0 && typeof Audio != "undefined") {
             $('body').append('<audio id="anthem"><source src="'+asrc+'" type="audio/mp3" /></audio>');
+            $('audio#anthem').bind('ended', function(){
+                $('.zira-celebration .celebration-close').trigger('click');
+            });
             try {
                 $('audio#anthem').get(0).play();
-            } catch(err) {}
+            } catch (err) {}
         }
+        
+        $('.zira-celebration').show();
+        $('.zira-celebration-bg').show();
+        window.setTimeout(function(){
+            $('.zira-celebration .celebration-close').show();
+            $('.zira-celebration-bg').click(function(){
+                $('.zira-celebration .celebration-close').trigger('click');
+            });
+        }, 10000);
     }
 
     /**
