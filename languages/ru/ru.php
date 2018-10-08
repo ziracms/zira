@@ -174,5 +174,7 @@ return array(
     'Forward to the Victory of Communism!' => 'Вперёд, к Победе Коммунизма!',
     'Eternal Glory to the Winners! Glory to Stalin!' => 'Вечная Слава Победителям! Слава Сталину!',
     'Study, study and study again!' => 'Учиться, учиться и ещё раз учиться!',
-    'September 1 - Knowledge Day' => '1 сентября - День знаний'
+    'September 1 - Knowledge Day' => '1 сентября - День знаний',
+    'May 19 - Pioneer Day' => '19 мая - День Пионерии',
+    'Be ready! Always ready!' => 'Будь готов! Всегда готов!'
 );
