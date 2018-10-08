@@ -156,6 +156,7 @@ return array(
     'DD.MM.YYYY' => 'ДД.ММ.ГГГГ',
     'Permission denied' => 'Нет прав доступа',
     'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!',
+    'January 1' => '1 Января',
     'Happy New Year!' => 'С Новым Годом!',
     'February 23 - Day of the Soviet Army and Navy of the USSR' => '23 февраля - День Советской Армии и Военно-Морского Флота СССР',
     'March 8 - International Women\'s Day' => '8 марта - Международный Женский День',
@@ -171,5 +172,7 @@ return array(
     'Glory to Soviet People!' => 'Слава Советскому Народу!',
     'Lenin - Party - Komsomol' => 'Ленин - Партия - Комсомол',
     'Forward to the Victory of Communism!' => 'Вперёд, к Победе Коммунизма!',
-    'Eternal Glory to the Winners! Glory to Stalin!' => 'Вечная Слава Победителям! Слава Сталину!'
+    'Eternal Glory to the Winners! Glory to Stalin!' => 'Вечная Слава Победителям! Слава Сталину!',
+    'Study, study and study again!' => 'Учиться, учиться и ещё раз учиться!',
+    'September 1 - Knowledge Day' => '1 сентября - День знаний'
 );

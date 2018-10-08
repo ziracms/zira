@@ -93,6 +93,7 @@ class View {
     protected static $_celebration_date = null;
     protected static $_celebration_message = null;
     protected static $_celebration_image = null;
+    protected static $_celebration_audio = null;
 
     public static function isInitialized() {
         return self::$_theme !== null;
@@ -207,6 +208,10 @@ class View {
     
     public static function setCelebrationImage($celebration_image) {
         self::$_celebration_image = $celebration_image;
+    }
+    
+    public static function setCelebrationAudio($celebration_audio) {
+        self::$_celebration_audio = $celebration_audio;
     }
 
     public static function setKeywordsAdded($value) {
@@ -445,7 +450,7 @@ class View {
         self::addThemeAssets();
         self::addHTML(self::$head_addon, self::VAR_HEAD_BOTTOM);
         if (self::$_is_celebration) {
-            self::addHTML(self::celebrate(self::$_celebration_date, self::$_celebration_message, self::$_celebration_image), self::VAR_BODY_TOP);
+            self::addHTML(self::celebrate(self::$_celebration_date, self::$_celebration_message, self::$_celebration_image, self::$_celebration_audio), self::VAR_BODY_TOP);
         }
         include(self::$layout);
     }
@@ -1359,10 +1364,13 @@ class View {
         unset(self::$_db_widget_objects[$placeholder]);
     }
     
-    public static function celebrate($date, $message, $image=null) {
+    public static function celebrate($date, $message, $image=null, $audio=null) {
+        if (headers_sent()) return;
+        Cookie::set('zira_celebration', '1', 86400);
         if (!$image) $image = Helper::baseUrl('assets/simbols/ussr.jpg');
+        if (!$audio) $audio = Helper::baseUrl('assets/simbols/anthem.mp3');
         $html = Helper::tag('div',null,array('class'=>'zira-celebration-bg'));
-        $html .= Helper::tag_open('div',array('class'=>'zira-celebration', 'title'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'data-asrc'=>Helper::baseUrl('assets/simbols/anthem.mp3')));
+        $html .= Helper::tag_open('div',array('class'=>'zira-celebration', 'title'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'data-asrc'=>$audio));
         $html .= Helper::tag('div', $date, array('class'=>'celebration-date'));
         $html .= Helper::tag_short('img', array('src'=>$image, 'alt'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'title'=>Locale::t('WORKERS OF THE WORLD, UNITE!'), 'class'=>'celebration-image'));
         $html .= Helper::tag('div', $message, array('class'=>'celebration-message'));

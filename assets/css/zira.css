@@ -338,6 +338,15 @@ textarea {
     background: url(../images/close-small.png) no-repeat 0 0;
     cursor: pointer;
 }
+@media only screen and (max-width: 767px) {
+    .zira-celebration .celebration-image {
+        border: none;
+    }
+    .zira-celebration .celebration-date,
+    .zira-celebration .celebration-message {
+        font-size: 20px;
+    }
+}
 
 @keyframes loader {
   0% { 

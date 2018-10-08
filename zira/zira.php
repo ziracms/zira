@@ -106,30 +106,24 @@ class Zira {
     }
     
     protected function whatDateToday() {
-        if (Dash::isFrame()) return;
+        if (Router::getModule()=='dash' || Dash::isFrame()) return;
         if (!Config::get('congratulate') && !Permission::check(Permission::TO_ACCESS_DASHBOARD)) return;
+        if (Cookie::get('zira_celebration')) return;
+        
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . 'holidays.php')) return;
+        $holidays = @include(ROOT_DIR . DIRECTORY_SEPARATOR . 'holidays.php');
+        if (empty($holidays) || !is_array($holidays)) return;
         
         $time = time();
         $day = date('j',$time);
         $month = date('n',$time);
-        
-        $holidays = array(
-            '1.1' => array('Happy New Year!', 'Thank you Motherland for our happy childhood!', 'assets/simbols/newyear.jpg'),
-            '23.2' => array('February 23 - Day of the Soviet Army and Navy of the USSR', 'Glory to Soviet People!', 'assets/simbols/redarmy.jpg'),
-            '8.3' => array('March 8 - International Women\'s Day', 'Lenin - Party - Komsomol', 'assets/simbols/march.jpg'),
-            '12.4' => array('April 12 - Cosmonautics Day', 'Forward to the Victory of Communism!', 'assets/simbols/april.jpg'),
-            '1.5' => array('May 1 - International Workers\' Day', 'Peace! Labor! May!', 'assets/simbols/may.jpg'),
-            '9.5' => array('May 9 - Victory Day of the Soviet People in the Great Patriotic War', 'Eternal Glory to the Winners! Glory to Stalin!', 'assets/simbols/victory.jpg'),
-            '7.10' => array('October 7 - USSR Constitution Day', 'Lenin lived, Lenin lives, Lenin will live!', 'assets/simbols/ussr.jpg'),
-            '7.11' => array('November 7 - Anniversary of the Great October Socialist Revolution', 'Glory to the Great October!', 'assets/simbols/october.jpg')
-        );
-        
-        if (!Cookie::get('zira_celebration') && array_key_exists($day.'.'.$month, $holidays) && is_array($holidays[$day.'.'.$month]) && count($holidays[$day.'.'.$month])==3) {
+
+        if (array_key_exists($day.'.'.$month, $holidays) && is_array($holidays[$day.'.'.$month]) && count($holidays[$day.'.'.$month])==4) {
             View::setCelebration(true);
             View::setCelebrationDate(Locale::t($holidays[$day.'.'.$month][0]));
             View::setCelebrationMessage(Locale::t($holidays[$day.'.'.$month][1]));
             View::setCelebrationImage(Helper::baseUrl($holidays[$day.'.'.$month][2]));
-            Cookie::set('zira_celebration', '1', 86400);
+            View::setCelebrationAudio(Helper::baseUrl($holidays[$day.'.'.$month][3]));
         }
     }
 
