@@ -49,6 +49,7 @@
             delay: 2000,                  // start delay time
             createInterval: 500,          // item creation interval
             useAnimationFrame: true,      // call requestAnimationFrame if available, otherwise use setInterval
+            lifetime: 0,                  // item lifetime, infinite if zero
             algorythm: 'catmull-rom'      // bezier or catmull-rom
         };
         if (typeof(options)!="undefined") {
@@ -90,6 +91,11 @@
                     lastCreateTime = t;
                 }
                 for (var y in items) {
+                    if (defaults.lifetime && t-items[y].creationTime>defaults.lifetime && !items[y].disabled) {
+                        items[y].disableCandidate = true;
+                    } else if (defaults.lifetime && t-items[y].creationTime>defaults.lifetime*2 && items[y].disabled) {
+                        items[y].enableCandidate = true;
+                    }
                     items[y].shift();
                 }
             };
@@ -123,7 +129,7 @@
             }
             items = [];
             i = 0;
-        })
+        });
     };
 
     $.fn.ziraSnow = function(options) {
@@ -162,7 +168,7 @@
             execTime: 0,                  // infinite if zero
             delay: 2000,                  // start delay time
             createInterval: 100           // item creation interval
-        }
+        };
         if (typeof(options)!="undefined") {
             $.extend(defaults, options);
         }
@@ -180,7 +186,7 @@
             interval: 50,                 // update interval
             createInterval: 50,           // item creation interval
             algorythm: 'bezier'           // bezier or catmull-rom
-        }
+        };
         if (typeof(options)!="undefined") {
             $.extend(defaults, options);
         }
@@ -225,6 +231,11 @@
 
         this.centerX = this.targetX + (this.targetW - this.size) / 2;
         this.centerY = this.targetY + (this.targetH - this.size) / 2;
+        
+        this.creationTime = (new Date()).getTime();
+        this.disableCandidate = false;
+        this.enableCandidate = false;
+        this.disabled = false;
         
         $('body').append(template);
         this.init();
@@ -347,6 +358,15 @@
     };
 
     ZiraSpread.prototype.shift = function() {
+        if (this.enableCandidate && this.disabled) {
+            this.enableCandidate = false;
+            this.disableCandidate = false;
+            this.disabled = false;
+            this.creationTime = (new Date()).getTime();
+            this.init(true);
+            return;
+        }
+        if (this.disabled) return;
         var offset = this.iteration % this.splinePointsCount;
         if (offset==0) {
             this.generateSplinePoints();
@@ -356,6 +376,10 @@
                 this.pointIndex++;
             }
             if (this.splinePoints.length==0 && this.iteration>0) {
+                if (this.disableCandidate) {
+                    this.disabled = true;
+                    return;
+                }
                 this.init(true);
                 return;
             }
@@ -426,7 +450,7 @@
         }
 
         return points;
-    }
+    };
 
     /**
      * Centripetal Catmull–Rom spline
@@ -475,7 +499,7 @@
         }
 
         return points;
-    }
+    };
 
     if (typeof(ZiraSpreadInit)!="undefined") {
         $(document).ready(function(){

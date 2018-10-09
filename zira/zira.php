@@ -124,6 +124,7 @@ class Zira {
             View::setCelebrationMessage(Locale::t($holidays[$day.'.'.$month][1]));
             View::setCelebrationImage(Helper::baseUrl($holidays[$day.'.'.$month][2]));
             View::setCelebrationAudio(Helper::baseUrl($holidays[$day.'.'.$month][3]));
+            View::setCelebrationClass('zira-holiday-'.$day.'-'.$month);
         }
     }
 

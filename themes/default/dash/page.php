@@ -2,6 +2,7 @@
 <div id="dashboard-canvas-wrapper"<?php if (Zira\Config::get('dash_bg')) echo ' data-bg="'.Zira\Helper::html(Zira\Config::get('dash_bg')).'"' ?>>
 <div id="dashboard-wallpaper"></div>
 <div id="dashboard-sidebar">
+<div id="ussr-flag" title="<?php echo t('WORKERS OF THE WORLD, UNITE!'); ?>"><div class="rkka"></div><div class="star"></div><span></span><span></span></div>
 <div id="remote-clock-wrapper">
 <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
 </div>
@@ -23,7 +24,6 @@
 <textarea rows="10" cols="30" maxlength="255" name="memory-stick"><?php echo Zira\Helper::html(Zira\Config::get('memory_stick')) ?></textarea>
 <div id="memory-stick-save"><span class="glyphicon glyphicon-floppy-disk"></span></div>
 </div>
-<div id="ussr-flag" title="<?php echo t('WORKERS OF THE WORLD, UNITE!'); ?>"><span></span><span></span></div>
 <?php if (isset($content)) echo $content; ?>
 </div>
 </div>
@@ -74,6 +74,16 @@
                     } catch(err) {}
                 }
             });
+            window.setInterval(function(){
+                if (!$('#ussr-flag').hasClass('rkka') && !$('#ussr-flag').hasClass('star')) {
+                    $('#ussr-flag').addClass('rkka');
+                } else if (!$('#ussr-flag').hasClass('star')) {
+                    $('#ussr-flag').addClass('star');
+                    $('#ussr-flag').removeClass('rkka');
+                } else {
+                    $('#ussr-flag').removeClass('star');
+                }
+            }, 10000);
 
             Desk.dock_open = Dock.show;
             Desk.dock_close = Dock.hide;
