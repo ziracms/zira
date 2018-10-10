@@ -391,6 +391,14 @@ textarea {
     width: 213px;
     height: 300px;
 }
+.new-year-theme-img-4 {
+    position: absolute;
+    top: 0;
+    left: 100px;
+    width: 118px;
+    height: 42px;
+    z-index: 98;
+}
 @keyframes newyearimg {
     0% {
         transform: translateY(-5px) rotateZ(-1deg);
@@ -420,6 +428,10 @@ textarea {
     .new-year-theme-img-1 {
         top: auto;
         bottom: 0px;
+    }
+    .new-year-theme-img-4 {
+        left: 0;
+        width: 62px;
     }
 }
 

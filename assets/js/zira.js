@@ -1274,6 +1274,9 @@
                         $(this).animate({left:'-10px'},1000);
                     });
                 });
+                $('.new-year-theme-img-1').click(function(){
+                    $(this).animate({left:'-150px'},1000);
+                });
             };
             img1.src = base + '/assets/images/holidays/clock.png';
         }
@@ -1287,6 +1290,9 @@
                     $(this).animate({top:'-20px'},500,function(){
                         $(this).animate({top:'-10px'},1000);
                     });
+                });
+                $('.new-year-theme-img-2').click(function(){
+                    $(this).animate({top:'-205px'},1000);
                 });
             };
             img2.src = base + '/assets/images/holidays/toys.png';
@@ -1302,9 +1308,27 @@
                         $(this).animate({bottom:'-10px'},1000);
                     });
                 });
+                $('.new-year-theme-img-3').click(function(){
+                    $(this).animate({bottom:'-300px'},1000);
+                });
             };
             img3.src = base + '/assets/images/holidays/ded.png';
         }
+        
+        var img4 = new Image();
+        img4.onload = function(){
+            $('header').append('<div class="new-year-theme-img new-year-theme-img-4"></div>');
+            $('.new-year-theme-img-4').css('background-image','url('+img4.src+')');
+            $('.new-year-theme-img-4').css('top','-42px').show().animate({top:0},1000,function(){
+                $(this).animate({top:'-5px'},500,function(){
+                    $(this).animate({top:'0px'},500);
+                });
+            });
+            $('.new-year-theme-img-4').click(function(){
+                $(this).animate({top:'-42px'},1000);
+            });
+        };
+        img4.src = base + '/assets/images/holidays/led.png';
         
         if (typeof(window.orientation) == "undefined") {
             ZiraSpreadInit = function(){
@@ -1320,15 +1344,15 @@
         }
         
         $(window).scroll(function(){
-            if ($('#top-menu-wrapper').hasClass('fixed') && !$('.new-year-theme-img-2').hasClass('faded')) {
+            var top = $(window).scrollTop();
+            if (top>100 && !$('.new-year-theme-img-2').hasClass('faded')) {
                 $('.new-year-theme-img-2').addClass('faded');
-                $('.new-year-theme-img-2').animate({top:'-205px'},1000);
-            } else if (!$('#top-menu-wrapper').hasClass('fixed') && $('.new-year-theme-img-2').hasClass('faded')) {
+                $('.new-year-theme-img-2').animate({right:'-150px'},1000);
+            } else if (top<=100 && $('.new-year-theme-img-2').hasClass('faded')) {
                 $('.new-year-theme-img-2').removeClass('faded');
-                $('.new-year-theme-img-2').animate({top:'0px'},1000);
+                $('.new-year-theme-img-2').animate({right:'0px'},1000);
             }
             if ($(window).width()<992) {
-                var top = $(window).scrollTop();
                 if (top>100 && !$('.new-year-theme-img-1').hasClass('faded')) {
                     $('.new-year-theme-img-1').addClass('faded');
                     $('.new-year-theme-img-1').animate({left:'-150px'},1000);
