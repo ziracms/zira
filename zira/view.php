@@ -401,7 +401,7 @@ class View {
             $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';
             $time = time();
             $js_scripts .= 'zira_server_date = {year:'.date('Y',$time).',month:'.date('n',$time).',day:'.date('j',$time).'};';
-            $js_scripts .= 'zira_render_holiday_theme = '.(Router::getModule()!='dash' ? 'true' : 'false').';';
+            $js_scripts .= 'zira_render_holiday_theme = '.(Router::getModule()!='dash' && self::$_render_db_widgets && !\Dash\Dash::isFrame() ? 'true' : 'false').';';
             $js_scripts .= Helper::tag_close('script')."\r\n";
             
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
