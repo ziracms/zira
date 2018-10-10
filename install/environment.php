@@ -154,6 +154,6 @@ $response = array('content'=>Zira\Helper::tag('style', '.system-ok { color: gree
                         '});'
 );
 
-if (!$supported) $response['error'] = !$htaccess_exists || !$robots_exists || !$config_exists ? Zira\Locale::t('Filesystem need to be prepared for installation') : Zira\Locale::t('Zira installer cannot continue');
+if (!$supported) $response['error'] = !$htaccess_exists || !$robots_exists || !$config_exists ? Zira\Locale::t('Filesystem needs to be prepared for installation') : Zira\Locale::t('Zira installer cannot continue');
 
 return $response;

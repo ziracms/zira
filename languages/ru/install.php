@@ -36,7 +36,7 @@ return array(
     'File %s is not writable' => 'Файл %s недоступен для записи',
     'You have to rename the following files:' => 'Вы должны переименовать следующие файлы:',
     'File config.php should be empty.' => 'Файл config.php должен быть пустым.',
-    'Filesystem need to be prepared for installation' => 'Файловая система должна быть подготовлена к установке',
+    'Filesystem needs to be prepared for installation' => 'Файловая система должна быть подготовлена к установке',
     'System is ready to be installed' => 'Система готова к установке',
     'Agreement' => 'Соглашение',
     'By installing Zira CMS you are agree to the following terms and conditions:' => 'Устанавливая Zira CMS, вы соглашаетесь со следующими условиями:',
