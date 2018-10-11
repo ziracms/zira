@@ -47,7 +47,7 @@ body {
     color: #dfdfdf;
 }
 h1 {
-    font-size: 28px;
+    font-size: 26px;
 }
 h2 {
     font-size: 26px;
@@ -585,7 +585,7 @@ a.label-info:visited {
 }
 /** header **/
 header {
-    min-height: 210px;
+    min-height: 217px;
     position: relative;
     margin-bottom: 30px;
     color: #fff;

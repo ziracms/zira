@@ -44,7 +44,7 @@ body {
     background-color: #f0f1f6;
 }
 h1 {
-    font-size: 28px;
+    font-size: 26px;
 }
 h2 {
     font-size: 26px;
@@ -393,7 +393,7 @@ main > article > .image:first-child {
 }
 /** header **/
 header {
-    min-height: 210px;
+    min-height: 217px;
     position: relative;
     margin-bottom: 40px;
 }
