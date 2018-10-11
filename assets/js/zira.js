@@ -1267,68 +1267,64 @@
         if (typeof(window.orientation) == "undefined" || typeof is_new_year == "undefined" || !is_new_year) {
             var img1 = new Image();
             img1.onload = function(){
-                $('body').append('<div class="new-year-theme-img new-year-theme-img-1"></div>');
-                $('.new-year-theme-img-1').css('background-image','url('+img1.src+')');
-                $('.new-year-theme-img-1').css('left','-150px').show().animate({left:0},1000,function(){
+                $('body').append('<img class="new-year-theme-img new-year-theme-img-1" src="'+img1.src+'" alt="" />');
+                $('.new-year-theme-img-1').css('left','-'+img1.width+'px').show().animate({left:0},1000,function(){
                     $(this).animate({left:'-20px'},500,function(){
                         $(this).animate({left:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-1').click(function(){
-                    $(this).animate({left:'-150px'},1000);
+                    $(this).animate({left:'-'+img1.width+'px'},1000);
                 });
             };
-            img1.src = base + '/assets/images/holidays/clock.png';
+            img1.src = base + '/assets/images/holidays/newyear1.png';
         }
         
         if (typeof(window.orientation) == "undefined") {
             var img2 = new Image();
             img2.onload = function(){
-                $('body').append('<div class="new-year-theme-img new-year-theme-img-2"></div>');
-                $('.new-year-theme-img-2').css('background-image','url('+img2.src+')');
-                $('.new-year-theme-img-2').css('top','-205px').show().animate({top:0},1000,function(){
+                $('body').append('<img class="new-year-theme-img new-year-theme-img-2" src="'+img2.src+'" alt="" />');
+                $('.new-year-theme-img-2').css('top','-'+img2.height+'px').show().animate({top:0},1000,function(){
                     $(this).animate({top:'-20px'},500,function(){
                         $(this).animate({top:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-2').click(function(){
-                    $(this).animate({top:'-205px'},1000);
+                    $(this).animate({top:'-'+img2.height+'px'},1000);
                 });
             };
-            img2.src = base + '/assets/images/holidays/toys.png';
+            img2.src = base + '/assets/images/holidays/newyear2.png';
         }
         
         if (typeof is_new_year != "undefined" && is_new_year) {
             var img3 = new Image();
             img3.onload = function(){
-                $('body').append('<div class="new-year-theme-img new-year-theme-img-3"></div>');
-                $('.new-year-theme-img-3').css('background-image','url('+img3.src+')');
-                $('.new-year-theme-img-3').css('bottom','-300px').show().animate({bottom:0},1000,function(){
+                $('body').append('<img class="new-year-theme-img new-year-theme-img-3" src="'+img3.src+'" alt="" />');
+                $('.new-year-theme-img-3').css('bottom','-'+img3.height+'px').show().animate({bottom:0},1000,function(){
                     $(this).animate({bottom:'-20px'},500,function(){
                         $(this).animate({bottom:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-3').click(function(){
-                    $(this).animate({bottom:'-300px'},1000);
+                    $(this).animate({bottom:'-'+img3.height+'px'},1000);
                 });
             };
-            img3.src = base + '/assets/images/holidays/ded.png';
+            img3.src = base + '/assets/images/holidays/newyear3.png';
         }
         
         var img4 = new Image();
         img4.onload = function(){
-            $('header').append('<div class="new-year-theme-img new-year-theme-img-4"></div>');
-            $('.new-year-theme-img-4').css('background-image','url('+img4.src+')');
-            $('.new-year-theme-img-4').css('top','-42px').show().animate({top:0},1000,function(){
+            $('header').append('<img class="new-year-theme-img new-year-theme-img-4" src="'+img4.src+'" alt="" />');
+            $('.new-year-theme-img-4').css('top','-'+img4.height+'px').show().animate({top:0},1000,function(){
                 $(this).animate({top:'-5px'},500,function(){
                     $(this).animate({top:'0px'},500);
                 });
             });
             $('.new-year-theme-img-4').click(function(){
-                $(this).animate({top:'-42px'},1000);
+                $(this).animate({top:'-'+img4.height+'px'},1000);
             });
         };
-        img4.src = base + '/assets/images/holidays/led.png';
+        img4.src = base + '/assets/images/holidays/newyear4.png';
         
         if (typeof(window.orientation) == "undefined") {
             ZiraSpreadInit = function(){

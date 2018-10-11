@@ -7,6 +7,9 @@ body, header {
 a.label:link, a.label:visited, a.label:hover {
     color: #fff;
 }
+article .article.parse-content {
+    overflow-x: hidden;
+}
 select.form-control {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -370,33 +373,26 @@ textarea {
     z-index: 900;
     background-repeat: no-repeat;
     background-position: 0 0;
+    border: none;
 }
 .new-year-theme-img-1 {
     top: 120px;
     left: 0;
-    width: 150px;
-    height: 214px;
     animation: newyearimg 10s linear infinite;
 }
 .new-year-theme-img-2 {
     top: 0;
     right: 0;
-    width: 150px;
-    height: 205px;
     animation: newyearimg 10s linear infinite;
 }
 .new-year-theme-img-3 {
     bottom: 0;
     right: 0;
-    width: 213px;
-    height: 300px;
 }
 .new-year-theme-img-4 {
     position: absolute;
     top: 0;
     left: 100px;
-    width: 118px;
-    height: 42px;
     z-index: 98;
 }
 @keyframes newyearimg {
