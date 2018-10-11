@@ -663,9 +663,11 @@ ul#language-switcher li a.active {
 #top-menu-wrapper .top-menu-logo a img {
     width: auto;
     height: 24px;
+    vertical-align: middle;
 }
 #top-menu-wrapper .top-menu-logo a span {
     margin-left: 10px;
+    vertical-align: middle;
 }
 #top-menu-wrapper.fixed .navbar-collapse.collapsing,
 #top-menu-wrapper.fixed .navbar-collapse.in {
