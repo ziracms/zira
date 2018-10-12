@@ -431,9 +431,7 @@ ul#user-menu {
     padding: 0px;
     height: 35px;
     float: right;
-}
-ul#user-menu.authorized {
-
+    font-size: 15px;
 }
 ul#user-menu li.menu-item {
     display: block;
@@ -506,6 +504,12 @@ ul#user-menu .dropdown-menu:after {
     border-bottom: 7px solid #C6D6F6;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
+}
+ul#user-menu.authorized li.menu-item a.dropdown-toggle {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 ul#language-switcher {
     list-style-type: none;
@@ -2070,6 +2074,9 @@ a.scroll-top.visible:visited {
         margin-right: 5px;
         margin-bottom: 10px;
         margin-left: 5px;
+    }
+    ul#user-menu.authorized li.menu-item a.dropdown-toggle {
+        max-width: 120px;
     }
     ul#language-switcher {
         margin-right: 5px;

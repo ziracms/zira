@@ -642,9 +642,6 @@ ul#user-menu {
     border-right: 1px solid #424044;
     border-bottom: 1px solid #424044;
 }
-ul#user-menu.authorized {
-
-}
 ul#user-menu li.menu-item {
     display: block;
     float: left;
@@ -711,6 +708,12 @@ ul#user-menu .dropdown-menu:after {
     border-bottom: 7px solid #505562;
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
+}
+ul#user-menu.authorized li.menu-item a.dropdown-toggle {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 ul#language-switcher {
     list-style-type: none;
@@ -2582,6 +2585,9 @@ ul.vote-results li .vote-result {
         margin-right: 5px;
         margin-left: 5px;
         margin-bottom: 20px;
+    }
+    ul#user-menu.authorized li.menu-item a.dropdown-toggle {
+        max-width: 120px;
     }
     ul#language-switcher {
         margin-right: 5px;

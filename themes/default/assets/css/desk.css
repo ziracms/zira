@@ -103,6 +103,12 @@
     margin-top: 2px;
     margin-bottom: 2px;
 }
+#dashpanel-container .navbar-right > li > a {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 body {
     padding-top: 42px;
 }
@@ -831,7 +837,6 @@ body.dashboard #dashboard-sidebar {
     color: #333;
 }
 body.dashboard #main-wrapper {
-    min-width: 767px;
     min-height: 540px;
     background: #efebf0;
     background: -moz-linear-gradient(top, #efebf0 0%, #dfd1f0 100%);
@@ -1161,10 +1166,16 @@ body.dashboard .tooltip-inner {
     #dashpanel-container .report {
         display: none;
     }
+    #dashpanel-container .navbar-right > li > a {
+        max-width: 210px;
+    }
 }
 @media (min-width: 992px) {
     #dashpanel-container .report {
         display: block;
+    }
+    #dashpanel-container .navbar-right > li > a {
+        max-width: 220px;
     }
 }
 @media (max-width: 766px) {
