@@ -1186,12 +1186,6 @@ body.dashboard .tooltip-inner {
     }
 }
 @media (max-width: 766px) {
-    #dashpanel-container {
-        position: absolute;
-    }
-    .dashboard-window-maximized {
-        position: absolute;
-    }
     body.dashboard #main-wrapper {
         min-width: inherit;
         min-height: inherit;

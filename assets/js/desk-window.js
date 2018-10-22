@@ -1642,6 +1642,28 @@ DashWindow.prototype.createMenu = function() {
     $(this.menu).find('.'+this.menu_list_item_class).on('shown.bs.dropdown', this.bind(this, function() {
         this.menu_opened = true;
         this.menu_clicked = false;
+        try {
+            window.clearTimeout(this.menu_timer);
+        } catch(err) {}
+    
+        var openmenu = $(this.menu).find('.'+this.menu_list_item_class+'.open .dropdown-menu');
+        if ($(openmenu).length>0) {
+            $(openmenu).css('height', 'auto');
+            $(openmenu).css('height', '');
+            this.menu_timer = window.setTimeout(function(){
+                if ($(openmenu).length==0 || !$(openmenu).parent().hasClass('open')) return;
+                var omh = $(openmenu).height();
+                var omt = $(openmenu).offset().top - $(window).scrollTop();
+                var wh = $(window).height();
+                var dh = wh-omt;
+                if (omh > dh && dh>0) {
+                    $(openmenu).css({
+                        height: dh,
+                        overflow: 'auto'
+                    });
+                }
+            },500);
+        }
     }));
 };
 
@@ -1920,6 +1942,12 @@ DashWindow.prototype.showContextMenu = function(pageX, pageY) {
     var y = pageY - this.window_scroll_top;
 
     $(this.contextmenu).addClass('open');
+    $(this.contextmenu).css('height', 'auto');
+    $(this.contextmenu).css('height', '');
+    
+    try {
+        window.clearTimeout(this.context_menu_timer);
+    } catch(err) {}
 
     var w = $(this.contextmenu).outerWidth();
     var h = $(this.contextmenu).outerHeight();
@@ -1934,6 +1962,20 @@ DashWindow.prototype.showContextMenu = function(pageX, pageY) {
         'zIndex': this.getZ()+1
     });
     this.context_menu_opened = true;
+    
+    this.context_menu_timer = window.setTimeout(this.bind(this, function(){
+        if (this.contextmenu===null) return;
+        if (!$(this.contextmenu).hasClass('open')) return;
+        var omh = $(this.contextmenu).height();
+        var wh = $(window).height();
+        var dh = wh-y;
+        if (omh > dh && dh>0) {
+            $(this.contextmenu).css({
+                height: dh,
+                overflow: 'auto'
+            });
+        }
+    }),500);
 };
 
 DashWindow.prototype.hideContextMenu = function() {

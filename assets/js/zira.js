@@ -149,7 +149,9 @@
             });
             $(window).resize(function(){
                 window.setTimeout(function(){
-                    topMenuTop = $('#top-menu-wrapper').offset().top;
+                    if (!$('#top-menu-wrapper').hasClass('fixed')) {
+                        topMenuTop = $('#top-menu-wrapper').offset().top;
+                    }
                 }, 1000);
             });
         }

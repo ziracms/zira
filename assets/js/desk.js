@@ -166,7 +166,7 @@ var Desk = {
     'bind': function(object, method) {
         return function(arg) {
             return method.call(object,arg);
-        }
+        };
     },
     'enableEvents': function() {
         this.eventsEnabled = true;

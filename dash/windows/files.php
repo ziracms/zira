@@ -341,6 +341,8 @@ class Files extends Window {
         $files = array_slice($files,$this->limit*($this->page-1), $this->limit);
         $bodyItems = array();
         foreach($files as $file) {
+            $encoding = strtolower(mb_detect_encoding($file, mb_detect_order(), true));
+            if ($encoding != 'ascii' && $encoding != 'utf-8') continue;
             if (!is_readable($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file)) continue;
             $fsize = filesize($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $file);
             $fsize = number_format($fsize / 1024, 2). ' kB';
