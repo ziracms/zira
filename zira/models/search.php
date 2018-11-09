@@ -87,7 +87,7 @@ class Search extends Orm {
         foreach($keywords as $index=>$keyword) {
             if (mb_strlen($keyword, CHARSET)<self::MIN_CHARS) continue;
             if (in_array($keyword, $added)) continue;
-            if ($index>0) $query->union();
+            if (count($added)>0) $query->union();
             $query->open_query();
             $query->select('record_id');
             $query->where('language','=',Locale::getLanguage());
@@ -140,7 +140,7 @@ class Search extends Orm {
         foreach($keywords as $index=>$keyword) {
             if (mb_strlen($keyword, CHARSET)<self::MIN_CHARS) continue;
             if (in_array($keyword, $added)) continue;
-            if ($index>0) $query->union();
+            if (count($added)>0) $query->union();
             $query->open_query();
             $query->where('language','=',Locale::getLanguage());
             $query->and_where('keyword','like',$keyword.'%');
