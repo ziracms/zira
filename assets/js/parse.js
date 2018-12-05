@@ -174,7 +174,7 @@
     };
 
     zira_parse_bind_lightbox = function() {
-        $('.zira-lightbox, .parsed-image').each(function(){
+        $('.zira-lightbox, .image').each(function(){
             if ($(this).width() < 30 || $(this).height() < 20 || $(this).hasClass('lightbox-image')) return true;
             $(this).addClass('lightbox-image').click(zira_parse_lightbox);
         });
@@ -182,7 +182,9 @@
 
     function zira_parse_lightbox() {
         if ($(this).attr('src')) {
-            $('body').append('<a href="'+this.src+'" title="'+$(this).attr('alt')+'" data-lightbox="parsed_image_zoomer" id="parsed-image-zoomer-lightbox"></a>');
+            var title = $(this).attr('alt');
+            if (typeof title == "undefined") title = '';
+            $('body').append('<a href="'+this.src+'" title="'+title+'" data-lightbox="parsed_image_zoomer" id="parsed-image-zoomer-lightbox"></a>');
             $('#parsed-image-zoomer-lightbox').trigger('click');
             $('#parsed-image-zoomer-lightbox').remove();
         }
