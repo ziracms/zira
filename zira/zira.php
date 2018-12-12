@@ -10,7 +10,7 @@ namespace Zira;
 use Dash\Dash;
 
 class Zira {
-    const VERSION = '1.3.1';
+    const VERSION = '1.4.0';
     private static $_instance;
 
     public static function getInstance() {
@@ -79,8 +79,6 @@ class Zira {
 
         Session::remove(Response::SESSION_REDIRECT);
         Locale::remember();
-        
-        $this->whatDateToday();
 
         if (self::isOnline()) {
             $this->process();
@@ -105,29 +103,6 @@ class Zira {
                 Request::isAjax());
     }
     
-    protected function whatDateToday() {
-        if (Router::getModule()=='dash' || Dash::isFrame()) return;
-        if (!Config::get('congratulate') && !Permission::check(Permission::TO_ACCESS_DASHBOARD)) return;
-        if (Cookie::get('zira_celebration')) return;
-        
-        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . 'holidays.php')) return;
-        $holidays = @include(ROOT_DIR . DIRECTORY_SEPARATOR . 'holidays.php');
-        if (empty($holidays) || !is_array($holidays)) return;
-        
-        $time = time();
-        $day = date('j',$time);
-        $month = date('n',$time);
-
-        if (array_key_exists($day.'.'.$month, $holidays) && is_array($holidays[$day.'.'.$month]) && count($holidays[$day.'.'.$month])==4) {
-            View::setCelebration(true);
-            View::setCelebrationDate(Locale::t($holidays[$day.'.'.$month][0]));
-            View::setCelebrationMessage(Locale::t($holidays[$day.'.'.$month][1]));
-            View::setCelebrationImage(Helper::baseUrl($holidays[$day.'.'.$month][2]));
-            View::setCelebrationAudio(Helper::baseUrl($holidays[$day.'.'.$month][3]));
-            View::setCelebrationClass('zira-holiday-'.$day.'-'.$month);
-        }
-    }
-
     protected function registerDbWidgets() {
         if (Request::isAjax()) return;
         $category_id = null;

@@ -88,13 +88,6 @@ class View {
 
     protected static $_body_bottom_scripts = array();
     protected static $_before_render_callbacks = array();
-    
-    protected static $_is_celebration = false;
-    protected static $_celebration_date = null;
-    protected static $_celebration_message = null;
-    protected static $_celebration_image = '';
-    protected static $_celebration_audio = '';
-    protected static $_celebration_class = '';
 
     public static function isInitialized() {
         return self::$_theme !== null;
@@ -193,30 +186,6 @@ class View {
 
     public static function isRenderStarted() {
         return self::$_render_started;
-    }
-    
-    public static function setCelebration($is_celebration) {
-        self::$_is_celebration = $is_celebration;
-    }
-    
-    public static function setCelebrationDate($celebration_date) {
-        self::$_celebration_date = $celebration_date;
-    }
-    
-    public static function setCelebrationMessage($celebration_msg) {
-        self::$_celebration_message = $celebration_msg;
-    }
-    
-    public static function setCelebrationImage($celebration_image) {
-        self::$_celebration_image = $celebration_image;
-    }
-    
-    public static function setCelebrationAudio($celebration_audio) {
-        self::$_celebration_audio = $celebration_audio;
-    }
-    
-    public static function setCelebrationClass($celebration_class) {
-        self::$_celebration_class = $celebration_class;
     }
 
     public static function setKeywordsAdded($value) {
@@ -399,9 +368,6 @@ class View {
             }
             $js_scripts .= 'zira_scroll_effects_enabled = '.(Config::get('site_scroll_effects',1) ? 'true' : 'false').';';
             $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';
-            $time = time();
-            $js_scripts .= 'zira_server_date = {year:'.date('Y',$time).',month:'.date('n',$time).',day:'.date('j',$time).'};';
-            $js_scripts .= 'zira_render_holiday_theme = '.(Router::getModule()!='dash' && self::$_render_db_widgets && !\Dash\Dash::isFrame() ? 'true' : 'false').';';
             $js_scripts .= Helper::tag_close('script')."\r\n";
             
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
@@ -457,9 +423,6 @@ class View {
     public static function finishLayout() {
         self::addThemeAssets();
         self::addHTML(self::$head_addon, self::VAR_HEAD_BOTTOM);
-        if (self::$_is_celebration) {
-            self::addHTML(self::celebrate(self::$_celebration_date, self::$_celebration_message, self::$_celebration_image, self::$_celebration_audio, self::$_celebration_class), self::VAR_BODY_TOP);
-        }
         include(self::$layout);
     }
 
@@ -1248,6 +1211,10 @@ class View {
     public static function setRenderDbWidgets($render_db_widgets) {
         self::$_render_db_widgets = (bool) $render_db_widgets;
     }
+    
+    public static function getRenderDbWidgets() {
+        return self::$_render_db_widgets;
+    }
 
     public static function prepareWidgets() {
         self::$_widget_objects = array();
@@ -1370,20 +1337,5 @@ class View {
             }
         }
         unset(self::$_db_widget_objects[$placeholder]);
-    }
-    
-    public static function celebrate($date, $message, $image='', $audio='', $class='') {
-        if (headers_sent()) return;
-        Cookie::set('zira_celebration', '1', 86400);
-        $html = Helper::tag('div',null,array('class'=>'zira-celebration-bg'));
-        $html .= Helper::tag_open('div',array('class'=>'zira-celebration '.$class, 'title'=>$date, 'data-asrc'=>$audio));
-        $html .= Helper::tag('div', $date, array('class'=>'celebration-date'));
-        if (!empty($image)) {
-            $html .= Helper::tag_short('img', array('src'=>$image, 'alt'=>$message, 'title'=>$message, 'class'=>'celebration-image'));
-        }
-        $html .= Helper::tag('div', $message, array('class'=>'celebration-message'));
-        $html .= Helper::tag('div', null, array('class'=>'celebration-close'));
-        $html .= Helper::tag_close('div');
-        return $html;
     }
 }

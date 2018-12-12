@@ -445,6 +445,5 @@ return array(
     'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика',
     'Gallery sorting' => 'Сортировка галереи',
     'Ascending' => 'Возрастающая',
-    'Descending' => 'Убывающая',
-    'Congratulate visitors' => 'Поздравлять посетителей'
+    'Descending' => 'Убывающая'
 );

@@ -16,12 +16,12 @@ select.form-control {
     appearance: none;
     padding: 6px;
     background-image:-webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image:-o-linear-gradient(top,#fff 0,#e0e0e0 100%);
-	background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#e0e0e0));
-	background-image:linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
-	filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);
-	background-repeat:repeat-x;
+    background-image:-o-linear-gradient(top,#fff 0,#e0e0e0 100%);
+    background-image:-webkit-gradient(linear,left top,left bottom,from(#fff),to(#e0e0e0));
+    background-image:linear-gradient(to bottom,#fff 0,#e0e0e0 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    background-repeat:repeat-x;
 }
 select.form-control option {
     padding: 5px 20px;
@@ -279,156 +279,6 @@ textarea {
 }
 .sidebar .carousel-wrapper.with-title .carousel {
     margin: 10px 0px 0px;
-}
-
-.zira-celebration-bg {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999998;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, .8); 
-    animation: ziraFade 3s ease;
-}
-.zira-celebration {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 5%;
-    width: 90%;
-    max-height: 100%;
-    overflow: auto;
-    z-index: 999999;
-    background-color: rgb(60, 0, 0);
-    background-color: rgba(60, 0, 0, .9);
-    background: linear-gradient(to bottom, #792a2a, #1b0402);
-    background: linear-gradient(to bottom, rgba(121,42,42,.9), rgba(27,4,2,.9));  
-    border: 15px solid #e9f6ff;
-    border-radius: 15px;
-    box-shadow: 0px 0px 10px #1f1f1f;
-    animation: ziraFade 3s ease;
-}
-.zira-celebration.zira-holiday-1-1 {
-    background-color: rgb(0, 55, 125);
-    background-color: rgba(0, 55, 125, .9);
-    background: linear-gradient(to bottom, rgb(1, 169, 251), rgb(0, 55, 125));
-    background: linear-gradient(to bottom, rgba(1, 169, 251, 0.9), rgba(0, 55, 125, 0.9)); 
-}
-.zira-celebration.zira-holiday-8-3 {
-    background-color: rgb(38, 130, 0);
-    background-color: rgba(38, 130, 0, 0.9);
-    background: linear-gradient(to bottom, rgb(182, 226, 4), rgb(38, 130, 0));
-    background: linear-gradient(to bottom, rgba(182, 226, 4, 0.9), rgba(38, 130, 0, 0.9)); 
-}
-.zira-celebration.zira-holiday-12-4 {
-    background-color: rgb(40, 0, 119);
-    background-color: rgba(40, 0, 119, 0.9);
-    background: linear-gradient(to bottom, rgb(166, 0, 208), rgb(40, 0, 119));
-    background: linear-gradient(to bottom, rgba(166, 0, 208, 0.9), rgba(40, 0, 119, 0.9)); 
-}
-.zira-celebration.zira-holiday-1-5,
-.zira-celebration.zira-holiday-19-5,
-.zira-celebration.zira-holiday-1-9 {
-    background-color: rgb(146, 12, 0);
-    background-color: rgba(146, 12, 0, 0.9);
-    background: linear-gradient(to bottom, rgb(255, 14, 2), rgb(146, 12, 0));
-    background: linear-gradient(to bottom, rgba(255, 14, 2, 0.9), rgba(146, 12, 0, 0.9)); 
-}
-.zira-celebration .celebration-image {
-    display: block;
-    width: 600px;
-    height: auto;
-    margin: 0 auto;
-    max-width: 100%;
-    border: 6px solid #fbfbfb;
-}
-.zira-celebration .celebration-date,
-.zira-celebration .celebration-message {
-    width: 100%;
-    min-height: 75px;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-    font-size: 25px;
-    padding: 20px;
-    text-transform: uppercase;
-}
-.zira-celebration .celebration-close {
-    display: none;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 19px;
-    height: 19px;
-    background: url(../images/close-small.png) no-repeat 0 0;
-    cursor: pointer;
-}
-
-.new-year-theme-img {
-    display: none;
-    position: fixed;
-    z-index: 900;
-    background-repeat: no-repeat;
-    background-position: 0 0;
-    border: none;
-}
-.new-year-theme-img-1 {
-    top: 120px;
-    left: 0;
-    animation: newyearimg 10s linear infinite;
-}
-.new-year-theme-img-2 {
-    top: 0;
-    right: 0;
-    animation: newyearimg 10s linear infinite;
-}
-.new-year-theme-img-3 {
-    bottom: 0;
-    right: 0;
-}
-.new-year-theme-img-4 {
-    position: absolute;
-    top: 0;
-    left: 100px;
-    z-index: 98;
-}
-@keyframes newyearimg {
-    0% {
-        transform: translateY(-5px) rotateZ(-1deg);
-    }
-    25% {
-        transform: translateY(0px) rotateZ(0deg);
-    }
-    50% {
-        transform: translateY(5px) rotateZ(1deg);
-    }
-    75% {
-        transform: translateY(0px) rotateZ(0deg);
-    }
-    100% {
-        transform: translateY(-5px) rotateZ(-1deg);
-    }
-}
-
-@media only screen and (max-width: 767px) {
-    .zira-celebration .celebration-image {
-        border: none;
-    }
-    .zira-celebration .celebration-date,
-    .zira-celebration .celebration-message {
-        font-size: 20px;
-    }
-    .new-year-theme-img-1 {
-        top: auto;
-        bottom: 0px;
-    }
-    .new-year-theme-img-4 {
-        left: 0;
-        width: 62px;
-    }
 }
 
 @keyframes loader {

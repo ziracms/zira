@@ -1,0 +1,33 @@
+<?php
+
+return array(
+    'Holidays' => 'Праздники',
+    'Congratulate your website visitors' => 'Поздравляйте посетителей вашего сайта',
+    'New holiday' => 'Новый праздник',
+    'Holiday' => 'Праздник',
+    'Day' => 'День',
+    'Month' => 'Месяц',
+    'January' => 'Январь',
+    'February' => 'Февраль',
+    'March' => 'Март',
+    'April' => 'Апрель',
+    'May' => 'Май',
+    'June' => 'Июнь',
+    'July' => 'Июль',
+    'August' => 'Август',
+    'September' => 'Сентябрь',
+    'October' => 'Октябрь',
+    'November' => 'Ноябрь',
+    'December' => 'Декабрь',
+    'Red' => 'Красный',
+    'Orange' => 'Оранжевый',
+    'Yellow' => 'Жёлтый',
+    'Green' => 'Зелёный',
+    'Blue' => 'Синий',
+    'Purple' => 'Фиолетовый',
+    'Pink' => 'Розовый',
+    'Show banner' => 'Показать баннер',
+    'Holidays settings' => 'Настройки праздников',
+    'Enable New Year mode' => 'Включить режим Нового Года',
+    'Enable snow' => 'Включить снег'
+);
