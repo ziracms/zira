@@ -14,7 +14,7 @@ if ((empty($config) || !is_array($config))) {
     header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
     header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
     if (Zira\Request::isInstallRequestUri()) header('Location: index.php');
-    else if (Zira\Request::isBaseRequestUri()) header('Location: install/index.php');
+    else if (Zira\Request::isBaseRequestUri() || Zira\Request::isBaseRequestUriAlt()) header('Location: install/index.php');
     exit;
 }
 

@@ -31,7 +31,6 @@ spl_autoload_register(function($class){
 
 $steps = array(
     'environment',
-    'license',
     'credentials',
     'configuration',
     'process'

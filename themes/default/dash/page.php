@@ -2,7 +2,6 @@
 <div id="dashboard-canvas-wrapper"<?php if (Zira\Config::get('dash_bg')) echo ' data-bg="'.Zira\Helper::html(Zira\Config::get('dash_bg')).'"' ?>>
 <div id="dashboard-wallpaper"></div>
 <div id="dashboard-sidebar">
-<div id="ussr-flag" title="<?php echo t('WORKERS OF THE WORLD, UNITE!'); ?>"><div class="rkka"></div><div class="star"></div><span></span><span></span></div>
 <div id="remote-clock-wrapper">
 <canvas id="dashboard_remote_clock" width="230" height="230"></canvas>
 </div>
@@ -54,36 +53,6 @@
                     }
                 },'json');
             });
-            $('#ussr-flag').css({'opacity':1,'cursor':'pointer'});
-            $('#ussr-flag').click(function(){
-                if ($(this).hasClass('locked')) {
-                    $(this).removeClass('locked');
-                    try {
-                        $('audio#anthem').get(0).pause();
-                    } catch(err) {}
-                } else {
-                    $(this).addClass('locked');
-                    if ($('audio#anthem').length==0) {
-                        $('body').append('<audio id="anthem"><source src="<?php echo Zira\Helper::baseUrl('assets/simbols/anthem.mp3'); ?>" type="audio/mp3" /></audio>');
-                        $('audio#anthem').bind('ended',function(){
-                            $('#ussr-flag').removeClass('locked');
-                        });
-                    }
-                    try {
-                        $('audio#anthem').get(0).play();
-                    } catch(err) {}
-                }
-            });
-            window.setInterval(function(){
-                if (!$('#ussr-flag').hasClass('rkka') && !$('#ussr-flag').hasClass('star')) {
-                    $('#ussr-flag').addClass('rkka');
-                } else if (!$('#ussr-flag').hasClass('star')) {
-                    $('#ussr-flag').addClass('star');
-                    $('#ussr-flag').removeClass('rkka');
-                } else {
-                    $('#ussr-flag').removeClass('star');
-                }
-            }, 10000);
 
             Desk.dock_open = Dock.show;
             Desk.dock_close = Dock.hide;

@@ -91,6 +91,7 @@ class Holiday extends Form
         $validator->registerString('cdate',null,255,true,Locale::t('Invalid value "%s"',Locale::tm('Day','holiday').' / '.Locale::tm('Month','holiday')));
         $validator->registerNoTags('cdate',Locale::t('Invalid value "%s"',Locale::tm('Day','holiday').' / '.Locale::tm('Month','holiday')));
         $validator->registerUtf8('cdate',Locale::t('Invalid value "%s"',Locale::tm('Day','holiday').' / '.Locale::tm('Month','holiday')));
+        $validator->registerCustom(array(get_class(), 'checkDay'), 'cdate', Locale::t('Invalid value "%s"',Locale::tm('Day','holiday').' / '.Locale::tm('Month','holiday')));
         
         $validator->registerString('title',null,255,true,Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerNoTags('title',Locale::t('Invalid value "%s"',Locale::t('Title')));
@@ -111,8 +112,6 @@ class Holiday extends Form
         $validator->registerString('cls',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Class')));
         $validator->registerNoTags('cls',Locale::t('Invalid value "%s"',Locale::t('Class')));
         $validator->registerUtf8('cls',Locale::t('Invalid value "%s"',Locale::t('Class')));
-        
-        $validator->registerCustom(array(get_class(), 'checkDay'), 'cdate', Locale::t('Invalid value "%s"',Locale::tm('Day','holiday').' / '.Locale::tm('Month','holiday')));
         $validator->registerCustom(array(get_class(), 'checkClass'), 'cls', Locale::t('Invalid value "%s"',Locale::t('Class')));
     }
     
@@ -124,6 +123,8 @@ class Holiday extends Form
         if ($parts[0]<1 || $parts[0]>31) return false;
         if (!is_numeric($parts[1])) return false;
         if ($parts[1]<1 || $parts[1]>12) return false;
+        if ($parts[1]==2 && $parts[0]>29) return false;
+        if (($parts[1]==4 || $parts[1]==6 || $parts[1]==9 || $parts[1]==11) && $parts[0]>30) return false;
         return true;
     }
     

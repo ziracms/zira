@@ -111,6 +111,11 @@ class Request {
         $uri = '/' . trim($_SERVER['REQUEST_URI'],'/');
         return $uri == self::detectBaseUrl();
     }
+    
+    public static function isBaseRequestUriAlt() {
+        $uri = '/' . trim($_SERVER['REQUEST_URI'],'/');
+        return $uri == rtrim(self::detectBaseUrl() ,'/') . '/index.php';
+    }
 
     public static function isInstallRequestUri() {
         $uri = '/' . trim($_SERVER['REQUEST_URI'],'/');

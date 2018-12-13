@@ -48,6 +48,10 @@ class Index extends Dash\Controller {
         $content .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-picture'));
         $content .= Zira\Helper::tag_close('a');
         
+        $dash_theme = Zira\Config::get('theme');
+        $dash_theme = Zira\Config::get('dashtheme', $dash_theme);
+        Zira\View::setTheme($dash_theme);
+        
         Zira\Page::render(array(
             Zira\Page::VIEW_PLACEHOLDER_CONTENT => $content,
             Zira\Page::VIEW_PLACEHOLDER_SETTINGS => array(

@@ -323,7 +323,13 @@ class Dash {
 
     public static function addViewScript($url) {
         $attributes = array();
-        if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR .$url)) {
+        
+        $dash_theme = Zira\Config::get('theme');
+        $dash_theme = Zira\Config::get('dashtheme', $dash_theme);
+        
+        if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . $dash_theme . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR .$url)) {
+            $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . $dash_theme . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;
+        } else if (file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . THEMES_DIR . DIRECTORY_SEPARATOR . Zira\View::getTheme() . DIRECTORY_SEPARATOR . ASSETS_DIR . DIRECTORY_SEPARATOR . JS_DIR . DIRECTORY_SEPARATOR .$url)) {
             $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . Zira\View::getTheme() . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;
         } else {
             $attributes['src'] = rtrim(BASE_URL,'/') . '/' . THEMES_DIR . '/' . DEFAULT_THEME . '/' . ASSETS_DIR . '/' . JS_DIR . '/' .$url.'?t='.Zira::VERSION;

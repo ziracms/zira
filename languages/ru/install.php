@@ -118,10 +118,5 @@ return array(
     'Our website is now open for visitors.' => 'Наш вебсайт теперь открыт для посетителей.',
     'File' => 'Файл',
     'Type' => 'Тип',
-    'Failed to create database file.' => 'Невозможно создать файл базы данных.',
-    'USSR' => 'СССР',
-    'WORKERS OF THE WORLD, UNITE!' => 'ПРОЛЕТАРИИ ВСЕХ СТРАН, СОЕДИНЯЙТЕСЬ!',
-    'In the victory of the immortal ideas of communism we see the future of our country!' => 'В победе бессмертных идей коммунизма мы видим грядущее нашей страны!',
-    'My homeland is the USSR!' => 'Моя родина - СССР!',
-    'Dedicated to the memory of the USSR.' => 'Посвящается памяти СССР.'
+    'Failed to create database file.' => 'Невозможно создать файл базы данных.'
 );
