@@ -31,5 +31,7 @@ return array(
     '30-days most used browsers' => 'Наиболее часто используемые браузеры за 30 дней',
     'Today: %s' => 'Сегодня: %s',
     'Yesterday: %s' => 'Вчера: %s',
-    '30-days referers' => 'Рефереры за 30 дней'
+    '30-days referers' => 'Рефереры за 30 дней',
+    'Views' => 'Просмотров',
+    'Display record views in description' => 'Показывать просмотры записи в описании'
 );

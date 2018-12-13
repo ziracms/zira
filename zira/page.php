@@ -118,8 +118,8 @@ class Page {
         self::$_records_preview_callbacks []= array($object, $method);
     }
     
-    public static function isRecordPreviewDataExists($record_id) {
-        return array_key_exists($record_id, self::$_records_preview_data);
+    public static function isRecordPreviewDataExists($record_id, $module = 'zira') {
+        return array_key_exists($record_id, self::$_records_preview_data) && array_key_exists($module, self::$_records_preview_data[$record_id]);
     }
     
     public static function addRecordPreviewData($record_id, $data, $view, $show_in_widgets = false, $module = 'zira') {

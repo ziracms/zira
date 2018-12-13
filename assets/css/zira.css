@@ -245,6 +245,25 @@ textarea {
     font-size: 90%;
     margin: 20px 10px 30px;
 }
+.record_preview_block {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 90%;
+    overflow: hidden;
+}
+.record_preview_block label {
+    display: block;
+    float: left;
+    width: 110px;
+}
+.record_preview_block span {
+    display: block;
+    margin-left: 120px;
+}
+.sidebar .record_preview_block {
+    padding: 10px 5px;
+}
 .fullscreen-slider .slider-wrapper {
     position: relative;
     z-index: 5;

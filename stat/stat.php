@@ -32,10 +32,34 @@ class Stat {
         }
         
         Zira\View::registerRenderHook(get_class(), 'log');
+        if (Zira\Config::get('stat_views_preview')) {
+            Zira\Page::registerRecordsPreviewHook($this, 'previewCallback');
+        }
     }
     
     public static function log() {
         if (Zira\View::isAjax()) return;
         \Stat\Models\Access::log();
+    }
+    
+    public static function previewCallback($records, $is_widget = false) {
+        $display_in_widgets = true;
+        if ($is_widget && !$display_in_widgets) return;
+        if (empty($records)) return;
+        $record_ids = array();
+        foreach($records as $record) {
+            if (Zira\Page::isRecordPreviewDataExists($record->id, 'stat')) continue;
+            $record_ids []= $record->id;
+        }
+
+        if (empty($record_ids)) return;
+        
+        $rows = \Stat\Models\Record::getCollection()
+                        ->where('record_id','in',$record_ids)
+                        ->get();
+        
+        foreach($rows as $row) {
+            Zira\Page::addRecordPreviewData($row->record_id, array('views'=>$row->views_count), 'stat/preview', $display_in_widgets, 'stat');
+        }
     }
 }

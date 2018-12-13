@@ -206,7 +206,7 @@ class Fields {
         if (empty($records)) return;
         $record_ids = array();
         foreach($records as $record) {
-            if (Zira\Page::isRecordPreviewDataExists($record->id)) continue;
+            if (Zira\Page::isRecordPreviewDataExists($record->id, 'fields')) continue;
             $record_ids []= $record->id;
         }
 

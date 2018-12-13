@@ -1,1 +1,1 @@
-<div class="views_count_wrapper zira_bottom_counter" title="<?php echo t('Views: %s', (int)$views) ?>"><span class="glyphicon glyphicon-eye-open"></span> <?php echo (int)$views ?></div>
+<div class="views_count_wrapper zira_bottom_counter" title="<?php echo tm('Views', 'stat') ?>: <?php echo (int)$views ?>"><span class="glyphicon glyphicon-eye-open"></span> <?php echo tm('Views', 'stat') ?>: <?php echo (int)$views ?></div>

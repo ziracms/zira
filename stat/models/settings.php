@@ -22,7 +22,8 @@ class Settings extends Dash\Models\Model {
         if ($form->isValid()) {
             $options = array(
                 'stat_log_ua' => 'int',
-                'stat_log_access' => 'int'
+                'stat_log_access' => 'int',
+                'stat_views_preview' => 'int'
             );
 
             $config_ids = array();

@@ -1117,7 +1117,11 @@
             var url = $(this).attr('href');
             $.get(url, {
                 format : 'json'
-            }, zira_auth_popup_response, 'json');
+            }, zira_auth_popup_response, 'json').fail(function(){
+                $('#zira-auth-dialog').on('hidden.bs.modal', function(){
+                    zira_error(t('Load failed'));
+                }).modal('hide');
+            });;
         });
     };
     
@@ -1145,7 +1149,11 @@
             if (url.indexOf('?')<0) url += '?';
             else url += '&';
             url += 'format=json';
-            $.post(url, data, zira_auth_popup_response, 'json');
+            $.post(url, data, zira_auth_popup_response, 'json').fail(function(){
+                $('#zira-auth-dialog').on('hidden.bs.modal', function(){
+                    zira_error(t('Load failed'));
+                }).modal('hide');
+            });
         });
         if ($('#zira-auth-dialog .g-recaptcha').length>0) {
             if (typeof zira_load_recaptcha.loaded == "undefined") {
