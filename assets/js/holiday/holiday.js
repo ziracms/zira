@@ -4,7 +4,7 @@
         var ch = $('.zira-celebration').outerHeight();
         var wh = $(window).height();
         if (wh > ch) {
-            var ct = (wh - ch)/2;
+            var ct = Math.floor((wh - ch)/2);
         } else {
             var ct = 0;
         }
@@ -14,7 +14,7 @@
     
     var zira_celebrate_pos_fix = function() {
         if (zira_celebrate_pos()) {
-            window.setTimeout(zira_celebrate_pos_fix, 100);
+            window.setTimeout(zira_celebrate_pos_fix, 250);
         }
     };
         
