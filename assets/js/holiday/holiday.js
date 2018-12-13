@@ -129,6 +129,34 @@
             });
         };
         img4.src = base + '/assets/images/holiday/newyear4.png';
+        
+        var img5 = new Image();
+        img5.onload = function(){
+            $('body').append('<div class="new-year-theme-img new-year-theme-img-5" style="background-image:url('+img5.src+');" />');
+            $('.new-year-theme-img-5').css('height',img5.height).css('bottom','-'+img5.height+'px').show().animate({bottom:'-10px'},1000,function(){
+                $(this).animate({bottom:'-15px'},500,function(){
+                    $(this).animate({bottom:'-10px'},500);
+                });
+            });
+            $('.new-year-theme-img-5').click(function(){
+                $(this).animate({bottom:'-'+img5.height+'px'},1000);
+            });
+        };
+        img5.src = base + '/assets/images/holiday/newyear5.png';
+        
+        var img6 = new Image();
+        img6.onload = function(){
+            $('body').append('<img class="new-year-theme-img new-year-theme-img-6" src="'+img6.src+'" alt="" />');
+            $('.new-year-theme-img-6').css('top','-'+img6.height+'px').show().animate({top:0},1000,function(){
+                $(this).animate({top:'-5px'},500,function(){
+                    $(this).animate({top:'0px'},500);
+                });
+            });
+            $('.new-year-theme-img-6').click(function(){
+                $(this).animate({top:'-'+img6.height+'px'},1000);
+            });
+        };
+        img6.src = base + '/assets/images/holiday/newyear6.png';
 
         $(window).scroll(function(){
             var top = $(window).scrollTop();

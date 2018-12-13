@@ -128,6 +128,19 @@
     left: 100px;
     z-index: 98;
 }
+.new-year-theme-img-5 {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-repeat: repeat-x;
+}
+.new-year-theme-img-6 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 98;
+    max-width: 100%;
+}
 @keyframes newyearimg {
     0% {
         transform: translateY(-5px) rotateZ(-1deg);
