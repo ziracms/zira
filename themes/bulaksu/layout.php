@@ -2,8 +2,7 @@
 <html itemscope itemtype="http://schema.org/WebPage" lang="<?php echo Zira\Locale::getLanguage() ?>">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="<?php echo Zira\Helper::baseUrl(Zira\Config::get('site_favicon','favicon.ico')) ?>" type="image/x-icon"/>
-<link href="<?php echo Zira\Helper::url('rss', true, true) ?>" title="RSS" type="application/rss+xml" rel="alternate" />
+<?php echo Zira\View::getWebsiteDefaultLinks(); ?>
 <?php layout_head() ?>
 </head>
 <body class="<?php echo Zira\Helper::html(Zira\View::$body_class); ?>">

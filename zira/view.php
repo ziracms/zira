@@ -1338,4 +1338,24 @@ class View {
         }
         unset(self::$_db_widget_objects[$placeholder]);
     }
+    
+    public static function getWebsiteIcon() {
+        $icon = Config::get('site_favicon','favicon.ico');
+        $type = 'image/x-icon';
+        if (($p=strrpos($icon, '.'))!==false) {
+            $ext = substr($icon, $p+1);
+            if ($ext == 'png') $type = 'image/png';
+            else if ($ext == 'gif') $type = 'image/gif';
+            else if ($ext == 'jpg') $type = 'image/jpeg';
+        }
+        return Helper::tag_short('link', array('rel'=>'icon', 'type'=>$type, 'href'=>Helper::baseUrl($icon)))."\r\n";
+    }
+    
+    public static function getWebsiteRSSLink() {
+        return Helper::tag_short('link', array('href'=>Helper::url('rss', true, true), 'title'=>'RSS', 'type'=>'application/rss+xml', 'rel'=>'alternate'))."\r\n";
+    }
+    
+    public static function getWebsiteDefaultLinks() {
+        return self::getWebsiteIcon() . self::getWebsiteRSSLink();
+    }
 }
