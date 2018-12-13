@@ -116,7 +116,7 @@
 .new-year-theme-img-2 {
     top: 0;
     right: 0;
-    animation: newyearimg 10s linear infinite;
+    animation: newyearimg2 20s linear infinite;
 }
 .new-year-theme-img-3 {
     bottom: 0;
@@ -140,6 +140,7 @@
     left: 0;
     z-index: 98;
     max-width: 100%;
+    animation: newyearimg2 20s linear infinite;
 }
 @keyframes newyearimg {
     0% {
@@ -156,6 +157,23 @@
     }
     100% {
         transform: translateY(-5px) rotateZ(-1deg);
+    }
+}
+@keyframes newyearimg2 {
+    0% {
+        transform: translateY(-5px) rotateZ(1deg) translateX(5px);
+    }
+    25% {
+        transform: translateY(0px) rotateZ(0deg) translateX(0px);
+    }
+    50% {
+        transform: translateY(5px) rotateZ(-1deg) translateX(-5px);
+    }
+    75% {
+        transform: translateY(0px) rotateZ(0deg) translateX(0px);
+    }
+    100% {
+        transform: translateY(-5px) rotateZ(1deg) translateX(5px);
     }
 }
 

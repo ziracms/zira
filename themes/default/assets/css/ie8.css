@@ -22,3 +22,6 @@ a.scroll-top.visible span {
 .grid-category-wrapper .list-item {
     margin-right: 0;
 }
+header {
+    min-height: 215px;
+}
