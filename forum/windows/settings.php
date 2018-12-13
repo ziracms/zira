@@ -49,6 +49,7 @@ class Settings extends Dash\Windows\Window {
         if (!array_key_exists('forum_file_max_size', $configs)) $configs['forum_file_max_size'] = \Forum\Models\File::DEFAULT_MAX_SIZE;
         if (!array_key_exists('forum_file_ext', $configs)) $configs['forum_file_ext'] = \Forum\Models\File::DEFAULT_ALLOWED_EXTENSIONS;
         if (!array_key_exists('forum_threads_sorting', $configs)) $configs['forum_threads_sorting'] = 'id';
+        if (!array_key_exists('forum_captcha', $configs)) $configs['forum_captcha'] = 1;
         $form->setValues($configs);
 
         $this->setBodyContent($form);

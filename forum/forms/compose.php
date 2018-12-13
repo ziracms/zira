@@ -66,7 +66,11 @@ class Compose extends Form {
             $html .= $this->fileButton(Locale::tm('Attach files', 'forum'), 'attaches', array('class'=>'forum-attaches', 'title'=>Locale::tm('File max. size: %s', 'forum', (int)\Zira\Config::get('forum_file_max_size', \Forum\Models\File::DEFAULT_MAX_SIZE)).' kB'), true);
             $html .= Helper::tag_close('div');
         }
-        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
+        if (\Zira\Config::get('forum_captcha',true)) {
+            $html .= $this->captcha(Locale::t('Anti-Bot').'*');
+        } else {
+            $html .= $this->captchaLazy(Locale::t('Anti-Bot') . '*');
+        }
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;
@@ -74,7 +78,11 @@ class Compose extends Form {
 
     protected function _validate() {
         $validator = $this->getValidator();
-        $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
+        if (\Zira\Config::get('forum_captcha',true)) {
+            $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
+        } else {
+            $validator->registerCaptchaLazy($this->_id, Locale::t('Wrong CAPTCHA result'));
+        }
         $validator->registerString('title', 0, 255, true, Locale::tm('Invalid thread title', 'forum'));
         $validator->registerNoTags('title', Locale::tm('Invalid thread title', 'forum'));
         $validator->registerUtf8('title', Locale::tm('Invalid thread title', 'forum'));

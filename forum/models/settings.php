@@ -34,7 +34,8 @@ class Settings extends Dash\Models\Model {
                 'forum_file_ext' => 'string',
                 'forum_moderate' => 'int',
                 'forum_notify_email' => 'string',
-                'forum_threads_sorting' => 'string'
+                'forum_threads_sorting' => 'string',
+                'forum_captcha'=>'int'
             );
 
             $config_ids = array();

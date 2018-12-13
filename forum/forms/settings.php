@@ -49,6 +49,7 @@ class Settings extends Form
         $html .= $this->checkbox(Locale::tm('Allow file uploads', 'forum'), 'forum_file_uploads', null, false);
         $html .= $this->input(Locale::tm('File max. size', 'forum').' (kB)', 'forum_file_max_size');
         $html .= $this->input(Locale::tm('Allowed file extensions', 'forum'), 'forum_file_ext');
+        $html .= $this->checkbox(Locale::t('Always show CAPTCHA'), 'forum_captcha', null, false);
         $html .= $this->close();
         return $html;
     }

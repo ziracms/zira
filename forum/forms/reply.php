@@ -66,7 +66,11 @@ class Reply extends Form {
             $html .= Helper::tag_close('div');
         }
         $html .= $this->hidden('editid', array('class'=>'forum-edit-inline-id'));
-        $html .= $this->captcha(Locale::t('Anti-Bot').'*');
+        if (\Zira\Config::get('forum_captcha',true)) {
+            $html .= $this->captcha(Locale::t('Anti-Bot').'*');
+        } else {
+            $html .= $this->captchaLazy(Locale::t('Anti-Bot') . '*');
+        }
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;
@@ -74,7 +78,11 @@ class Reply extends Form {
 
     protected function _validate() {
         $validator = $this->getValidator();
-        $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
+        if (\Zira\Config::get('forum_captcha',true)) {
+            $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
+        } else {
+            $validator->registerCaptchaLazy($this->_id, Locale::t('Wrong CAPTCHA result'));
+        }
         $validator->registerCustom(array(get_class(), 'checkMessageMinLength'), 'message', Locale::t('Message should contain at least %s characters', Config::get('forum_min_chars', 10)));
         $validator->registerNoTags('message', Locale::t('Message contains bad character'));
         //$validator->registerUtf8('message', Locale::t('Message contains bad character'));
