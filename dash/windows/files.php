@@ -311,7 +311,10 @@ class Files extends Window {
         $default_root = UPLOADS_DIR;
         $root = Zira\Request::post('root');
         if (empty($root) || strpos($root, $default_root)!==0 || strpos($root,'..')!==false) $root = $default_root;
-        $items = scandir($root_dir . DIRECTORY_SEPARATOR . $root, $this->order=='asc' ? SCANDIR_SORT_ASCENDING : SCANDIR_SORT_DESCENDING);
+        //$items = scandir($root_dir . DIRECTORY_SEPARATOR . $root, $this->order=='asc' ? SCANDIR_SORT_ASCENDING : SCANDIR_SORT_DESCENDING);
+        $items = scandir($root_dir . DIRECTORY_SEPARATOR . $root);
+        natsort($items);
+        if ($this->order!='asc') $items = array_reverse($items);
         $folders = array();
         $files = array();
         foreach ($items as $item) {
