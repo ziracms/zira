@@ -154,5 +154,7 @@ return array(
     'Anti-Bot' => 'Анти-Бот',
     'Read more' => 'Подробнее',
     'DD.MM.YYYY' => 'ДД.ММ.ГГГГ',
-    'Permission denied' => 'Нет прав доступа'
+    'Permission denied' => 'Нет прав доступа',
+    'Anti-Bot is not active.' => 'Анти-Бот не активен.',
+    'Anti-Bot is active.' => 'Анти-Бот активен.'
 );

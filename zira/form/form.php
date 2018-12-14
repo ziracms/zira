@@ -239,6 +239,18 @@ class Form {
         $html .= Helper::tag_close('div');
         return $html;
     }
+    
+    public static function recaptcha3($site_key, $action, $wrapper_class='recaptcha3') {
+        $html = Helper::tag_open('div',array('class'=>$wrapper_class));
+        $html .= Helper::tag('div', null, array(
+            'class' => 'g-recaptcha3', 
+            'data-sitekey' => $site_key,
+            'data-action' => $action
+        ));
+        $html .= Helper::tag('div', Zira\Locale::t('Anti-Bot is not active.').' '.Zira\Locale::t('Please wait').'...', array('data-error'=>Zira\Locale::t('Anti-Bot is not active.'),'data-success'=>Zira\Locale::t('Anti-Bot is active.'),'class'=>'g-recaptcha3-message'));
+        $html .= Helper::tag_close('div');
+        return $html;
+    }
 
     public static function generateCaptcha() {
         $token = Request::get('token');
@@ -340,6 +352,32 @@ class Form {
             return false;
         }
         return $result_data['success'];
+    }
+    
+    public static function isRecaptcha3Valid($secret_key, $response_value, $action) {
+        if (!$secret_key || !$response_value || !$action) return false;
+        $data = http_build_query(array(
+            'secret' => $secret_key,
+            'response' => $response_value
+        ));
+        $options = array(
+            'http' => array(
+                        'method'  => 'POST',
+                        'header'  => 'Content-type: application/x-www-form-urlencoded',
+                        'content' => $data
+                    )
+        );
+        $context  = stream_context_create($options);
+        try {
+            $result = file_get_contents(Zira\Models\Captcha::RECAPTCHA_VALIDATE_URL, false, $context);
+            if (!$result) throw new \Exception('An error occurred');
+            $result_data = json_decode($result, true);
+            if (empty($result_data) || !array_key_exists('success', $result_data)) throw new \Exception('An error occurred');
+            if (!array_key_exists('score', $result_data) || !array_key_exists('action', $result_data)) throw new \Exception('An error occurred');
+        } catch (\Exception $e) {
+            return false;
+        }
+        return $result_data['success'] && $result_data['action']==$action && floatval($result_data['score'])>=Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE;
     }
 
     public static function getValue($token,$name,$method=Request::POST) {

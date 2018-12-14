@@ -71,6 +71,12 @@ class Options extends Form
         $html .= $this->input(Locale::t('Site key for reCaptcha'), 'recaptcha_site_key');
         $html .= $this->input(Locale::t('Secret key for reCaptcha'), 'recaptcha_secret_key');
         $html .= Zira\Helper::tag_close('div');
+        
+        $html .= Zira\Helper::tag_open('div', array('class' => 'recaptcha3_inputs'));
+        $html .= $this->input(Locale::t('Site key for reCaptcha'), 'recaptcha3_site_key');
+        $html .= $this->input(Locale::t('Secret key for reCaptcha'), 'recaptcha3_secret_key');
+        $html .= Zira\Helper::tag_close('div');
+        
         $html .= $this->checkbox(Locale::t('Sticky top bar'), 'dash_panel_frontend', null, false);
         $html .= $this->select(Locale::t('Window buttons position'), 'dashwindow_mode', array(
             '0' => Locale::t('Left'),

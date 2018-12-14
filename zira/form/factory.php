@@ -80,6 +80,7 @@ class Factory {
         $this->_token = Form::getToken($this->_id, $this->_is_token_unique);
         $this->_validator = new Validator();
         $this->_validator->setToken($this->_token);
+        $this->_validator->setFormId($this->_id);
         if ($this->_multipart) $this->_validator->setMultipart(true);
     }
 
@@ -712,6 +713,7 @@ class Factory {
         $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
         if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return '';
         else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_captcha_recaptcha();
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA_v3) return $this->_captcha_recaptcha3();
         else return $this->_captcha_default($label, $description);
     }
 
@@ -744,6 +746,15 @@ class Factory {
         $label = Form::label(' ', null, array('class'=>$this->_label_class));
         $captcha = Form::recaptcha(
             Zira\Config::get('recaptcha_site_key','')
+        );
+        return $this->wrap($label.$this->wrap($captcha,$this->_input_wrap_class));
+    }
+    
+    protected function _captcha_recaptcha3() {
+        $label = Form::label(' ', null, array('class'=>$this->_label_class));
+        $captcha = Form::recaptcha3(
+            Zira\Config::get('recaptcha3_site_key',''),
+            str_replace('-', '_', $this->_id)
         );
         return $this->wrap($label.$this->wrap($captcha,$this->_input_wrap_class));
     }

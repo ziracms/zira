@@ -311,10 +311,16 @@
             zira_init_captcha();
         }
         /** 
-         * reCaptcha 
+         * reCaptcha v2
          **/
         if ($('.g-recaptcha').length>0) {
             zira_load_recaptcha();
+        }
+        /** 
+         * reCaptcha v3
+         **/
+        if ($('.g-recaptcha3').length>0) {
+            zira_load_recaptcha3();
         }
         /**
          * User auth popup
@@ -1163,6 +1169,25 @@
                     grecaptcha.render($('#zira-auth-dialog .g-recaptcha').get(0));
                 } catch(e) {}
             }
+        } else if ($('#zira-auth-dialog .g-recaptcha3').length>0) {
+            if (typeof zira_load_recaptcha3.loaded == "undefined") {
+                zira_load_recaptcha3();
+            } else {
+                try {
+                    var el = $('#zira-auth-dialog .g-recaptcha3');
+                    var id = 'grecaptcha3-auth-popup';
+                    $(el).attr('id', id);
+                    $(el).html('<input type="hidden" name="g-recaptcha-response" id="'+id+'-hidden" />');
+                    $(el).parent().find('.g-recaptcha3-message').attr('id',id+'-message');
+                    var site_key = $(el).data('sitekey');
+                    var action = $(el).data('action');
+                    grecaptcha.execute(site_key, {action: action}).then(function(token){
+                        $('input#'+id+'-hidden').val(token);
+                        var msgi = $('#'+id+'-message');
+                        $(msgi).text($(msgi).data('success'));
+                    });
+                } catch(e) {}
+            }
         } else if ($('.captcha-refresh-btn').length>0) {
             zira_init_captcha();
         }
@@ -1495,7 +1520,7 @@
     
     zira_init_xhr_form = function() {
         $('form.xhr-form').each(function() {
-            if ($(this).find('.g-recaptcha').length>0 || $(this).find('.captcha-refresh-btn').length>0) return true;
+            if ($(this).find('.g-recaptcha').length>0 || $(this).find('.g-recaptcha3').length>0 || $(this).find('.captcha-refresh-btn').length>0) return true;
             $(this).bind('xhr-submit-error', function(e, response){
                 if (!response) return;
                 if (typeof response.captcha_error != "undefined" && response.captcha_error) {
@@ -1552,6 +1577,43 @@
                 window.setTimeout(function(){
                     try {
                         grecaptcha.reset($(grecaptcha_el).data('grecaptcha_id'));
+                    } catch(err) {}
+                }, 3000);
+            });
+        });
+    };
+    
+    zira_load_recaptcha3 = function() {
+        if (typeof zira_recaptcha3_url == "undefined") return;
+        if (typeof zira_load_recaptcha3.loaded != 'undefined') return;
+        zira_load_recaptcha3.loaded = true;
+        $('body').append('<script src="'+zira_recaptcha3_url+'"></script>');
+    };
+    
+    zira_recaptcha3_onload = function() {
+        var grecaptcha_co = 0;
+        $('.g-recaptcha3').each(function(){
+            grecaptcha_co++;
+            var id = 'grecaptcha3-'+grecaptcha_co;
+            $(this).attr('id', id);
+            $(this).html('<input type="hidden" name="g-recaptcha-response" id="'+id+'-hidden" />');
+            $(this).parent().find('.g-recaptcha3-message').attr('id',id+'-message');
+            var site_key = $(this).data('sitekey');
+            var action = $(this).data('action');
+            grecaptcha.execute(site_key, {action: action}).then(function(token){
+                $('input#'+id+'-hidden').val(token);
+                var msgi = $('#'+id+'-message');
+                $(msgi).text($(msgi).data('success'));
+            });
+            $(this).parents('form.xhr-form').submit(function(){
+                var grecaptcha_el = $(this).find('.g-recaptcha3');
+                window.setTimeout(function(){
+                    try {
+                        var site_key = $(grecaptcha_el).data('sitekey');
+                        var action = $(grecaptcha_el).data('action');
+                        grecaptcha.execute(site_key, {action: action}).then(function(token){
+                            $('input#'+$(grecaptcha_el).attr('id')+'-hidden').val(token);
+                        });
                     } catch(err) {}
                 }, 3000);
             });

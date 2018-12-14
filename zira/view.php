@@ -363,8 +363,11 @@ class View {
         if (self::$_render_js_strings) {
             $js_scripts .= Helper::tag_open('script', array('type'=>'text/javascript'));
             $js_scripts .= 'zira_base = \''.Helper::baseUrl('').'\';';
-            if (Config::get('captcha_type', Models\Captcha::TYPE_DEFAULT)==Models\Captcha::TYPE_RECAPTCHA) {
+            $captcha_type = Config::get('captcha_type', Models\Captcha::TYPE_DEFAULT);
+            if ($captcha_type==Models\Captcha::TYPE_RECAPTCHA) {
                 $js_scripts .= 'zira_recaptcha_url = \''.Models\Captcha::RECAPTCHA_JS_URL.'?hl='.(Locale::getLanguage()).'&render=explicit&onload=zira_recaptcha_onload\';';
+            } else if ($captcha_type==Models\Captcha::TYPE_RECAPTCHA_v3) {
+                $js_scripts .= 'zira_recaptcha3_url = \''.Models\Captcha::RECAPTCHA_JS_URL.'?hl='.(Locale::getLanguage()).'&render='.Config::get('recaptcha3_site_key','').'&onload=zira_recaptcha3_onload\';';
             }
             $js_scripts .= 'zira_scroll_effects_enabled = '.(Config::get('site_scroll_effects',1) ? 'true' : 'false').';';
             $js_scripts .= 'zira_show_images_description = '.(Config::get('site_parse_images',1) ? 'true' : 'false').';';

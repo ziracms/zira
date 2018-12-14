@@ -39,7 +39,9 @@ class Options extends Model {
                 'check_updates' => 'int',
                 'captcha_type' => 'string',
                 'recaptcha_site_key' => 'string',
-                'recaptcha_secret_key' => 'string'
+                'recaptcha_secret_key' => 'string',
+                'recaptcha3_site_key' => 'string',
+                'recaptcha3_secret_key' => 'string'
             );
 
             if (count(Zira\Config::get('languages'))>1) {

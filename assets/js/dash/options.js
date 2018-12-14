@@ -17,9 +17,14 @@ var dash_options_load = function() {
     $(this.content).find('select.captcha_select').change(this.bind(this, function(){
         var captcha_type = $(this.content).find('select.captcha_select').val();
         if (captcha_type == 'recaptcha') {
+            $(this.content).find('.recaptcha3_inputs').hide();
             $(this.content).find('.recaptcha_inputs').show();
+        } else if (captcha_type == 'recaptcha3') {
+            $(this.content).find('.recaptcha_inputs').hide();
+            $(this.content).find('.recaptcha3_inputs').show();
         } else {
             $(this.content).find('.recaptcha_inputs').hide();
+            $(this.content).find('.recaptcha3_inputs').hide();
         }
     }));
     $(this.content).find('select.captcha_select').trigger('change');

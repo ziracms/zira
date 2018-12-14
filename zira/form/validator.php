@@ -17,6 +17,7 @@ class Validator {
     protected $_fields = array();
     protected $_message = '';
     protected $_error_field = '';
+    protected $_form_id = '';
 
     const TYPE_STRING = 'string';
     const TYPE_NUMBER = 'number';
@@ -41,6 +42,14 @@ class Validator {
 
     public function getToken() {
         return $this->_token;
+    }
+    
+    public function setFormId($id) {
+        $this->_form_id = $id;
+    }
+
+    public function getFormId() {
+        return $this->_form_id;
     }
 
     public function setMethod($method) {
@@ -388,6 +397,7 @@ class Validator {
         $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
         if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return true;
         else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_validateCaptchaRecaptcha($field);
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA_v3) return $this->_validateCaptchaRecaptcha3($field);
         else return $this->_validateCaptchaDefault($field);
     }
 
@@ -398,11 +408,16 @@ class Validator {
     protected function _validateCaptchaRecaptcha(array $field) {
         return Form::isRecaptchaValid(Zira\Config::get('recaptcha_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT));
     }
+    
+    protected function _validateCaptchaRecaptcha3(array $field) {
+        return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()));
+    }
 
     public function registerCaptchaLazy($form_id, $message) {
         $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
         if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return;
         else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_registerCaptchaLazyRecaptcha($form_id, $message);
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA_v3) return $this->_registerCaptchaLazyRecaptcha3($form_id, $message);
         else return $this->_registerCaptchaLazyDefault($form_id, $message);
     }
 
@@ -424,11 +439,21 @@ class Validator {
             'message' => $message
         );
     }
+    
+    protected function _registerCaptchaLazyRecaptcha3($form_id, $message) {
+        $this->_fields []= array(
+            'type' => self::TYPE_CAPTCHA_LAZY,
+            'name' => CAPTCHA_NAME,
+            'form_id' => $form_id,
+            'message' => $message
+        );
+    }
 
     protected function validateCaptchaLazy(array $field) {
         $captcha_type = Zira\Config::get('captcha_type', Zira\Models\Captcha::TYPE_DEFAULT);
         if ($captcha_type == Zira\Models\Captcha::TYPE_NONE) return true;
         else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA) return $this->_validateCaptchaLazyRecaptcha($field);
+        else if ($captcha_type == Zira\Models\Captcha::TYPE_RECAPTCHA_v3) return $this->_validateCaptchaLazyRecaptcha3($field);
         else return $this->_validateCaptchaLazyDefault($field);
     }
 
@@ -449,6 +474,16 @@ class Validator {
         } else {
             Zira\Models\Captcha::register($field['form_id']);
             return Form::isRecaptchaValid(Zira\Config::get('recaptcha_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT));
+        }
+    }
+    
+    protected function _validateCaptchaLazyRecaptcha3(array $field) {
+        if (Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT)===null && !Zira\Models\Captcha::isActive($field['form_id'])) {
+            Zira\Models\Captcha::register($field['form_id']);
+            return true;
+        } else {
+            Zira\Models\Captcha::register($field['form_id']);
+            return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()));
         }
     }
 

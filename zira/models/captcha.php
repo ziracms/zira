@@ -17,10 +17,12 @@ class Captcha extends Orm {
     const TYPE_NONE = 'none';
     const TYPE_DEFAULT = 'default';
     const TYPE_RECAPTCHA = 'recaptcha';
+    const TYPE_RECAPTCHA_v3 = 'recaptcha3';
 
     const RECAPTCHA_JS_URL = 'https://www.google.com/recaptcha/api.js';
     const RECAPTCHA_VALIDATE_URL = 'https://www.google.com/recaptcha/api/siteverify';
     const RECAPTCHA_RESPONSE_INPUT = 'g-recaptcha-response';
+    const RECAPTCHA_v3_MIN_SCORE = .5;
 
     public static function getTable() {
         return self::$table;
@@ -67,7 +69,8 @@ class Captcha extends Orm {
         return array(
             self::TYPE_NONE => \Zira\Locale::t('Do not use'),
             self::TYPE_DEFAULT => \Zira\Locale::t('Default'),
-            self::TYPE_RECAPTCHA => \Zira\Locale::t('Google reCaptcha')
+            self::TYPE_RECAPTCHA => \Zira\Locale::t('Google reCaptcha v2'),
+            self::TYPE_RECAPTCHA_v3 => \Zira\Locale::t('Google reCaptcha v3')
         );
     }
 }

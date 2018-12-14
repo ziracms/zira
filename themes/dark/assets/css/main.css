@@ -2470,6 +2470,9 @@ ul.vote-results li .vote-result {
     filter: invert(65%) contrast(300%);
     opacity: .6;
 }
+.grecaptcha-badge {
+    filter: invert(65%) contrast(300%);
+}
 
 /** fields **/
 .record_fields_tabs_wrapper .nav-tabs {
