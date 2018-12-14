@@ -12,8 +12,31 @@ use Zira;
 class Index extends Zira\Page {
     public static function content() {
         static::setRedirectUrl('');
+        
+        $limit = Zira\Config::get('home_records_limit');
+        if (!$limit) $limit = Zira\Config::get('records_limit', 10);
+        
+        $order = Zira\Page::getHomeRecordsOrderColumn();
+        $use_pagination = Zira\Config::get('enable_pagination');
+        
+        if ($use_pagination) {
+            $page = (int)Zira\Request::get('page');
+        } else {
+            $page = 1;
+        }
+        $top_records_count = 0;
+        
         $record = static::record();
-        $categories = static::categories();
+        $categories = static::categories($limit, $order, $page, $use_pagination, $top_records_count);
+        
+        if ($use_pagination && $top_records_count > 0) {
+            $pagination = new Zira\Pagination();
+            $pagination->setLimit($limit);
+            $pagination->setPage($page);
+            $pagination->setTotal($top_records_count);
+        } else {
+            $pagination = null;
+        }
 
         if (!empty($categories)) {
             $layout = Zira\Config::get('layout');
@@ -21,7 +44,8 @@ class Index extends Zira\Page {
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT, array(
                 //'grid' => $layout != Zira\View::LAYOUT_ALL_SIDEBARS,
                 'grid' => Zira\Config::get('home_site_records_grid', Zira\Config::get('site_records_grid', 1)),
-                'categories' => $categories
+                'categories' => $categories,
+                'pagination' => $pagination
             ), 'zira/home');
         }
 
@@ -216,35 +240,54 @@ class Index extends Zira\Page {
         return $record;
     }
 
-    public static function categories() {
-        $limit = Zira\Config::get('home_records_limit');
-        if (!$limit) $limit = Zira\Config::get('records_limit', 10);
-
-        $order = Zira\Page::getHomeRecordsOrderColumn();
-        
+    public static function categories($limit, $order, &$page, $use_pagination, &$top_records_count) {
+        $use_cache = !$use_pagination || $page<=1;
         $categories = array();
         if (Zira\Config::get('home_records_enabled', true)) {
             $categories_cache_key = 'home.categories.'.Zira\Locale::getLanguage();
-            $cached_categories = Zira\Cache::getArray($categories_cache_key);
+            if ($use_cache) {
+                $categories_cache_key = 'home.categories.'.Zira\Locale::getLanguage();
+                $cached_categories = Zira\Cache::getArray($categories_cache_key);
+            } else {
+                $cached_categories = false;
+            }
             if ($cached_categories!==false) {
                 $categories = $cached_categories;
                 foreach ($categories as $category) {
+                    if (empty($category['category_id']) && !empty($category['count'])) {
+                        $top_records_count = $category['count'];
+                    }
                     if (isset($category['records'])) {
                         static::runRecordsHook($category['records']);
                     }
                 }
             } else {
                 // root category records
-                $records = Zira\Models\Record::getCollection()
+                $pages = 1;
+                if ($use_pagination) {
+                    $top_records_count = self::getCategoryRecordsCount(Zira\Category::ROOT_CATEGORY_ID, true);
+                    $pages = ceil($top_records_count / $limit);
+                }
+                if ($page > $pages) $page = $pages;
+                if ($page < 1) $page = 1;
+                $offset = $limit * ($page - 1);
+                
+                $records_q = Zira\Models\Record::getCollection()
                     ->select('id', 'name', 'author_id', 'title', 'description', 'image', 'thumb', 'creation_date', 'rating', 'comments')
                     ->join(Zira\Models\User::getClass(), array('author_username' => 'username', 'author_firstname' => 'firstname', 'author_secondname' => 'secondname'))
                     ->where('category_id', '=', Zira\Category::ROOT_CATEGORY_ID)
                     ->and_where('language', '=', Zira\Locale::getLanguage())
                     ->and_where('published', '=', Zira\Models\Record::STATUS_PUBLISHED)
                     ->and_where('front_page', '=', Zira\Models\Record::STATUS_FRONT_PAGE)
-                    ->order_by('id', 'desc')
-                    ->limit($limit)
-                    ->get();
+                    ;
+                
+                $records_q->order_by($order, 'desc');
+                if ($order!='id') {
+                    $records_q->order_by('id', 'desc');
+                }
+                $records_q->limit($limit, $offset);
+                
+                $records = $records_q->get();
 
                 if ($records) {
                     for ($i = 0; $i < count($records); $i++) {
@@ -252,9 +295,11 @@ class Index extends Zira\Page {
                         $records[$i]->category_title = '';
                     }
                     $categories [] = array(
+                        'category_id' => Zira\Category::ROOT_CATEGORY_ID,
                         'title' => '',
                         'url' => '',
                         'records' => $records,
+                        'count' => $top_records_count,
                         'settings' => array(
                             'comments_enabled' => Zira\Config::get('comments_enabled', 1),
                             'rating_enabled' => Zira\Config::get('rating_enabled', 0),
@@ -266,49 +311,53 @@ class Index extends Zira\Page {
                 }
 
                 // top level category records
-                $top_categories = Zira\Models\Category::getHomeCategories();
+                if ($use_cache) {
+                    $top_categories = Zira\Models\Category::getHomeCategories();
 
-                $includeChilds = Zira\Config::get('category_childs_list', true);
-                if ($includeChilds && CACHE_CATEGORIES_LIST) {
-                    $all_categories = Zira\Category::getAllCategories();
-                }
-                foreach ($top_categories as $category) {
-                    // categories are cached
-                    //if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
+                    $includeChilds = Zira\Config::get('category_childs_list', true);
+                    if ($includeChilds && CACHE_CATEGORIES_LIST) {
+                        $all_categories = Zira\Category::getAllCategories();
+                    }
+                    foreach ($top_categories as $category) {
+                        // categories are cached
+                        //if ($category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
 
-                    $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);
-                    $display_author = $category->display_author !== null ? $category->display_author : Zira\Config::get('display_author', 0);
-                    $display_date = $category->display_date !== null ? $category->display_date : Zira\Config::get('display_date', 0);
+                        $rating_enabled = $category->rating_enabled !== null ? $category->rating_enabled : Zira\Config::get('rating_enabled', 0);
+                        $display_author = $category->display_author !== null ? $category->display_author : Zira\Config::get('display_author', 0);
+                        $display_date = $category->display_date !== null ? $category->display_date : Zira\Config::get('display_date', 0);
 
-                    $comments_enabled = Zira\Config::get('comments_enabled', 1);
-                    if ($category->comments_enabled !== null) $comments_enabled = $category->comments_enabled && $comments_enabled;
-        
-                    $childs = null;
-                    if ($includeChilds && CACHE_CATEGORIES_LIST && isset($all_categories)) {
-                        $childs = array();
-                        foreach($all_categories as $_category) {
-                            // categories are cached
-                            //if ($_category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
-                            if (mb_strpos($_category->name, $category->name . '/', null, CHARSET) === 0) {
-                                $childs []= $_category;
+                        $comments_enabled = Zira\Config::get('comments_enabled', 1);
+                        if ($category->comments_enabled !== null) $comments_enabled = $category->comments_enabled && $comments_enabled;
+
+                        $childs = null;
+                        if ($includeChilds && CACHE_CATEGORIES_LIST && isset($all_categories)) {
+                            $childs = array();
+                            foreach($all_categories as $_category) {
+                                // categories are cached
+                                //if ($_category->access_check && !Zira\Permission::check(Zira\Permission::TO_VIEW_RECORDS)) continue;
+                                if (mb_strpos($_category->name, $category->name . '/', null, CHARSET) === 0) {
+                                    $childs []= $_category;
+                                }
                             }
                         }
+
+                        $categories [] = array(
+                            'category_id' => $category->id,
+                            'title' => Zira\Locale::t($category->title),
+                            'url' => static::generateCategoryUrl($category->name),
+                            'records' => static::getRecords($category, true, $limit, null, $includeChilds, $childs, 1, false, $order),
+                            'count' => 0,
+                            'settings' => array(
+                                'comments_enabled' => $comments_enabled,
+                                'rating_enabled' => $rating_enabled,
+                                'display_author' => $display_author,
+                                'display_date' => $display_date
+                            )
+                        );
                     }
 
-                    $categories [] = array(
-                        'title' => Zira\Locale::t($category->title),
-                        'url' => static::generateCategoryUrl($category->name),
-                        'records' => static::getRecords($category, true, $limit, null, $includeChilds, $childs, 1, false, $order),
-                        'settings' => array(
-                            'comments_enabled' => $comments_enabled,
-                            'rating_enabled' => $rating_enabled,
-                            'display_author' => $display_author,
-                            'display_date' => $display_date
-                        )
-                    );
+                    Zira\Cache::setArray($categories_cache_key, $categories);
                 }
-
-                Zira\Cache::setArray($categories_cache_key, $categories);
             }
         }
         return $categories;

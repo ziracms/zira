@@ -43,6 +43,11 @@
 </li>
 <?php endforeach; ?>
 </ul>
+<?php if (empty($category['category_id']) && isset($pagination)): ?>
+<div class="list-pagination-wrapper">
+<?php echo $pagination; ?>
+</div>
+<?php endif; ?>
 </div>
 <?php endforeach; ?>
 <?php endif; ?>

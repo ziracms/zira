@@ -476,9 +476,11 @@ class Page {
     public static function getCategoryRecordsCount($category_id, $front_page = false) {
         $query = Record::getCollection()
                         ->count()
-                        ->join(Models\Category::getClass())
-                        ->join(Models\User::getClass())
                         ;
+        if ($category_id != Category::ROOT_CATEGORY_ID) {
+            $query->join(Models\Category::getClass());
+        }
+        $query->join(Models\User::getClass());
 
         $query->where('category_id', '=', $category_id);
         $query->and_where('language', '=', Locale::getLanguage());
@@ -486,7 +488,6 @@ class Page {
         if ($front_page) {
             $query->and_where('front_page','=',Record::STATUS_FRONT_PAGE);
         }
-        
         return $query->get('co');
     }
 
