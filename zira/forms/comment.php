@@ -60,7 +60,12 @@ class Comment extends Form {
         }
 
         $html .= $this->textarea(Locale::t('Message').'*','comment', array('class'=>'form-control user-rich-input'));
-        if (Config::get('comments_captcha',true)) {
+        if (!User::isAuthorized()) {
+            $captcha_opt = 'comments_captcha';
+        } else {
+            $captcha_opt = 'comments_captcha_users';
+        }
+        if (Config::get($captcha_opt,true)) {
             $html .= $this->captcha(Locale::t('Anti-Bot').'*');
         } else {
             $html .= $this->captchaLazy(Locale::t('Anti-Bot') . '*');
@@ -72,7 +77,12 @@ class Comment extends Form {
 
     protected function _validate() {
         $validator = $this->getValidator();
-        if (Config::get('comments_captcha',true)) {
+        if (!User::isAuthorized()) {
+            $captcha_opt = 'comments_captcha';
+        } else {
+            $captcha_opt = 'comments_captcha_users';
+        }
+        if (Config::get($captcha_opt,true)) {
             $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
         } else {
             $validator->registerCaptchaLazy($this->_id, Locale::t('Wrong CAPTCHA result'));

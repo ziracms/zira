@@ -42,7 +42,8 @@ class Commentsettings extends Form
         $html .= $this->checkbox(Locale::t('Anonymous comments'), 'comment_anonymous', null, false);
         $html .= $this->input(Locale::t('Notification Email'), 'comment_notify_email');
         $html .= $this->checkbox(Locale::t('Allow commenting'), 'comments_allowed', null, false);
-        $html .= $this->checkbox(Locale::t('Always show CAPTCHA'), 'comments_captcha', null, false);
+        $html .= $this->checkbox(Locale::t('Always show CAPTCHA for not authorized users'), 'comments_captcha', null, false);
+        $html .= $this->checkbox(Locale::t('Always show CAPTCHA for authorized users'), 'comments_captcha_users', null, false);
         $html .= $this->close();
         return $html;
     }

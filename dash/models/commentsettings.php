@@ -26,6 +26,7 @@ class Commentsettings extends Model {
                 'comment_notify_email'=>'string',
                 'comments_allowed'=>'int',
                 'comments_captcha'=>'int',
+                'comments_captcha_users'=>'int',
                 'comment_min_chars'=>'int'
             );
 

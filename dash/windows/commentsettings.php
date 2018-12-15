@@ -45,6 +45,7 @@ class Commentsettings extends Window {
         if (!array_key_exists('comment_notify_email', $configs)) $configs['comment_notify_email'] = '';
         if (!array_key_exists('comments_allowed', $configs)) $configs['comments_allowed'] = 1;
         if (!array_key_exists('comments_captcha', $configs)) $configs['comments_captcha'] = 1;
+        if (!array_key_exists('comments_captcha_users', $configs)) $configs['comments_captcha_users'] = 1;
         if (!array_key_exists('comment_min_chars', $configs)) $configs['comment_min_chars'] = 10;
 
         $form = new \Dash\Forms\Commentsettings();

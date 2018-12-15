@@ -446,5 +446,7 @@ return array(
     'Gallery sorting' => 'Сортировка галереи',
     'Ascending' => 'Возрастающая',
     'Descending' => 'Убывающая',
-    'Min. score for reCaptcha' => 'Мин. оценка для reCaptcha'
+    'Min. score for reCaptcha' => 'Мин. оценка для reCaptcha',
+    'Always show CAPTCHA for not authorized users' => 'Всегда показывать CAPTCHA для неавторизованных пользователей',
+    'Always show CAPTCHA for authorized users' => 'Всегда показывать CAPTCHA для авторизованных пользователей'
 );
