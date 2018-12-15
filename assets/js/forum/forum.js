@@ -18,6 +18,7 @@
         if ($('.container #content .forum-list a.forum-reply-inline').length>0) {
             zira_init_forum_reply();
             zira_init_forum_quote();
+            zira_init_forum_code();
         }
         if ($('.container #content .forum-search-results-view-more-wrapper').length>0) {
             zira_init_forum_search_more();
@@ -300,24 +301,39 @@
             hide_quote_popup();
         }
         
-        function copyStringToClipboard(string, copy_type) {
-            if (typeof copy_type == "undefined") copy_type = 'text/plain';
-            function handler(event){
-                event.clipboardData.setData(copy_type, string);
-                event.preventDefault();
-                document.removeEventListener('copy', handler, true);
-            }
-
-            document.addEventListener('copy', handler, true);
-            document.execCommand('copy');
-        }
-        
         $('body').append('<div class="forum-quote-popup"><a href="javascript:void(0)" class="forum-quote-popup-link">'+t('Quote')+'</a></div>');
         if (typeof ClipboardEvent != "undefined") {
             $('.forum-quote-popup').append(' | <a href="javascript:void(0)" class="forum-copy-popup-link">'+t('Copy')+'</a>');
         }
         $('ul.forum-list li .forum-message').unbind('mouseup').mouseup(function(e){
             set_quote.call(this, e);
+        });
+    };
+    
+    zira_init_forum_code = function() {
+        if (typeof window.orientation != "undefined") return;
+        if (typeof ClipboardEvent == "undefined") return;
+        $('ul.forum-list li .forum-message code').each(function(index){
+            $(this).attr('id','forum-code-copy-'+index+'-code');
+            $('body').append('<a href="javascript:void(0)" title="'+t('Copy')+'" class="forum-code-copy" id="forum-code-copy-'+index+'"><span class="glyphicon glyphicon-copy"></span></a>');
+            $('#forum-code-copy-'+index).css({
+                top: $(this).offset().top,
+                left: $(this).offset().left+$(this).outerWidth() - $('#forum-code-copy-'+index).width()
+            }).click(function(){
+                var id = $(this).attr('id');
+                var code = $('#'+id+'-code').text();
+                copyStringToClipboard(code);
+            });
+        });
+        $(window).resize(function(){
+            $('.forum-code-copy').each(function(){
+                var id = $(this).attr('id');
+                var code = $('#'+id+'-code');
+                $(this).css({
+                    top: $(code).offset().top,
+                    left: $(code).offset().left+$(code).outerWidth() - $(this).width()
+                });
+            });
         });
     };
     
@@ -499,5 +515,17 @@
             }
         }
         return html;
+    }
+    
+    function copyStringToClipboard(string, copy_type) {
+        if (typeof copy_type == "undefined") copy_type = 'text/plain';
+        function handler(event){
+            event.clipboardData.setData(copy_type, string);
+            event.preventDefault();
+            document.removeEventListener('copy', handler, true);
+        }
+
+        document.addEventListener('copy', handler, true);
+        document.execCommand('copy');
     }
 })(jQuery);

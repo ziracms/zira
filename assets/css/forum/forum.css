@@ -281,6 +281,30 @@
 .forum-quote-popup a:hover {
     color: #fff;
 }
+.forum-code-copy:link,
+.forum-code-copy:visited {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 18px;
+    height: 18px;
+    background-color: #db7891;
+    color: #eee;
+    font-size: 90%;
+    text-decoration: none;
+}
+.forum-code-copy:hover {
+    color: #fff;
+}
+.forum-code-copy:active {
+    background-color: #70778c;
+}
+.forum-code-copy span {
+    font-size: 12px;
+    margin: 3px;
+    vertical-align: top;
+}
 
 @media (max-width: 639px) {
     .forum-message-wrapper .forum-avatar-wrapper {
