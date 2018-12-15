@@ -17,6 +17,7 @@
         }
         if ($('.container #content .forum-list a.forum-reply-inline').length>0) {
             zira_init_forum_reply();
+            zira_init_forum_quote();
         }
         if ($('.container #content .forum-search-results-view-more-wrapper').length>0) {
             zira_init_forum_search_more();
@@ -209,6 +210,117 @@
         });
     };
     
+    zira_init_forum_quote = function() {
+        if (typeof window.orientation != "undefined") return;
+        
+        function set_quote(e) {
+            hide_quote_popup();
+            set_quote.content = '';
+            set_quote.text = '';
+            var user = $(this).parents('li').children('.list-title-wrapper').children('a[rel=author]').text();
+            var content = $(this).html();
+
+            var form = $('.container #content form#form-forum-message-form');
+            var textarea = $(form).find('#message');
+            var editable = $(form).find('#message-editable');
+        
+            var txt = getSelectionHtml();
+            if (txt.length>0,txt.length) {
+                if ($(editable).length==0) {
+                    set_quote.text = txt.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '');
+                    set_quote.content = '[quote][b]@'+user+':[/b]'+"\r\n"+txt.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '')+'[/quote]'+"\r\n";
+                } else {
+                    set_quote.text = txt;
+                    set_quote.content = '<q><b>@'+user+':</b><br />'+txt+'</q>'+'<span>&#x200c;</span>';
+                }
+                
+                show_quote_popup(e.pageX, e.pageY);
+            }
+        }
+        
+        function paste_quote() {
+            if (typeof set_quote.content == "undefined" || set_quote.content.length==0) return;
+            var form = $('.container #content form#form-forum-message-form');
+            var textarea = $(form).find('#message');
+            var editable = $(form).find('#message-editable');
+            
+            if ($(editable).length==0) {
+                $(textarea).val(set_quote.content);
+                $(textarea).get(0).focus();
+            } else {
+                $(editable).html(set_quote.content);
+                focusEditable($(editable).get(0));
+            }
+            
+            hide_quote_popup();
+            
+            $(form).find('input[type=hidden].forum-edit-inline-id').val('');
+            $(form).parents('.form-panel').find('.panel-title').text(t('Reply'));
+
+            var top = $(form).parents('.form-panel').offset().top;
+            $('html, body').animate({'scrollTop': top}, 500);
+        }
+        
+        function show_quote_popup(mx, my) {
+            window.setTimeout(function(){
+                $('body').unbind('mouseup', hide_quote_popup).mouseup(hide_quote_popup);
+            }, 1000);
+            var popup = $('.forum-quote-popup');
+            $(popup).children('.forum-quote-popup-link').unbind('click').click(paste_quote);
+            if (typeof ClipboardEvent != "undefined") {
+                $(popup).children('.forum-copy-popup-link').unbind('click').click(copy_quote);
+            }
+            var l = mx - 10;
+            if (l<0) l = 0;
+            var t = my - $(popup).outerHeight()-30;
+            if (t<0) t =0;
+            $(popup).css({
+                left: l,
+                top: t
+            }).show();
+        }
+        
+        function hide_quote_popup() {
+            $('body').unbind('mouseup', hide_quote_popup);
+            $('.forum-quote-popup').hide();
+        }
+        
+        function copy_quote() {
+            if (typeof set_quote.text == "undefined" || set_quote.text.length==0) return;
+            var form = $('.container #content form#form-forum-message-form');
+            var textarea = $(form).find('#message');
+            var editable = $(form).find('#message-editable');
+            
+            if ($(editable).length==0) {
+                copyStringToClipboard(set_quote.text);
+            } else {
+                copyStringToClipboard(set_quote.text, 'text/html');
+            }
+            
+            hide_quote_popup();
+        }
+        
+        function copyStringToClipboard(string, copy_type) {
+            if (typeof copy_type == "undefined") copy_type = 'text/plain';
+            function handler(event){
+                event.clipboardData.setData(copy_type, string);
+                event.preventDefault();
+                document.removeEventListener('copy', handler, true);
+            }
+
+            document.addEventListener('copy', handler, true);
+            document.execCommand('copy');
+        }
+        
+        $('body').append('<div class="forum-quote-popup"><a href="javascript:void(0)" class="forum-quote-popup-link">'+t('Quote')+'</a></div>');
+        if (typeof ClipboardEvent != "undefined") {
+            $('.forum-quote-popup').append(' | <a href="javascript:void(0)" class="forum-copy-popup-link">'+t('Copy')+'</a>');
+        }
+        $('ul.forum-list li .forum-message').unbind('mouseup').mouseup(function(e){
+            set_quote.call(this, e);
+        });
+    };
+    
     zira_init_forum_edit = function() {
         $('.container #content .forum-list a.forum-edit-inline').unbind('click').click(function (e) {
             e.stopPropagation();
@@ -365,5 +477,27 @@
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Get selected html
+     */
+    function getSelectionHtml() {
+        var html = "";
+        if (typeof window.getSelection != "undefined") {
+            var sel = window.getSelection();
+            if (sel.rangeCount) {
+                var container = document.createElement("div");
+                for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                    container.appendChild(sel.getRangeAt(i).cloneContents());
+                }
+                html = container.innerHTML;
+            }
+        } else if (typeof document.selection != "undefined") {
+            if (document.selection.type == "Text") {
+                html = document.selection.createRange().htmlText;
+            }
+        }
+        return html;
     }
 })(jQuery);

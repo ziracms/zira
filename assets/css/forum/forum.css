@@ -263,6 +263,25 @@
     color: #5FB1A8;
 }
 
+.forum-quote-popup {
+    position: absolute;
+    display: none;
+    background-color: #70778c;
+    color: #eee;
+    padding: 7px 14px;
+    border-radius: 4px;
+}
+.forum-quote-popup a:link,
+.forum-quote-popup a:visited {
+    color: #eee;
+    font-size: 90%;
+    text-decoration: none;
+    margin: 0px 10px;
+}
+.forum-quote-popup a:hover {
+    color: #fff;
+}
+
 @media (max-width: 639px) {
     .forum-message-wrapper .forum-avatar-wrapper {
         min-width: 40px;
