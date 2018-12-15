@@ -22,7 +22,7 @@ class Captcha extends Orm {
     const RECAPTCHA_JS_URL = 'https://www.google.com/recaptcha/api.js';
     const RECAPTCHA_VALIDATE_URL = 'https://www.google.com/recaptcha/api/siteverify';
     const RECAPTCHA_RESPONSE_INPUT = 'g-recaptcha-response';
-    const RECAPTCHA_v3_MIN_SCORE = .5;
+    const RECAPTCHA_v3_MIN_SCORE = 0.5;
 
     public static function getTable() {
         return self::$table;

@@ -445,5 +445,6 @@ return array(
     'Show link to developer\'s website' => 'Показывать ссылку на сайт разработчика',
     'Gallery sorting' => 'Сортировка галереи',
     'Ascending' => 'Возрастающая',
-    'Descending' => 'Убывающая'
+    'Descending' => 'Убывающая',
+    'Min. score for reCaptcha' => 'Мин. оценка для reCaptcha'
 );

@@ -75,6 +75,7 @@ class Options extends Form
         $html .= Zira\Helper::tag_open('div', array('class' => 'recaptcha3_inputs'));
         $html .= $this->input(Locale::t('Site key for reCaptcha'), 'recaptcha3_site_key');
         $html .= $this->input(Locale::t('Secret key for reCaptcha'), 'recaptcha3_secret_key');
+        $html .= $this->input(Locale::t('Min. score for reCaptcha'), 'recaptcha3_score', array('placeholder'=>'0.0 - 1.0'));
         $html .= Zira\Helper::tag_close('div');
         
         $html .= $this->checkbox(Locale::t('Sticky top bar'), 'dash_panel_frontend', null, false);
@@ -101,6 +102,9 @@ class Options extends Form
         $validator->registerCustom(array(get_class(), 'checkCaptchaType'), 'captcha_type',Locale::t('Invalid value "%s"',Locale::t('Anti-Bot (CAPTCHA)')));
         $validator->registerString('recaptcha_site_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Site key for reCaptcha')));
         $validator->registerString('recaptcha_secret_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Secret key for reCaptcha')));
+        $validator->registerString('recaptcha3_site_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Site key for reCaptcha')));
+        $validator->registerString('recaptcha3_secret_key',null,255,false,Locale::t('Invalid value "%s"',Locale::t('Secret key for reCaptcha')));
+        $validator->registerNumber('recaptcha3_score',0,1,false,Locale::t('Invalid value "%s"',Locale::t('Min. score for reCaptcha')));
         
         $watermark = $this->getValue('watermark');
         if (!empty($watermark)) {

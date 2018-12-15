@@ -46,6 +46,7 @@ class Options extends Window {
         if (!array_key_exists('watermark_margin', $configs)) $configs['watermark_margin'] = 10;
         if (!array_key_exists('check_updates', $configs)) $configs['check_updates'] = 1;
         if (!array_key_exists('captcha_type', $configs)) $configs['captcha_type'] = Zira\Models\Captcha::TYPE_DEFAULT;
+        if (!array_key_exists('recaptcha3_score', $configs)) $configs['recaptcha3_score'] = Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE;
         
         $form = new \Dash\Forms\Options();
         $form->setValues($configs);

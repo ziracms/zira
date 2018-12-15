@@ -41,7 +41,8 @@ class Options extends Model {
                 'recaptcha_site_key' => 'string',
                 'recaptcha_secret_key' => 'string',
                 'recaptcha3_site_key' => 'string',
-                'recaptcha3_secret_key' => 'string'
+                'recaptcha3_secret_key' => 'string',
+                'recaptcha3_score' => 'float'
             );
 
             if (count(Zira\Config::get('languages'))>1) {
@@ -64,6 +65,7 @@ class Options extends Model {
                 $value = $form->getValue($option);
 
                 if ($type=='int') $value=intval($value);
+                else if ($type=='float') $value=floatval($value);
 
                 $optionObj->value = $value;
                 $optionObj->module = 'zira';

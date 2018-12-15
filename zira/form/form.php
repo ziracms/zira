@@ -354,7 +354,7 @@ class Form {
         return $result_data['success'];
     }
     
-    public static function isRecaptcha3Valid($secret_key, $response_value, $action) {
+    public static function isRecaptcha3Valid($secret_key, $response_value, $action, $min_score) {
         if (!$secret_key || !$response_value || !$action) return false;
         $data = http_build_query(array(
             'secret' => $secret_key,
@@ -377,7 +377,7 @@ class Form {
         } catch (\Exception $e) {
             return false;
         }
-        return $result_data['success'] && $result_data['action']==$action && floatval($result_data['score'])>=Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE;
+        return $result_data['success'] && $result_data['action']==$action && floatval($result_data['score'])>=floatval($min_score);
     }
 
     public static function getValue($token,$name,$method=Request::POST) {

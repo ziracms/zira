@@ -410,7 +410,7 @@ class Validator {
     }
     
     protected function _validateCaptchaRecaptcha3(array $field) {
-        return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()));
+        return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()), Zira\Config::get('recaptcha3_score', Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE));
     }
 
     public function registerCaptchaLazy($form_id, $message) {
@@ -483,7 +483,7 @@ class Validator {
             return true;
         } else {
             Zira\Models\Captcha::register($field['form_id']);
-            return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()));
+            return Form::isRecaptcha3Valid(Zira\Config::get('recaptcha3_secret_key', ''), Zira\Request::post(Zira\Models\Captcha::RECAPTCHA_RESPONSE_INPUT), str_replace('-', '_', $this->getFormId()), Zira\Config::get('recaptcha3_score', Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE));
         }
     }
 
