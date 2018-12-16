@@ -18,6 +18,8 @@ class Chat {
     const MAX_CHARS = 1024;
     const WIDGET_LIMIT = 30;
     
+    const TRASH_TIME = 2592000; // 30 days
+    
     private static $_instance;
 
     public static function getInstance() {

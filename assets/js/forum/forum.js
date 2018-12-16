@@ -11,6 +11,7 @@
         }
         if ($('.container #content .forum-list a.forum-rating').length>0) {
             zira_init_forum_rating();
+            zira_init_forum_code();
         }
         if ($('.container #content .messages-panel .reply-btn').length>0) {
             zira_init_forum_reply_btn();
@@ -18,7 +19,6 @@
         if ($('.container #content .forum-list a.forum-reply-inline').length>0) {
             zira_init_forum_reply();
             zira_init_forum_quote();
-            zira_init_forum_code();
         }
         if ($('.container #content .forum-search-results-view-more-wrapper').length>0) {
             zira_init_forum_search_more();

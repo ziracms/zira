@@ -63,7 +63,7 @@ class Message extends Orm {
     public static function cleanUp() {
         self::getCollection()
                 ->delete()
-                ->where('date_created','<',date('Y-m-d H:i:s', time()-86400))
+                ->where('date_created','<',date('Y-m-d H:i:s', time()-\Chat\Chat::TRASH_TIME))
                 ->execute();
     }
 }

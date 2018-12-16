@@ -236,6 +236,10 @@ main > article > .image:first-child {
     background-color: #55627d;
     border-color: #55627d;
 }
+.form-panel .panel-heading {
+    background-image: none;
+    background-color: #c2d0f3;
+}
 .dropdown-menu {
     animation: ziraFade .4s ease;
 }
@@ -934,7 +938,8 @@ article .rating .share-wrapper .share-btn {
     box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.15) inset, 0px 1px 5px rgba(0, 0, 0, 0.075);
 }
 .list .list-item .list-title-wrapper {
-    background-color: #F5F5F5;
+    /*background-color: #F5F5F5;*/
+    background-color: #c2d0f3;
     border-bottom: 1px solid #eeeeee;
     padding: 10px 14px;
     margin: 0px;
@@ -948,7 +953,8 @@ article .rating .share-wrapper .share-btn {
 .list .list-item .list-title-wrapper a:visited {
     font-size: 18px;
     margin: 0px 0px 5px;
-    text-shadow: 1px 1px 0px #ffffff;
+    text-shadow: none;
+    color: #453a71;
 }
 .list .list-item .list-content-wrapper {
     padding: 0px;
@@ -1158,7 +1164,7 @@ pre {
 }
 .sidebar .list .list-item a.list-title:link,
 .sidebar .list .list-item a.list-title:visited {
-    font-size: 14px;
+    font-size: 16px;
 }
 .sidebar .list .list-item .list-content-wrapper {
     padding: 4px 0px 0px;
