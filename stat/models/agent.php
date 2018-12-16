@@ -36,7 +36,7 @@ class Agent extends Orm {
     public static function cleanUp() {
         self::getCollection()
                 ->delete()
-                ->where('access_day','<',date('Y-m-d', time()-31536000))
+                ->where('access_day','<',date('Y-m-d', time()-2592000))
                 ->execute();
     }
 }
