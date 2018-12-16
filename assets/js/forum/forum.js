@@ -228,7 +228,7 @@
             var txt = getSelectionHtml();
             if (txt.length>0,txt.length) {
                 if ($(editable).length==0) {
-                    set_quote.text = txt.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '');
+                    set_quote.text = txt.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>');
                     set_quote.content = '[quote][b]@'+user+':[/b]'+"\r\n"+txt.replace(/[\r\n]/g,'').replace(/<br[^>]*?>/gi,"\r\n").replace(/<(\/)?q.*?>/gi,'[$1quote]').replace(/<(\/)?b.*?>/gi,'[$1b]').replace(/<(\/)?code.*?>/gi,'[$1code]').replace(/<img[^>]+?class[\x20]*[=][\x20]*["]emoji[^"]*["][^>]*?>/gi,'').replace(/<img[^>]+?src[\x20]*[=][\x20]*["]([^"]+)["][^>]*?>/gi,'[img]$1[/img]').replace(/<p.*?>([\s\S]*?)<\/p>/gi,'$1'+"\r\n").replace(/<([a-z]+).*?>[\s\S]*?<[\/]\1>/gi, '').replace(/<[a-z\/].*?>/gi, '')+'[/quote]'+"\r\n";
                 } else {
                     set_quote.text = txt;
@@ -246,10 +246,10 @@
             var editable = $(form).find('#message-editable');
             
             if ($(editable).length==0) {
-                $(textarea).val(set_quote.content);
+                $(textarea).val($(textarea).val()+set_quote.content);
                 $(textarea).get(0).focus();
             } else {
-                $(editable).html(set_quote.content);
+                $(editable).html($(editable).html()+set_quote.content);
                 focusEditable($(editable).get(0));
             }
             
@@ -520,6 +520,9 @@
     function copyStringToClipboard(string, copy_type) {
         if (typeof copy_type == "undefined") copy_type = 'text/plain';
         function handler(event){
+            if (copy_type == 'text/html') {
+                event.clipboardData.setData('text/plain', string.replace(/<br[^>]*?>/gi,"\r\n").replace(/<[a-z\/].*?>/gi, '').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>'));
+            }
             event.clipboardData.setData(copy_type, string);
             event.preventDefault();
             document.removeEventListener('copy', handler, true);

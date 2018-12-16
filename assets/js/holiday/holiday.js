@@ -67,18 +67,20 @@
         if (base.substr(-1) == '/') {
             base = base.substr(0, base.length - 1);
         }
-        
         if (typeof(window.orientation) == "undefined" || typeof is_new_year == "undefined" || !is_new_year) {
             var img1 = new Image();
             img1.onload = function(){
                 $('body').append('<img class="new-year-theme-img new-year-theme-img-1" src="'+img1.src+'" alt="" />');
-                $('.new-year-theme-img-1').css('left','-'+img1.width+'px').show().animate({left:0},1000,function(){
-                    $(this).animate({left:'-20px'},500,function(){
-                        $(this).animate({left:'-10px'},1000);
+                $('.new-year-theme-img-1').css('left','-'+img1.width+'px').show().stop(1,1).animate({left:0},1000,function(){
+                    $('.new-year-theme-img-1').addClass('ny-ready');
+                    if ($('.new-year-theme-img-1').hasClass('faded')) return;
+                    $(this).stop(1,1).animate({left:'-20px'},500,function(){
+                        if ($('.new-year-theme-img-1').hasClass('faded')) return;
+                        $(this).stop(1,1).animate({left:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-1').click(function(){
-                    $(this).animate({left:'-'+img1.width+'px'},1000);
+                    $(this).stop(1,1).animate({left:'-'+img1.width+'px'},1000);
                 });
             };
             img1.src = base + '/assets/images/holiday/newyear1.png';
@@ -88,13 +90,16 @@
             var img2 = new Image();
             img2.onload = function(){
                 $('body').append('<img class="new-year-theme-img new-year-theme-img-2" src="'+img2.src+'" alt="" />');
-                $('.new-year-theme-img-2').css('top','-'+img2.height+'px').show().animate({top:0},1000,function(){
-                    $(this).animate({top:'-20px'},500,function(){
-                        $(this).animate({top:'-10px'},1000);
+                $('.new-year-theme-img-2').css('top','-'+img2.height+'px').show().stop(1,1).animate({top:0},1000,function(){
+                    $('.new-year-theme-img-2').addClass('ny-ready');
+                    if ($('.new-year-theme-img-2').hasClass('faded')) return;
+                    $(this).stop(1,1).animate({top:'-20px'},500,function(){
+                        if ($('.new-year-theme-img-2').hasClass('faded')) return;
+                        $(this).stop(1,1).animate({top:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-2').click(function(){
-                    $(this).animate({top:'-'+img2.height+'px'},1000);
+                    $(this).stop(1,1).animate({top:'-'+img2.height+'px'},1000);
                 });
             };
             img2.src = base + '/assets/images/holiday/newyear2.png';
@@ -104,13 +109,16 @@
             var img3 = new Image();
             img3.onload = function(){
                 $('body').append('<img class="new-year-theme-img new-year-theme-img-3" src="'+img3.src+'" alt="" />');
-                $('.new-year-theme-img-3').css('bottom','-'+img3.height+'px').show().animate({bottom:0},1000,function(){
-                    $(this).animate({bottom:'-20px'},500,function(){
-                        $(this).animate({bottom:'-10px'},1000);
+                $('.new-year-theme-img-3').css('bottom','-'+img3.height+'px').show().stop(1,1).animate({bottom:0},1000,function(){
+                    $('.new-year-theme-img-3').addClass('ny-ready');
+                    if ($('.new-year-theme-img-3').hasClass('faded')) return;
+                    $(this).stop(1,1).animate({bottom:'-20px'},500,function(){
+                        if ($('.new-year-theme-img-3').hasClass('faded')) return;
+                        $(this).stop(1,1).animate({bottom:'-10px'},1000);
                     });
                 });
                 $('.new-year-theme-img-3').click(function(){
-                    $(this).animate({bottom:'-'+img3.height+'px'},1000);
+                    $(this).stop(1,1).animate({bottom:'-'+img3.height+'px'},1000);
                 });
             };
             img3.src = base + '/assets/images/holiday/newyear3.png';
@@ -119,13 +127,14 @@
         var img4 = new Image();
         img4.onload = function(){
             $('header').append('<img class="new-year-theme-img new-year-theme-img-4" src="'+img4.src+'" alt="" />');
-            $('.new-year-theme-img-4').css('top','-'+img4.height+'px').show().animate({top:0},1000,function(){
-                $(this).animate({top:'-5px'},500,function(){
-                    $(this).animate({top:'0px'},500);
+            $('.new-year-theme-img-4').css('top','-'+img4.height+'px').show().stop(1,1).animate({top:0},1000,function(){
+                $('.new-year-theme-img-4').addClass('ny-ready');
+                $(this).stop(1,1).animate({top:'-5px'},500,function(){
+                    $(this).stop(1,1).animate({top:'0px'},500);
                 });
             });
             $('.new-year-theme-img-4').click(function(){
-                $(this).animate({top:'-'+img4.height+'px'},1000);
+                $(this).stop(1,1).animate({top:'-'+img4.height+'px'},1000);
             });
         };
         img4.src = base + '/assets/images/holiday/newyear4.png';
@@ -133,13 +142,14 @@
         var img5 = new Image();
         img5.onload = function(){
             $('body').append('<div class="new-year-theme-img new-year-theme-img-5" style="background-image:url('+img5.src+');" />');
-            $('.new-year-theme-img-5').css('height',img5.height).css('bottom','-'+img5.height+'px').show().animate({bottom:'-10px'},1000,function(){
-                $(this).animate({bottom:'-15px'},500,function(){
-                    $(this).animate({bottom:'-10px'},500);
+            $('.new-year-theme-img-5').css('height',img5.height).css('bottom','-'+img5.height+'px').show().stop(1,1).animate({bottom:'-10px'},1000,function(){
+                $('.new-year-theme-img-5').addClass('ny-ready');
+                $(this).stop(1,1).animate({bottom:'-15px'},500,function(){
+                    $(this).stop(1,1).animate({bottom:'-10px'},500);
                 });
             });
             $('.new-year-theme-img-5').click(function(){
-                $(this).animate({bottom:'-'+img5.height+'px'},1000);
+                $(this).stop(1,1).animate({bottom:'-'+img5.height+'px'},1000);
             });
         };
         img5.src = base + '/assets/images/holiday/newyear5.png';
@@ -147,26 +157,27 @@
         var img6 = new Image();
         img6.onload = function(){
             $('body').append('<img class="new-year-theme-img new-year-theme-img-6" src="'+img6.src+'" alt="" />');
-            $('.new-year-theme-img-6').css('top','-'+img6.height+'px').show().animate({top:0},1000,function(){
-                $(this).animate({top:'-5px'},500,function(){
+            $('.new-year-theme-img-6').css('top','-'+img6.height+'px').show().stop(1,1).animate({top:0},1000,function(){
+                $('.new-year-theme-img-6').addClass('ny-ready');
+                $(this).stop(1,1).animate({top:'-5px'},500,function(){
                     $(this).stop(1,1).animate({top:'0px'},500);
                 });
             });
             var img6AnimLock = false;
             $('.new-year-theme-img-6').click(function(){
                 img6AnimLock = false;
-                $(this).animate({top:'-'+img6.height+'px'},1000);
+                $(this).stop(1,1).animate({top:'-'+img6.height+'px'},1000);
             });
             $('.new-year-theme-img-6').mouseover(function(){
                 if (img6AnimLock) return;
                 img6AnimLock = true;
-                $(this).animate({top:'-10px'},500,function(){
+                $(this).stop(1,1).animate({top:'-10px'},500,function(){
                     if (!img6AnimLock) return;
-                    $(this).animate({top:'0px'},500, function(){
+                    $(this).stop(1,1).animate({top:'0px'},500, function(){
                         if (!img6AnimLock) return;
-                        $(this).animate({top:'-5px'},500, function(){
+                        $(this).stop(1,1).animate({top:'-5px'},500, function(){
                             if (!img6AnimLock) return;
-                            $(this).animate({top:'0px'},500, function(){
+                            $(this).stop(1,1).animate({top:'0px'},500, function(){
                                 img6AnimLock = false;
                             });
                         });
@@ -178,27 +189,33 @@
 
         $(window).scroll(function(){
             var top = $(window).scrollTop();
-            if (top>100 && !$('.new-year-theme-img-2').hasClass('faded')) {
-                $('.new-year-theme-img-2').addClass('faded');
-                $('.new-year-theme-img-2').animate({right:'-150px'},1000);
-            } else if (top<=100 && $('.new-year-theme-img-2').hasClass('faded')) {
-                $('.new-year-theme-img-2').removeClass('faded');
-                $('.new-year-theme-img-2').animate({right:'0px'},1000);
+            if ($('.new-year-theme-img-2').hasClass('ny-ready')) {
+                if (top>100 && !$('.new-year-theme-img-2').hasClass('faded')) {
+                    $('.new-year-theme-img-2').addClass('faded');
+                    $('.new-year-theme-img-2').stop(1,1).animate({right:'-150px'},1000);
+                } else if (top<=100 && $('.new-year-theme-img-2').hasClass('faded')) {
+                    $('.new-year-theme-img-2').removeClass('faded');
+                    $('.new-year-theme-img-2').stop(1,1).animate({right:'0px'},1000);
+                }
             }
             if ($(window).width()<992) {
-                if (top>100 && !$('.new-year-theme-img-1').hasClass('faded')) {
-                    $('.new-year-theme-img-1').addClass('faded');
-                    $('.new-year-theme-img-1').animate({left:'-150px'},1000);
-                } else if (top<=100 && $('.new-year-theme-img-1').hasClass('faded')) {
-                    $('.new-year-theme-img-1').removeClass('faded');
-                    $('.new-year-theme-img-1').animate({left:'0px'},1000);
+                if ($('.new-year-theme-img-1').hasClass('ny-ready')) {
+                    if (top>100 && !$('.new-year-theme-img-1').hasClass('faded')) {
+                        $('.new-year-theme-img-1').addClass('faded');
+                        $('.new-year-theme-img-1').stop(1,1).animate({left:'-150px'},1000);
+                    } else if (top<=100 && $('.new-year-theme-img-1').hasClass('faded')) {
+                        $('.new-year-theme-img-1').removeClass('faded');
+                        $('.new-year-theme-img-1').stop(1,1).animate({left:'0px'},1000);
+                    }
                 }
-                if (top>100 && !$('.new-year-theme-img-3').hasClass('faded')) {
-                    $('.new-year-theme-img-3').addClass('faded');
-                    $('.new-year-theme-img-3').animate({right:'-213px'},1000);
-                } else if (top<=100 && $('.new-year-theme-img-3').hasClass('faded')) {
-                    $('.new-year-theme-img-3').removeClass('faded');
-                    $('.new-year-theme-img-3').animate({right:'0px'},1000);
+                if ($('.new-year-theme-img-3').hasClass('ny-ready')) {
+                    if (top>100 && !$('.new-year-theme-img-3').hasClass('faded')) {
+                        $('.new-year-theme-img-3').addClass('faded');
+                        $('.new-year-theme-img-3').stop(1,1).animate({right:'-213px'},1000);
+                    } else if (top<=100 && $('.new-year-theme-img-3').hasClass('faded')) {
+                        $('.new-year-theme-img-3').removeClass('faded');
+                        $('.new-year-theme-img-3').stop(1,1).animate({right:'0px'},1000);
+                    }
                 }
             }
         });
