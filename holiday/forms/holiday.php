@@ -24,7 +24,7 @@ class Holiday extends Form
     
     protected static function getClasses() {
         return array(
-            '' => Locale::t('Please select'),
+            '' => Locale::tm('Please select', 'holiday'),
             'holiday-red' => Locale::tm('Red', 'holiday'),
             'holiday-orange' => Locale::tm('Orange', 'holiday'),
             'holiday-yellow' => Locale::tm('Yellow', 'holiday'),
@@ -53,7 +53,7 @@ class Holiday extends Form
             $days[$i] = $i;
         }
         $months = array(
-            '0' => Locale::t('Please select'),
+            '0' => Locale::tm('Please select', 'holiday'),
             '1' => Locale::tm('January', 'holiday'),
             '2' => Locale::tm('February', 'holiday'),
             '3' => Locale::tm('March', 'holiday'),

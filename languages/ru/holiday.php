@@ -29,5 +29,6 @@ return array(
     'Show banner' => 'Показать баннер',
     'Holidays settings' => 'Настройки праздников',
     'Enable New Year mode' => 'Включить режим Нового Года',
-    'Enable snow' => 'Включить снег'
+    'Enable snow' => 'Включить снег',
+    'Please select' => 'Пожалуйста выберите'
 );
