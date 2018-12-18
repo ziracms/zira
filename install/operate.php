@@ -111,7 +111,7 @@ try {
                             Zira\Helper::tag('p', Zira\Locale::t('Zira CMS is a lightweight, flexible and easy to use content management system.')).
                             Zira\Helper::tag('p', Zira\Locale::t('Installing Zira CMS, you get the most commonly used features right out of the box.')).
                             Zira\Helper::tag('p', Zira\Locale::t('No need for extra downloads and plugins setup.')).
-                            Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no web development skills required!')).
+                            Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no development skills required!')).
                             Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
                             Zira\Helper::tag_open('p').Zira\Locale::t('If you have any questions, feel free to %s.',Zira\Helper::tag('a',Zira\Locale::t('contact us'), array('href'=>'http://dro1d.ru/contact','target'=>'_blank'))).Zira\Helper::tag_close('p').
                             Zira\Helper::tag('p', Zira\Locale::t('Don\'t forget to visit our forum and share your impressions with other users.'))

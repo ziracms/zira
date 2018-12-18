@@ -20,8 +20,10 @@ background-color: #30b1ce;
 border-bottom: 1px solid #bffbbb;
 }
 #content .page-header h1 {
+font-size: 28px;
 margin-bottom: 20px;
 color: #334c6c;
+text-transform: uppercase;
 }
 #content h2 {
 font-size: 22px;
