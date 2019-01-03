@@ -61,6 +61,7 @@ class Access extends Orm {
                     )
                 ){ 
                     $is_bot = true;
+                    $referer = '';
                 }
             }
             
