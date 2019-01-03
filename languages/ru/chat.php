@@ -23,6 +23,6 @@ return array(
     'Sorry, your message is too big' => 'Извините, ваше сообщение слишком длинное',
     'Send a message' => 'Отправить сообщение',
     'Incorrect message length' => 'Некорректная длина сообщения',
-    'Chat database cleaned up' => 'База чата очищена',
+    'Chat database cleaned up' => 'База чата почищена',
     'Your message' => 'Ваше сообщение'
 );

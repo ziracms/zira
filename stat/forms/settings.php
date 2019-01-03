@@ -35,6 +35,7 @@ class Settings extends Form
     protected function _render()
     {
         $html = $this->open();
+        $html .= $this->checkbox(Locale::tm('Ignore bots', 'stat'), 'stat_exclude_bots', null, false);
         $html .= $this->checkbox(Locale::tm('Collect browser information', 'stat'), 'stat_log_ua', null, false);
         $html .= $this->checkbox(Locale::tm('Log requests', 'stat'), 'stat_log_access', null, false);
         $html .= $this->checkbox(Locale::tm('Display record views in description', 'stat'), 'stat_views_preview', null, false);

@@ -42,6 +42,7 @@ class Settings extends Dash\Windows\Window {
         }
 
         $configs = Zira\Config::getArray();
+        if (!array_key_exists('stat_exclude_bots', $configs)) $configs['stat_exclude_bots'] = 1;
 
         $form = new \Stat\Forms\Settings();
         $form->setValues($configs);

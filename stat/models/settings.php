@@ -23,7 +23,8 @@ class Settings extends Dash\Models\Model {
             $options = array(
                 'stat_log_ua' => 'int',
                 'stat_log_access' => 'int',
-                'stat_views_preview' => 'int'
+                'stat_views_preview' => 'int',
+                'stat_exclude_bots' => 'int'
             );
 
             $config_ids = array();

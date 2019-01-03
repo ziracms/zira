@@ -42,7 +42,29 @@ class Access extends Orm {
             $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
             $referer = isset($_SERVER['HTTP_REFERER']) ? trim(urldecode($_SERVER['HTTP_REFERER'])) : '';
             
-            if ($record_id) {
+            $is_bot = false;
+            if (Zira\Config::get('stat_exclude_bots', 1)) {
+                if (stripos($ua, 'bot')!==false || 
+                    stripos($ua, 'spider')!==false || 
+                    stripos($ua, 'archiver')!==false
+                ){
+                    $is_bot = true;
+                }
+                if (!$is_bot && 
+                    strlen($referer)>0 && 
+                    strpos($referer, 'http://'.$_SERVER['HTTP_HOST'])!==0 && 
+                    strpos($referer, 'https://'.$_SERVER['HTTP_HOST'])!==0 && (
+                        ($s1=strpos($referer, '/'))===false || 
+                        ($s2=strpos($referer, '/', $s1+1))===false || 
+                        ($s3=strpos($referer, '/', $s2+1))===false || 
+                        strlen($referer)<$s3+2
+                    )
+                ){ 
+                    $is_bot = true;
+                }
+            }
+            
+            if ($record_id && !$is_bot) {
                 $exists = \Stat\Models\Visitor::getCollection()
                                 ->where('record_id','=',$record_id)
                                 ->and_where('anonymous_id','=',$anonymous_id)
@@ -74,7 +96,7 @@ class Access extends Orm {
                 }
             }
 
-            if (Zira\Config::get('stat_log_ua')) {
+            if (Zira\Config::get('stat_log_ua') && !$is_bot) {
                 $ua_exists = \Stat\Models\Agent::getCollection()
                                 ->where('ua','=',$ua)
                                 ->and_where('anonymous_id','=',$anonymous_id)

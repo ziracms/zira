@@ -33,5 +33,6 @@ return array(
     'Yesterday: %s' => 'Вчера: %s',
     '30-days referers' => 'Рефереры за 30 дней',
     'Views' => 'Просмотров',
-    'Display record views in description' => 'Показывать просмотры записи в описании'
+    'Display record views in description' => 'Показывать просмотры записи в описании',
+    'Ignore bots' => 'Игнорировать ботов'
 );
