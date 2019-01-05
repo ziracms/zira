@@ -16,6 +16,8 @@ ErrorDocument 403 /403.html
 <IfModule mod_rewrite.c>
 RewriteEngine On
 #RewriteBase /
+#RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+#RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
 RewriteRule ^(?:cache|log)\b.* - [R=403,L]
 
