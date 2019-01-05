@@ -1144,23 +1144,33 @@
             }
             return;
         }
+        var zira_auth_submit = function(e){
+            if (typeof e != "undefined") {
+                e.stopPropagation();
+                e.preventDefault();
+                zira_auth_submit.data = $(this).serialize();
+                zira_auth_submit.url = $(this).attr('action');
+                $('#zira-auth-dialog .modal-body').html('<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>');
+                if (zira_auth_submit.url.indexOf('?')<0) zira_auth_submit.url += '?';
+                else zira_auth_submit.url += '&';
+                zira_auth_submit.url += 'format=json';
+                zira_auth_submit.fail_counter = 0;
+            }
+            $.post(zira_auth_submit.url, zira_auth_submit.data, zira_auth_popup_response, 'json').fail(function(){
+                zira_auth_submit.fail_counter++;
+                if (zira_auth_submit.fail_counter <= 5) {
+                    $('#zira-auth-dialog .modal-body').html('<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-globe"></span></div>');
+                    window.setTimeout(zira_auth_submit, 1000);
+                } else {
+                    $('#zira-auth-dialog').on('hidden.bs.modal', function(){
+                        zira_error(t('Load failed'));
+                    }).modal('hide');
+                }
+            });
+        };
         $('#zira-auth-dialog .modal-body').html(response.form);
         $('#zira-auth-dialog .modal-body').find('input[type=text]').first().addClass('modal-focus');
-        $('#zira-auth-dialog .modal-body form').submit(function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            var data = $(this).serialize();
-            var url = $(this).attr('action');
-            $('#zira-auth-dialog .modal-body').html('<div style="text-align:center;padding:100px"><span class="zira-loader glyphicon glyphicon-refresh"></span></div>');
-            if (url.indexOf('?')<0) url += '?';
-            else url += '&';
-            url += 'format=json';
-            $.post(url, data, zira_auth_popup_response, 'json').fail(function(){
-                $('#zira-auth-dialog').on('hidden.bs.modal', function(){
-                    zira_error(t('Load failed'));
-                }).modal('hide');
-            });
-        });
+        $('#zira-auth-dialog .modal-body form').submit(zira_auth_submit);
         if ($('#zira-auth-dialog .g-recaptcha').length>0) {
             if (typeof zira_load_recaptcha.loaded == "undefined") {
                 zira_load_recaptcha();
