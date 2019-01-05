@@ -50,6 +50,11 @@ class Category extends Zira\Page {
             static::setKeywords($meta_keywords);
             static::setDescription(Zira\Locale::t($meta_description));
             static::addOpenGraphTags(Zira\Locale::t($meta_title), Zira\Locale::t($meta_description), static::generateCategoryUrl(Zira\Category::current()->name), $thumb);
+            
+            // adding canonical url
+            $canonical_url = static::generateCategoryUrl(Zira\Category::current()->name);
+            $canonical_link = Zira\Helper::tag_short('link', array('rel'=>'canonical', 'href'=>Zira\Helper::baseUrl($canonical_url, true, true)));
+            Zira\View::addHTML($canonical_link, Zira\View::VAR_HEAD_TOP);
         }
 
         $order = Zira\Page::getRecordsOrderColumn();

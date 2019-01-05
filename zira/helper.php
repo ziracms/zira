@@ -23,6 +23,7 @@ class Helper {
         if ($absolute && $detect_protocol) {
             $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
             $protocol = $port == 443 ? 'https:' : 'http:';
+            if ($port!=443 && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on') $protocol = 'https:';
             $url .= $protocol;
         }
         if ($absolute) $url .= '//' . $_SERVER['HTTP_HOST'];
@@ -54,6 +55,7 @@ class Helper {
         if ($absolute && $detect_protocol) {
             $port = isset($_SERVER['SERVER_PORT']) ? $_SERVER['SERVER_PORT'] : 80;
             $protocol = $port == 443 ? 'https:' : 'http:';
+            if ($port!=443 && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on') $protocol = 'https:';
             $prefix .= $protocol;
         }
         if ($absolute) $prefix .= '//' . $_SERVER['HTTP_HOST'];
