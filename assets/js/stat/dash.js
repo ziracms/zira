@@ -36,3 +36,7 @@ var dash_stat_settings = function() {
     };
     desk_call(dash_stat_settings_wnd, null, data);
 };
+
+var dash_stat_clean = function() {
+    desk_window_request(this, url('stat/dash/clean'),{});
+};

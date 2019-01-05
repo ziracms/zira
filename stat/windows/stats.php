@@ -37,6 +37,9 @@ class Stats extends Dash\Windows\Window {
         $this->addDefaultToolbarItem(
             $this->createToolbarButton(null, Zira\Locale::tm('Statistics settings', 'stat'), 'glyphicon glyphicon-cog', 'desk_call(dash_stat_settings, this);', 'settings', false, true)
         );
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::tm('Clean up', 'stat'), Zira\Locale::tm('Delete old records from database', 'stat'), 'glyphicon glyphicon-scale', 'desk_call(dash_stat_clean, this);', 'clean', false, true)
+        );
         
         $this->addVariables(array(
             'dash_stat_requests_wnd' => Dash\Dash::getInstance()->getWindowJSName(Requests::getClass()),

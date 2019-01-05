@@ -34,5 +34,7 @@ return array(
     '30-days referers' => 'Рефереры за 30 дней',
     'Views' => 'Просмотров',
     'Display record views in description' => 'Показывать просмотры записи в описании',
-    'Ignore bots' => 'Игнорировать ботов'
+    'Ignore bots' => 'Игнорировать ботов',
+    'Clean up' => 'Очистка',
+    'Delete old records from database' => 'Удалить старые записи из базы данных'
 );
