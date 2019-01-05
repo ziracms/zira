@@ -107,6 +107,15 @@ class Page extends Zira\Page {
         static::setDescription($meta_description);
         static::addOpenGraphTags($meta_title, $meta_description, static::$_record_url, $image);
         
+        // adding canonical url
+        if (Zira\Category::current()) {
+            $canonical_url = static::generateRecordUrl(Zira\Category::current()->name, $row->name);
+        } else {
+            $canonical_url = static::generateRecordUrl(null, $row->name);
+        }
+        $canonical_link = Zira\Helper::tag_short('link', array('rel'=>'canonical', 'href'=>Zira\Helper::baseUrl($canonical_url, true, true)));
+        Zira\View::addHTML($canonical_link, Zira\View::VAR_HEAD_TOP);
+        
         // checking permission for gallery, files, audio & video
         if (Zira\Category::current()) {
             $category_gallery_check = Zira\Category::current()->gallery_check;
