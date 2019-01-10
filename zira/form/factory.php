@@ -481,11 +481,11 @@ class Factory {
      * @param string $viewMode - accepts 'decades','years','months','days'
      * @param null $maxDate - format 'Y-m-d'
      */
-    public function initDatepicker($name, $viewMode = null, $maxDate = null) {
+    public function initDatepicker($name, $viewMode = '', $maxDate = '') {
         Zira\View::addDatepicker($viewMode, $maxDate);
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
         $script .= "jQuery(document).ready(function(){";
-        $script .= "zira_datepicker(jQuery('#".$name."'))";
+        $script .= "zira_datepicker(jQuery('#".$name."'), '".$viewMode."', '".$maxDate."')";
         $script .= "});";
         $script .= Helper::tag_close('script');
         Zira\View::addBodyBottomScript ($script);

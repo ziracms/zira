@@ -904,24 +904,21 @@ class View {
         self::$_datepicker_assets_added = true;
     }
 
-    /**
-     * @param string $viewMode - accepts 'decades','years','months','days'
-     * @param null $maxDate - format 'Y-m-d'
-     */
-    public static function addDatepicker($viewMode = null, $maxDate = null) {
+    public static function addDatepicker() {
         if (self::$_datepicker_added) return;
         self::addDatepickerAssets();
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
-        $script .= "zira_datepicker = function(element){";
-        $script .= "jQuery(element).datetimepicker({";
+        $script .= "zira_datepicker = function(element, viewMode, maxDate){";
+        $script .= "var opts = {";
         $options = array();
-        if ($viewMode!==null) $options[]="viewMode: '".$viewMode."'";
         if (Locale::getLanguage()=='ru') $options[]="locale: 'ru'";
         $options[]="allowInputToggle: true";
         $options[]="format: '".Config::get('datepicker_date_format')."'";
-        if ($maxDate!==null) $options[]="maxDate: '".$maxDate."'";
         $script .= implode(', ', $options);
-        $script .= "});";
+        $script .= "};";
+        $script .= 'if (typeof viewMode != "undefined" && viewMode.length>0) opts.viewMode = viewMode;';
+        $script .= 'if (typeof maxDate != "undefined" && maxDate.length>0) opts.maxDate = maxDate;';
+        $script .= 'jQuery(element).datetimepicker(opts);';
         $script .= "};";
         $script .= Helper::tag_close('script');
         //self::addHTML($script, self::VAR_BODY_BOTTOM);
