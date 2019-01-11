@@ -29,5 +29,9 @@ return array(
     'Author' => 'Автор',
     'Minimize all' => 'Свернуть всё',
     'Page reload required. Reload now ?' => 'Нужно перезагрузить страницу. Перезагрузить сейчас ?',
-    'Delete menu' => 'Удалить меню'
+    'Delete menu' => 'Удалить меню',
+    'Limit' => 'Лимит',
+    'Page' => 'Страница',
+    'Go to page' => 'Перейти к странице',
+    'Set limit' => 'Установить лимит'
 );

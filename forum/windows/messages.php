@@ -63,12 +63,17 @@ class Messages extends Dash\Windows\Window {
         $this->addDefaultContextMenuItem(
             $this->createContextMenuItem(Zira\Locale::tm('Activate', 'forum'), 'glyphicon glyphicon-ok', 'desk_call(dash_forum_message_activate, this);', 'edit', true, array('typo'=>'activate'))
         );
+        
+        $this->addVariables(array(
+            'dash_forum_messages_limit' => $this->limit
+        ));
 
         $this->setData(array(
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
-            'order'=>$this->order,
+            'limit'=>$this->limit,
+            'order'=>$this->order
         ));
 
         $this->setOnSelectJSCallback(

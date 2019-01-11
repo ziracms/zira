@@ -58,9 +58,13 @@ var dash_chat_chat_edit = function() {
 var dash_chat_messages = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
+        var limit = 10;
+        if (typeof dash_chat_messages_limit != "undefined") limit = dash_chat_messages_limit;
         var data = {
             'data':{
-                'items': [selected[0].data]
+                'items': [selected[0].data],
+                'page': 1,
+                'limit': limit
             },
             'reload': this.className,
             'onClose':function(){

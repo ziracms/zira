@@ -134,11 +134,16 @@ class Topics extends Dash\Windows\Window {
         $this->addDefaultOnLoadScript('desk_call(dash_forum_topics_load, this);');
 
         $this->includeJS('forum/dash');
+        
+        $this->addVariables(array(
+            'dash_forum_topics_limit' => $this->limit
+        ));
 
         $this->setData(array(
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order,
             'category_id'=>0,
             'language' => ''

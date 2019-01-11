@@ -36,10 +36,15 @@ class Files extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addVariables(array(
+            'dash_forum_files_limit' => $this->limit
+        ));
+        
         $this->setData(array(
             'page'=>$this->page,
             'pages'=>$this->pages,
-            'order'=>$this->order,
+            'limit'=>$this->limit,
+            'order'=>$this->order
         ));
     }
 
@@ -60,6 +65,10 @@ class Files extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $limit= (int)Zira\Request::post('limit');
+        if ($limit > 0) {
+            $this->limit = $limit < \Dash\Dash::MAX_LIMIT ? $limit : \Dash\Dash::MAX_LIMIT;
+        }
         $this->total = \Forum\Models\File::getCollection()
                                     ->count()
                                     ->get('co');
@@ -92,6 +101,7 @@ class Files extends Dash\Windows\Window {
         $this->setData(array(
             'page'=>$this->page,
             'pages'=>$this->pages,
+            'limit'=>$this->limit,
             'order'=>$this->order
         ));
     }

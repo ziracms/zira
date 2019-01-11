@@ -37,7 +37,15 @@ class Requests extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addVariables(array(
+            'dash_stat_limit' => $this->limit
+        ));
         
+        $this->setData(array(
+            'page'=>1,
+            'limit'=>$this->limit,
+            'order'=>$this->order
+        ));
     }
 
     public function load() {
@@ -69,10 +77,10 @@ class Requests extends Dash\Windows\Window {
         $this->setBodyItems($items);
         
         $this->setData(array(
-                'page'=>$this->page,
-                'pages'=>$this->pages,
-                'limit'=>$this->limit,
-                'order'=>$this->order
-            ));
+            'page'=>$this->page,
+            'pages'=>$this->pages,
+            'limit'=>$this->limit,
+            'order'=>$this->order
+        ));
     }
 }

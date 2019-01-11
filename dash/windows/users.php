@@ -116,6 +116,7 @@ class Users extends Window {
         $this->setData(array(
                 'page'=>1,
                 'pages'=>1,
+                'limit'=>$this->limit,
                 'order'=>$this->order,
                 'group_id'=>0
             ));

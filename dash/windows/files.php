@@ -168,7 +168,12 @@ class Files extends Window {
 
         $this->setData(array(
             'max_upload_size' => $this->get_max_upload_size(),
-            'max_upload_files' => $this->get_max_upload_files()
+            'max_upload_files' => $this->get_max_upload_files(),
+            'page'=>1,
+            'pages'=>1,
+            'limit'=>$this->limit,
+            'order'=>$this->order,
+            'root'=>UPLOADS_DIR
         ));
 
         $this->addStrings(array(

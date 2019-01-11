@@ -50,11 +50,16 @@ class Messages extends Dash\Windows\Window {
     }
 
     public function create() {
+        $this->addVariables(array(
+            'dash_chat_messages_limit' => $this->limit
+        ));
+        
         $this->setData(array(
             'items' => array($this->item),
             'page'=>$this->page,
             'pages'=>$this->pages,
-            'order'=>$this->order,
+            'limit'=>$this->limit,
+            'order'=>$this->order
         ));
     }
 

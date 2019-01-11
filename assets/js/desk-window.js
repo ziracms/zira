@@ -1571,27 +1571,83 @@ DashWindow.prototype.createMenu = function() {
                 'callback': function() {
                     this.maximizeRight();
                 }
-            },{
-                'type': 'separator'
-            },{
-                'action': 'about',
-                'icon_class': 'glyphicon glyphicon'+'\u002d'+'\u0063'+'\u006f'+'\u0070'+'\u0079'+'\u0072'+'\u0069'+'\u0067'+'\u0068'+'\u0074'+'\u002d'+'\u006d'+'\u0061'+'\u0072'+'\u006b',
-                'title': '\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075',
-                'callback': function() {
-                    window.location.href = '\u0068'+'\u0074'+'\u0074'+'\u0070'+'\u003a'+'\u002f'+'\u002f'+'\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075';
-                }
-            },{
-                'type': 'separator'
-            },{
-                'action': 'close',
-                'icon_class': 'glyphicon glyphicon-remove-sign',
-                'title': this.t('Close')+' <span class="help">(Esc)</span>',
-                'callback': function() {
-                    $(this.getCloseButton()).trigger('mousedown');
-                }
             }
         ]
     };
+    
+    var sep_added = false;
+    
+    if (this.options.data && typeof this.options.data.page != "undefined" && this.options.data.page>0) {
+        if (!sep_added) {
+            windowItem.items.push({
+                'type': 'separator'
+            });
+            sep_added = true;
+        }
+    
+        windowItem.items.push({
+            'action': 'limit',
+            'icon_class': 'glyphicon glyphicon-open',
+            'title': this.t('Go to page'),
+            'callback': function() {
+                this.prompt(t('Page'), this.bind(this, function(page){
+                    page = parseInt(page);
+                    if (page <= 0 || isNaN(page)) return;
+                    this.options.data.page = page;
+                    this.loadBody();
+                }), this.bind(this, function(){}), this.options.data.page);
+            }
+        });
+    }
+    
+    if (this.options.data && typeof this.options.data.limit != "undefined" && this.options.data.limit>0) {
+        if (!sep_added) {
+            windowItem.items.push({
+                'type': 'separator'
+            });
+            sep_added = true;
+        }
+    
+        windowItem.items.push({
+            'action': 'limit',
+            'icon_class': 'glyphicon glyphicon-stats',
+            'title': this.t('Set limit'),
+            'callback': function() {
+                this.prompt(t('Limit'), this.bind(this, function(limit){
+                    limit = parseInt(limit);
+                    if (limit <= 0 || isNaN(limit)) return;
+                    this.options.data.limit = limit;
+                    this.loadBody();
+                }), this.bind(this, function(){}), this.options.data.limit);
+            }
+        });
+    }
+    
+    windowItem.items.push({
+        'type': 'separator'
+    });
+    
+    windowItem.items.push({
+        'action': 'about',
+        'icon_class': 'glyphicon glyphicon'+'\u002d'+'\u0063'+'\u006f'+'\u0070'+'\u0079'+'\u0072'+'\u0069'+'\u0067'+'\u0068'+'\u0074'+'\u002d'+'\u006d'+'\u0061'+'\u0072'+'\u006b',
+        'title': '\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075',
+        'callback': function() {
+            window.location.href = '\u0068'+'\u0074'+'\u0074'+'\u0070'+'\u003a'+'\u002f'+'\u002f'+'\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075';
+        }
+    });
+    
+    windowItem.items.push({
+        'type': 'separator'
+    });
+    
+    windowItem.items.push({
+        'action': 'close',
+        'icon_class': 'glyphicon glyphicon-remove-sign',
+        'title': this.t('Close')+' <span class="help">(Esc)</span>',
+        'callback': function() {
+            $(this.getCloseButton()).trigger('mousedown');
+        }
+    });
 
     var helpItem = {
         'title': this.t('Help'),
@@ -3259,8 +3315,36 @@ DashWindow.prototype.message = function(message) {
 
 DashWindow.prototype.confirm = function(message, callback) {
     if (typeof(desk_confirm)!="undefined") desk_confirm(message, callback);
-    else if (confirm(message)) {
+    else if (confirm(message) && typeof callback != "undefined") {
         callback.call();
+    }
+};
+
+DashWindow.prototype.prompt = function(message, ok_callback, cancel_callback, default_value) {
+    if (typeof(desk_prompt)!="undefined") {
+        desk_prompt(message, ok_callback, cancel_callback);
+        $('#zira-prompt-dialog input[name=modal-input]').val(default_value);
+    } else {
+        var result = prompt(message, default_value);
+        if (result) {
+            if (typeof ok_callback != "undefined") ok_callback.call(null, result);
+        } else {
+            if (typeof cancel_callback != "undefined") cancel_callback.call(null);
+        }
+    }
+};
+
+DashWindow.prototype.desk_multi_prompt = function(message, ok_callback, cancel_callback, default_value) {
+    if (typeof(desk_multi_prompt)!="undefined") {
+        desk_multi_prompt(message, ok_callback, cancel_callback);
+        $('#zira-prompt-dialog input[name=modal-input]').val(default_value);
+    } else {
+        var result = prompt(message, default_value);
+        if (result) {
+            if (typeof ok_callback != "undefined") ok_callback.call(null, result);
+        } else {
+            if (typeof cancel_callback != "undefined") cancel_callback.call(null);
+        }
     }
 };
 

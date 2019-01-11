@@ -12,9 +12,13 @@ var dash_stat_requests = function() {
         desk_error(t('Requests logging is disabled'));
         return;
     }
+    var limit = 10;
+    if (typeof dash_stat_limit != "undefined") limit = dash_stat_limit;
     var data = {
         'data': {
-            'items': []
+            'items': [],
+            'limit': limit,
+            'page': 1
         },
         'reload': this.className,
         'onClose':function(){

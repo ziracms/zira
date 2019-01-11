@@ -241,9 +241,13 @@ var dash_forum_settings = function() {
 var dash_forum_threads = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
+        var limit = 10;
+        if (typeof dash_forum_topics_limit != "undefined") limit = dash_forum_topics_limit;
         var data = {
             'data':{
-                'items': [selected[0].data]
+                'items': [selected[0].data],
+                'page': 1,
+                'limit': limit
             },
             'reload': this.className,
             'onClose':function(){
@@ -289,9 +293,13 @@ var dash_forum_thread_edit = function() {
 var dash_forum_messages = function() {
     var selected = this.getSelectedContentItems();
     if (selected && selected.length==1) {
+        var limit = 10;
+        if (typeof dash_forum_messages_limit != "undefined") limit = dash_forum_messages_limit;
         var data = {
             'data':{
-                'items': [selected[0].data]
+                'items': [selected[0].data],
+                'page': 1,
+                'limit': limit
             },
             'reload': this.className,
             'onClose':function(){
@@ -333,7 +341,15 @@ var dash_forum_message_edit = function() {
 };
 
 var dash_forum_files = function() {
-    desk_call(dash_forum_files_wnd);
+    var limit = 10;
+    if (typeof dash_forum_files_limit != "undefined") limit = dash_forum_files_limit;
+    var data = {
+        'data':{
+            'page': 1,
+            'limit': limit
+        }
+    };
+    desk_call(dash_forum_files_wnd, null, data);
 };
 
 var dash_forum_file_show = function() {
