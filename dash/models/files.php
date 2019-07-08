@@ -522,8 +522,21 @@ class Files extends Model {
         if ($zip->open($path, \ZipArchive::CREATE)!==TRUE) {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
-        $zip->extractTo(ROOT_DIR . DIRECTORY_SEPARATOR . $root);
+        $denied = false;
+        for ($i=0; $i<$zip->numFiles; $i++) {
+            $st = $zip->statIndex($i);
+            if ($st === false) continue;
+            $p = strrpos($st['name'], '.');
+            if ($p === false) continue;
+            $ext = substr($st['name'], $p+1);
+            if (strtolower($ext) == 'php') {
+                $denied = true;
+                break;
+            }
+        }
+        if (!$denied) $zip->extractTo(ROOT_DIR . DIRECTORY_SEPARATOR . $root);
         $zip->close();
+        if ($denied) return array('error'=>Zira\Locale::t('Permission denied'));
         return array('reload'=>$this->getJSClassName());
     }
     

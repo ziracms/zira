@@ -30,6 +30,8 @@ class Blocktext extends Model {
         $block->content = str_replace("\r\n","\n",$content);
         $block->save();
 
+        Zira\Cache::clear();
+
         return array('message' => Zira\Locale::t('Successfully saved'));
     }
 }
