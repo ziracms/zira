@@ -1225,6 +1225,23 @@
                 variableWidth: true,
                 adaptiveHeight: false
             });
+            $('.carousel-wrapper .carousel a').each(function(){
+                if ($(this).parent('li').hasClass('slick-cloned')) {
+                    var data = $(this).data('lightbox');
+                    if (data === null) return true;
+                    $(this).removeAttr('data-lightbox').attr('data-carousel-lightbox', data);
+                }
+            });
+            $('.carousel-wrapper .carousel a[data-carousel-lightbox]').click(function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                var data = $(this).data('carousel-lightbox');
+                var link = $(this).attr('href');
+                if (data === null || link === null) return;
+                if ($('.carousel-wrapper .carousel a[data-lightbox=\''+data+'\'][href=\''+link+'\']').length > 0) {
+                    $('.carousel-wrapper .carousel a[data-lightbox=\''+data+'\'][href=\''+link+'\']').trigger('click');
+                }
+            });
         }
     };
 
