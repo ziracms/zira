@@ -117,3 +117,7 @@ var dash_chat_message_preview = function() {
         }));
     }
 };
+
+var dash_chat_settings = function() {
+    desk_call(dash_chat_settings_wnd);
+};

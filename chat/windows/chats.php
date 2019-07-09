@@ -41,6 +41,10 @@ class Chats extends Dash\Windows\Window {
         $this->addDefaultSidebarItem(
             $this->createSidebarItem(Zira\Locale::t('Messages'), 'glyphicon glyphicon-comment', 'desk_call(dash_chat_messages, this);', 'edit', true, array('typo'=>'messages'))
         );
+
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(null, Zira\Locale::tm('Chat settings', 'chat'), 'glyphicon glyphicon-cog', 'desk_call(dash_chat_settings, this);', 'settings', false, true)
+        );
         
         $this->addDefaultMenuDropdownItem(
             $this->createMenuDropdownSeparator()
@@ -79,7 +83,8 @@ class Chats extends Dash\Windows\Window {
         $this->addVariables(array(
             'dash_chat_chat_wnd' => Dash\Dash::getInstance()->getWindowJSName(Chat\Windows\Chat::getClass()),
             'dash_chat_messages_wnd' => Dash\Dash::getInstance()->getWindowJSName(Chat\Windows\Messages::getClass()),
-            'dash_chat_message_wnd' => Dash\Dash::getInstance()->getWindowJSName(Chat\Windows\Message::getClass())
+            'dash_chat_message_wnd' => Dash\Dash::getInstance()->getWindowJSName(Chat\Windows\Message::getClass()),
+            'dash_chat_settings_wnd' => Dash\Dash::getInstance()->getWindowJSName(Chat\Windows\Settings::getClass())
         ));
         
         $this->includeJS('chat/dash');

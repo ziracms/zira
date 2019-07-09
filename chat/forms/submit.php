@@ -52,6 +52,16 @@ class Submit extends Form {
         }
 
         $html .= $this->textarea(Locale::tm('Your message','chat'),'message', array('class'=>'form-control user-rich-input'));
+        if (!User::isAuthorized()) {
+            $captcha_opt = 'chat_captcha';
+        } else {
+            $captcha_opt = 'chat_captcha_users';
+        }
+        if (Config::get($captcha_opt,true)) {
+            $html .= $this->captcha(Locale::t('Anti-Bot').'*');
+        } else {
+            $html .= $this->captchaLazy(Locale::t('Anti-Bot') . '*');
+        }
         $html .= $this->submit(Locale::t('Submit'));
         $html .= $this->close();
         return $html;
@@ -59,6 +69,16 @@ class Submit extends Form {
 
     protected function _validate() {
         $validator = $this->getValidator();
+        if (!User::isAuthorized()) {
+            $captcha_opt = 'chat_captcha';
+        } else {
+            $captcha_opt = 'chat_captcha_users';
+        }
+        if (Config::get($captcha_opt,true)) {
+            $validator->registerCaptcha(Locale::t('Wrong CAPTCHA result'));
+        } else {
+            $validator->registerCaptchaLazy($this->_id, Locale::t('Wrong CAPTCHA result'));
+        }
         $validator->registerNumber('chat_id', null, null, true, Locale::t('An error occurred'));
         $validator->registerString('sender_name', 1, 255, false, Locale::t('Invalid name'));
         $validator->registerNoTags('sender_name', Locale::t('Invalid name'));

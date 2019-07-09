@@ -106,7 +106,7 @@ class Index extends Zira\Controller {
             
             $response = array('status' => 1);
         } else {
-            $response = array('status' => 0, 'error'=>$form->getError());
+            $response = array('status' => 0, 'error'=>$form->getError(), 'captcha_error'=>($form->getErrorField()==CAPTCHA_NAME ? 1 : 0));
         }
         
         Zira\Page::render($response);

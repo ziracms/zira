@@ -24,5 +24,6 @@ return array(
     'Send a message' => 'Отправить сообщение',
     'Incorrect message length' => 'Некорректная длина сообщения',
     'Chat database cleaned up' => 'База чата почищена',
-    'Your message' => 'Ваше сообщение'
+    'Your message' => 'Ваше сообщение',
+    'Chat settings' => 'Настройки чата'
 );

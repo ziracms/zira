@@ -58,6 +58,7 @@ class Chat {
             Dash\Dash::getInstance()->registerModuleWindowClass('chatWindow', 'Chat\Windows\Chat', 'Chat\Models\Chats');
             Dash\Dash::getInstance()->registerModuleWindowClass('chatMessagesWindow', 'Chat\Windows\Messages', 'Chat\Models\Messages');
             Dash\Dash::getInstance()->registerModuleWindowClass('chatMessageWindow', 'Chat\Windows\Message', 'Chat\Models\Messages');
+            Dash\Dash::getInstance()->registerModuleWindowClass('chatSettingsWindow', 'Chat\Windows\Settings', 'Chat\Models\Settings');
             Dash\Dash::unloadDashLanguage();
         }
     }

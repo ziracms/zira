@@ -20,12 +20,12 @@
                 $.post($(this).attr('action'), values, zira_bind(this, function(response){
                     $(this).find('.form-control').removeAttr('disabled');
                     if (!response) {
-                        $(this).trigger('xhr-submit-error');
+                        $(this).trigger('xhr-submit-error', response);
                         return;
                     }
                     if (!response.status && response.error) {
-                        $(this).trigger('xhr-submit-error');
                         zira_error(response.error);
+                        $(this).trigger('xhr-submit-error', response);
                     }
                     if (response.status) {
                         $(this).find('.user-rich-input').val('');

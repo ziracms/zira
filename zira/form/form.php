@@ -211,15 +211,17 @@ class Form {
     }
 
     public static function captcha($token,$image_wrapper_class='captcha_image',$input_wrapper_class='captcha_input',$input_class='captcha',$refresh_wrapper_class='captcha_refresh',$refresh_value = 'Reload') {
+        $captcha_image_id = uniqid(CAPTCHA_NAME.'-image');
+        
         $html = Helper::tag_open('div',array('class'=>$image_wrapper_class));
-        $html .= Helper::tag_short('img',array('src'=>Helper::url('captcha').'?token='.$token.'&t='.time(),'width'=>CAPTCHA_WIDTH,'height'=>CAPTCHA_HEIGHT,'id'=>$token.'-'.CAPTCHA_NAME.'-image','alt'=>Zira\Locale::t('CAPTCHA')));
+        $html .= Helper::tag_short('img',array('src'=>Helper::url('captcha').'?token='.$token.'&t='.time(),'width'=>CAPTCHA_WIDTH,'height'=>CAPTCHA_HEIGHT,'id'=>$captcha_image_id,'alt'=>Zira\Locale::t('CAPTCHA')));
         $html .= Helper::tag_close('div');
 
         $html .= Helper::tag_open('div',array('class'=>$input_wrapper_class));
-        $html .= self::input($token,CAPTCHA_NAME, null, array('class'=>$input_class,'autocomplete'=>'off'), false);
+        $html .= self::input($token,CAPTCHA_NAME, null, array('class'=>$input_class,'id'=>uniqid(CAPTCHA_NAME),'autocomplete'=>'off'), false);
 
         $html .= Helper::tag_open('div',array('class'=>$refresh_wrapper_class));
-        $html .= Helper::tag_open('a',array('href'=>'javascript:void(0)','class'=>'captcha-refresh-btn','data-id'=>$token.'-'.CAPTCHA_NAME.'-image'));
+        $html .= Helper::tag_open('a',array('href'=>'javascript:void(0)','class'=>'captcha-refresh-btn','data-id'=>$captcha_image_id));
         $html .= $refresh_value;
         $html .= Helper::tag_close('a');
         $html .= Helper::tag_close('div');

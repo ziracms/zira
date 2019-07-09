@@ -1547,15 +1547,19 @@
     
     zira_init_xhr_form = function() {
         $('form.xhr-form').each(function() {
-            if ($(this).find('.g-recaptcha').length>0 || $(this).find('.g-recaptcha3').length>0 || $(this).find('.captcha-refresh-btn').length>0) return true;
-            $(this).bind('xhr-submit-error', function(e, response){
-                if (!response) return;
-                if (typeof response.captcha_error != "undefined" && response.captcha_error) {
-                    zira_confirm(t('Too many requests. Page need to be reloaded. Reload now ?'), function(){
-                       window.location.reload(); 
-                    });
-                }
-            });
+            zira_bind_xhr_form_errors($(this));
+        });
+    };
+
+    zira_bind_xhr_form_errors = function(form) {
+        if ($(form).find('.g-recaptcha').length>0 || $(form).find('.g-recaptcha3').length>0 || $(form).find('.captcha-refresh-btn').length>0) return true;
+        $(form).bind('xhr-submit-error', function(e, response){
+            if (!response) return;
+            if (typeof response.captcha_error != "undefined" && response.captcha_error) {
+                zira_confirm(t('Too many requests. Page need to be reloaded. Reload now ?'), function(){
+                    window.location.reload();
+                });
+            }
         });
     };
     
@@ -1570,6 +1574,7 @@
                 if ($(img).length==0) return;
                 var src = $(img).attr('src');
                 $(img).attr('src', src+Math.floor(Math.random()*10));
+                $(this).parent('.input-group-addon').parent('.input-group').children('input').val('');
             }));
             $(this).parents('form.xhr-form').submit(zira_bind(this, function(){
                 window.setTimeout(zira_bind(this, function(){

@@ -55,9 +55,12 @@ class Chat extends Widget {
         ) {
             return;
         }
+
+        $is_sidebar = $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_LEFT || $this->getPlaceholder() == Zira\View::VAR_SIDEBAR_RIGHT;
         
         if (!$chat->check_auth || Zira\User::isAuthorized()) {
             $form = new \Chat\Forms\Submit();
+            if ($is_sidebar) $form->setCaptchaWrapClass('col-sm-12');
             $form->setValues(array(
                 'chat_id' => $chat->id
             ));
