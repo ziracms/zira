@@ -11,7 +11,7 @@
         }
         if ($('.container #content .forum-list a.forum-rating').length>0) {
             zira_init_forum_rating();
-            zira_init_forum_code();
+            window.setTimeout(zira_init_forum_code, 1000);
         }
         if ($('.container #content .messages-panel .reply-btn').length>0) {
             zira_init_forum_reply_btn();
@@ -318,21 +318,32 @@
             $('body').append('<a href="javascript:void(0)" title="'+t('Copy')+'" class="forum-code-copy" id="forum-code-copy-'+index+'"><span class="glyphicon glyphicon-copy"></span></a>');
             $('#forum-code-copy-'+index).css({
                 top: $(this).offset().top,
-                left: $(this).offset().left+$(this).outerWidth() - $('#forum-code-copy-'+index).width()
+                left: $(this).offset().left+$(this).outerWidth() - $('#forum-code-copy-'+index).width(),
+                visibility: 'hidden'
             }).click(function(){
                 var id = $(this).attr('id');
                 var code = $('#'+id+'-code').text();
                 copyStringToClipboard(code);
+            }).hover(function(){
+                $(this).css('visibility', 'visible');
+            }, function(){
+                $(this).css('visibility', 'hidden');
             });
-        });
-        $(window).resize(function(){
-            $('.forum-code-copy').each(function(){
+            
+            $(this).hover(function(){
                 var id = $(this).attr('id');
-                var code = $('#'+id+'-code');
-                $(this).css({
-                    top: $(code).offset().top,
-                    left: $(code).offset().left+$(code).outerWidth() - $(this).width()
+                if (id.substr(-5) != '-code') return;
+                var cid = id.substr(0, id.length-5);
+                $('#'+cid).css({
+                    top: $(this).offset().top,
+                    left: $(this).offset().left+$(this).outerWidth() - $('#'+cid).width(),
+                    visibility: 'visible'
                 });
+            }, function(){
+                var id = $(this).attr('id');
+                if (id.substr(-5) != '-code') return;
+                var cid = id.substr(0, id.length-5);
+                $('#'+cid).css('visibility', 'hidden');
             });
         });
     };
