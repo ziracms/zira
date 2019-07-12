@@ -21,6 +21,7 @@ class Settings extends Dash\Models\Model {
         $form = new Chat\Forms\Settings();
         if ($form->isValid()) {
             $options = array(
+                'chat_trash_time'=>'int',
                 'chat_captcha'=>'int',
                 'chat_captcha_users'=>'int'
             );

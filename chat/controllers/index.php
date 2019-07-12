@@ -63,6 +63,9 @@ class Index extends Zira\Controller {
             $message .= Zira\Helper::tag_open('p', array('class'=>'chat-message-text parse-content'.$mclass)).$micon;
             $message .= Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($row->content)));
             $message .= Zira\Helper::tag_close('p');
+            $message .= Zira\Helper::tag_open('div', array('class'=>'chat-message-date'));
+            $message .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-time')).' '.(Zira\Helper::isCurrentDay(strtotime($row->date_created)) ? date('H:i', strtotime($row->date_created)) : date(Zira\Config::get('date_format'), strtotime($row->date_created)));
+            $message .= Zira\Helper::tag_close('div');
             $message .= Zira\Helper::tag_close('div');
             $response['messages'][]=$message;
             $response['last_id'] = $row->id;

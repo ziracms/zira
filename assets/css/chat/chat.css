@@ -37,6 +37,12 @@
     font-style: italic;
     margin-bottom: 0;
 }
+.widget-chat-wrapper .widget-chat-messages .chat-message-date {
+    margin-left: 60px;
+    font-style: italic;
+    margin-bottom: 0;
+    font-size: 80%;
+}
 .widget-chat-wrapper .widget-chat-messages::-webkit-scrollbar {
     width: 10px;
     background-color: transparent;
@@ -59,4 +65,9 @@
 }
 .widget-chat-wrapper .widget-chat-messages::-webkit-resizer {
     background-color: rgba(0,0,0,.1);
+}
+.widget-chat-wrapper .chat-info {
+    margin: 0;
+    border-radius: 0;
+    padding: 10px;
 }

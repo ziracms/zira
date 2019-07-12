@@ -35,6 +35,7 @@ class Settings extends Form
     protected function _render()
     {
         $html = $this->open();
+        $html .= $this->input(Locale::tm('Message retention period (in days)', 'chat').'*', 'chat_trash_time');
         $html .= $this->checkbox(Locale::t('Always show CAPTCHA'), 'chat_captcha', null, false);
         $html .= $this->checkbox(Locale::t('Always show CAPTCHA for authorized users'), 'chat_captcha_users', null, false);
         $html .= $this->close();
@@ -45,6 +46,6 @@ class Settings extends Form
     {
         $validator = $this->getValidator();
 
-        
+        $validator->registerNumber('chat_trash_time',0,null,true,Locale::t('Invalid value "%s"',Locale::tm('Message retention period (in days)', 'chat')));
     }
 }

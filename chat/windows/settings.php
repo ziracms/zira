@@ -44,6 +44,7 @@ class Settings extends Dash\Windows\Window {
         $configs = Zira\Config::getArray();
 
         $form = new \Chat\Forms\Settings();
+        if (!array_key_exists('chat_trash_time', $configs)) $configs['chat_trash_time'] = floor(\Chat\Chat::TRASH_TIME / 86400);
         if (!array_key_exists('chat_captcha', $configs)) $configs['chat_captcha'] = 1;
         if (!array_key_exists('chat_captcha_users', $configs)) $configs['chat_captcha_users'] = 1;
         $form->setValues($configs);

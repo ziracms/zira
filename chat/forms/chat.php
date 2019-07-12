@@ -42,6 +42,7 @@ class Chat extends Form
             $html .= $this->selectDropdown(Locale::t('Widget placeholder').'*','placeholder',$placeholders);
         }
         $html .= $this->input(Locale::t('Title').'*', 'title');
+        $html .= $this->textarea(Locale::tm('Information message', 'chat'), 'info', array('rows'=>4));
         $html .= $this->selectDropdown(Locale::tm('Visibility', 'chat'), 'visible_group', array_merge(array('0'=>Locale::tm('Visible for everybody', 'chat')), Zira\Models\Group::getArray()));
         $html .= $this->input(Locale::tm('Refresh timeout', 'chat').' ('.Locale::tm('sec.', 'chat').')'.'*', 'refresh_delay', array('placeholder'=>Locale::tm('in seconds', 'chat')));
         $html .= $this->checkbox(Locale::tm('Check authentication', 'chat'), 'check_auth', null, false);
@@ -57,6 +58,10 @@ class Chat extends Form
         $validator->registerNoTags('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
         $validator->registerUtf8('title', Locale::t('Invalid value "%s"',Locale::t('Title')));
 
+        $validator->registerText('info', null, false, Locale::t('Invalid value "%s"',Locale::tm('Information message', 'chat')));
+        $validator->registerNoTags('info', Locale::t('Invalid value "%s"',Locale::tm('Information message', 'chat')));
+        $validator->registerUtf8('info', Locale::t('Invalid value "%s"',Locale::tm('Information message', 'chat')));
+        
         $validator->registerNumber('refresh_delay', 1, null, true, Locale::t('Invalid value "%s"',Locale::tm('Refresh timeout', 'chat')));
 
         $validator->registerCustom(array(get_class(), 'checkGroup'), 'visible_group', Locale::t('Invalid value "%s"',Locale::tm('Visibility', 'chat')));

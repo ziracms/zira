@@ -183,6 +183,12 @@ class Helper {
         $url = str_ireplace('%2F', '/', $url);
         return $url;
     }
+
+    public static function isCurrentDay($time) {
+        $day_str = date(Config::get('date_format'), $time);
+        $current_str = date(Config::get('date_format'), time());
+        return $day_str == $current_str;
+    }
     
     public static function backtrace($return=false) {
         $backtrace = debug_backtrace();

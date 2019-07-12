@@ -25,5 +25,7 @@ return array(
     'Incorrect message length' => 'Некорректная длина сообщения',
     'Chat database cleaned up' => 'База чата почищена',
     'Your message' => 'Ваше сообщение',
-    'Chat settings' => 'Настройки чата'
+    'Chat settings' => 'Настройки чата',
+    'Information message' => 'Информационное сообщение',
+    'Message retention period (in days)' => 'Срок хранения сообщений (в днях)'
 );

@@ -21,6 +21,7 @@ class Chat extends Table {
         return array(
             'id' => Field::primary(),
             'title' => Field::string(true),
+            'info' => Field::text(),
             'check_auth' => Field::int(true, true, 0),
             'visible_group' => Field::int(true, true, 0),
             'refresh_delay' => Field::int(true, true, 0),

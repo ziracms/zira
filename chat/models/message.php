@@ -61,9 +61,12 @@ class Message extends Orm {
     }
     
     public static function cleanUp() {
+        $trash_days = intval(Zira\Config::get('chat_trash_time', floor(\Chat\Chat::TRASH_TIME / 86400)));
+        if ($trash_days <= 0) return;
+        $trash_time = $trash_days * 86400;
         self::getCollection()
                 ->delete()
-                ->where('date_created','<',date('Y-m-d H:i:s', time()-\Chat\Chat::TRASH_TIME))
+                ->where('date_created','<',date('Y-m-d H:i:s', time()-$trash_time))
                 ->execute();
     }
 }

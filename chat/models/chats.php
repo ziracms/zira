@@ -27,7 +27,14 @@ class Chats extends Dash\Models\Model {
             } else {
                 $chat = new Chat\Models\Chat();
             }
+
+            $info = $form->getValue('info');
+            $info = str_replace("\r",'',$info);
+            $info = str_replace("\n","\r\n",$info);
+            $info = Zira\Helper::utf8Entity(html_entity_decode($info));
+            
             $chat->title = $form->getValue('title');
+            $chat->info = $info;
             $chat->visible_group = (int)$form->getValue('visible_group');
             $refresh_delay = (int)$form->getValue('refresh_delay');
             $chat->refresh_delay = $refresh_delay ? $refresh_delay : Chat\Chat::DEFAULT_DELAY;
