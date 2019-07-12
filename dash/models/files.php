@@ -255,7 +255,7 @@ class Files extends Model {
         if (empty($name) || strpos($name,DIRECTORY_SEPARATOR)!==false) {
             return array('error' => Zira\Locale::t('An error occurred'));
         }
-        if (substr($name,-4)=='.php') {
+        if (strtolower(substr($name,-4))=='.php') {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
         $path = ROOT_DIR . DIRECTORY_SEPARATOR . $file;

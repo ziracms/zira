@@ -49,7 +49,7 @@ class Upload extends Form {
         if (!Permission::check(Permission::TO_UPLOAD_FILES) && !Permission::check(Permission::TO_UPLOAD_IMAGES)) return false;
         if (is_array($files) && isset($files['name']) && is_array($files['name'])) {
             foreach($files['name'] as $name) {
-                if (substr($name, -4)=='.php') return false;
+                if (strtolower(substr($name, -4))=='.php') return false;
             }
         }
         return true;
