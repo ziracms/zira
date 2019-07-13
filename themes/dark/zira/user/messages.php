@@ -46,7 +46,7 @@
 <?php echo t('User deleted'); ?>
 <?php endif; ?>
 &nbsp; &nbsp;
-<div class="message-date"><span class="glyphicon glyphicon-time"></span> <?php echo Zira\Helper::html(date(Zira\Config::get('date_format'), strtotime($item->creation_date))) ?></div>
+<div class="message-date"><span class="glyphicon glyphicon-time"></span> <?php echo Zira\Helper::datetime(strtotime($item->creation_date)) ?></div>
 </div>
 <div class="message-avatar">
 <?php if ($item->username): ?>

@@ -189,6 +189,10 @@ class Helper {
         $current_str = date(Config::get('date_format'), time());
         return $day_str == $current_str;
     }
+
+    public static function datetime($time) {
+        return (self::isCurrentDay($time) ? date('H:i', $time) : date(Config::get('date_format'), $time));
+    }
     
     public static function backtrace($return=false) {
         $backtrace = debug_backtrace();

@@ -36,7 +36,7 @@
 </span>
 <p class="comment-text parse-content"><?php echo Zira\Content\Parse::bbcode(Zira\Helper::nl2br(Zira\Helper::html($comment->content))) ?></p>
 <span class="comment-info">
-<span class="glyphicon glyphicon-time"></span> <?php echo date(Zira\Config::get('date_format'), strtotime($comment->creation_date)) ?> &nbsp;
+<span class="glyphicon glyphicon-time"></span> <?php echo Zira\Helper::datetime(strtotime($comment->creation_date)) ?> &nbsp;
 <a href="javascript:void(0)" class="comment-rating comment-like" data-value="1" data-type="comment" data-id="<?php echo intval($comment->id) ?>" data-token="<?php echo Zira\User::getToken() ?>" data-url="<?php echo Zira\Helper::url('poll') ?>">
 <span class="glyphicon glyphicon-thumbs-up"></span>
 <span class="rating-value"><?php echo intval($comment->likes); ?></span>
