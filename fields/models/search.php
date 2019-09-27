@@ -57,7 +57,7 @@ class Search extends Orm {
         if ($values === null) $values = '';
         if (!is_array($values)) $values = array($values);
         foreach($values as $keyword) {
-            if (strlen($keyword)>255) $keyword = substr($keyword, 0, 255);
+            if (mb_strlen($keyword, "UTF-8")>255) $keyword = mb_substr($keyword, 0, 255, "UTF-8");
             $index = new self();
             $index->field_item_id = $field_id;
             $index->keyword = $keyword;
