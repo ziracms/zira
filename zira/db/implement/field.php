@@ -18,6 +18,15 @@ interface Field {
     public static function tinyint($not_null = false, $unsigned = false, $default = null);
 
     /**
+    * Smallint type
+    * @param bool|false $not_null
+    * @param bool|false $unsigned
+    * @param null $default
+    * @return string
+    */
+    public static function smallint($not_null = false, $unsigned = false, $default = null);
+    
+    /**
      * Integer type
      * @param bool|false $not_null
      * @param bool|false $unsigned

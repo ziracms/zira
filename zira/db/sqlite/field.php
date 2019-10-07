@@ -10,6 +10,8 @@ namespace Zira\Db\Sqlite;
 abstract class Field implements \Zira\Db\Implement\Field {
     const FIELD_TYPE_TINYINT = 'INTEGER';
     const FIELD_TYPE_TINYINT_NOT_NULL = 'INTEGER NOT NULL';
+    const FIELD_TYPE_SMALLINT = 'INTEGER';
+    const FIELD_TYPE_SMALLINT_NOT_NULL = 'INTEGER NOT NULL';
     const FIELD_TYPE_INT = 'INTEGER';
     const FIELD_TYPE_INT_NOT_NULL = 'INTEGER NOT NULL';
     const FIELD_TYPE_PRIMARY = 'INTEGER PRIMARY KEY';
@@ -36,6 +38,15 @@ abstract class Field implements \Zira\Db\Implement\Field {
             return self::FIELD_TYPE_TINYINT_NOT_NULL . $default;
         } else {
             return self::FIELD_TYPE_TINYINT . $default;
+        }
+    }
+
+    public static function smallint($not_null = false, $unsigned = false, $default = null) {
+        $default = self::buildDefault($default);
+        if ($not_null) {
+            return self::FIELD_TYPE_SMALLINT_NOT_NULL . $default;
+        } else {
+            return self::FIELD_TYPE_SMALLINT . $default;
         }
     }
 

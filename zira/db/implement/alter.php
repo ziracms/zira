@@ -21,6 +21,12 @@ interface Alter {
     public function getFieldsToAdd();
 
     /**
+    * Returns table fields to be changed
+    * @return array
+    */
+    public function getFieldsToChange();
+    
+    /**
      * Returns table indexes to be added
      * @return array
      */

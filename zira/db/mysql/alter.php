@@ -22,6 +22,10 @@ abstract class Alter implements \Zira\Db\Implement\Alter {
         return array();
     }
 
+    public function getFieldsToChange() {
+        return array();
+    }
+
     public function getKeysToAdd() {
         return array();
     }
@@ -43,6 +47,10 @@ abstract class Alter implements \Zira\Db\Implement\Alter {
         
         foreach((array)$this->getKeysToDrop() as $name) {
             $fields[]='DROP KEY '.Db::escapeIdentifier($name);
+        }
+
+        foreach((array)$this->getFieldsToChange() as $name=>$type) {
+            $fields[]= 'CHANGE '.Db::escapeIdentifier($name).' '.Db::escapeIdentifier($name).' '.$type;
         }
         
         foreach((array)$this->getFieldsToAdd() as $name=>$type) {

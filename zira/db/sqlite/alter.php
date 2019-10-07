@@ -22,6 +22,11 @@ abstract class Alter implements \Zira\Db\Implement\Alter {
         return array();
     }
 
+    // not supported by sqlite
+    public function getFieldsToChange() {
+        return array();
+    }
+
     public function getKeysToAdd() {
         return array();
     }

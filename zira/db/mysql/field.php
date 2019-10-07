@@ -12,6 +12,10 @@ abstract class Field implements \Zira\Db\Implement\Field {
     const FIELD_TYPE_TINYINT_NOT_NULL = 'TINYINT(4) NOT NULL';
     const FIELD_TYPE_TINYINT_UNSIGNED = 'TINYINT(3) UNSIGNED';
     const FIELD_TYPE_TINYINT_UNSIGNED_NOT_NULL = 'TINYINT(3) UNSIGNED NOT NULL';
+    const FIELD_TYPE_SMALLINT = 'SMALLINT(6)';
+    const FIELD_TYPE_SMALLINT_NOT_NULL = 'SMALLINT(6) NOT NULL';
+    const FIELD_TYPE_SMALLINT_UNSIGNED = 'SMALLINT(5) UNSIGNED';
+    const FIELD_TYPE_SMALLINT_UNSIGNED_NOT_NULL = 'SMALLINT(5) UNSIGNED NOT NULL';
     const FIELD_TYPE_INT = 'INT(11)';
     const FIELD_TYPE_INT_NOT_NULL = 'INT(11) NOT NULL';
     const FIELD_TYPE_INT_UNSIGNED = 'INT(10) UNSIGNED';
@@ -52,6 +56,19 @@ abstract class Field implements \Zira\Db\Implement\Field {
             return self::FIELD_TYPE_TINYINT_UNSIGNED . $default;
         } else {
             return self::FIELD_TYPE_TINYINT . $default;
+        }
+    }
+
+    public static function smallint($not_null = false, $unsigned = false, $default = null) {
+        $default = self::buildDefault($default);
+        if ($not_null && $unsigned) {
+            return self::FIELD_TYPE_SMALLINT_UNSIGNED_NOT_NULL . $default;
+        } else if ($not_null) {
+            return self::FIELD_TYPE_SMALLINT_NOT_NULL . $default;
+        } else if ($unsigned) {
+            return self::FIELD_TYPE_SMALLINT_UNSIGNED . $default;
+        } else {
+            return self::FIELD_TYPE_SMALLINT . $default;
         }
     }
 
