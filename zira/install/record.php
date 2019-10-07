@@ -45,6 +45,7 @@ class Record extends Table {
             'comments_enabled' => Field::tinyint(false, true),
             'creation_date' => Field::datetime(true),
             'modified_date' => Field::datetime(true),
+            'publish_date' => Field::date(),
             'published' => Field::tinyint(true, true, 0),
             'front_page' => Field::tinyint(true, true, 0),
             'rating' => Field::int(true, false, 0),
