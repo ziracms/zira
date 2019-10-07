@@ -105,6 +105,7 @@
     margin-top: 0px;
     padding-top: 10px;
     border-top: #fefefe;
+    overflow: hidden;
 }
 .forum-list.forum-top-list.list .list-item .list-info-wrapper {
     background-color: #EFEFF0;
@@ -114,6 +115,16 @@
 .forum-list.list .list-item .list-info a:visited {
     color: #505559;
     font-size: 14px;
+}
+.forum-list.list .list-item .list-info-pager {
+    float: right;
+}
+.forum-list.list .list-item .list-info.link-pager {
+    margin-right: 0px;
+}
+.forum-list.list .list-item .list-info.link-pager a:link,
+.forum-list.list .list-item .list-info.link-pager a:visited {
+    padding: 0px 4px;
 }
 .forum-list.list .list-item .list-info.author {
     float: none;

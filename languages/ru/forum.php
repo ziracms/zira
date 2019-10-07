@@ -84,5 +84,6 @@ return array(
     'Sort threads' => 'Сортировать темы',
     'by creation date' => 'по дате создания',
     'by modification date' => 'по дате изменения',
-    'Last page' => 'Последняя страница'
+    'Last page' => 'Последняя страница',
+    'Page' => 'Страница'
 );

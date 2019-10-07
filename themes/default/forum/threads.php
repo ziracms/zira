@@ -38,8 +38,23 @@
 <span class="list-info author"><span class="glyphicon glyphicon-user"></span> <?php echo Zira\User::generateUserProfileLink($item->last_user_id, $item->user_firstname, $item->user_secondname, $item->user_username) ?></span>
 <?php endif; ?>
 <span class="list-info counter" title="<?php echo Zira\Helper::html(tm('Messages: %s', 'forum', $item->messages)) ?>"><span class="glyphicon glyphicon-comment"></span> <?php echo Zira\Helper::html($item->messages) ?></span>
-<?php if (!empty($limit)): ?>
-<span class="list-info link"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::tag('a', tm('Last page', 'forum'), array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.(ceil($item->messages/$limit))))) ?></span>
+<?php if (!empty($limit) && $item->messages > $limit): ?>
+<span class="list-info-pager" title="<?php echo tm('Page', 'forum'); ?>"><span class="glyphicon glyphicon-share-alt"></span>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', 1, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page=1'))) ?></span>
+<?php $pages = ceil($item->messages/$limit); ?>
+<?php if ($pages > 1) : ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', 2, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page=2'))) ?></span>
+<?php endif; ?>
+<?php if ($pages-1 > 2) : ?>
+<?php if ($pages-1 > 3) : ?>
+<span class="list-info link-pager">..</span>
+<?php endif; ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', $pages-1, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.($pages-1)))) ?></span>
+<?php endif; ?>
+<?php if ($pages > 2) : ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', $pages, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.($pages)))) ?></span>
+<?php endif; ?>
+</span>
 <?php endif; ?>
 </div>
 </li>
@@ -65,8 +80,23 @@
 <span class="list-info author"><span class="glyphicon glyphicon-user"></span> <?php echo Zira\User::generateUserProfileLink($item->last_user_id, $item->user_firstname, $item->user_secondname, $item->user_username) ?></span>
 <?php endif; ?>
 <span class="list-info counter" title="<?php echo Zira\Helper::html(tm('Messages: %s', 'forum', $item->messages)) ?>"><span class="glyphicon glyphicon-comment"></span> <?php echo Zira\Helper::html($item->messages) ?></span>
-<?php if (!empty($limit)): ?>
-<span class="list-info link"><span class="glyphicon glyphicon-share-alt"></span> <?php echo Zira\Helper::tag('a', tm('Last page', 'forum'), array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.(ceil($item->messages/$limit))))) ?></span>
+<?php if (!empty($limit) && $item->messages > $limit): ?>
+<span class="list-info-pager" title="<?php echo tm('Page', 'forum'); ?>"><span class="glyphicon glyphicon-share-alt"></span>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', 1, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page=1'))) ?></span>
+<?php $pages = ceil($item->messages/$limit); ?>
+<?php if ($pages > 1) : ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', 2, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page=2'))) ?></span>
+<?php endif; ?>
+<?php if ($pages-1 > 2) : ?>
+<?php if ($pages-1 > 3) : ?>
+<span class="list-info link-pager">..</span>
+<?php endif; ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', $pages-1, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.($pages-1)))) ?></span>
+<?php endif; ?>
+<?php if ($pages > 2) : ?>
+<span class="list-info link-pager"><?php echo Zira\Helper::tag('a', $pages, array('href'=>Zira\Helper::html(Zira\Helper::url(Forum\Models\Topic::generateUrl($item)).'?page='.($pages)))) ?></span>
+<?php endif; ?>
+</span>
 <?php endif; ?>
 </div>
 </li>
