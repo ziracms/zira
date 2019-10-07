@@ -190,7 +190,7 @@ class Console extends Model {
             $exec=trim($exec);
             if (substr($exec,-1)!=';') $exec.=';';
             $is_select=true;
-            if (strpos(strtolower($exec),'insert')===0 || strpos(strtolower($exec),'update')===0 || strpos(strtolower($exec),'delete')===0) $is_select = false;
+            if (strpos(strtolower($exec),'insert')===0 || strpos(strtolower($exec),'update')===0 || strpos(strtolower($exec),'delete')===0 || strpos(strtolower($exec),'alter')===0) $is_select = false;
             $stmt = Zira\Db\Db::query($exec);
             if ($is_select) {
                 $result = array();
