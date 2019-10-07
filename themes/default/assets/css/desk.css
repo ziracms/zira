@@ -141,6 +141,7 @@ body.dashboard-window-sidebar-resizing {
     font-size: 14px;
     color: #080808;
     transition: background-color 50ms linear, box-shadow 50ms linear;
+    will-change: left, top;
     /*
     -webkit-touch-callout: none;
     -webkit-user-select: none;
