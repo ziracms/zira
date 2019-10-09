@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordimages.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Recordimages extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-th';
     protected static $_title = 'Gallery';
-
-    protected $_help_url = 'zira/help/record-gallery';
 
     public $page = 0;
     public $pages = 0;

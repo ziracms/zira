@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * field.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Fields\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Field extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Records extra field';
-
-    protected $_help_url = 'zira/help/extra-field';
 
     public $item;
 

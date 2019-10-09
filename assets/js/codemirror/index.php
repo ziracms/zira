@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * codemirror.gzip.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 error_reporting(0);

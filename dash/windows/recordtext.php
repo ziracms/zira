@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordtext.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 
 class Recordtext extends Editor {
     const DRAFT_INTERVAL = 30000;
-
-    protected $_help_url = 'zira/help/notepad';
 
     public $item;
 

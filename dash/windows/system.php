@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * system.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -15,8 +15,6 @@ class System extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-info-sign';
     protected static $_title = 'System';
 
-    protected $_help_url = 'zira/help/system';
-
     public function init() {
         $this->setIconClass(self::$_icon_class);
         $this->setTitle(Zira\Locale::t(self::$_title));
@@ -26,11 +24,9 @@ class System extends Window {
 
     protected function getLogo() {
         return Zira\Helper::tag_open('div', array('style'=>'width:180px;margin:20px auto')).
+                Zira\Helper::tag_open('a', array('href'=>'https://github.com/ziracms/zira', 'target'=>'_blank', 'style'=>'display:block;text-align:center;text-decoration:none')).
                 Zira\Helper::tag_short('img', array('src'=>Zira\Helper::imgUrl('zira.png'),'width'=>70,'height'=>70,'alt'=>'Zira')).
                 Zira\Helper::tag('span', 'Zira', array('style'=>'font-size:40px;vertical-align:middle')).
-                Zira\Helper::tag_open('a', array('href'=>'http://dro1d.ru', 'target'=>'_blank', 'style'=>'display:block;text-align:center;color:#472053')).
-                Zira\Helper::tag('span',null,array('class'=>'glyphicon glyphicon-copyright-mark')).
-                ' dro1d.ru'.
                 Zira\Helper::tag_close('a').
                 Zira\Helper::tag_close('div');
     }

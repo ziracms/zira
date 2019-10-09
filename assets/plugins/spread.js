@@ -1,7 +1,7 @@
 /**
  * Zira project
  * Spread effect for website
- * (c)2017 dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  * 
  * Usage:
  * 1. $('#container').ziraSpread([options]);

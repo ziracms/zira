@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * logs.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Logs extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-alert';
     protected static $_title = 'Error logs';
-
-    protected $_help_url = 'zira/help/logs';
 
     public $page = 0;
     public $pages = 0;

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * usersettings.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Usersettings extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-user';
     protected static $_title = 'User settings';
-
-    protected $_help_url = 'zira/help/user-settings';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

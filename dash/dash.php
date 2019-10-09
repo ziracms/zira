@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * dash.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash;
@@ -793,11 +793,6 @@ class Dash {
             $this->registerWindowClass('dashWidgetsWindow', 'Dash\Windows\Widgets', 'Dash\Models\Widgets');
             $this->registerWindowClass('dashWidgetWindow', 'Dash\Windows\Widget', 'Dash\Models\Widget');
         }
-    }
-
-    public static function getBugReportUrl() {
-        return 'h'.'t'. 't'.  'p'.':'.'/'. '/'.'d'.'r'.  'o'.'1' .'d'.'.' .'r'.'u'. '/'.'f'. 'o'.
-                'r'. 'u'.'m'.'/'. 'c'.'o'.'m'.'p' .'o'.    's'. 'e'.'/' .'1';
     }
     
     public static function loadDashLanguage() {

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * categorymeta.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Categorymeta extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-search';
     protected static $_title = 'SEO tags';
-
-    protected $_help_url = 'zira/help/category-seo';
 
     public $item;
 

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * stats.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Stat\Windows;
@@ -15,8 +15,6 @@ use Zira\Permission;
 class Stats extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-signal';
     protected static $_title = 'Statistics';
-
-    //protected $_help_url = 'zira/help/stats';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

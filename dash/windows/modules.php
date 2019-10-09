@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * modules.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Modules extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-certificate';
     protected static $_title = 'Modules';
-
-    protected $_help_url = 'zira/help/modules';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

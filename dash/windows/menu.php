@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * menu.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Menu extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-link';
     protected static $_title = 'Menu';
-
-    protected $_help_url = 'zira/help/menu';
 
     public $item;
 

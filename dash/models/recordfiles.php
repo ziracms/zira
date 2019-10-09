@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordfiles.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Dash\Models;

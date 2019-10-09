@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * eformfields.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Eform\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Eformfields extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-list';
     protected static $_title = 'Form fields';
-
-    protected $_help_url = 'zira/help/eform-fields';
 
     public $item;
 

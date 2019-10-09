@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * mailing.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -15,8 +15,6 @@ class Mailing extends Window {
 
     protected static $_icon_class = 'glyphicon glyphicon-envelope';
     protected static $_title = 'Mailing';
-
-    protected $_help_url = 'zira/help/mailing';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

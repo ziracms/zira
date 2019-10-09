@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * carousel.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Carousel extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-film';
     protected static $_title = 'Carousel';
-
-    //protected $_help_url = 'zira/help/carousel';
 
     public $item;
 

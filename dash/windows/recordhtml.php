@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordhtml.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -11,7 +11,6 @@ use Zira;
 
 class Recordhtml extends Recordtext {
     public $item;
-    protected $_help_url = 'zira/help/tinymce';
 
     public function init() {
         parent::init();

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * field.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Fields\Models;

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * category.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Forum\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Category extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-folder-close';
     protected static $_title = 'Forum category';
-
-    protected $_help_url = 'zira/help/forum-category';
 
     public $item;
 

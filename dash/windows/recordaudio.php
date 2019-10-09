@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordaudio.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Dash\Windows\Files;
 class Recordaudio extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-music';
     protected static $_title = 'Audio';
-
-    protected $_help_url = 'zira/help/record-audio';
 
     public $item;
 

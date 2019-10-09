@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * record.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Record extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-file';
     protected static $_title = 'Record';
-
-    protected $_help_url = 'zira/help/record';
 
     public $item;
 

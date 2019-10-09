@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * files.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Forum\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Files extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-folder-open';
     protected static $_title = 'Attached files';
-
-    protected $_help_url = 'zira/help/forum-files';
 
     public $page = 0;
     public $pages = 0;

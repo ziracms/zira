@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * cleaner.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Chat\Cron;

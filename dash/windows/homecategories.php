@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * homecategories.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Homecategories extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-sort';
     protected static $_title = 'Category sorting';
-
-    protected $_help_url = 'zira/help/home-categories';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

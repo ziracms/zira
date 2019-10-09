@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * files.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Files extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-hdd';
     protected static $_title = 'File Manager';
-
-    protected $_help_url = 'zira/help/file-manager';
 
     public $page = 0;
     public $pages = 0;

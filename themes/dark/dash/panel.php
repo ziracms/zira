@@ -6,7 +6,7 @@ if (!empty($panelItems)) {
     echo '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dashpanel" aria-expanded="false">';
     echo '<span class="sr-only">'.t('Dashboard').'</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
     echo '</button>';
-    echo '<a class="navbar-brand" href="http://dro1d.ru" target="_blank"><img src="'.Zira\Helper::assetUrl('images/zira.png').'" width="16" height="16" alt="Zira" class="glyphicon" />Zira</a>';
+    echo '<a class="navbar-brand" href="https://github.com/ziracms/zira" target="_blank"><img src="'.Zira\Helper::assetUrl('images/zira.png').'" width="16" height="16" alt="Zira" class="glyphicon" />Zira</a>';
     echo '</div>'."\r\n";
     echo '<div id="dashpanel" class="dashpanel-wrapper collapse navbar-collapse">'."\r\n";
     $stack = array();
@@ -66,12 +66,6 @@ if (!empty($panelItems)) {
         echo '</li>';
         echo '</ul>'."\r\n";
     }
-
-    echo "\t" . '<ul class="nav navbar-nav navbar-right report">';
-    echo '<li>';
-    echo '<a href="'.Zira\Helper::html(Dash\Dash::getBugReportUrl()).'" target="_blank"><span class="glyphicon glyphicon-comment"></span> ' . Zira\Locale::t('Report a bug') . '</a>';
-    echo '</li>';
-    echo '</ul>'."\r\n";
 
     echo '</div>'."\r\n";
     echo '</nav>'."\r\n";

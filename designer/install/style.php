@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * style.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Designer\Install;

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * usermenu.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Zira\Widgets;

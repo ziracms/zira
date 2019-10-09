@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordvideos.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Dash\Windows\Files;
 class Recordvideos extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-facetime-video';
     protected static $_title = 'Video';
-
-    protected $_help_url = 'zira/help/record-videos';
 
     public $item;
 

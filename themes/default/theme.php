@@ -2,7 +2,7 @@
 /**
  * Zira project
  * theme.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  * 
  * This file can be used to modify the contents before output
  * 

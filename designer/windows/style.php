@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * style.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Designer\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Style extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-picture';
     protected static $_title = 'Style';
-
-    protected $_help_url = 'zira/help/style';
 
     public $item;
 

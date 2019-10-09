@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * categorysettings.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -13,8 +13,6 @@ use Zira\Permission;
 class Categorysettings extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-option-vertical';
     protected static $_title = 'Records settings';
-
-    protected $_help_url = 'zira/help/category-settings';
 
     public $item;
 

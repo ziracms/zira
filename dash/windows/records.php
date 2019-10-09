@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * categories.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -19,8 +19,6 @@ class Records extends Window {
 
     protected static $_icon_class = 'glyphicon glyphicon-book';
     protected static $_title = 'Records';
-
-    protected $_help_url = 'zira/help/records';
 
     public $search;
     public $page = 0;

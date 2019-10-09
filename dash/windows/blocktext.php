@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * editor.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -12,7 +12,6 @@ use Zira\Permission;
 
 class Blocktext extends Editor {
     public $item;
-    protected $_help_url = 'zira/help/notepad';
 
     public function init() {
         parent::init();

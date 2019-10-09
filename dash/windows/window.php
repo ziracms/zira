@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * window.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -35,7 +35,6 @@ abstract class Window {
     protected $_extra_js = '';
     protected $_save_action_enabled = false;
     protected $_delete_action_enabled = false;
-    protected $_help_url = null;
     
     protected $_options = array(
             'top' => null,
@@ -82,7 +81,6 @@ abstract class Window {
             'data' => null,
             'nocache' => false,
             'singleInstance' => false,
-            'help_url' => null,
             'classic_mode' => false
     );
 
@@ -864,9 +862,6 @@ abstract class Window {
         }
         if (empty($this->_options['sidebarItems']) && !empty($this->_default_sidebar)) {
             $this->setSidebarItems($this->_default_sidebar);
-        }
-        if ($this->_help_url) {
-            //$this->setOption('help_url', $this->_help_url);
         }
         $js = 'var '.$this->getJSClassName().' = function(data) {'."\r\n\t";
         $js .= 'desk_window('.'\''.$this->getJSClassName().'\','."\r\n".$this->generateOptions().', data);'."\r\n";

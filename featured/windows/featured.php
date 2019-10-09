@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * featured.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Featured\Windows;
@@ -15,8 +15,6 @@ use Zira\Permission;
 class Featured extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-star';
     protected static $_title = 'Featured records';
-
-    protected $_help_url = 'zira/help/featured-records';
     
     public function init() {
         $this->setIconClass(self::$_icon_class);

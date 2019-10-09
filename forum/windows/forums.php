@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * forums.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Forum\Windows;
@@ -15,8 +15,6 @@ use Zira\Permission;
 class Forums extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-comment';
     protected static $_title = 'Forums';
-
-    protected $_help_url = 'zira/help/forums';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

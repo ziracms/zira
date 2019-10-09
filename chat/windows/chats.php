@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * chat.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Chat\Windows;
@@ -15,8 +15,6 @@ use Zira\Permission;
 class Chats extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-transfer';
     protected static $_title = 'Chats';
-
-    protected $_help_url = 'zira/help/chats';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

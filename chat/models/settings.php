@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * settings.php
- * (c)2019 http://dro1d.ru
+ * (c)2019 https://github.com/ziracms/zira
  */
 
 namespace Chat\Models;

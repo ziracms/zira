@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * settings.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Holiday\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Settings extends Dash\Windows\Window {
     protected static $_icon_class = 'glyphicon glyphicon-cog';
     protected static $_title = 'Holidays settings';
-
-    //protected $_help_url = 'zira/help/holidays-settings';
 
     public $item;
 

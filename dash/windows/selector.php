@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * selector.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -10,8 +10,6 @@ namespace Dash\Windows;
 use Zira;
 
 class Selector extends Files {
-    protected $_help_url = 'zira/help/file-manager';
-
     public function init() {
         $this->setSingleInstance(true);
         parent::init();

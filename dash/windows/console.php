@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * console.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -12,8 +12,6 @@ use Zira;
 class Console extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-console';
     protected static $_title = 'Terminal';
-
-    protected $_help_url = 'zira/help/console';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

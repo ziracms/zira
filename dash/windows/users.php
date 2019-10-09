@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * users.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Users extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-user';
     protected static $_title = 'Users';
-
-    protected $_help_url = 'zira/help/users';
 
     public $search;
     public $page = 0;

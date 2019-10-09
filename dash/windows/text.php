@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * text.php
- * (c)2015 http://dro1d.ru
+ * (c)2015 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -11,8 +11,6 @@ use Zira;
 use Zira\Permission;
 
 class Text extends Editor {
-    protected $_help_url = 'zira/help/notepad';
-
     public function init() {
         parent::init();
 

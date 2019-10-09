@@ -1,6 +1,6 @@
 /**
  * Zira project
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 (function($){

@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * requests.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Stat\Windows;
@@ -22,8 +22,6 @@ class Requests extends Dash\Windows\Window {
 
     protected  $limit = 50;
     protected $total = 0;
-
-    //protected $_help_url = 'zira/help/stat-requests';
 
     public function init() {
         $this->setIconClass(self::$_icon_class);

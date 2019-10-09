@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * cache.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Zira\Permission;
 class Cache extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-flash';
     protected static $_title = 'Cache';
-
-    protected $_help_url = 'zira/help/cache';
 
     public $page = 0;
     public $pages = 0;

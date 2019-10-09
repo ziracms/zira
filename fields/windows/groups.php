@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * groups.php
- * (c)2018 http://dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 
 namespace Fields\Windows;
@@ -15,8 +15,6 @@ use Zira\Permission;
 class Groups extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-tags';
     protected static $_title = 'Extra field groups';
-
-    protected $_help_url = 'zira/help/extra-field-groups';
     
     public function init() {
         $this->setIconClass(self::$_icon_class);

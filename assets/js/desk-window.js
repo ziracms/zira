@@ -122,7 +122,6 @@ var DashWindow = function(id, className, options) {
         'load': null,
         'data': null,
         'nocache': false,
-        'help_url': null,
         'classic_mode': false
     };
 
@@ -1629,10 +1628,10 @@ DashWindow.prototype.createMenu = function() {
     
     windowItem.items.push({
         'action': 'about',
-        'icon_class': 'glyphicon glyphicon'+'\u002d'+'\u0063'+'\u006f'+'\u0070'+'\u0079'+'\u0072'+'\u0069'+'\u0067'+'\u0068'+'\u0074'+'\u002d'+'\u006d'+'\u0061'+'\u0072'+'\u006b',
-        'title': '\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075',
+        'icon_class': '\u0067'+'\u006c'+'\u0079'+'\u0070'+'\u0068'+'\u0069'+'\u0063'+'\u006f'+'\u006e'+'\u0020'+'\u0067'+'\u006c'+'\u0079'+'\u0070'+'\u0068'+'\u0069'+'\u0063'+'\u006f'+'\u006e'+'\u002d'+'\u0067'+'\u006c'+'\u006f'+'\u0062'+'\u0065',
+        'title': '\u005a'+'\u0069'+'\u0072'+'\u0061'+'\u0020'+'\u0043'+'\u004d'+'\u0053',
         'callback': function() {
-            window.location.href = '\u0068'+'\u0074'+'\u0074'+'\u0070'+'\u003a'+'\u002f'+'\u002f'+'\u0064'+'\u0072'+'\u006f'+'\u0031'+'\u0064'+'\u002e'+'\u0072'+'\u0075';
+            window.location.href = '\u0068'+'\u0074'+'\u0074'+'\u0070'+'\u0073'+'\u003a'+'\u002f'+'\u002f'+'\u0067'+'\u0069'+'\u0074'+'\u0068'+'\u0075'+'\u0062'+'\u002e'+'\u0063'+'\u006f'+'\u006d'+'\u002f'+'\u007a'+'\u0069'+'\u0072'+'\u0061'+'\u0063'+'\u006d'+'\u0073'+'\u002f'+'\u007a'+'\u0069'+'\u0072'+'\u0061';
         }
     });
     
@@ -1649,23 +1648,7 @@ DashWindow.prototype.createMenu = function() {
         }
     });
 
-    var helpItem = {
-        'title': this.t('Help'),
-        'callback': function() {
-            var url = 'h'+'t' +'t'+'p' +':'+'/'+'/' +'d'+'r'+'o' +'1'+'d' +'.'+'r'+'u'+'/';
-            url += this.options.help_url;
-            try {
-                desk_web_browser(url);
-            } catch(err) {
-                window.open(url);
-            }
-        }
-    };
-
     this.options.menuItems.push(windowItem);
-    if (this.options.help_url) {
-        this.options.menuItems.push(helpItem);
-    }
 
     var menu = '';
     menu += '<div class="dropdown">';

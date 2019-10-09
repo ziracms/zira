@@ -1,7 +1,7 @@
 /**
  * Fullscreen Carousel Slider
  * Zira Project
- * (c)2018 dro1d.ru
+ * (c)2018 https://github.com/ziracms/zira
  */
 (function($){
     function ziraCarouselSlider(elem, opts) {

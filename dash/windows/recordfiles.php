@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * recordfiles.php
- * (c)2017 http://dro1d.ru
+ * (c)2017 https://github.com/ziracms/zira
  */
 
 namespace Dash\Windows;
@@ -14,8 +14,6 @@ use Dash\Windows\Files;
 class Recordfiles extends Window {
     protected static $_icon_class = 'glyphicon glyphicon-file';
     protected static $_title = 'Files';
-
-    protected $_help_url = 'zira/help/record-files';
 
     public $item;
 

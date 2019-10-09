@@ -2,7 +2,7 @@
 /**
  * Zira project.
  * operate.php
- * (c)2016 http://dro1d.ru
+ * (c)2016 https://github.com/ziracms/zira
  */
 
 if (!defined('ZIRA_INSTALL')) exit;
@@ -111,10 +111,7 @@ try {
                             Zira\Helper::tag('p', Zira\Locale::t('Zira CMS is a lightweight, flexible and easy to use content management system.')).
                             Zira\Helper::tag('p', Zira\Locale::t('Installing Zira CMS, you get the most commonly used features right out of the box.')).
                             Zira\Helper::tag('p', Zira\Locale::t('No need for extra downloads and plugins setup.')).
-                            Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no development skills required!')).
-                            Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
-                            Zira\Helper::tag_open('p').Zira\Locale::t('If you have any questions, feel free to %s.',Zira\Helper::tag('a',Zira\Locale::t('contact us'), array('href'=>'http://dro1d.ru/contact','target'=>'_blank'))).Zira\Helper::tag_close('p').
-                            Zira\Helper::tag('p', Zira\Locale::t('Don\'t forget to visit our forum and share your impressions with other users.'))
+                            Zira\Helper::tag('p', Zira\Locale::t('Zira CMS brings desktop experience to your website - no development skills required!'))
                             ;
         $record->language = $language;
         $record->access_check = 0;
@@ -250,7 +247,7 @@ try {
         $head = '/**'."\r\n".
                 ' * Zira CMS'."\r\n".
                 ' * config.php'."\r\n".
-                ' * (c)'.date('Y').' http://dro1d.ru'."\r\n".
+                ' * (c)'.date('Y').' https://github.com/ziracms/zira'."\r\n".
                 ' */'."\r\n";
         $info = '/**'."\r\n".
                 ' * Defined during installation on '.date('Y-m-d')."\r\n".
@@ -348,7 +345,6 @@ if (!$error) {
                         Zira\Helper::tag('p', Zira\Locale::t('Zira CMS is successfully installed.')).
                         Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
                         Zira\Helper::tag('p', Zira\Locale::t('For security reasons turn off write permissions of %s file.', 'config.php')).
-                        Zira\Helper::tag_open('p').Zira\Locale::t('Please visit our %s for detailed information.', Zira\Helper::tag('a', Zira\Locale::t('website'), array('href'=>'http://dro1d.ru','target'=>'_blank'))).Zira\Helper::tag_close('p').
                         Zira\Helper::tag_open('p').'&nbsp;'.Zira\Helper::tag_close('p').
                         Zira\Helper::tag_open('p').Zira\Locale::t('Go to your new %s!', Zira\Helper::tag('a', Zira\Locale::t('website'), array('href'=>$data['base_url']))).Zira\Helper::tag_close('p'),
             'script' => 'zira_modal_progress_hide();'
