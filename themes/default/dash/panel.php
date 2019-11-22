@@ -6,7 +6,7 @@ if (!empty($panelItems)) {
     echo '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dashpanel" aria-expanded="false">';
     echo '<span class="sr-only">'.t('Dashboard').'</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>';
     echo '</button>';
-    echo '<a class="navbar-brand" href="https://github.com/ziracms/zira" target="_blank"><img src="'.Zira\Helper::assetUrl('images/zira.png').'" width="16" height="16" alt="Zira" class="glyphicon" />Zira</a>';
+    echo '<a class="navbar-brand" href="https://ziracms.github.io" target="_blank"><img src="'.Zira\Helper::assetUrl('images/zira.png').'" width="16" height="16" alt="Zira" class="glyphicon" />Zira</a>';
     echo '</div>'."\r\n";
     echo '<div id="dashpanel" class="dashpanel-wrapper collapse navbar-collapse">'."\r\n";
     $stack = array();

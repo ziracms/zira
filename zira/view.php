@@ -537,7 +537,7 @@ class View {
         if (Config::get('dev_copyright', 1) && Router::getModule()!='dash') {
             self::addMeta(array('name'=>'generator','content'=>'Zira CMS'));
             if (!empty($c)) $c .= ' ';
-            $c .= Locale::t('Powered by %s', Helper::tag('a', 'Zira CMS', array('href' => 'https://github.com/ziracms/zira')));
+            $c .= Locale::t('Powered by %s', Helper::tag('a', 'Zira CMS', array('href' => 'https://ziracms.github.io')));
         }
         self::addHTML(Helper::tag_open('p').$c.Helper::tag_close('p'), self::VAR_FOOTER);
     }
