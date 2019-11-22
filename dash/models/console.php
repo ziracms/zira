@@ -68,7 +68,7 @@ class Console extends Model {
         }
 
         if (empty($cd) && !is_string($code) && $code==0) $cd = exec('pwd');
-        if (!empty($result) && (string)$code!='secret') $result = '<span style="color:'.($code==0 ? '#617B86' : '#BF39A1').'">'.nl2br(Zira\Helper::html($result)).'</span>';
+        if (!empty($result) && (string)$code!='secret') $result = '<span style="color:'.($code==0 ? '#617B86' : '#BF39A1').'">'.str_replace("\t","&nbsp;&nbsp;&nbsp;&nbsp;",nl2br(Zira\Helper::html($result))).'</span>';
 
         return array(
             'exec' => '',

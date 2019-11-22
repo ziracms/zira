@@ -22,7 +22,7 @@ class Files extends Window {
     protected $total = 0;
 
     const THUMBS_FOLDER = 'filemanager';
-    protected $_hidden_folders = array('users', 'thumbs');
+    //protected $_hidden_folders = array('users', 'thumbs');
 
     public function init() {
         $this->setIconClass(self::$_icon_class);
@@ -323,7 +323,7 @@ class Files extends Window {
         foreach ($items as $item) {
             if ($item=='.' || $item=='..') continue;
             if ($root==$default_root && $item==self::THUMBS_FOLDER) continue;
-            if ($root==$default_root && in_array($item, $this->_hidden_folders)) continue;
+            //if ($root==$default_root && in_array($item, $this->_hidden_folders)) continue;
             if (is_dir($root_dir . DIRECTORY_SEPARATOR . $root . DIRECTORY_SEPARATOR . $item)) $folders[]=$item;
             else $files[]=$item;
         }
