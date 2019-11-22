@@ -15,6 +15,8 @@ class System extends Model {
     public function dump() {
         if (!Permission::check(Permission::TO_EXECUTE_TASKS)) return;
 
+        Zira\Db\Db::begin();
+        
         $installed_tables = Zira\Db\Db::getTables();
         $available_modules = Dash\Windows\Modules::getAvailableModules(false);
 
@@ -38,6 +40,8 @@ class System extends Model {
         }
 
         echo '-- End of dump '."\r\n";
+
+        Zira\Db\Db::rollback();
     }
 
     public function tree() {
