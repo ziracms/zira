@@ -346,4 +346,12 @@ class Records extends Dash\Controller {
             Zira\Page::render($response);
         }
     }
+
+    public function autocompletetag() {
+        if (Zira\Request::isPost()) {
+            $text = Zira\Request::post('text');
+            $response = $this->getWindowModel()->autoCompleteTag($text);
+            Zira\Page::render($response);
+        }
+    }
 }

@@ -37,6 +37,17 @@ class Recordmeta extends Form
         $html .= $this->input(Locale::t('Window title'), 'meta_title');
         $html .= $this->input(Locale::t('Keywords'), 'meta_keywords');
         $html .= $this->textarea(Locale::t('Description'), 'meta_description');
+
+        $html .= $this->hidden('record_tags', array('class'=>'dash_form_record_tags_hidden'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'dash_form_record_tags_wrapper', 'style'=>'position:relative'));
+        $html .= $this->input(Locale::t('Tags'),'tags_input',array('class'=>'form-control dash_form_record_tags_input'));
+        $html .= Zira\Helper::tag('span', null, array('class'=>'glyphicon glyphicon-plus-sign add', 'style'=>'position:absolute;top:24px;right:20px;cursor:pointer'));
+        $html .= Zira\Helper::tag_open('div', array('class'=>'form_group'));
+        $html .= Zira\Helper::tag('div', null, array('class'=>'col-sm-4'));
+        $html .= Zira\Helper::tag('div', null, array('class'=>'col-sm-8 dash_form_record_tags_container'));
+        $html .= Zira\Helper::tag_close('div');
+        $html .= Zira\Helper::tag_close('div');
+        
         $html .= $this->close();
         return $html;
     }

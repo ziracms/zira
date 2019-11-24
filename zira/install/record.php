@@ -31,6 +31,7 @@ class Record extends Table {
             'meta_title' => Field::string(),
             'meta_keywords' => Field::string(),
             'meta_description' => Field::text(),
+            'tags' => Field::string(),
             'language' => Field::string(true),
             'access_check' => Field::tinyint(true, true, 0),
             'gallery_check' => Field::tinyint(true, true, 0),

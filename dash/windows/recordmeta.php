@@ -25,11 +25,15 @@ class Recordmeta extends Window {
     }
 
     public function create() {
-        $this->setOnLoadJSCallback(
-            $this->createJSCallback(
-                'desk_window_form_init(this);'
-            )
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_recordmeta_load, this);'
         );
+
+        $this->addVariables(array(
+            'dash_recordmeta_tags_autocomplete_url' => Zira\Helper::url('dash/records/autocompletetag')
+        ));
+
+        $this->includeJS('dash/recordmeta');
     }
 
     public function load() {
@@ -49,8 +53,16 @@ class Recordmeta extends Window {
         if (!$record->loaded()) {
             return array('error'=>Zira\Locale::t('An error occurred'));
         }
+        $tags_str = '';
+        $tagsArr = Zira\Models\Tag::getCollection()->where('record_id', '=', $record->id)->get();
+        $co = 0;
+        foreach($tagsArr as $tagObj) {
+            if ($co > 0) $tags_str .= ',';
+            $tags_str .= $tagObj->tag;
+            $co++;
+        }
         $this->setTitle(Zira\Locale::t(self::$_title) .' - ' . $record->title);
-        $form->setValues($record->toArray());
+        $form->setValues(array_merge($record->toArray(), array('record_tags' => $tags_str)));
 
         $this->setBodyContent($form);
 

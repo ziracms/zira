@@ -168,6 +168,9 @@ class Records extends Model {
                 
                 // deleting search index
                 Zira\Models\Search::clearRecordIndex($record);
+
+                // deleting tags
+                Zira\Models\Tag::removeRecordTags($record->id);
                 
                 // running delete hook
                 self::runRecordDeleteHook($record);
@@ -480,6 +483,20 @@ class Records extends Model {
 
         Zira\Models\Search::indexRecord($new);
 
+        // copying record tags
+        $tags = Zira\Models\Tag::getCollection()
+            ->where('record_id','=',$record->id)
+            ->order_by('id', 'asc')
+            ->get();
+        
+        foreach($tags as $tag) {
+            $tagObj = new Zira\Models\Tag();
+            $tagObj->record_id = $new->id;
+            $tagObj->tag = $tag->tag;
+            $tagObj->language = $tag->language;
+            $tagObj->save();
+        }
+
         // running copy hook
         self::runRecordCopyHook($record, $new);
                 
@@ -641,6 +658,30 @@ class Records extends Model {
         //$info[] = '<span class="glyphicon glyphicon-time"></span> ' . date(Zira\Config::get('date_format'), strtotime($record->creation_date));
 
         return array('info'=>$info, 'slides_count'=>$record->slides_count, 'images_count'=>$record->images_count, 'audio_count'=>$record->audio_count, 'video_count'=>$record->video_count, 'files_count'=>$record->files_count);
+    }
+
+    public function autoCompleteTag($search) {
+        if (empty($search))  return array();
+        if (!Permission::check(Permission::TO_CREATE_RECORDS) && !Permission::check(Permission::TO_EDIT_RECORDS)) {
+            return array('error'=>Zira\Locale::t('Permission denied'));
+        }
+        
+        $tags = Zira\Models\Tag::getCollection()
+                    ->select('tag')
+                    ->where('tag', 'like', $search.'%')
+                    ->group_by('tag')
+                    ->limit(5)
+                    ->get();
+        
+        $results = array();
+        foreach($tags as $tag) {
+            $text = $tag->tag;
+            $results []= array(
+                'text' => $text
+            );
+        }
+        
+        return $results;
     }
     
     public static function registerRecordsPublishHook($object, $method) {

@@ -47,5 +47,5 @@ return array(
     'site_description' => '',
     'site_window_title' => true,
     'config_version' => 1,
-    'db_version' => 5
+    'db_version' => 6
 );
