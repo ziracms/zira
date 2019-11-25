@@ -162,7 +162,7 @@ var dash_recordmeta_tags_show = function(container, hidden) {
     for (var i=0; i<hidden_arr.length; i++) {
         if ($.inArray(hidden_arr[i], added) >= 0) continue;
         added.push(hidden_arr[i]);
-        $(container).append('<span class="label label-primary" style="display:inline-block;font-size:100%;font-weight:normal;margin:0px 5px 5px 0px;"><span class="text">'+hidden_arr[i]+'</span> <span class="glyphicon glyphicon-remove-circle remove" style="top:2px;cursor:pointer"></span></span> ');
+        $(container).append('<span class="label label-primary" style="display:inline-block;font-size:100%;font-weight:normal;margin:0px 5px 5px 0px;"><span class="text">'+hidden_arr[i].replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span> <span class="glyphicon glyphicon-remove-circle remove" style="top:2px;cursor:pointer"></span></span> ');
     }
     $(container).find('.remove').click(function(){
         var label = $(this).parent();

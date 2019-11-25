@@ -228,6 +228,7 @@ class Page extends Zira\Page {
         if ($files_co > 0) static::setFiles($files, $access_files);
                     
         if ($comments_enabled) static::setComments($row, $preview);
+        if ($row->tags) static::setTags($row->tags);
 
         Zira\View::addParser();
 

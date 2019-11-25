@@ -112,6 +112,8 @@ class Search extends Orm {
             if ($category_id>0 && $forum_id>0) {
                 $query->and_where('forum_id', '=', $forum_id);
             }
+            $query->group_by('topic_id');
+            $query->order_by('id', 'ASC');
             $query->limit($limit+$offset);
             $query->close_query();
             $added []= $keyword;

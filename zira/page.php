@@ -37,6 +37,7 @@ class Page {
     const VIEW_PLACEHOLDER_FILES_DATA = 'files';
     const VIEW_PLACEHOLDER_COMMENTS_DATA = 'comments';
     const VIEW_PLACEHOLDER_CONTENT_VIEW_DATA = 'contentView';
+    const VIEW_PLACEHOLDER_TAGS_DATA = 'tags';
     
     const VIEW_PLACEHOLDER_SLIDER_VIEW = 'zira/slider';
     const VIEW_PLACEHOLDER_GALLERY_VIEW = 'zira/gallery';
@@ -44,6 +45,7 @@ class Page {
     const VIEW_PLACEHOLDER_AUDIO_VIEW = 'zira/audio';
     const VIEW_PLACEHOLDER_FILES_VIEW = 'zira/files';
     const VIEW_PLACEHOLDER_COMMENTS_VIEW = 'zira/comments';
+    const VIEW_PLACEHOLDER_TAGS_VIEW = 'zira/tags';
 
     protected static $_view = 'page';
     protected static $_layout = null;
@@ -297,6 +299,17 @@ class Page {
             self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA][$module] = array();
         }
         self::$_placeholders_data[self::VIEW_PLACEHOLDER_CONTENT_VIEW_DATA][$module] = array('data'=>$data, 'view' => $view);
+    }
+
+    public static function setTags($tagsStr) {
+        $tagsArr = explode(',', $tagsStr);
+        $tags = array();
+        foreach($tagsArr as $tag) {
+            $tag = trim($tag);
+            if (empty($tag)) continue;
+            $tags []= $tag;
+        }
+        self::$_placeholders_data[self::VIEW_PLACEHOLDER_TAGS_DATA] = array('tags'=>$tags);
     }
 
     public static function encodeURL($url) {

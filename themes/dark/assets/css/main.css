@@ -2552,6 +2552,25 @@ ul.vote-results li .vote-result {
     box-shadow: 0px 0px 4px #555;
 }
 
+.tags-wrapper {
+    text-align: right;
+    font-style: italic;
+    font-size: 90%;
+    margin: 20px 10px 30px;
+}
+.tags-wrapper .tags-list {
+    list-style-type: none;
+    padding: 0;
+}
+.tags-wrapper .tags-list li {
+    margin: 0px 4px 16px 0px;
+    display: inline-block;
+}
+.tags-wrapper .tags-list li a:link,
+.tags-wrapper .tags-list li a:visited {
+    text-decoration: none;
+}
+
 /** mobile **/
 @media (max-width: 1199px) {
     .grid-category-wrapper.grid-col-2 .list-item,

@@ -53,4 +53,42 @@ class Tag extends Orm {
             $tagObj->save();
         }
     }
+
+    public static function getRecords($text, $limit = 10, $offset = 0) {
+        $text = trim($text);
+        if (empty($text) || strpos($text, ' ')!==false) return array();
+        $text = mb_strtolower($text, CHARSET);
+        
+        $query = self::getCollection();
+        $query->select('record_id');
+        $query->where('tag','=',$text);
+        $query->and_where('language','=',\Zira\Locale::getLanguage());
+        $query->group_by('record_id');
+        $query->order_by('id', 'ASC');
+        $query->limit($limit, $offset);
+        $rows = $query->get();
+        
+        $results = array();
+        foreach($rows as $row) {
+            $results[]=$row->record_id;
+        }
+        
+        if (empty($results)) return array();
+        
+//        return Record::getCollection()
+//                        ->select('id', 'name','author_id','title','description','thumb','creation_date','rating','comments')
+//                        ->left_join(Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
+//                        ->where('id','in',$results)
+//                        ->get();
+
+        $query = Record::getCollection();
+        foreach($results as $index=>$result) {
+            if ($index>0) $query->union();
+            $query->select('id', 'name', 'author_id', 'title', 'description', 'thumb', 'creation_date', 'rating', 'comments')
+                    ->left_join(Category::getClass(), array('category_name' => 'name', 'category_title' => 'title'))
+                    ->where('id', '=', $result);
+        }
+        
+        return $query->get();
+    }
 }

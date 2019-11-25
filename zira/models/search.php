@@ -92,6 +92,8 @@ class Search extends Orm {
             $query->select('record_id');
             $query->where('language','=',Locale::getLanguage());
             $query->and_where('keyword','like',$keyword.'%');
+            $query->group_by('record_id');
+            $query->order_by('id', 'ASC');
             $query->limit($limit+$offset);
             $query->close_query();
             $added []= $keyword;
@@ -144,6 +146,8 @@ class Search extends Orm {
             $query->open_query();
             $query->where('language','=',Locale::getLanguage());
             $query->and_where('keyword','like',$keyword.'%');
+            $query->group_by('record_id');
+            $query->order_by('id', 'ASC');
             $query->limit($limit);
             $query->close_query();
             $added []= $keyword;

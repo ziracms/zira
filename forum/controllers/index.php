@@ -839,7 +839,7 @@ class Index extends Zira\Controller {
         $is_ajax = (int)Zira\Request::get('ajax');
         $forum_id = (int)Zira\Request::get('forum_id');
 
-        $limit = 10;
+        $limit = Zira\Config::get('records_limit', 10);
         $form = new Forum\Forms\Search();
         $form->setExtended(true);
 

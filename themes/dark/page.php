@@ -47,6 +47,7 @@
 <?php endif; ?>
 </div>
 <?php endif; ?>
+<?php renderTags(); ?>
 <?php if (isset($pagination)) echo $pagination; ?>
 </article>
 </main>

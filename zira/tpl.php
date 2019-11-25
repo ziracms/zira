@@ -75,6 +75,12 @@ function renderContentView() {
     }
 }
 
+function renderTags() {
+    if (!empty(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_TAGS_DATA])) {
+        render(Zira\View::$data[Zira\Page::VIEW_PLACEHOLDER_TAGS_DATA], Zira\Page::VIEW_PLACEHOLDER_TAGS_VIEW);
+    }
+}
+
 function renderContentWidgets() {
     if (Zira\View::$content_widgets_rendered) return;
     Zira\View::$content_widgets_rendered = true;

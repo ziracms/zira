@@ -153,6 +153,7 @@ class Zira {
         Router::addRoute('comment','zira/comments/comment');
         Router::addRoute('comments','zira/comments/index');
         Router::addRoute('search','zira/search/index');
+        Router::addRoute('tags','zira/search/tags');
         Router::addRoute('sitemap','zira/index/map');
         Router::addRoute('rss','zira/xml/rss');
         Router::addRoute('contact','zira/contact/index');

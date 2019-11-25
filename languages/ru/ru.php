@@ -156,5 +156,7 @@ return array(
     'DD.MM.YYYY' => 'ДД.ММ.ГГГГ',
     'Permission denied' => 'Нет прав доступа',
     'Anti-Bot is not active.' => 'Анти-Бот не активен.',
-    'Anti-Bot is active.' => 'Анти-Бот активен.'
+    'Anti-Bot is active.' => 'Анти-Бот активен.',
+    'Tags' => 'Теги',
+    'Tag' => 'Тег'
 );

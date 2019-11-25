@@ -17,7 +17,7 @@ class Search extends Zira\Controller {
         $offset = (int)Zira\Request::get('offset');
         $is_ajax = (int)Zira\Request::get('ajax');
         $is_simple = (int)Zira\Request::get('simple');
-        $limit = $is_simple ? 3 : 10;
+        $limit = $is_simple ? 3 : Zira\Config::get('records_limit', 10);
         $form = new Zira\Forms\Search('search-form-extended', true);
         $form->setExtended(true);
         $data = array();
@@ -64,6 +64,53 @@ class Search extends Zira\Controller {
 //            Zira\View::setRenderDbWidgets(false);
             
             Zira\View::addPlaceholderView(Zira\View::VAR_CONTENT_TOP, array('form' => $form, 'found' => $found), 'zira/search');
+            Zira\Page::render($data);
+        }
+    }
+
+    public function tags() {
+        $offset = (int)Zira\Request::get('offset');
+        $is_ajax = (int)Zira\Request::get('ajax');
+        $text = trim(Zira\Request::get('text'));
+        $limit = Zira\Config::get('records_limit', 10);
+        $data = array();
+        $found = false;
+        if (!empty($text) && mb_strlen($text, CHARSET)<=255 && $offset>=0) {
+            $records = Zira\Models\Tag::getRecords($text, $limit + 1, $offset);
+            if (!empty($records)) {
+                $found = true;
+                $_data = array(
+                    Zira\Page::VIEW_PLACEHOLDER_CLASS => 'search-list'.($is_ajax ? ' xhr-list' : ''),
+                    Zira\Page::VIEW_PLACEHOLDER_RECORDS => $records,
+                    Zira\Page::VIEW_PLACEHOLDER_SETTINGS => array(
+                        'limit' => $limit,
+                        'text' => $text,
+                        'offset' => $offset,
+                        'simple' => false
+                    )
+                );
+                
+                if (!$is_ajax) {
+                    Zira\Page::setContentView($_data, 'zira/tags-results');
+                    $data[Zira\Page::VIEW_PLACEHOLDER_TITLE] = Zira\Locale::t('Tag').': '.$text;
+                    $data[Zira\Page::VIEW_PLACEHOLDER_CONTENT] = '';
+                } else {
+                    Zira\View::renderView($_data, 'zira/tags-results');
+                }
+            } else {
+                Zira\Response::notFound();
+            }
+        } else {
+            Zira\Response::notFound();
+        }
+        
+        if (!$is_ajax) {
+            Zira\Page::addTitle(Zira\Locale::t('Tag').': '.$text);
+            Zira\Page::addBreadcrumb('tags', Zira\Locale::t('Tags'));
+            
+//            Zira\Page::setLayout(Zira\View::LAYOUT_ALL_SIDEBARS);
+//            Zira\View::setRenderDbWidgets(false);
+            
             Zira\Page::render($data);
         }
     }

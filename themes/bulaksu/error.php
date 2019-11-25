@@ -5,4 +5,4 @@
 <div><?php echo $content; ?></div>
 <?php endif; ?>
 </div>
-<a href="https://github.com/ziracms/zira" class="label label-info">Zira</a>
+<a href="https://ziracms.github.io" class="label label-info">Zira</a>
