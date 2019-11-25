@@ -2093,7 +2093,6 @@ a.scroll-top.visible:visited {
 .tags-wrapper {
     text-align: right;
     font-style: italic;
-    font-size: 90%;
     margin: 20px 10px 30px;
 }
 .tags-wrapper .tags-list {
@@ -2107,6 +2106,16 @@ a.scroll-top.visible:visited {
 .tags-wrapper .tags-list li a:link,
 .tags-wrapper .tags-list li a:visited {
     text-decoration: none;
+}
+
+.tags-cloud-wrapper .tags-cloud-list {
+    list-style-type: none;
+    padding: 14px 0px;
+    margin: 0;
+}
+.tags-cloud-wrapper .tags-cloud-list li {
+    display: inline-block;
+    margin: 0px 7px 7px 0px;
 }
 
 /** mobile **/

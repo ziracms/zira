@@ -448,6 +448,5 @@ return array(
     'Descending' => 'Убывающая',
     'Min. score for reCaptcha' => 'Мин. оценка для reCaptcha',
     'Always show CAPTCHA for not authorized users' => 'Всегда показывать CAPTCHA для неавторизованных пользователей',
-    'Always show CAPTCHA for authorized users' => 'Всегда показывать CAPTCHA для авторизованных пользователей',
-    'Tags' => 'Теги'
+    'Always show CAPTCHA for authorized users' => 'Всегда показывать CAPTCHA для авторизованных пользователей'
 );
