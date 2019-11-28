@@ -1,0 +1,5 @@
+[meta]
+name = Push notifications
+description = Send push notifications to subscribed users
+author = Zira
+version = 1.0

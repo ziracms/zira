@@ -24,6 +24,7 @@ const CACHE_DIR = 'cache';
 const UPLOADS_DIR = 'uploads';
 const USERS_DIR = 'users';
 const LOG_DIR = 'log';
+const VENDOR_DIR = 'vendor';
 const CHARSET = 'utf-8';
 const MYSQL_CHARSET = 'utf8';
 const SQLITE_CHARSET = 'UTF-8';

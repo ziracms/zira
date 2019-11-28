@@ -12,6 +12,7 @@ use Dash\Dash;
 class Zira {
     const VERSION = '1.4.1';
     private static $_instance;
+    private static $_vendor_autoload_enabled = false;
 
     public static function getInstance() {
         if (self::$_instance === null) {
@@ -95,6 +96,16 @@ class Zira {
                 View::render(array(), 'offline', View::LAYOUT_ALL_SIDEBARS);
             }
         }
+    }
+
+    public static function enableVendorAutoload() {
+        if (self::$_vendor_autoload_enabled) return;
+        self::$_vendor_autoload_enabled = true;
+        require_once ROOT_DIR . DIRECTORY_SEPARATOR . VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
+    }
+
+    public static function isVendorAutoloadEnabled() {
+        return self::$_vendor_autoload_enabled;
     }
     
     public static function isOnline() {
