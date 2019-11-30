@@ -34,13 +34,14 @@ class Subscription extends Table {
 
     public function getKeys() {
         return array(
-            'active' => array('language', 'active')
+            'active' => array('language', 'active'),
+            'uid' => array('user_id', 'anonymous_id')
         );
     }
 
     public function getUnique() {
         return array(
-            'uid' => array('anonymous_id')
+            'endpoint' => array('endpoint')
         );
     }
 

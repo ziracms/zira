@@ -26,4 +26,11 @@ class Dash extends \Dash\Controller {
             Zira\Page::render($response);
         }
     }
+
+    public function send() {
+        if (Zira\Request::isPost()) {
+            $response = $this->getWindowModel()->send();
+            Zira\Page::render($response);
+        }
+    }
 }

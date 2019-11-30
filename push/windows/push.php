@@ -12,6 +12,7 @@ use Zira;
 use Zira\Permission;
 
 class Push extends Dash\Windows\Window {
+    const LIMIT = 1;
     protected static $_icon_class = 'glyphicon glyphicon-cloud-upload';
     protected static $_title = 'Push notifications';
 
@@ -22,35 +23,28 @@ class Push extends Dash\Windows\Window {
         $this->setSelectionLinksEnabled(false);
         $this->setBodyViewListVertical(true);
         $this->setSidebarEnabled(false);
-        
-        $this->setDeleteActionEnabled(false);
     }
 
     public function create() {
-//        $this->addDefaultMenuDropdownItem(
-//            $this->createMenuDropdownSeparator()
-//        );
-//        $this->addDefaultMenuDropdownItem(
-//            $this->createMenuDropdownItem(Zira\Locale::tm('Show banner','holiday'), 'glyphicon glyphicon-eye-open', 'desk_call(dash_holidays_preview, this);', 'edit', true)
-//        );
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::tm('Start sending', 'push'), Zira\Locale::tm('Start sending', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_push_begin, this);', 'begin', true, false)
+        );
         
-//        $this->addDefaultContextMenuItem(
-//            $this->createContextMenuSeparator()
-//        );
-//        $this->addDefaultContextMenuItem(
-//            $this->createContextMenuItem(Zira\Locale::tm('Show banner','holiday'), 'glyphicon glyphicon-eye-open', 'desk_call(dash_holidays_preview, this);', 'edit', true)
-//        );
-        
-//        $this->addDefaultToolbarItem(
-//            $this->createToolbarButton(null, Zira\Locale::tm('Holidays settings', 'holiday'), 'glyphicon glyphicon-cog', 'desk_call(dash_holidays_settings, this);', 'settings', false, true)
-//        );
-        
-//        $this->addDefaultOnLoadScript('desk_call(dash_holidays_load, this);');
-        
-//        $this->addVariables(array(
-//            'dash_holiday_settings_wnd' => Dash\Dash::getInstance()->getWindowJSName(\Holiday\Windows\Settings::getClass())
-//        ));
+        $this->addDefaultOnLoadScript(
+            'desk_call(dash_push_push_load, this);'
+        );
 
+        $this->setData(array(
+            'subscribers' => 0,
+            'offset' => 0,
+            'language' => ''
+        ));
+        
+        $this->addStrings(array(
+            'Start sending',
+            'Successfully finished. Notifications sent:'
+        ));
+        
         $this->includeJS('push/dash');
     }
 
@@ -60,7 +54,46 @@ class Push extends Dash\Windows\Window {
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
 
+        $subscribers = \Push\Models\Subscription::getCollection()
+                                                ->count()
+                                                ->where('active','=',1)
+                                                ->get('co');
+
+        $data = array();
+        $form = new \Push\Forms\Send();
+        $form->setValues($data);
+        $this->setBodyContent($form);
+
+        $lang_subscribers = array();
+        if (count(Zira\Config::get('languages'))>1) {
+            $menu = array(
+                //$this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown())
+            );
+            
+            $langMenu = array();
+            foreach(Zira\Locale::getLanguagesArray() as $lang_key=>$lang_name) {
+                if (!empty($language) && $language==$lang_key) $icon = 'glyphicon glyphicon-ok';
+                else $icon = 'glyphicon glyphicon-filter';
+                $langMenu []= $this->createMenuDropdownItem($lang_name, $icon, 'desk_call(dash_push_push_language, this, element);', 'language', false, array('language'=>$lang_key));
+
+                $lang_subscribers[$lang_key] = \Push\Models\Subscription::getCollection()
+                                                ->count()
+                                                ->where('active','=',1)
+                                                ->and_where('language', '=', $lang_key)
+                                                ->get('co');
+                
+            }
+            $menu []= $this->createMenuItem(Zira\Locale::t('Languages'), $langMenu);
+            
+            $this->setMenuItems($menu);
+        }
         
-//        $this->setBodyItems($items);
+        
+        $this->setData(array(
+            'subscribers' => $subscribers,
+            'lang_subscribers' => $lang_subscribers,
+            'offset' => 0,
+            'language' => ''
+        ));
     }
 }

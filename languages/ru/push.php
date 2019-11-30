@@ -12,5 +12,11 @@ return array(
     'Push notifications subscribe button' => 'Кнопка подписки на push-уведомления',
     'Subscribe to notifications' => 'Подписаться на уведомления',
     'Subscription' => 'Подписка',
-    'Unsubscribe from notifications' => 'Отписаться от уведомлений'
+    'Unsubscribe from notifications' => 'Отписаться от уведомлений',
+    'Push notifications require HTTPS' => 'Для работы push-уведомлений требуется HTTPS',
+    'Push notifications require the latest PHP version' => 'Для работы push-уведомлений требуется последняя версия PHP',
+    'Notifications are not supported' => 'Уведомления не поддерживаются',
+    'Send' => 'Отправить',
+    'Start sending' => 'Начать рассылку',
+    'Successfully finished. Notifications sent:' => 'Успешно завершено. Отправлено уведомлений:'
 );

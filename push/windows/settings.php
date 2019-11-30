@@ -32,6 +32,19 @@ class Settings extends Dash\Windows\Window {
         $this->addDefaultToolbarItem(
             $this->createToolbarButton(Zira\Locale::tm('Generate keys', 'push'), Zira\Locale::tm('Generate keys', 'push'), 'glyphicon glyphicon-flash', 'desk_call(dash_push_generate_keys, this);', 'generate', true, true)
         );
+        $this->addDefaultToolbarItem(
+            $this->createToolbarButton(Zira\Locale::tm('Send', 'push'), Zira\Locale::tm('Send', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_push_open, this);', 'send', true, false)
+        );
+
+        $this->addVariables(array(
+            'dash_push_push_wnd' => Dash\Dash::getInstance()->getWindowJSName(\Push\Windows\Push::getClass()),
+            'dash_push_php_version_support' => version_compare(PHP_VERSION, Push::PHP_MIN_VERSION) >= 0 ? 1 : 0
+        ));
+
+        $this->addStrings(array(
+            'Push notifications require HTTPS',
+            'Push notifications require the latest PHP version'
+        ));
 
         $this->includeJS('push/dash');
     }
