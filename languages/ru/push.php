@@ -18,5 +18,7 @@ return array(
     'Notifications are not supported' => 'Уведомления не поддерживаются',
     'Send' => 'Отправить',
     'Start sending' => 'Начать рассылку',
-    'Successfully finished. Notifications sent:' => 'Успешно завершено. Отправлено уведомлений:'
+    'Successfully finished. Notifications sent:' => 'Успешно завершено. Отправлено уведомлений:',
+    'Send notifications' => 'Отправить уведомления',
+    'Push notifications are not configured' => 'Push-уведомления не сконфигурированы'
 );

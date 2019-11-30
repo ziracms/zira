@@ -33,8 +33,9 @@ var dash_push_generate_keys = function() {
     }));
 };
 
-var dash_push_push_open = function() {
+var dash_push_push_open = function(id) {
     var data = {};
+    if (typeof id != "undefined") data.item_id = id;
     desk_call(dash_push_push_wnd, null, {'data':data});
 };
 
@@ -83,6 +84,14 @@ var dash_push_push_load = function() {
             }
         }));
     };
+
+    desk_call(dash_push_push_preview, this);
+
+    if (window.location.protocol != 'https:') {
+        desk_error(t('Push notifications require HTTPS'));
+    } else if (typeof dash_push_php_version_support == "undefined" || dash_push_php_version_support == 0) {
+        desk_error(t('Push notifications require the latest PHP version'));
+    }
 };
 
 var dash_push_push_preview = function(){
@@ -135,5 +144,20 @@ var dash_push_push_begin = function() {
         desk_modal_progress();
         this.sent = 0;
         this.push();
+    }
+};
+
+var dash_push_records_on_select = function() {
+    var selected = this.getSelectedContentItems();
+    this.disableItemsByProperty('typo','push');
+    if (selected && selected.length == 1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=="record") {
+        this.enableItemsByProperty('typo','push');
+    }
+};
+
+var dash_push_record_open = function() {
+    var selected = this.getSelectedContentItems();
+    if (selected && selected.length==1) {
+        desk_call(dash_push_push_open, null, selected[0].data);
     }
 };

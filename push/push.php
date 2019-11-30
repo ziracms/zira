@@ -57,6 +57,9 @@ class Push {
             \Dash\Dash::getInstance()->registerModuleWindowClass('pushSettingsWindow', 'Push\Windows\Settings', 'Push\Models\Settings');
             \Dash\Dash::getInstance()->registerModuleWindowClass('pushPushWindow', 'Push\Windows\Push', 'Push\Models\Push');
             \Dash\Dash::unloadDashLanguage();
+            Zira\Hook::register(\Dash\Windows\Records::RECORDS_MENU_HOOK, array(get_class(), 'dashRecordsMenuHook'));
+            Zira\Hook::register(\Dash\Windows\Records::RECORDS_CONTEXT_MENU_HOOK, array(get_class(), 'dashRecordsContextMenuHook'));
+            Zira\Hook::register(\Dash\Windows\Records::RECORDS_ON_SELECT_CALLBACK_HOOK, array(get_class(), 'dashRecordsOnSelectCallbackHook'));
         }
 
         if (!Zira\View::isAjax() && Zira\Router::getModule()!='dash') {
@@ -73,6 +76,20 @@ class Push {
             $js_scripts .= Zira\Helper::tag_close('script');
             Zira\View::addBodyBottomScript($js_scripts);
         }
+    }
+
+    public static function dashRecordsMenuHook($window) {
+        return array(
+            $window->createMenuDropdownItem(Zira\Locale::tm('Send notifications', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_record_open, this);', 'edit', true, array('typo'=>'push'))
+        );
+    }
+    
+    public static function dashRecordsContextMenuHook($window) {
+        return $window->createContextMenuItem(Zira\Locale::tm('Send notifications', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_record_open, this);', 'edit', true, array('typo'=>'push'));
+    }
+
+    public static function dashRecordsOnSelectCallbackHook() {
+        return 'desk_call(dash_push_records_on_select, this);';
     }
 
     public static function getWebPushInstance(array $auth = [], array $defaultOptions = [], $timeout = 30, array $clientOptions = []) {
@@ -110,7 +127,7 @@ class Push {
                 'title' => Zira\Helper::html($title),
                 'body' => Zira\Helper::html($body),
                 'icon' => Zira\Helper::baseUrl(Zira\Helper::urlencode($image)),
-                'url' => Zira\Helper::url($url)
+                'url' => Zira\Helper::url(Zira\Helper::urlencode($url))
             ))
         ];
         

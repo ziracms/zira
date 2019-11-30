@@ -53,6 +53,11 @@ class Push extends Dash\Windows\Window {
             $this->setBodyItems(array());
             return array('error'=>Zira\Locale::t('Permission denied'));
         }
+        $push_pub_key = Zira\Config::get('push_pub_key');
+        $push_priv_key = Zira\Config::get('push_priv_key');
+        if (empty($push_pub_key) || empty($push_priv_key)) {
+            return array('error'=>Zira\Locale::tm('Push notifications are not configured', 'push'));
+        }
 
         $subscribers = \Push\Models\Subscription::getCollection()
                                                 ->count()
@@ -60,6 +65,30 @@ class Push extends Dash\Windows\Window {
                                                 ->get('co');
 
         $data = array();
+        
+        $item_id = (int)Zira\Request::post('item_id');
+        if ($item_id > 0) {
+            $record = Zira\Models\Record::getCollection()
+                            ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments')
+                            ->left_join(Zira\Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
+                            ->join(Zira\Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
+                            ->where('id', '=', $item_id)
+                            ->get(0);
+                            
+            if (!empty($record)) {
+                $data['title'] = $record->title;
+                if (mb_strlen($data['title'], CHARSET) > \Push\Forms\Send::TITLE_MAX_SIZE) {
+                    $data['title'] = mb_substr($data['title'], 0, \Push\Forms\Send::TITLE_MAX_SIZE-3, CHARSET).'...';
+                }
+                $data['description'] = $record->description;
+                if (mb_strlen($data['description'], CHARSET) > \Push\Forms\Send::BODY_MAX_SIZE) {
+                    $data['description'] = mb_substr($data['description'], 0, \Push\Forms\Send::BODY_MAX_SIZE-3, CHARSET).'...';
+                }
+                $data['image'] = $record->image;
+                $data['url'] = rawurldecode(Zira\Page::generateRecordUrl($record->category_name, $record->name));
+            }
+        }
+        
         $form = new \Push\Forms\Send();
         $form->setValues($data);
         $this->setBodyContent($form);
@@ -93,7 +122,8 @@ class Push extends Dash\Windows\Window {
             'subscribers' => $subscribers,
             'lang_subscribers' => $lang_subscribers,
             'offset' => 0,
-            'language' => ''
+            'language' => '',
+            'item_id' => $item_id
         ));
     }
 }
