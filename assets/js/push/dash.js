@@ -59,7 +59,11 @@ var dash_push_push_load = function() {
 
     var startBtn = this.findToolbarItemByProperty('action','begin');
     if (startBtn) {
-        $(startBtn.element).text(t('Start sending')+' ('+this.options.data.subscribers+')');
+        if (this.options.data.language.length > 0 && typeof(this.options.data.lang_subscribers[this.options.data.language])!="undefined") {
+            $(startBtn.element).text(t('Start sending')+' ('+this.options.data.lang_subscribers[this.options.data.language]+')');
+        } else {
+            $(startBtn.element).text(t('Start sending')+' ('+this.options.data.subscribers+')');
+        }
     }
 
     this.sent = 0;
@@ -104,7 +108,7 @@ var dash_push_push_preview = function(){
     if (body.length > 0) preview += '<div>'+body.replace(/</g, '&lt;').replace(/>/g, '&gt;')+'</div>';
     $(this.content).find('.push-preview').html(preview);
 
-    if (title.length>0 && body.length>0){
+    if (title.length>0){
         this.enableItemsByProperty('action','begin');
     } else {
         this.disableItemsByProperty('action','begin');
@@ -140,7 +144,7 @@ var dash_push_push_language = function(element) {
 var dash_push_push_begin = function() {
     var title = $(this.content).find('input.title_input').val();
     var body = $(this.content).find('input.body_input').val();
-    if (title.length>0 && body.length>0) {
+    if (title.length>0) {
         desk_modal_progress();
         this.sent = 0;
         this.push();
@@ -150,7 +154,9 @@ var dash_push_push_begin = function() {
 var dash_push_records_on_select = function() {
     var selected = this.getSelectedContentItems();
     this.disableItemsByProperty('typo','push');
-    if (selected && selected.length == 1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=="record") {
+    if (selected && selected.length == 1 && typeof(selected[0].typo)!="undefined" && selected[0].typo=="record" &&
+        typeof(selected[0].activated)!="undefined" && selected[0].activated==record_status_published_id
+    ) {
         this.enableItemsByProperty('typo','push');
     }
 };

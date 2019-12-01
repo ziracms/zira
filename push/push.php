@@ -13,6 +13,8 @@ class Push {
     const ROUTE = 'subscribe';
     const PHP_MIN_VERSION = '7.1.0';
     
+    const TRASH_TIME = 2592000; // 30 days
+    
     private static $_instance;
     private static $_web_push_instance;
 
@@ -115,7 +117,8 @@ class Push {
         $push_pub_key = Zira\Config::get('push_pub_key');
         $push_priv_key = Zira\Config::get('push_priv_key');
         if (empty($push_pub_key) || empty($push_priv_key)) return false;
-        
+
+        if (empty($url)) $url = '/';
         $notification = [
             'subscription' => self::createSubscription([
                 'endpoint' => $endpoint,
@@ -127,7 +130,7 @@ class Push {
                 'title' => Zira\Helper::html($title),
                 'body' => Zira\Helper::html($body),
                 'icon' => Zira\Helper::baseUrl(Zira\Helper::urlencode($image)),
-                'url' => Zira\Helper::url(Zira\Helper::urlencode($url))
+                'url' => Zira\Helper::urlencode($url, true)
             ))
         ];
         
@@ -144,7 +147,8 @@ class Push {
         $sent = $webPush->sendNotification(
             $notification['subscription'],
             $notification['payload'],
-            true
+            true,
+            ['topic' => 'zira']
         );
 
         if (!$sent->current()->isSuccess()) {

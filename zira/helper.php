@@ -178,9 +178,10 @@ class Helper {
         return $path;
     }
     
-    public static function urlencode($url) {
+    public static function urlencode($url, $isAbsolute = false) {
         $url = rawurlencode($url);
         $url = str_ireplace('%2F', '/', $url);
+        if ($isAbsolute) $url = str_ireplace('%3A', ':', $url);
         return $url;
     }
 

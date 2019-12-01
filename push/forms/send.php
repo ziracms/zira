@@ -44,7 +44,7 @@ class Send extends Form
         $html .= $this->input(Locale::t('Title').'*', 'title', array('placeholder'=>Zira\Locale::t('max. %s characters', self::TITLE_MAX_SIZE), 'class'=>'form-control title_input'));
         $html .= $this->input(Locale::t('Description'), 'description', array('placeholder'=>Zira\Locale::t('max. %s characters', self::BODY_MAX_SIZE), 'class'=>'form-control body_input'));
         $html .= $this->input(Locale::t('Image'), 'image', array('class'=>'form-control image_input'));
-        $html .= $this->input(Locale::t('Page'), 'url', array('class'=>'form-control url_input'));
+        $html .= $this->input(Locale::t('URL'), 'url', array('class'=>'form-control url_input'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'form-group'));
         $html .= Zira\Helper::tag_open('div', array('class'=>'col-sm-offset-4 col-sm-8'));
         $html .= Zira\Helper::tag('div', null, array('class'=>'push-preview'));
@@ -68,15 +68,8 @@ class Send extends Form
         $validator->registerNoTags('image',Locale::tm('Invalid value "%s"','dash',Locale::tm('Image','dash')));
         $validator->registerUtf8('image',Locale::tm('Invalid value "%s"','dash',Locale::tm('Image','dash')));
 
-        $validator->registerString('url',null,255,false,Locale::tm('Invalid value "%s"','dash',Locale::tm('Page','dash')));
-        $validator->registerNoTags('url',Locale::tm('Invalid value "%s"','dash',Locale::tm('Page','dash')));
-        $validator->registerUtf8('url',Locale::tm('Invalid value "%s"','dash',Locale::tm('Page','dash')));
-        $validator->registerCustom(array(get_class(), 'checkURL'), array('url'), Locale::tm('Invalid value "%s"','dash',Locale::tm('Page','dash')));
-    }
-
-    public static function checkURL($url) {
-        $url = trim($url);
-        if (strpos($url, 'http://') === 0 || strpos($url, 'https://') === 0) return false;
-        return true;
+        $validator->registerString('url',null,255,false,Locale::tm('Invalid value "%s"','dash',Locale::tm('URL','dash')));
+        $validator->registerNoTags('url',Locale::tm('Invalid value "%s"','dash',Locale::tm('URL','dash')));
+        $validator->registerUtf8('url',Locale::tm('Invalid value "%s"','dash',Locale::tm('URL','dash')));
     }
 }

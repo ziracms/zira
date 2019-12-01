@@ -66,8 +66,9 @@ class Push extends Dash\Models\Model {
             try {
                 if (!\Push\Push::pushNotification($subscription->endpoint, $subscription->pub_key, $subscription->auth_token, $subscription->encoding, $title, $body, $image, $url)) {
                     \Push\Models\Subscription::disableSubscription($subscription->endpoint);
+                } else {
+                    $sent++;
                 }
-                $sent++;
             } catch (\Exception $e) {
                 Zira\Log::exception($e);
             }

@@ -93,4 +93,13 @@ class Subscription extends Orm {
         if (empty($subscription)) return false;
         return $subscription->active ? false : true;
     }
+
+    public static function cleanUp() {
+        $trash_time = \Push\Push::TRASH_TIME;
+        self::getCollection()
+                    ->delete()
+                    ->where('active', '=', 0)
+                    ->and_where('date_created','<',date('Y-m-d H:i:s', time()-$trash_time))
+                    ->execute();
+    }
 }

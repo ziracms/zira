@@ -67,6 +67,7 @@ return array(
     'Select your desired area' => 'Выберите желаемую область фотографии',
     'Photo size should be at least %s pixels' => 'Фотография должна быть размером не меньше %s пикселей',
     'Cron executed less than an hour ago' => 'Крон запускался меньше часа назад',
+    'Cron executed less than an minute ago' => 'Крон запускался меньше минуты назад',
     'Database cleaned up' => 'База данных почищена',
     'Languages panel' => 'Языковая панель',
     'Logo' => 'Логотип',

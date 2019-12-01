@@ -17,7 +17,7 @@ class Cron extends Zira\Controller {
         $output = '';
         $last = Zira\Config::get('cron_run');
         if ($last && time()-$last<CRON_MIN_INTERVAL) {
-            $output .= Zira\Locale::t('Cron executed less than an hour ago');
+            $output .= Zira\Locale::t('Cron executed less than an minute ago');
         } else {
             $sys_modules = array('zira');
             $config_modules = Zira\Config::get('modules');

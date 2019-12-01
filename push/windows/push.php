@@ -65,11 +65,12 @@ class Push extends Dash\Windows\Window {
                                                 ->get('co');
 
         $data = array();
-        
+
+        $language = '';
         $item_id = (int)Zira\Request::post('item_id');
         if ($item_id > 0) {
             $record = Zira\Models\Record::getCollection()
-                            ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments')
+                            ->select('id', 'name','author_id','title','description','image','thumb','creation_date','rating','comments','language')
                             ->left_join(Zira\Models\Category::getClass(), array('category_name'=>'name', 'category_title'=>'title'))
                             ->join(Zira\Models\User::getClass(), array('author_username'=>'username', 'author_firstname'=>'firstname', 'author_secondname'=>'secondname'))
                             ->where('id', '=', $item_id)
@@ -85,7 +86,12 @@ class Push extends Dash\Windows\Window {
                     $data['description'] = mb_substr($data['description'], 0, \Push\Forms\Send::BODY_MAX_SIZE-3, CHARSET).'...';
                 }
                 $data['image'] = $record->image;
-                $data['url'] = rawurldecode(Zira\Page::generateRecordUrl($record->category_name, $record->name));
+                $_language = '';
+                if (count(Zira\Config::get('languages'))>1) $_language = $record->language;
+                Zira\Helper::setAddingLanguageToUrl(false);
+                $data['url'] = Zira\Helper::url($_language.'/'.rawurldecode(Zira\Page::generateRecordUrl($record->category_name, $record->name)), true, true);
+                Zira\Helper::setAddingLanguageToUrl(true);
+                $language = $record->language;
             }
         }
         
@@ -122,7 +128,7 @@ class Push extends Dash\Windows\Window {
             'subscribers' => $subscribers,
             'lang_subscribers' => $lang_subscribers,
             'offset' => 0,
-            'language' => '',
+            'language' => $language,
             'item_id' => $item_id
         ));
     }

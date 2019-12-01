@@ -20,5 +20,6 @@ return array(
     'Start sending' => 'Начать рассылку',
     'Successfully finished. Notifications sent:' => 'Успешно завершено. Отправлено уведомлений:',
     'Send notifications' => 'Отправить уведомления',
-    'Push notifications are not configured' => 'Push-уведомления не сконфигурированы'
+    'Push notifications are not configured' => 'Push-уведомления не сконфигурированы',
+    'Push subscription database cleaned up' => 'База push-уведомлений почищена'
 );
