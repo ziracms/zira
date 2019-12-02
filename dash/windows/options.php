@@ -42,6 +42,7 @@ class Options extends Window {
         if (empty($configs['timezone'])) $configs['timezone'] = date_default_timezone_get();
         if (!array_key_exists('db_widgets_enabled', $configs)) $configs['db_widgets_enabled'] = 1;
         if (!array_key_exists('watermark_margin', $configs)) $configs['watermark_margin'] = 10;
+        if (!array_key_exists('check_updates', $configs)) $configs['check_updates'] = 1;
         if (!array_key_exists('captcha_type', $configs)) $configs['captcha_type'] = Zira\Models\Captcha::TYPE_DEFAULT;
         if (!array_key_exists('recaptcha3_score', $configs)) $configs['recaptcha3_score'] = Zira\Models\Captcha::RECAPTCHA_v3_MIN_SCORE;
         

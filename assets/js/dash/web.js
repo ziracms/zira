@@ -77,5 +77,5 @@ var desk_web_browser = function(url) {
 };
 
 var desk_web_zira = function() {
-    desk_web_browser('h'+'t' +'t'+'p'+ ':'+'/' +'/' +'d'+'r' +'o' +'1'+'d' +'.'+'r' +'u'+'/' +'z'+'i' +'r'+'a');
+    desk_web_browser('https://ziracms.github.io/ziracms/download.html');
 };

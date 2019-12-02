@@ -13,24 +13,6 @@ use Dash;
 class Index extends Dash\Controller {
     public function index() {
         Dash\Dash::addAssetScript('dash.js');
-
-        $script = Zira\Helper::tag_open('script', array('type'=>'text/javascript'));
-        $script .= 'jQuery(document).ready(function(){ ';
-        $script .= 'window.setTimeout(function(){';
-        $script .= 'jQuery.post(\''.Zira\Helper::url('dash/index/notifications').'\',{\'token\':\''.Dash\Dash::getToken().'\'},function(response){';
-        $script .= 'if (!response || typeof(response.notifications)=="undefined") return;';
-        $script .= 'for (var i=0; i<response.notifications.length; i++){';
-        $script .= 'window.setTimeout(zira_bind({message:response.notifications[i].message,callback:response.notifications[i].callback},function(){';
-        $script .= 'dashboard_notification(this.message,this.callback);';
-        $script .= '}), 5+200*i);';
-        $script .= '}';
-        $script .= '},\'json\');';
-        $script .= '}, 1000);';
-        $script .= ' });';
-        $script .= Zira\Helper::tag_close('script');
-        //Zira\View::addHTML($script, Zira\View::VAR_HEAD_BOTTOM);
-        Zira\View::addBodyBottomScript($script);
-
         $records_co = Zira\Models\Record::getCollection()
                                         ->count()
                                         ->where('published','=',Zira\Models\Record::STATUS_PUBLISHED)
@@ -232,6 +214,21 @@ class Index extends Dash\Controller {
     public function notifications() {
         Zira\View::setAjax(true);
         $response = array('notifications'=>array());
+
+        if (Zira\Config::get('check_updates', 1)) {
+            $check_url = 'https://ziracms.github.io/version.txt';
+            try {
+                $check_version = @file_get_contents($check_url . '?t=' . time());
+            } catch(\Exception $e) {
+                $check_version = false;
+            }
+            if ($check_version && version_compare($check_version, Zira::VERSION)>0) {
+                $response['notifications'][] = array(
+                    'message'=>Zira\Locale::t('Version %s is available for download', $check_version),
+                    'callback'=>'desk_web_zira'
+                );
+            }
+        }
 
         $commentsModel = new Dash\Models\Comments(new Dash\Windows\Comments());
         $comments = $commentsModel->getNewCommentsCount();

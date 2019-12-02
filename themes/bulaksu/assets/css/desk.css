@@ -114,6 +114,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+#dashpanel-container .badge {
+    background-color: #6f90ae;
+}
 body {
     padding-top: 42px;
 }

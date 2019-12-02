@@ -487,6 +487,24 @@ class Dash {
                 // ignore
             }
         }
+        $js .= 'window.setTimeout(function(){';
+        $js .= '$.post(\''.Zira\Helper::url('dash/index/notifications').'\',{\'token\':\''.self::getToken().'\'},function(response){';
+        $js .= 'if (!response || typeof(response.notifications)=="undefined") return;';
+        $js .= 'if (typeof(dashboard_notification) == "undefined") {';
+        $js .= '$(\'#dashpanel-container .navbar-collapse\').append(\'<ul class="nav navbar-nav notifications"><li><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="badge"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;\'+response.notifications.length+\'</span></a><ul class="dropdown-menu"></ul></li></ul>\');';
+        $js .= '}';
+        $js .= 'for (var i=0; i<response.notifications.length; i++){';
+        $js .= 'if (typeof(dashboard_notification) != "undefined"){';
+        $js .= 'window.setTimeout(zira_bind({message:response.notifications[i].message,callback:response.notifications[i].callback},function(){';
+        $js .= 'dashboard_notification(this.message,this.callback);';
+        $js .= '}), 5+200*i);';
+        $js .= '} else {';
+        $js .= '$(\'#dashpanel-container .navbar-collapse ul.navbar-nav.notifications ul.dropdown-menu\').append(\'<li><a href="javascript:void(0)">\'+response.notifications[i].message+\'</a></li>\');';
+        $js .= '$(\'#dashpanel-container .navbar-collapse ul.navbar-nav.notifications ul.dropdown-menu li:last-child a\').click(zira_bind({callback:response.notifications[i].callback}, function(){desk_call(this.callback);}));';
+        $js .= '}';
+        $js .= '}';
+        $js .= '},\'json\');';
+        $js .= '}, 1000);';
         if ($renderWindows && !$this->isReferedFromDash()) {
             $js .= '})(jQuery);' . "\r\n";
         }
