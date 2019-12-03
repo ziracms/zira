@@ -203,7 +203,7 @@ class Widgets extends Window {
             } else if ($widget->url) {
                 $suffix .= ' - '.$widget->url;
             }
-            $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('parent'=>'widgets','activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order));
+            $items[]=$this->createBodyItem(Zira\Helper::html($title), Zira\Helper::html($title.$suffix), Zira\Helper::imgUrl('drag.png'), $widget->id, null, false, array('parent'=>'widgets','activated'=>$widget->active,'installed'=>true,'sort_order'=>$widget->sort_order), $widget->module);
         }
         foreach ($other_widgets as $class=>$widget) {
             if (!$widget->isEditable() || $widget->isDynamic()) continue;
@@ -213,7 +213,7 @@ class Widgets extends Window {
             $suffix = '';
             //if (!$placeholder) $suffix .= ' - '.$placeholders[$widget->getPlaceholder()];
             //$suffix .= ' - '.$categories[-1];
-            $items[]=$this->createBodyItem($title, $title.$suffix, Zira\Helper::imgUrl('drag.png'), $class, null, false, array('activated'=>Zira\Models\Widget::STATUS_NOT_ACTIVE,'installed'=>false));
+            $items[]=$this->createBodyItem($title, $title.$suffix, Zira\Helper::imgUrl('drag.png'), $class, null, false, array('activated'=>Zira\Models\Widget::STATUS_NOT_ACTIVE,'installed'=>false), $module);
         }
 
         $this->setBodyItems($items);

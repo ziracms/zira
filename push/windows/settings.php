@@ -54,6 +54,10 @@ class Settings extends Dash\Windows\Window {
             return array('error' => Zira\Locale::t('Permission denied'));
         }
 
+        if (version_compare(PHP_VERSION, Push::PHP_MIN_VERSION) < 0) {
+            return array('error' => Zira\Locale::tm('Push notifications require the latest PHP version', 'push'));
+        }
+
         try {
             Push::getWebPushInstance();
         } catch(\Exception $e) {

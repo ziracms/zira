@@ -490,7 +490,7 @@ class Dash {
         $js .= 'window.setTimeout(function(){';
         $js .= '$.post(\''.Zira\Helper::url('dash/index/notifications').'\',{\'token\':\''.self::getToken().'\'},function(response){';
         $js .= 'if (!response || typeof(response.notifications)=="undefined") return;';
-        $js .= 'if (typeof(dashboard_notification) == "undefined") {';
+        $js .= 'if (typeof(dashboard_notification) == "undefined" && response.notifications.length > 0) {';
         $js .= '$(\'#dashpanel-container .navbar-collapse\').append(\'<ul class="nav navbar-nav notifications"><li><a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="badge"><span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;\'+response.notifications.length+\'</span></a><ul class="dropdown-menu"></ul></li></ul>\');';
         $js .= '}';
         $js .= 'for (var i=0; i<response.notifications.length; i++){';
