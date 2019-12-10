@@ -12,9 +12,9 @@ use Zira;
 class Push {
     const ROUTE = 'subscribe';
     const PHP_MIN_VERSION = '7.1.0';
-    
+
     const TRASH_TIME = 2592000; // 30 days
-    
+
     private static $_instance;
     private static $_web_push_instance;
 
@@ -28,19 +28,19 @@ class Push {
 
     public function onActivate() {
         Zira\Assets::registerCSSAsset('push/push.css');
-        Zira\Assets::registerJSAsset('push/push.js');
+        //Zira\Assets::registerJSAsset('push/push.js');
     }
-    
+
     public function onDeactivate() {
         Zira\Assets::unregisterCSSAsset('push/push.css');
-        Zira\Assets::unregisterJSAsset('push/push.js');
+        //Zira\Assets::unregisterJSAsset('push/push.js');
     }
-    
+
     public function beforeDispatch() {
         Zira\Router::addRoute(self::ROUTE,'push/index/index');
-        
+
         Zira\Assets::registerCSSAsset('push/push.css');
-        Zira\Assets::registerJSAsset('push/push.js');
+        //Zira\Assets::registerJSAsset('push/push.js');
     }
 
     public function bootstrap() {
@@ -52,7 +52,7 @@ class Push {
             'Subscribe to notifications' => Zira\Locale::tm('Subscribe to notifications', 'push'),
             'Unsubscribe from notifications' => Zira\Locale::tm('Unsubscribe from notifications', 'push')
         ));
-        
+
         if (ENABLE_CONFIG_DATABASE && \Dash\Dash::getInstance()->isPanelEnabled() && Zira\Permission::check(Zira\Permission::TO_ACCESS_DASHBOARD) && Zira\Permission::check(Zira\Permission::TO_EXECUTE_TASKS)) {
             \Dash\Dash::loadDashLanguage();
             \Dash\Dash::getInstance()->addPanelModulesGroupItem('glyphicon glyphicon-cloud-upload', Zira\Locale::tm('Push notifications', 'push', null, \Dash\Dash::getDashLanguage()), null, 'pushSettingsWindow()');
@@ -85,7 +85,7 @@ class Push {
             $window->createMenuDropdownItem(Zira\Locale::tm('Send notifications', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_record_open, this);', 'edit', true, array('typo'=>'push'))
         );
     }
-    
+
     public static function dashRecordsContextMenuHook($window) {
         return $window->createContextMenuItem(Zira\Locale::tm('Send notifications', 'push'), 'glyphicon glyphicon-cloud-upload', 'desk_call(dash_push_record_open, this);', 'edit', true, array('typo'=>'push'));
     }
@@ -100,7 +100,7 @@ class Push {
             self::$_web_push_instance = new \Minishlink\WebPush\WebPush($auth, $defaultOptions, $timeout, $clientOptions);
         }
         return self::$_web_push_instance;
-        
+
     }
 
     public static function createSubscription(array $associativeArray) {
@@ -133,7 +133,7 @@ class Push {
                 'url' => Zira\Helper::urlencode($url, true)
             ))
         ];
-        
+
         $auth = array(
             'VAPID' => array(
                 'subject' => Zira\Helper::url('', true, true),
@@ -141,9 +141,9 @@ class Push {
                 'privateKey' => $push_priv_key
             )
         );
-        
+
         $webPush = self::getWebPushInstance($auth);
-        
+
         $sent = $webPush->sendNotification(
             $notification['subscription'],
             $notification['payload'],
@@ -154,7 +154,7 @@ class Push {
         if (!$sent->current()->isSuccess()) {
             Zira\Log::write($sent->current()->getReason());
         }
-        
+
         return $sent->current()->isSuccess();
     }
 }
