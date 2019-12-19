@@ -86,6 +86,9 @@ var dash_push_push_load = function() {
                 desk_modal_progress_hide();
                 desk_message(t('Successfully finished. Notifications sent:')+' '+this.sent);
             }
+        }), this.bind(this, function(){
+            desk_modal_progress_hide();
+            desk_error(t('Load failed'));
         }));
     };
 

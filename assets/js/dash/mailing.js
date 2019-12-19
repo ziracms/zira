@@ -55,6 +55,9 @@ var dash_mailing_load = function() {
                     desk_message(t('Successfully finished. Messages sent:')+' '+response.sent);
                 }
             }
+        }), this.bind(this, function(){
+            desk_modal_progress_hide();
+            desk_error(t('Load failed'));
         }));
     };
 };
