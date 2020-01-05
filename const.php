@@ -8,7 +8,7 @@
 /**
  * Predefined constants
  */
-const DEBUG = true;
+const DEBUG = false;
 const LANGUAGES_DIR = 'languages';
 const CONTROLLERS_DIR = 'controllers';
 const MODELS_DIR = 'models';
