@@ -1,46 +1,39 @@
-Zira CMS - это лёгкая, простая в управлении и очень быстрая система управления сайтом с уникальным оконным интерфейсом, доступная бесплатно всем желающим!
+Zira CMS is a lightweight, flexible and easy to use content management system with unique windows-based interface, available for free to everyone!
 
-Zira CMS имеет широкие возможности, благодаря которым вы сможете построить сайт любой структуры с неограниченным числом категорий и подкатегорий.
+It comes with the most commonly used features right out of the box. Build your website of any structure with an unlimited number of categories and subcategories.
 
-Основные возможности Zira CMS:
-    адаптивный дизайн, поддержка как десктопов, так и мобильных устройств
-    удобный файловый менеджер с редактором изображений
-    поддержка категорий и подкатегорий
-    возможность выбора шаблона для категории
-    встроенный редактор записей с функцией автосохранения черновика
-    поддержка пользователей
-    интеграция с социальными сетями
-    возможность ограничения доступа к отдельной части сайта
-    мультиязычность
-    возможность добавления собственных переводов
-    встроенный слайдер изображений
-    галерея
-    аудио и видео плеер
-    комментарии
-    виджет голосования
-    форум
-    возможность создания каталогов
-    дизайнер тем
-    дружелюбность к SEO
-    возможность вставки собственного блока с кодом
-    управление отображением и порядком вывода виджетов
-    гибкая система меню
-    генератор карты сайта sitemap.xml
-    рассылка
-    поддержка SMTP
-    поддержка ЧПУ
-    кэширование
-    GZIP-сжатие скриптов и файлов css
-    поддержка MySQL и SQLite
-    возможность архивации папок и файлов
-    снятие дампа базы данных
-    возможность работать с консолью (для опытных пользователей)
+Main features:
+    Responsive design (support for both desktops and mobile devices)
+    Convenient file manager with image editor
+    Unlimited number of categories and subcategories
+    Ability to set a custom layout for category
+    Built-in WYSIWYG editor with automatic draft saving
+    User management
+    Social networks integration
+    Ability to restrict access to a specific part of the website
+    Multilingual support
+    Ability to add own translations
+    Built-in image slider
+    Image gallery
+    Build-in audio and video player
+    Comments support
+    Votes widget
+    Forum
+    Theme designer
+    SEO friendly
+    Ability to add own HTML/JS code
+    Control of widgets display order
+    Flexible menu system
+    Automatic sitemap.xml generator
+    Mailing
+    Push-notifications
+    SMTP support
+    Clean URLs
+    Caching
+    GZIP compression of javascript and css files
+    MySQL and SQLite support
+    Ability to archive folders and files
+    Ability to dump the database
+    Ability to execute shell commands via built-in console (for advanced users)
 
-Установка
-    Нажмите "Clone or download" -> "Download Zip"
-    Скачайте и распакуйте архив
-    Создайте папки cache, log и uploads (в репозитории они отсутствуют)
-    Загрузите файлы на сервер и откройте главную страницу сайта
-    Далее следуйте инструкциям мастера установки
-    
-Более подробную информацию вы сможете узнать на https://ziracms.github.io
+For further details go to https://ziracms.github.io
