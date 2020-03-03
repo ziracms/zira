@@ -111,7 +111,7 @@
         /**
          * jPlayer
          */
-        if ($('.jplayer-video-wrapper .jp-jplayer').length) {
+        if (typeof(jQuery.jPlayer) != "undefined" && $('.jplayer-video-wrapper .jp-jplayer').length>0) {
             $('.jplayer-video-wrapper .jp-jplayer').each(function(){
                 $(window).resize(zira_bind(this, zira_resize_jplayer));
                 $(this).bind(jQuery.jPlayer.event.ready, zira_bind(this, zira_resize_jplayer));
