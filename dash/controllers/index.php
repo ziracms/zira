@@ -218,7 +218,13 @@ class Index extends Dash\Controller {
         if (Zira\Config::get('check_updates', 1)) {
             $check_url = 'https://ziracms.github.io/version.txt';
             try {
-                $check_version = @file_get_contents($check_url . '?t=' . time());
+                $context = stream_context_create(array(
+                    'http' => array(
+                                    'method' => 'GET',
+                                    'timeout' => 1.0
+                                )
+                ));
+                $check_version = @file_get_contents($check_url . '?t=' . time(), false, $context);
             } catch(\Exception $e) {
                 $check_version = false;
             }
