@@ -37,7 +37,8 @@ class Search extends Zira\Controller {
                             'limit' => $limit,
                             'text' => $form->getValue('text'),
                             'offset' => $offset,
-                            'simple' => $is_simple
+                            'simple' => $is_simple,
+                            'grid' => Zira\Config::get('site_records_grid', 1)
                         )
                 );
 
@@ -86,7 +87,8 @@ class Search extends Zira\Controller {
                         'limit' => $limit,
                         'text' => $text,
                         'offset' => $offset,
-                        'simple' => false
+                        'simple' => false,
+                        'grid' => Zira\Config::get('site_records_grid', 1)
                     )
                 );
                 

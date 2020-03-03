@@ -17,7 +17,7 @@ class Search extends Zira\Controller {
     public function index() {
         $offset = (int)Zira\Request::get('offset');
         $is_ajax = (int)Zira\Request::get('ajax');
-        $limit = 10;
+        $limit = Zira\Config::get('records_limit', 10);
         $form = new Fields\Forms\Search();
         $fields = $form->getFieldsArray();
         $form->setFields($fields);
@@ -55,7 +55,8 @@ class Search extends Zira\Controller {
                         Zira\Page::VIEW_PLACEHOLDER_SETTINGS => array(
                             'limit' => $limit,
                             //'text' => $form->getValue('text'),
-                            'offset' => $offset
+                            'offset' => $offset,
+                            'grid' => Zira\Config::get('site_records_grid', 1)
                         )
                 );
 

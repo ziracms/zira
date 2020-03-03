@@ -20,11 +20,22 @@ jQuery(document).ready(function() {
             'offset': offset,
             'ajax': 1
         }, zira_bind(this, function(response){
-            $(this).parent('.fields-search-results-view-more-wrapper').replaceWith(response);
-            if (navigator.userAgent.indexOf('MSIE')<0) {
-                $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+            if ($(this).parent('.fields-search-results-view-more-wrapper').prev('ul').hasClass('grid-category-wrapper')) {
+                var r = new RegExp('<ul[^>]*>([\\s\\S]+)</ul>([\\s\\S]*?)$','g');
+                var m = r.exec(response);
+                if (m) {
+                    $(this).parent('.fields-search-results-view-more-wrapper').prev('ul').append(m[1]);
+                    $(this).parent('.fields-search-results-view-more-wrapper').replaceWith(m[2]);
+                    zira_init_grid();
+                    window.setTimeout(zira_init_grid, 500);
+                }
             } else {
-                $('.container #content .xhr-list').removeClass('xhr-list');
+                $(this).parent('.fields-search-results-view-more-wrapper').replaceWith(response);
+                if (navigator.userAgent.indexOf('MSIE')<0) {
+                    $('.container #content .xhr-list').hide().slideDown().removeClass('xhr-list');
+                } else {
+                    $('.container #content .xhr-list').removeClass('xhr-list');
+                }
             }
         }),'html');
     });
