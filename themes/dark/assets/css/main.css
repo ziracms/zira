@@ -1690,8 +1690,8 @@ pre {
 .zira-search-preview-wnd .list .list-item a.list-thumb:link,
 .zira-search-preview-wnd .list .list-item a.list-thumb:visited {
     margin: 0px 10px 6px 0px;
-    border: 1px solid #EEEEEE;
-    background-color: #EBE6F0;
+    border: 1px solid #4f535f;
+    background-color: #454a56;
     padding: 0px;
 }
 .zira-search-preview-wnd .list .list-item a.list-thumb img {
