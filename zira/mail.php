@@ -8,6 +8,7 @@
 namespace Zira;
 
 use Zira\Phpmailer\Phpmailer;
+use Zira\Phpmailer\Smtp;
 
 class Mail {
     protected static $_mailer;
@@ -15,6 +16,11 @@ class Mail {
 
     public static function send($email, $subject, $body, $filename = null, $replyTo = null) {
         self::$_mailer = new Phpmailer();
+
+        if (defined('DEBUG') && DEBUG) {
+            ob_start();
+            self::$_mailer->SMTPDebug = Smtp::DEBUG_SERVER;
+        }
 
         if (Config::get('use_smtp')) {
             self::sendSMTP($email, $subject, $body, $filename, $replyTo);
@@ -63,7 +69,14 @@ class Mail {
         self::$_mailer->Subject = $subject;
         self::$_mailer->Body    = $body;
 
-        if(!self::$_mailer->send()) {
+        $success = self::$_mailer->send();
+
+        if (defined('DEBUG') && DEBUG) {
+            $debug = ob_get_clean();
+            if (!empty($debug)) Log::write($debug);
+        }
+        
+        if(!$success) {
             throw new \Exception(self::$_mailer->ErrorInfo);
         }
     }
