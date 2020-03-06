@@ -596,7 +596,8 @@ class User {
         if (!$user || !$user->image) return $default;
 
         $name = self::getUserPhotoFilename($user->image);
-
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . USERS_DIR . DIRECTORY_SEPARATOR . $name)) return $default;
+        
         return Helper::baseUrl(UPLOADS_DIR . '/' . USERS_DIR . '/' . $name);
     }
 
@@ -605,6 +606,7 @@ class User {
         if (!$user || !$user->image) return $default;
 
         $name = self::getUserThumbFilename($user->image);
+        if (!file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . UPLOADS_DIR . DIRECTORY_SEPARATOR . USERS_DIR . DIRECTORY_SEPARATOR . $name)) return $default;
 
         return Helper::baseUrl(UPLOADS_DIR . '/' . USERS_DIR . '/' . $name);
     }

@@ -53,13 +53,18 @@ class Avatar extends Form {
         $image = $this->getValue('image');
         $filename = User::getUserPhotoFilename($image);
         $url = Helper::baseUrl(UPLOADS_DIR . '/' . USERS_DIR . '/' . $filename);
-        $size = @getimagesize(File::getAbsolutePath(USERS_DIR). DIRECTORY_SEPARATOR . $filename);
-        if ($size[0]>$size[1]) {
-            $height = $this->_cropper_width;
-            $width = round($height * $size[0] / $size[1]);
-        } else {
-            $width = $this->_cropper_width;
-            $height = round($width * $size[1] / $size[0]);
+        try {
+            $size = @getimagesize(File::getAbsolutePath(USERS_DIR). DIRECTORY_SEPARATOR . $filename);
+            if ($size[0]>$size[1]) {
+                $height = $this->_cropper_width;
+                $width = round($height * $size[0] / $size[1]);
+            } else {
+                $width = $this->_cropper_width;
+                $height = round($width * $size[1] / $size[0]);
+            }
+        } catch(\Exception $e) {
+            $width = 0;
+            $height = 0;
         }
 
         $html = $this->open();
