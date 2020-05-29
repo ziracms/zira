@@ -94,8 +94,7 @@ class Block extends Zira\Widget {
             }
 
             if (strpos($block->content, '<') === false ||
-                strpos($block->content, '>') === false ||
-                (strpos($block->content, '</') === false && strpos($block->content, '/>') === false)
+                strpos($block->content, '>') === false
             ) {
                 $block->content = Zira\Helper::html($block->content);
                 $parts = explode("\n", $block->content);
