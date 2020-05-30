@@ -93,8 +93,9 @@ class Block extends Zira\Widget {
                 }
             }
 
-            if (strpos($block->content, '<') === false ||
-                strpos($block->content, '>') === false
+            if ((strpos($block->content, '<') === false ||
+                strpos($block->content, '>') === false) &&
+                $this->getPlaceholder() != Zira\View::VAR_HEAD_BOTTOM
             ) {
                 $block->content = Zira\Helper::html($block->content);
                 $parts = explode("\n", $block->content);
