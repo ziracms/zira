@@ -143,7 +143,7 @@ $response = array('content'=>Zira\Helper::tag('style', '.system-ok { color: gree
                         'zira_install_clean_url = false;'.
                         '$.get(\''.Zira\Helper::baseUrl('install/check/1').'\', function(response){'.
                         'if (response) zira_install_clean_url = true;'.
-                        '}).always(function(){'.
+                        '},\'json\').always(function(){'.
                         'if (zira_install_clean_url) {'.
                         '$(\'#sys-info-clean-url-option\').text(\''.Zira\Locale::t('supported').'\');'.
                         '$(\'#sys-info-clean-url-option\').parent().children(\'.glyphicon\').removeClass(\'glyphicon-question-sign\').addClass(\'glyphicon-ok-sign\').addClass(\'system-ok\');'.
