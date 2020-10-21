@@ -752,6 +752,7 @@ var desk_window_form_init = function(window) {
                 $(window.content).find('#'+checkbox_id).change(function(e){
                     e.stopPropagation();
                     e.preventDefault();
+                    if ($(this).get(0).disabled && !$(this).hasClass('disabled')) $(this).addClass('disabled');
                     var id = $(this).attr('id');
                     var pretty_id = id + '-' + 'pretty';
                     var pretty = $(window.content).find('#'+pretty_id);
