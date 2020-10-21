@@ -291,6 +291,7 @@ try {
         $settings['site_name'] = $data['site_name'];
         $settings['site_title'] = $data['site_name'];
         $settings['site_slogan'] = $data['site_slogan'];
+        $settings['caching'] = Zira\Session::get('cache_enable') ? true : false;
 
         $defaults = '/**'."\r\n".
                     ' * System default settings'."\r\n".

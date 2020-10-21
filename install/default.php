@@ -14,7 +14,7 @@ return array(
     'theme' => 'default',
     'layout' => 'layout-right',
     'modules' => array(),
-    'caching' => true,
+    'caching' => false,
     'cache_lifetime' => 3600,
     'thumbs_width' => 200,
     'thumbs_height' => 150,

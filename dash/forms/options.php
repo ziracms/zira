@@ -35,7 +35,16 @@ class Options extends Form
 
     protected function _render()
     {
-        $caching_supported = is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
+        $caching_supported = false;
+        if (is_writable(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR)) {
+            $cache_test_file = ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . '/cache.test';
+            $f = @fopen($cache_test_file, 'wb');
+            if ($f && @chmod($cache_test_file, 0600) && @fwrite($f, 'cache test')) {
+                $caching_supported = true;
+            }
+            if ($f) @fclose($f);
+            if (file_exists($cache_test_file)) @unlink($cache_test_file);
+        }
         if (!$caching_supported) $caching_attr = array('disabled' => 'disabled');
         else $caching_attr = null;
 

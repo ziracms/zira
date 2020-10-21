@@ -17,7 +17,7 @@ $phpversion = phpversion();
 if (floatval($phpversion)<5.5) $supported = false;
 $php_prefix = Zira\Helper::tag('span',null,array('class'=>(floatval($phpversion)>=5.5 ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 
-$pdo_installed = class_exists('PDO');
+$pdo_installed = class_exists('PDO', false);
 if ($pdo_installed) {
     $pdo_drivers = \PDO::getAvailableDrivers();
 } else {
@@ -35,7 +35,7 @@ if (!$gdversion) $supported = false;
 $gd = Zira\Helper::tag('span',null,array('class'=>($gdversion ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $gd .= ' GD '.($gdversion ? $gdversion : Zira\Locale::t('not supported'));
 
-$zip_supported = class_exists('ZipArchive');
+$zip_supported = class_exists('ZipArchive', false);
 $zip = Zira\Helper::tag('span',null,array('class'=>($zip_supported ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 $zip .= ' ZIP '.($zip_supported ? Zira\Locale::t('supported') : Zira\Locale::t('not supported'));
 
@@ -66,6 +66,20 @@ if (!$cache_dir_writatable) $supported = false;
 $cache_dir = Zira\Helper::tag('span',null,array('class'=>($cache_dir_exists && $cache_dir_writatable ? 'glyphicon glyphicon-ok-sign system-ok' : 'glyphicon glyphicon-warning-sign system-warning')));
 if (!$cache_dir_exists) $cache_dir .= ' '.Zira\Locale::t('%s directory is not exists','cache');
 else $cache_dir .= ' '.($cache_dir_writatable ? Zira\Locale::t('%s directory is writable','cache') : Zira\Locale::t('%s directory is not writable','cache'));
+
+$cache_enable = false;
+if ($cache_dir_exists && $cache_dir_writatable) {
+    $cache_test_file = ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . '/cache.test';
+    $f = @fopen($cache_test_file, 'wb');
+    if ($f && @chmod($cache_test_file, 0600) && @fwrite($f, 'cache test')) {
+        $cache_enable = true;
+    } else {
+        $cache_dir .= ' ('.Zira\Locale::t('not supported').')';
+    }
+    if ($f) @fclose($f);
+    if (file_exists($cache_test_file)) @unlink($cache_test_file);
+}
+Zira\Session::set('cache_enable', $cache_enable);
 
 $log_dir_exists = file_exists(ROOT_DIR . DIRECTORY_SEPARATOR . LOG_DIR);
 $log_dir_writatable = false;

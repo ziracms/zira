@@ -723,7 +723,9 @@ var desk_window_form_init = function(window) {
             // pretty checkboxes
             if ($(this).attr('type')=='checkbox') {
                 var checked = $(this).get(0).checked;
+                var disabled = $(this).get(0).disabled;
                 var checked_class = checked ? ' active' : '';
+                if (disabled) checked_class += ' disabled';
                 var checkbox_id = $(this).attr('id');
                 var pretty_id = checkbox_id + '-' + 'pretty';
                 $(this).hide();
@@ -738,6 +740,7 @@ var desk_window_form_init = function(window) {
                     var checkbox = $(this).data('checkbox');
                     if (typeof checkbox == "undefined") return;
                     if ($(window.content).find('#'+checkbox).length==0) return;
+                    if ($(this).hasClass('disabled')) return;
                     if ($(this).hasClass('active')) {
                         $(this).removeClass('active');
                         $(window.content).find('#'+checkbox).get(0).checked = false;

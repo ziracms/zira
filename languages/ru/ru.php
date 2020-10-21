@@ -159,5 +159,6 @@ return array(
     'Anti-Bot is active.' => 'Анти-Бот активен.',
     'Tags' => 'Теги',
     'Tag' => 'Тег',
-    'Tags cloud' => 'Облако тегов'
+    'Tags cloud' => 'Облако тегов',
+    'not supported' => 'не поддерживается'
 );
