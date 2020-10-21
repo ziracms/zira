@@ -1,7 +1,7 @@
 var dash_options_load = function() {
     desk_window_form_init(this);
     $.get(baseUrl('dash/index/ping'),{}, null,'json').fail(this.bind(this, function(){
-        $(this.content).find('input.clean_url_option').attr('disabled','disabled');
+        $(this.content).find('input.clean_url_option').attr('disabled','disabled').trigger('change');
     }));
     $(this.content).find('input.watermark_option').parent().append('<span class="glyphicon glyphicon-folder-open" style="position:absolute;right:30px;top:10px;cursor:pointer"></span>');
     $(this.content).find('input.watermark_option').parent().children('.glyphicon').click(this.bind(this, function(){
