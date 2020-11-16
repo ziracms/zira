@@ -56,7 +56,7 @@ class Tag extends Orm {
 
     public static function getRecords($text, $limit = 10, $offset = 0) {
         $text = trim($text);
-        if (empty($text) || strpos($text, ' ')!==false) return array();
+        if (empty($text)) return array();
         $text = mb_strtolower($text, CHARSET);
         
         $query = self::getCollection();

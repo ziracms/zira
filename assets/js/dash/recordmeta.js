@@ -47,6 +47,7 @@ var dash_recordmeta_load = function() {
                 if (items.length == 0) return;
                 $('body').append('<ul class="zira-autocomplete-wnd"></ul>');
                 for (var i in items) {
+                    items[i].text = items[i].text.replace(/[<]/g,'&lt;').replace(/[>]/g,'&gt;');
                     $('.zira-autocomplete-wnd').append('<li><a href="javascript:void(0)" data-text="'+items[i].text+'">'+items[i].text+'</a></li>');
                 }
                 $('.zira-autocomplete-wnd').css({
