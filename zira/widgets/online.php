@@ -20,7 +20,6 @@ class Online extends Zira\Widget {
 
     protected function _render() {
         $count = Zira\User::getOnlineUsersCount();
-        if (!$count) return;
         $users = Zira\User::getOnlineUsers(25);
         $guests_co = 0;
         if (in_array('stat', Zira\Config::get('modules')) && 
@@ -29,14 +28,14 @@ class Online extends Zira\Widget {
         ) {
             $guests_co = \Stat\Models\Access::getCollection()
                                             ->countDistinctField('anonymous_id')
-                                            ->where('access_time','>=',date('Y-m-d H:i:s', time() - 300))
+                                            ->where('access_time','>=',date('Y-m-d H:i:s', time() - Zira\User::ONLINE_INTERVAL))
                                             ->get('co');
 
             if ($guests_co <= $count) $guests_co = 0;
             else $guests_co -= $count;
         }
         $data = array(
-            'title' => Zira\Locale::t('Who\'s online').' ('.$count.')',
+            'title' => Zira\Locale::t('Who\'s online').' ('.($count + $guests_co).')',
             'count' => $count,
             'users' => $users,
             'guests_count' => $guests_co

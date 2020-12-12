@@ -14,7 +14,7 @@
 </li>
 <?php endforeach; ?>
 </ul>
-<?php else: ?>
+<?php elseif (empty($guests_count)): ?>
 <i><?php echo t('Nobody') ?></i>
 <?php endif; ?>
 <?php if (!empty($guests_count)): ?>
