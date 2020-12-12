@@ -160,5 +160,6 @@ return array(
     'Tags' => 'Теги',
     'Tag' => 'Тег',
     'Tags cloud' => 'Облако тегов',
-    'not supported' => 'не поддерживается'
+    'not supported' => 'не поддерживается',
+    'Guests: %s' => 'Гостей: %s'
 );

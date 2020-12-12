@@ -1964,6 +1964,11 @@ a.scroll-top.visible:visited {
     border-radius: 25px;
     margin: 0px auto 2px;
 }
+.widget-online-wrapper .widget-online-guests {
+    font-style: italic;
+    margin-top: 10px;
+    text-align: center;
+}
 .zira-collapse-toggle {
     display: block;
     color: #1A354D;

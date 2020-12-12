@@ -22,10 +22,24 @@ class Online extends Zira\Widget {
         $count = Zira\User::getOnlineUsersCount();
         if (!$count) return;
         $users = Zira\User::getOnlineUsers(25);
+        $guests_co = 0;
+        if (in_array('stat', Zira\Config::get('modules')) && 
+            class_exists('Stat\Models\Access', false) && 
+            Zira\Config::get('stat_log_access')
+        ) {
+            $guests_co = \Stat\Models\Access::getCollection()
+                                            ->countDistinctField('anonymous_id')
+                                            ->where('access_time','>=',date('Y-m-d H:i:s', time() - 300))
+                                            ->get('co');
+
+            if ($guests_co <= $count) $guests_co = 0;
+            else $guests_co -= $count;
+        }
         $data = array(
             'title' => Zira\Locale::t('Who\'s online').' ('.$count.')',
             'count' => $count,
-            'users' => $users
+            'users' => $users,
+            'guests_count' => $guests_co
         );
 
         Zira\View::renderView($data, 'zira/widgets/online');

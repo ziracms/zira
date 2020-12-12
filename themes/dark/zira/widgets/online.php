@@ -17,5 +17,8 @@
 <?php else: ?>
 <i><?php echo t('Nobody') ?></i>
 <?php endif; ?>
+<?php if (!empty($guests_count)): ?>
+<div class="widget-online-guests"><?php echo t('Guests: %s', $guests_count) ?></div>
+<?php endif; ?>
 </div>
 </div>
