@@ -35,6 +35,7 @@ class Meta extends Model {
                 'site_copyright' => 'string',
                 'site_window_title' => 'int',
                 'enable_pagination' => 'int',
+                'search_fulltext' => 'int',
                 'gallery_check' => 'int',
                 'files_check' => 'int',
                 'audio_check' => 'int',

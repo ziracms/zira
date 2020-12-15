@@ -23,10 +23,14 @@ class Search extends Zira\Controller {
         $data = array();
         $found = false;
         if ($form->getValue('text') && $offset>=0 && $form->isValid()) {
-            if (!$is_simple) {
-                $records = Zira\Models\Search::getRecords($form->getValue('text'), $limit + 1, $offset);
+            if (!Zira\Config::get('search_fulltext', 0)) {
+                if (!$is_simple) {
+                    $records = Zira\Models\Search::getRecords($form->getValue('text'), $limit + 1, $offset);
+                } else {
+                    $records = Zira\Models\Search::getRecordsSorted($form->getValue('text'), $limit);
+                }
             } else {
-                $records = Zira\Models\Search::getRecordsSorted($form->getValue('text'), $limit);
+                $records = Zira\Models\Search::getRecordsFullText($form->getValue('text'), !$is_simple ? $limit + 1 : $limit, !$is_simple ? $offset : 0);
             }
             if (!empty($records)) {
                 $found = true;

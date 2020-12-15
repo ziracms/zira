@@ -12,6 +12,7 @@ use Zira\Orm;
 
 class Search extends Orm {
     const MIN_CHARS = 3;
+    const MAX_KEYWORDS = 5;
 
     public static $table = 'search';
     public static $pk = 'id';
@@ -97,7 +98,7 @@ class Search extends Orm {
             $query->limit($limit+$offset);
             $query->close_query();
             $added []= $keyword;
-            if (count($added)>=5) break;
+            if (count($added)>=self::MAX_KEYWORDS) break;
         }
 
         if (empty($added)) return array();
@@ -151,7 +152,7 @@ class Search extends Orm {
             $query->limit($limit);
             $query->close_query();
             $added []= $keyword;
-            if (count($added)>=5) break;
+            if (count($added)>=self::MAX_KEYWORDS) break;
         }
 
         if (empty($added)) return array();
@@ -190,5 +191,53 @@ class Search extends Orm {
 
         if (count($return)>$limit) return array_slice($return, 0, $limit);
         else return $return;
+    }
+
+    public static function getRecordsFullText($text, $limit = 10, $offset = 0) {
+        $text = trim($text);
+        if (empty($text)) return array();
+        $keywords = explode(' ', $text);
+
+        $query = Record::getCollection();
+
+        $added = array();
+        foreach($keywords as $keyword) {
+            if (mb_strlen($keyword, CHARSET) < self::MIN_CHARS) continue;
+            if (in_array($keyword, $added)) continue;
+            if (count($added) > 0) $query->union();
+            $query->open_query();
+            $query->select('id');
+            $query->where('language', '=', Locale::getLanguage());
+            $query->and_where('published', '=', Record::STATUS_PUBLISHED);
+            $query->and_where();
+            $query->open_where();
+            $query->where('title', 'like', '%'.$keyword.'%');
+            $query->or_where('description', 'like', '%'.$keyword.'%');
+            $query->or_where('content', 'like', '%'.$keyword.'%');
+            $query->close_where();
+            $query->order_by('id', 'DESC');
+            $query->limit($limit+$offset);
+            $query->close_query();
+            $added []= $keyword;
+            if (count($added) >= self::MAX_KEYWORDS) break;
+        }
+
+        if (empty($added)) return array();
+
+        $query->merge();
+        $query->limit($limit, $offset);
+        $rows = $query->get();
+
+        if (empty($rows)) return array();
+
+        $query = Record::getCollection();
+        foreach($rows as $index=>$row) {
+            if ($index>0) $query->union();
+            $query->select('id', 'name', 'author_id', 'title', 'description', 'thumb', 'creation_date', 'rating', 'comments')
+            ->left_join(Category::getClass(), array('category_name' => 'name', 'category_title' => 'title'))
+            ->where('id', '=', $row->id);
+        }
+
+        return $query->get();
     }
 }
