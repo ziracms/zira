@@ -1,0 +1,1 @@
+<span class="block calendar-widget-wrapper<?php if (!empty($class)) echo ' '.Zira\Helper::html($class); ?>"></span>

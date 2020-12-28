@@ -187,6 +187,15 @@
                 setBackgroundStyle('#top-menu-wrapper .top-menu-logo', 'none');
                 setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(color));
                 setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(color));
+
+                if (extractBgColor($('header #top-menu-wrapper nav.navbar-default'))=='transparent' && $('header #top-menu-wrapper nav.navbar-default').css('backgroundImage')=='none') {
+                    setBackgroundStyle('header #top-menu-wrapper nav ul.dropdown-menu', color);
+                    setBackgroundColorStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover', color);
+                    setBorderBottomColorStyle('#top-menu-wrapper .dropdown-menu:after', hexColor(color));
+                    setBackgroundStyle('#top-menu-wrapper .navbar-collapse.collapsing .dropdown.open > a,#top-menu-wrapper .navbar-collapse.in .dropdown.open > a', hexColor(color));
+                    setBackgroundColorStyle('#top-menu-wrapper .navbar-collapse.collapsing .navbar-nav,#top-menu-wrapper .navbar-collapse.in .navbar-nav', 'transparent');
+                    setBorderTopColorStyle('#top-menu-wrapper .navbar-collapse.collapsing li.menu-item,#top-menu-wrapper .navbar-collapse.in li.menu-item', 'transparent');
+                }
             }, 'right', false);
             
             // header bg gradient
@@ -206,6 +215,15 @@
                 setBackgroundColorStyle('#top-menu-wrapper .top-menu-logo', hexColor(color1), true);
                 setBackgroundGradientStyle('#top-menu-wrapper .top-menu-logo', color1, color2);
                 setBorderBottomColorStyle('#top-menu-wrapper.fixed', hexColor(color1));
+
+                if (extractBgColor($('header #top-menu-wrapper nav.navbar-default'))=='transparent' && $('header #top-menu-wrapper nav.navbar-default').css('backgroundImage')=='none') {
+                    setBackgroundStyle('header #top-menu-wrapper nav ul.dropdown-menu', color1);
+                    setBackgroundColorStyle('#top-menu-wrapper ul.dropdown-menu li a:hover,#top-menu-wrapper ul.dropdown-menu li a:focus,#top-menu-wrapper .navbar-default .navbar-nav .open ul.dropdown-menu li a:hover', color2);
+                    setBorderBottomColorStyle('#top-menu-wrapper .dropdown-menu:after', hexColor(color1));
+                    setBackgroundStyle('#top-menu-wrapper .navbar-collapse.collapsing .dropdown.open > a,#top-menu-wrapper .navbar-collapse.in .dropdown.open > a', hexColor(color1));
+                    setBackgroundColorStyle('#top-menu-wrapper .navbar-collapse.collapsing .navbar-nav,#top-menu-wrapper .navbar-collapse.in .navbar-nav', 'transparent');
+                    setBorderTopColorStyle('#top-menu-wrapper .navbar-collapse.collapsing li.menu-item,#top-menu-wrapper .navbar-collapse.in li.menu-item', 'transparent');
+                }
             });
             
             // header bg image
@@ -280,6 +298,8 @@
                     setColorStyle('#site-logo-wrapper a#site-logo:hover,#site-logo-wrapper a#site-logo.active', color2);
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:link,#top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:visited', color1);
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .top-menu-logo a:hover', color2);
+                    setColorStyle('header #top-menu-wrapper .top-menu-logo a:link,#top-menu-wrapper .top-menu-logo a:visited', color1);
+                    setColorStyle('header #top-menu-wrapper .top-menu-logo a:hover', color2);
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:link,#top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:visited', color1);
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-header .top-menu-logo a:hover', color2);
                     setTextShadowStyle('header #top-menu-wrapper .top-menu-logo a:link,header #top-menu-wrapper .top-menu-logo a:visited', 'none');
@@ -307,7 +327,7 @@
             }
             
             // header slogan
-            if ($('header #site-slogan span').length>0) {
+            if ($('header #site-slogan').length>0) {
                 // header slogan color
                 var slogan_color = $('header #site-slogan').css('color');
                 $('body').append('<div class="designer_colorpicker" id="slogan-designer-colorpicker" title="'+t('Slogan color')+'"></div>');
@@ -504,21 +524,26 @@
                     setColorStyle('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item a.list-title:link,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item a.list-title:visited', color2);
                     setColorStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default,header .navbar-default .navbar-toggle', color2);
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open > a,header #top-menu-wrapper .navbar-default .navbar-nav > li > a:hover,header #top-menu-wrapper nav .zira-search-preview-wnd .list .list-item:hover a.list-title', color1);
+                    setColorStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open a:hover', color1);
                     setColorStyle('header #top-menu-wrapper .form-control::placeholder', color2);
                     setBackgroundColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
+                    setBorderColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle', 'transparent');
                     setColorStyle('header #top-menu-wrapper .navbar-default .navbar-toggle.mobile-search-button', color2);
                     // custom menu
-                    setColorStyle('#main-container .top-custom-menu-wrapper nav a:link,#main-container .top-custom-menu-wrapper nav a:visited,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a', color2);
-                    setColorStyle('#main-container .top-custom-menu-wrapper nav .btn-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle', color2);
-                    setColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open > a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav > li > a:hover', color1);
-                    setBackgroundColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
+                    if (extractBgColor($('header #top-menu-wrapper nav.navbar-default'))!='transparent' || $('header #top-menu-wrapper nav.navbar-default').css('backgroundImage')!='none') {
+                        setColorStyle('#main-container .top-custom-menu-wrapper nav a:link,#main-container .top-custom-menu-wrapper nav a:visited,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open a', color2);
+                        setColorStyle('#main-container .top-custom-menu-wrapper nav .btn-default,#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle', color2);
+                        setColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .active a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav .open > a,#main-container .top-custom-menu-wrapper .navbar-default .navbar-nav > li > a:hover', color1);
+                        setBackgroundColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle .icon-bar', color2);
+                        setBorderColorStyle('#main-container .top-custom-menu-wrapper .navbar-default .navbar-toggle', 'transparent');
+                    }
                 }, 'right', 'rgb');
                 
                 // header top menu background
                 var topmenu_gr = extractGradient($('header #top-menu-wrapper nav'));
                 $('body').append('<div class="designer_gradientpicker" id="topmenu-bg-designer-gradientpicker" title="'+t('Top menu background')+'"></div><div class="designer_gradientpicker_hidden" id="topmenu-bg-designer-gradientpicker-hidden"></div>');
                 designer_positions['topmenu_bg'] = function() {
-                    if ($('header #top-menu-wrapper').css('display')=='none' || $('header #top-menu-wrapper').css('visibility')=='hidden') {
+                    if ($('header #top-menu-wrapper').css('display')=='none' || $('header #top-menu-wrapper').css('visibility')=='hidden' || (extractBgColor($('header #top-menu-wrapper nav.navbar-default'))=='transparent' && $('header #top-menu-wrapper nav.navbar-default').css('backgroundImage')=='none')) {
                         $('#topmenu-bg-designer-gradientpicker').hide();
                         $('#topmenu-bg-designer-gradientpicker-hidden').hide();
                         return;
@@ -537,6 +562,7 @@
                     $('header #top-menu-wrapper .navbar-default,header #top-menu-wrapper .navbar-default .navbar-nav .active, header #top-menu-wrapper .form-control, header #top-menu-wrapper .btn-default').css('border-color', color1);
                     $('header #top-menu-wrapper nav a:link,header #top-menu-wrapper nav a:visited,header #top-menu-wrapper .btn-default').css('text-shadow', '0 1px 0 '+color2);
                     setBackgroundColorStyle('header #top-menu-wrapper nav.navbar-default', hexColor(color1), true);
+                    setBackgroundColorStyle('header #top-menu-wrapper .navbar-collapse.collapsing .navbar-nav,header #top-menu-wrapper .navbar-collapse.in .navbar-nav', 'transparent', true);
                     setBackgroundGradientStyle('header #top-menu-wrapper nav.navbar-default', color1, color2);
                     setBackgroundStyle('header #top-menu-wrapper .navbar-default .navbar-nav .open,header #top-menu-wrapper .navbar-default .navbar-nav .active,header #top-menu-wrapper .navbar-default .navbar-nav .active a,header #top-menu-wrapper .navbar-default .navbar-nav .open a,header #top-menu-wrapper nav ul.dropdown-menu,header .zira-search-preview-wnd .list .list-item:hover .list-title-wrapper', hexColor(color2));
                     setBackgroundStyle('header #top-menu-wrapper nav .form-control,header #top-menu-wrapper nav .btn-default', hexColor(color2));
@@ -921,16 +947,16 @@
             };
             $('#breadcrumbs-designer-fontpicker').tooltip();
             designer_fontpicker($('#breadcrumbs-designer-fontpicker'), breadcrumbs_font, designer_positions, function(size){
-                $('.breadcrumb,.breadcrumb a:link,.breadcrumb a:visited').css('fontSize', size);
+                $('.breadcrumb,.breadcrumb li,.breadcrumb a:link,.breadcrumb a:visited').css('fontSize', size);
                 setFontSizeStyle('.breadcrumb li,.breadcrumb li a:link,.breadcrumb li a:visited', size);
                 $(window).trigger('resize');
             });
-            
+
             // breadcrumbs background color
             var breadcrumbs_bg_color = extractBgColor($('.breadcrumb'));
             $('body').append('<div class="designer_colorpicker" id="breadcrumbs-bg-designer-colorpicker" title="'+t('Breadcrumbs background')+'"></div>');
             designer_positions['breadcrumbs_bg_color'] = function() {
-                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden') {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden' || (($('.breadcrumb').css('backgroundColor') == 'transparent' || $('.breadcrumb').css('backgroundColor') == 'rgba(0, 0, 0, 0)') && $('.breadcrumb').css('backgroundImage') == 'none')) {
                     $('#breadcrumbs-bg-designer-colorpicker').hide();
                     return;
                 }
@@ -957,6 +983,10 @@
             var breadcrumb_border_color = '#efefef';
             $('body').append('<div class="designer_colorpicker" id="breadcrumb-border-designer-colorpicker" title="'+t('Breadcrumbs border color')+'"></div>');
             designer_positions['breadcrumbs_border'] = function() {
+                if ($('.breadcrumb').css('display')=='none' || $('.breadcrumb').css('visibility')=='hidden' || (($('.breadcrumb').css('backgroundColor') == 'transparent' || $('.breadcrumb').css('backgroundColor') == 'rgba(0, 0, 0, 0)') && $('.breadcrumb').css('backgroundImage') == 'none')) {
+                    $('#breadcrumb-border-designer-colorpicker').hide();
+                    return;
+                }
                 var breadcrumb_bbx = $('.breadcrumb').offset().left+($('.breadcrumb').outerWidth()+2*colorpicker_size)+4.5*colorpicker_size;
                 var breadcrumb_bby = $('.breadcrumb').offset().top+($('.breadcrumb').outerHeight()-colorpicker_size)/2;
                 $('#breadcrumb-border-designer-colorpicker').css({'left':breadcrumb_bbx,'top':breadcrumb_bby});
@@ -1178,6 +1208,7 @@
             $('#main-container .btn-primary').css('border-color', color2);
             $('#main-container .btn-primary').css('textShadow', '0 1px 0 '+color1);
             setBackgroundColorStyle('#main-container .btn-primary', hexColor(color1), true);
+            setBackgroundColorStyle('#main-container .btn-group .btn-primary', hexColor(color1), true);
             setBackgroundGradientStyle('#main-container .btn-primary', color1, color2);
             setBorderColorStyle('#main-container .btn-primary', color2);
             setBackgroundGradientStyle('#main-container .btn-primary:hover,#main-container .btn-primary:focus,#main-container .btn-primary.active,#main-container .btn-primary:active,#main-container .open .dropdown-toggle.btn-primary,#main-container .btn-primary.active.focus,#main-container .btn-primary.active:focus,#main-container .btn-primary.active:hover,#main-container .btn-primary:active.focus,#main-container .btn-primary:active:focus,#main-container .btn-primary:active:hover,#main-container .open .dropdown-toggle.btn-primary.focus,#main-container .open .dropdown-toggle.btn-primary:focus,#main-container .open .dropdown-toggle.btn-primary:hover', color2, color1);
@@ -1218,9 +1249,12 @@
                 $(this).css('textShadow', '0 1px 0 '+color1);
             });
             setBackgroundColorStyle('#main-container .btn-default', hexColor(color1), true);
+            setBackgroundColorStyle('#main-container .input-group-btn .btn', hexColor(color1), true);
+            setBackgroundColorStyle('#main-container .btn-group .btn-default', hexColor(color1), true);
             setBackgroundGradientStyle('#main-container .btn-default', color1, color2);
             setBorderColorStyle('#main-container .btn-default', color2);
             setBackgroundGradientStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color2, color1);
+            setBackgroundGradientStyle('#main-container .btn-group .btn.active', color2, color1);
             setBorderColorStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color1);
             setTextShadowStyle('#main-container .btn-default', '0 1px 0 '+color1);
         },'right', 'rgb');
@@ -1241,6 +1275,7 @@
             });
             setColorStyle('#main-container .btn-default', color);
             setColorStyle('#main-container .btn-default:hover,#main-container .btn-default:focus,#main-container .btn-default.active,#main-container .btn-default:active,#main-container .open .dropdown-toggle.btn-default,#main-container .btn-default.active.focus,#main-container .btn-default.active:focus,#main-container .btn-default.active:hover,#main-container .btn-default:active.focus,#main-container .btn-default:active:focus,#main-container .btn-default:active:hover,#main-container .open .dropdown-toggle.btn-default.focus,#main-container .open .dropdown-toggle.btn-default:focus,#main-container .open .dropdown-toggle.btn-default:hover', color);
+            setColorStyle('#main-container .btn-group .btn.active', color);
         });
 
         // comments
@@ -1316,10 +1351,12 @@
             };
             $('#forms-color-designer-colorpicker').tooltip();
             designer_colorpicker($('#forms-color-designer-colorpicker'), forms_color, function(color){
-                $('.panel,.panel .panel-heading,.panel .panel-footer,#main-container .input-group-addon a').css('color', color);
-                setColorStyle('.panel', color);
-                setColorStyle('.panel .panel-heading', color);
-                setColorStyle('.panel .panel-footer', color);
+                $('.panel,.panel .panel-heading,.panel .panel-heading h2,.panel .panel-body,.panel .panel-footer,#main-container .input-group-addon a').css('color', color);
+                setColorStyle('#main-container .panel', color);
+                setColorStyle('#main-container .panel-body', color);
+                setColorStyle('#main-container .panel .panel-heading', color);
+                setColorStyle('#main-container .panel .panel-heading h2', color);
+                setColorStyle('#main-container .panel .panel-footer', color);
                 setColorStyle('#main-container .help-block', color);
                 setColorStyle('#main-container .form-control', color);
                 setColorStyle('.emoji-editable', color);
@@ -1344,6 +1381,7 @@
             designer_gradientpicker($('#forms-bg-designer-gradientpicker'), $('#forms-bg-designer-gradientpicker-hidden'), forms_gr[0], forms_gr[1], function(color1, color2){
                 $('.panel .panel-heading').css('background', 'linear-gradient(to bottom,' + color1 + ',' + color2 + ')');
                 $('.panel,.panel .panel-heading,.panel .panel-footer').css('borderColor', color2);
+                $('.panel .panel-heading').css('border-width', '1px');
                 $('.panel .panel-footer').css('background', color1);
                 $('.panel').css('background', color2);
                 $('#main-container .form-control').each(function(){
@@ -1353,12 +1391,13 @@
                 });
                 $('#main-container .input-group-addon').css('background', color2);
                 $('#main-container .input-group-addon').css('borderColor', color1);
-                setBackgroundColorStyle('.panel .panel-heading', hexColor(color1), true);
-                setBackgroundGradientStyle('.panel .panel-heading', color1, color2);
-                setBorderColorStyle('.panel .panel-heading', color2);
-                setBackgroundStyle('.panel .panel-footer', color1);
-                setBorderColorStyle('.panel .panel-footer', color2);
-                setBorderColorStyle('.panel', color2);
+                setBackgroundColorStyle('#main-container .panel .panel-heading', hexColor(color1), true);
+                setBackgroundGradientStyle('#main-container .panel .panel-heading', color1, color2);
+                setBorderColorStyle('#main-container .panel .panel-heading', color2);
+                setBackgroundStyle('#main-container .panel .panel-footer', color1);
+                setBorderColorStyle('#main-container .panel .panel-footer', color2);
+                setBorderColorStyle('#main-container .panel', color2);
+                setBorderWidthStyle('#main-container .panel .panel-heading', '1px');
                 setBackgroundColorStyle('.jumbotron', hexColor(color1));
                 setBackgroundColorStyle('.panel', color2);
                 setBackgroundStyle('#main-container .form-control', color2);
@@ -1484,11 +1523,11 @@
             $('#lists-bg-designer-gradientpicker').tooltip();
             designer_gradientpicker($('#lists-bg-designer-gradientpicker'), $('#lists-bg-designer-gradientpicker-hidden'), lists_gr[0], lists_gr[1], function(color1, color2){
                 $('#main-container .list-item').each(function(){
-                    if ($(this).parents('.sidebar').length) return true;
-                    $(this).children('.list-title-wrapper').css('background', 'linear-gradient(to bottom,'+color1+','+color2+')');
+                    if (extractBgColor($('.sidebar .list-title-wrapper'))=='transparent' && $('.sidebar .list-title-wrapper').css('backgroundImage')=='none' && $(this).parents('.sidebar').length) return true;
+                    $(this).find('.list-title-wrapper').css('background', 'linear-gradient(to bottom,'+color1+','+color2+')');
                     $(this).css('background', color1);
                     $(this).css('borderColor', color1);
-                    $(this).children('.list-title-wrapper').css('borderColor', color1);
+                    $(this).find('.list-title-wrapper').css('borderColor', color1);
                 });
                 $('.list .list-item .list-title-wrapper a,.sidebar .widget-title').css('textShadow', '1px 1px 0px '+color2);
                 if (extractBgColor($('.sidebar .page-header'))!='transparent') {
@@ -1552,9 +1591,10 @@
                 setBackgroundStyle('.zira-calendar-wrapper .zira-calendar-days li:hover', color1);
                 setBackgroundStyle('.image-wrapper', color1);
                 setBorderColorStyle('.image-wrapper', color1);
-                setBackgroundStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
-                setFilterStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
-                
+                if (extractBgColor($('.sidebar .list-title-wrapper'))=='transparent' && $('.sidebar .list-title-wrapper').css('backgroundImage')=='none') {
+                    setBackgroundStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
+                    setFilterStyle('.sidebar .list .list-item .list-title-wrapper', 'none');
+                }
                 setBackgroundStyle('.messages-panel .navbar', color2);
                 setFilterStyle('.messages-panel .navbar', 'none');
                 setBorderColorStyle('.messages-panel .navbar', color1);
@@ -2248,6 +2288,18 @@
     var removeBorderRightStyle = function(element) {
         editorMap.remove(element, 'borderright');
     };
+
+    var setBorderWidthStyle = function(element, value) {
+        editorMap.set(element, 'borderwidth', 'border-width:' + value + ';');
+    };
+
+    var getBorderWidthStyle = function(element) {
+        return editorMap.get(element, 'borderwidth');
+    };
+    
+    var removeBorderWidthStyle = function(element) {
+        editorMap.remove(element, 'borderwidth');
+    };
     
     var setBoxShadowStyle = function(element, value) {
         editorMap.set(element, 'boxshadow', 'box-shadow:' + value + ';');
@@ -2624,6 +2676,8 @@
                     setBorderLeftStyle(element, value);
                 } else if (prop == 'border-right') {
                     setBorderRightStyle(element, value);
+                } else if (prop == 'border-width') {
+                    setBorderWidthStyle(element, value);
                 } else if (prop == 'border') {
                     setBorderStyle(element, value);
                 } else if (prop == 'box-shadow') {

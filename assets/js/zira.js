@@ -101,6 +101,7 @@
          * Dropdowns
          */
         $('body').on('mouseover', 'nav ul li a, .dropdown ul li a', function(){
+            if ($(this).parents('.navbar-collapse').hasClass('in')) return;
             if ($(this).parent('li').parent('ul').hasClass('dropdown-menu')) return;
             if ($(this).parent('li').hasClass('open')) return;
             var open = $(this).parent('li').parent('ul').children('li.open');
@@ -275,7 +276,7 @@
                         sliderFilter = 'none';
                         sliderShadow = 'none';
                     }
-                    $('header').css('marginTop', -.4*marginTop);
+                    //$('header').css('marginTop', -.4*marginTop);
                     $('.fullscreen-slider .slider-wrapper').css('filter', sliderFilter);
                     $('.fullscreen-slider .slider-wrapper').css('box-shadow', sliderShadow);
                 } else {
@@ -456,13 +457,13 @@
 
     zira_init_gallery = function() {
         var gw = $('.container #content ul.gallery').parent().width();
-        var gm = parseInt($('.container #content ul.gallery').css('marginRight'));
-        var gp = parseInt($('.container #content ul.gallery').css('paddingRight'));
-        var gb = parseInt($('.container #content ul.gallery').css('borderRightWidth'));
-        var iw = parseInt($('.container #content ul.gallery li img').eq(0).attr('width'));
-        var ih = parseInt($('.container #content ul.gallery li img').eq(0).attr('height'));
-        var im = parseInt($('.container #content ul.gallery li a').eq(0).css('marginRight'));
-        var ib = parseInt($('.container #content ul.gallery li a').eq(0).css('borderRightWidth'));
+        var gm = parseFloat($('.container #content ul.gallery').css('marginRight'));
+        var gp = parseFloat($('.container #content ul.gallery').css('paddingRight'));
+        var gb = parseFloat($('.container #content ul.gallery').css('borderRightWidth'));
+        var iw = parseFloat($('.container #content ul.gallery li img').eq(0).attr('width'));
+        var ih = parseFloat($('.container #content ul.gallery li img').eq(0).attr('height'));
+        var im = parseFloat($('.container #content ul.gallery li a').eq(0).css('marginRight'));
+        var ib = parseFloat($('.container #content ul.gallery li a').eq(0).css('borderRightWidth'));
         var _w = gw - 2*(gm + gp + gb);
         var w = iw + 2*(im + ib);
         var co = Math.floor(_w / w);

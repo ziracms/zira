@@ -243,6 +243,11 @@ main > article > .image:first-child {
     background-color: #55627d;
     border-color: #55627d;
 }
+.modal-footer .btn {
+    min-width: 70px;
+    box-shadow: none;
+    border: 1px solid #d5d9e7;
+}
 .zira-confirm-modal .modal-content {
     background-color: #959C89;
 }
@@ -2136,7 +2141,7 @@ a.scroll-top.visible:visited {
     }
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 768px) {
     .user-profile h1 {
         clear: left;
         padding-top: 10px;
@@ -2375,7 +2380,7 @@ a.scroll-top.visible:visited {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
     .container {
         width: 100%;
     }

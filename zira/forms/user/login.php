@@ -17,6 +17,10 @@ use Zira\View;
 class Login extends Form {
     protected $_id = 'user-login-form';
 
+    protected $_label_class = 'col-sm-4 control-label';
+    protected $_input_wrap_class = 'col-sm-8';
+    protected $_input_offset_wrap_class = 'col-sm-offset-4 col-sm-8';
+
     const HOOK_NAME = 'user_login_form_hook';
     
     public function __construct() {

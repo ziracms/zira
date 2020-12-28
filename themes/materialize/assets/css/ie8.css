@@ -1,0 +1,27 @@
+.image {
+    width: auto;
+}
+.list .list-item a.list-thumb img {
+    max-width: none;
+}
+.comments .comments-item .comment-avatar {
+    width: auto;
+}
+.sidebar .list .list-item a.list-thumb img {
+    width: 100%;
+}
+a.scroll-top span {
+    display: none;
+}
+a.scroll-top:hover span {
+    display: block;
+}
+a.scroll-top.visible span {
+    display: block;
+}
+.grid-category-wrapper .list-item {
+    margin-right: 0;
+}
+header {
+    min-height: 215px;
+}
