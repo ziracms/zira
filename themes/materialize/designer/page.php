@@ -190,7 +190,7 @@
 <div class="alert alert-danger" role="alert"><a href="<?php echo Zira\Helper::url('') ?>">Lorem ipsum</a> dolor sit amet, consectetur adipiscing elit. Etiam tempus nec eros in auctor.</div>
 <!--comments-->
 <div class="comments-wrapper">
-<div class="btn-group comment-btn-group" role="group">
+<div class="btn-group comment-btn-group" role="group" style="margin-left:200px">
 <button class="btn btn-primary comment-btn scroll-down" data-target="#comments-form"><?php echo t('Leave a comment') ?></button>
 <button class="btn btn-default comments-reload" type="button"><span class="glyphicon glyphicon-refresh"></span></button>
 </div>
