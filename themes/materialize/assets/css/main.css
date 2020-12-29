@@ -279,6 +279,7 @@ select.form-control {
     border-bottom: none;
     border-left: 5px solid #03a9f4;
     margin: 20px 0px;
+    filter: none;
 }
 #main-container .panel-heading h2 {
     color: #03a9f4;
@@ -480,7 +481,7 @@ body .bootstrap-datetimepicker-widget table td.second:hover {
 }
 /** header **/
 header {
-    min-height: 132px;
+    min-height: 122px;
     position: relative;
     margin-bottom: 40px;
     background-color: #fff;
@@ -584,7 +585,7 @@ ul#user-menu {
     list-style-type: none;
     display: block;
     margin: -4px 15px 0px 20px;
-    padding: 0px;
+    padding: 0px 10px;
     float: right;
     background-color: #f6f6f6;
     border-radius: 0px 0px 20px 20px;
@@ -706,7 +707,7 @@ ul#language-switcher li a.active {
     float: left;
     white-space: nowrap;
     margin-left: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     margin-top: -20px;
     z-index: 5;
 }
@@ -793,6 +794,7 @@ header.no-user-menu #top-menu-wrapper.menuCentered {
 #top-menu-wrapper .navbar-default .navbar-nav a:hover {
     background:none;
     box-shadow: none;
+    filter: none;
     color: #03a9f4;
 }
 #top-menu-wrapper .navbar-default .navbar-toggle {
@@ -949,7 +951,7 @@ header.no-user-menu  #top-menu-wrapper.fixed {
 #top-menu-wrapper .navbar-collapse.collapsing,
 #top-menu-wrapper .navbar-collapse.in {
     border: none;
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     box-shadow: none;
 }
 #top-menu-wrapper.fixed .navbar-collapse.collapsing,
@@ -2627,15 +2629,18 @@ a.scroll-top.visible:visited {
     }
     header {
         height: auto;
-        min-height: 136px;
+        min-height: 110px;
     }
-    #site-logo-wrapper {
+    /*#site-logo-wrapper {
         margin: 0px 120px 0px 20px;
         float: none;
-    }
+    }*/
     #site-logo-wrapper a#site-logo:link,
     #site-logo-wrapper a#site-logo:visited {
 
+    }
+    .site-logo-inner-wrapper {
+        margin-top: 10px;
     }
     #site-logo-wrapper #site-slogan {
         display: none;
@@ -2646,10 +2651,18 @@ a.scroll-top.visible:visited {
     ul#user-menu {
         margin-right: 5px;
         margin-left: 5px;
+        position: relative;
+        z-index: 6;
     }
+    ul#user-menu li.menu-item-separator,
     ul#user-menu li.menu-item a.menu-link:link,
     ul#user-menu li.menu-item a.menu-link:visited {
         font-size: 12px;
+        padding: 2px 7px;
+        height: 30px;
+    }
+    ul#user-menu li.menu-item-separator {
+        padding: 0;
     }
     ul#user-menu.authorized li.menu-item a.dropdown-toggle {
         max-width: 120px;
@@ -2657,9 +2670,18 @@ a.scroll-top.visible:visited {
     ul#language-switcher {
         margin-right: 5px;
         margin-left: 5px;
+        position: relative;
+        z-index: 6;
+    }
+    ul#language-switcher li a:link,
+    ul#language-switcher li a:visited {
+        font-size: 12px;
+        padding: 0px 7px;
+        height: 25px;
+        line-height: 25px;
     }
     #top-menu-wrapper {
-        margin: -75px 0px 0px;
+        margin: 0px;
         max-height: 100%;
         float: none;
     }
@@ -2668,8 +2690,8 @@ a.scroll-top.visible:visited {
     }
     #top-menu-wrapper nav {
         border-radius: 0;
-        padding-top: 20px;
-        padding-bottom: 20px;
+        /*padding-top: 20px;
+        padding-bottom: 20px;*/
     }
     #top-menu-wrapper.menuCentered {
         margin-top: 20px;

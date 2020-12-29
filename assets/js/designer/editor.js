@@ -510,7 +510,7 @@
                         return;
                     }
                     var topmenu_cx = $('header #top-menu-wrapper nav').offset().left+($('header #top-menu-wrapper nav').outerWidth()-colorpicker_size)/2-.75*colorpicker_size;
-                    var topmenu_cy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size)/2;
+                    var topmenu_cy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size);
                     $('#topmenu-color-designer-gradientpicker').css({'left':topmenu_cx,'top':topmenu_cy});
                     $('#topmenu-color-designer-gradientpicker-hidden').css({'left':topmenu_cx+colorpicker_wnd_size,'top':topmenu_cy});
                     $('#topmenu-color-designer-gradientpicker').show();
@@ -549,7 +549,7 @@
                         return;
                     }
                     var topmenu_gx = $('header #top-menu-wrapper nav').offset().left+($('header #top-menu-wrapper nav').outerWidth()-colorpicker_size)/2+.75*colorpicker_size;
-                    var topmenu_gy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size)/2;
+                    var topmenu_gy = $('header #top-menu-wrapper nav').offset().top+($('header #top-menu-wrapper nav').outerHeight()-colorpicker_size);
                     $('#topmenu-bg-designer-gradientpicker').css({'left':topmenu_gx,'top':topmenu_gy});
                     $('#topmenu-bg-designer-gradientpicker-hidden').css({'left':topmenu_gx+gradientpicker_wnd_size,'top':topmenu_gy});
                     $('#topmenu-bg-designer-gradientpicker').show();

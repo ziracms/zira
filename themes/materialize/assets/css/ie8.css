@@ -23,5 +23,8 @@ a.scroll-top.visible span {
     margin-right: 0;
 }
 header {
-    min-height: 215px;
+    /*min-height: 215px;*/
+}
+#top-menu-wrapper .search-icon {
+    display: none;
 }
