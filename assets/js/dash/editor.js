@@ -4,6 +4,7 @@ var dash_editor_text_focus = function() {
 
 var dash_editor_text_load = function() {
     this.contentModified = false;
+    this.lineWrapping = false;
     $(this.content).find('textarea').focus();
     $(this.content).find('textarea').eq(0).keyup(this.bind(this, function(){
         var val = $(this.content).find('textarea').eq(0).val();
@@ -41,12 +42,21 @@ var dash_editor_text_resize = function() {
     } catch(err) {}
     this.timer = window.setTimeout(this.bind(this, function(){
         this.cm.editor.toTextArea();
-        if (typeof(this.options.data)!="undefined" && typeof(this.options.data.highlight_mode)!="undefined") {
-            this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode);
-        } else {
-            this.cm = zira_codemirror($(this.content).find('textarea'));
-        }
+        this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping);
     }), 500);
+};
+
+var dash_editor_text_line_wrap = function(element) {
+    if (typeof this.lineWrapping == "undefined") return;
+    if (!this.lineWrapping) {
+        this.lineWrapping = true;
+        $(element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+    } else {
+        this.lineWrapping = false;
+        $(element).find('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+    }
+    this.cm.editor.toTextArea();
+    this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping);
 };
 
 var dash_editor_html_update = function() {

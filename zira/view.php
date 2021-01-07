@@ -942,22 +942,23 @@ class View {
         }
         $script_url = $script . '?t=' . (intval(Assets::isGzipEnabled())+1).$mtime;
         $script = Helper::tag_open('script',array('type'=>'text/javascript'));
-        $script .= "zira_codemirror_init = function(element, cm_mode){";
+        $script .= "zira_codemirror_init = function(element, cm_mode, cm_wrap){";
         $script .= "if (typeof(cm_mode)=='undefined') cm_mode = 'htmlmixed';";
-        $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: cm_mode, inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple' });";
+        $script .= "if (typeof(cm_wrap)=='undefined') cm_wrap = false;";
+        $script .= "return CodeMirror.fromTextArea(jQuery(element).get(0), { mode: cm_mode, inputStyle: 'contenteditable', viewportMargin: Infinity, scrollbarStyle: 'simple', lineWrapping: cm_wrap });";
         $script .= "};";
-        $script .= "zira_codemirror = function(element, mode){";
+        $script .= "zira_codemirror = function(element, mode, wrap){";
         $script .= "var cm = {};";
         $script .= "if (typeof CodeMirror == 'undefined') {";
         $script .= "var script = document.createElement('script');";
         $script .= "script.onload = function() {";
-        $script .= "cm.editor = zira_codemirror_init(element, mode);";
+        $script .= "cm.editor = zira_codemirror_init(element, mode, wrap);";
         $script .= "cm.editor.on('change', function(){ if (typeof(cm.change)!='undefined') cm.change.call(); });";
         $script .= "};";
         $script .= "script.src = '".Helper::jsUrl($script_url)."';";
         $script .= "document.body.appendChild(script);";
         $script .= "} else {";
-        $script .= "cm.editor = zira_codemirror_init(element, mode);";
+        $script .= "cm.editor = zira_codemirror_init(element, mode, wrap);";
         $script .= "cm.editor.on('change', function(){ if (typeof(cm.change)!='undefined') cm.change.call(); });";
         $script .= "}";
         $script .= "return cm;";

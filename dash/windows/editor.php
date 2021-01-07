@@ -59,6 +59,14 @@ abstract class Editor extends Window {
     }
 
     public function createTextEditor() {
+        $optionsMenu = array(
+            $this->createMenuDropdownItem(Zira\Locale::t('Line wrap'), 'glyphicon glyphicon-unchecked', 'desk_call(dash_editor_text_line_wrap, this, element);', 'create')
+        );
+        $this->setMenuItems(array(
+            $this->createMenuItem($this->getDefaultMenuTitle(), $this->getDefaultMenuDropdown()),
+            $this->createMenuItem(Zira\Locale::t('Options'), $optionsMenu)
+        ));
+        
         $this->setOnLoadJSCallback(
             $this->createJSCallback(
                 $this->getTextOnLoadJs()
