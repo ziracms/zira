@@ -4,8 +4,8 @@ var dash_editor_text_focus = function() {
 
 var dash_editor_text_load = function() {
     this.contentModified = false;
-    this.lineWrapping = false;
-    this.lineNumbers = false;
+    this.lineWrapping = parseInt(getCookie('zira_cm_line_wrapping')) ? true : false;
+    this.lineNumbers = parseInt(getCookie('zira_cm_line_numbers')) ? true : false;
     $(this.content).find('textarea').focus();
     $(this.content).find('textarea').eq(0).keyup(this.bind(this, function(){
         var val = $(this.content).find('textarea').eq(0).val();
@@ -16,17 +16,22 @@ var dash_editor_text_load = function() {
     var val = $(this.content).find('textarea').eq(0).val();
     this.resetFooterContent();
     this.appendFooterContent(val.length);
-    if (typeof(this.options.data)!="undefined" && typeof(this.options.data.highlight_mode)!="undefined") {
-        this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode);
-    } else {
-        this.cm = zira_codemirror($(this.content).find('textarea'));
-    }
+    if (typeof this.options.data == "undefined") this.options.data = {};
+    this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
     this.cm.change = zira_bind(this, function(){
         this.contentModified = true;
         var val = this.cm.editor.getDoc().getValue();
         this.resetFooterContent();
         this.appendFooterContent(val.length);
     });
+    var lineWrapItem = this.findMenuItemByProperty('typo', 'line_wrapping');
+    if (lineWrapItem && this.lineWrapping) {
+        $(lineWrapItem.element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+    }
+    var lineNumItem = this.findMenuItemByProperty('typo', 'line_numbers');
+    if (lineNumItem && this.lineNumbers) {
+        $(lineNumItem.element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+    }
 };
 
 var dash_editor_text_update = function() {
@@ -58,6 +63,7 @@ var dash_editor_text_line_wrap = function(element) {
     }
     this.cm.editor.toTextArea();
     this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
+    setCookie('zira_cm_line_wrapping', (this.lineWrapping ? 1 : 0), Infinity, '/');
 };
 
 var dash_editor_text_line_numbers = function(element) {
@@ -71,6 +77,7 @@ var dash_editor_text_line_numbers = function(element) {
     }
     this.cm.editor.toTextArea();
     this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
+    setCookie('zira_cm_line_numbers', (this.lineNumbers ? 1 : 0), Infinity, '/');
 };
 
 var dash_editor_html_update = function() {
