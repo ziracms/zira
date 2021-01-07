@@ -15,7 +15,9 @@ $files = array(
     'css.js',
     'xml.js',
     'htmlmixed.js',
-    'simplescrollbars.js'
+    'simplescrollbars.js',
+    'xml-fold.js',
+    'matchtags.js'
 );
 
 $output = '';

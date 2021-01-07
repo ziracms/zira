@@ -60,6 +60,7 @@ abstract class Editor extends Window {
 
     public function createTextEditor() {
         $optionsMenu = array(
+            $this->createMenuDropdownItem(Zira\Locale::t('Line numbers'), 'glyphicon glyphicon-unchecked', 'desk_call(dash_editor_text_line_numbers, this, element);', 'create'),
             $this->createMenuDropdownItem(Zira\Locale::t('Line wrap'), 'glyphicon glyphicon-unchecked', 'desk_call(dash_editor_text_line_wrap, this, element);', 'create')
         );
         $this->setMenuItems(array(

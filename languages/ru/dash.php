@@ -450,6 +450,7 @@ return array(
     'Always show CAPTCHA for not authorized users' => 'Всегда показывать CAPTCHA для неавторизованных пользователей',
     'Always show CAPTCHA for authorized users' => 'Всегда показывать CAPTCHA для авторизованных пользователей',
     'Enable full-text search' => 'Включить полнотекстовый поиск',
-    'Options' => 'Настройки',
-    'Line wrap' => 'Перенос строк'
+    'Options' => 'Опции',
+    'Line wrap' => 'Перенос строк',
+    'Line numbers' => 'Номера строк'
 );

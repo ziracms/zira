@@ -5,6 +5,7 @@ var dash_editor_text_focus = function() {
 var dash_editor_text_load = function() {
     this.contentModified = false;
     this.lineWrapping = false;
+    this.lineNumbers = false;
     $(this.content).find('textarea').focus();
     $(this.content).find('textarea').eq(0).keyup(this.bind(this, function(){
         var val = $(this.content).find('textarea').eq(0).val();
@@ -42,7 +43,7 @@ var dash_editor_text_resize = function() {
     } catch(err) {}
     this.timer = window.setTimeout(this.bind(this, function(){
         this.cm.editor.toTextArea();
-        this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping);
+        this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
     }), 500);
 };
 
@@ -56,7 +57,20 @@ var dash_editor_text_line_wrap = function(element) {
         $(element).find('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
     }
     this.cm.editor.toTextArea();
-    this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping);
+    this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
+};
+
+var dash_editor_text_line_numbers = function(element) {
+    if (typeof this.lineNumbers == "undefined") return;
+    if (!this.lineNumbers) {
+        this.lineNumbers = true;
+        $(element).find('.glyphicon').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+    } else {
+        this.lineNumbers = false;
+        $(element).find('.glyphicon').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+    }
+    this.cm.editor.toTextArea();
+    this.cm = zira_codemirror($(this.content).find('textarea'), this.options.data.highlight_mode, this.lineWrapping, this.lineNumbers);
 };
 
 var dash_editor_html_update = function() {
