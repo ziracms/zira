@@ -1187,6 +1187,24 @@ body.dashboard .tooltip-inner {
     background-color: #94a0dc;
 }
 
+.dashboard-window .zira-cm-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+}
+.dashboard-window .CodeMirror {
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+.dashboard-window .CodeMirror-simplescroll-horizontal div,
+.dashboard-window .CodeMirror-simplescroll-vertical div {
+    background: #ccc;
+    border-color: #ccc;
+    border-radius: 0;
+}
+
 @media (min-width: 768px) {
     #dashpanel-container .report {
         display: none;

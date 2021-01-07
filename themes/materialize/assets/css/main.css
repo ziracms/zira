@@ -415,12 +415,12 @@ body .bootstrap-datetimepicker-widget table td.second:hover {
 /** user profile **/
 .user-profile-photo {
     float: left;
-    border: 5px solid #CCCCCC;
-    padding: 5px;
-    margin-right: 10px;
+    border: 1px solid #CCCCCC;
+    padding: 0px;
+    margin-right: 20px;
     overflow: hidden;
-    border-radius: 3px;
-    box-shadow: 0px 0px 2px #cccccc;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px #cccccc;
     background-color: #FFFFFF;
 }
 .user-head {
@@ -428,11 +428,23 @@ body .bootstrap-datetimepicker-widget table td.second:hover {
 }
 .user-profile h1 {
     margin: 0px 0px 5px;
+    font-weight: bold;
 }
 .user-profile h2 {
     margin: 60px 0px 10px;
     padding: 10px 0px;
+    color: #03a9f4;
     border-bottom: 1px solid #E4E4E4;
+}
+dl.user-info dt {
+    color: #000;
+    padding: 3px 0px;
+}
+dl.user-info dt .glyphicon {
+    font-weight: bold;
+}
+dl.user-info dd {    
+    padding: 3px 0px;
 }
 .user-button .user-profile-links {
     float: right;

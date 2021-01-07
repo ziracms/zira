@@ -1166,6 +1166,28 @@ body.dashboard .tooltip-inner {
     background-color: #0597ff;
 }
 
+.dashboard-window .zira-cm-wrapper {
+    border: 1px solid #efefef;
+    border-radius: 0px;
+    overflow: hidden;
+    width: 100%;
+}
+.dashboard-window .CodeMirror {
+    box-shadow: none;
+    font-size: 14px;
+    line-height: 20px;
+}
+.dashboard-window .CodeMirror-simplescroll-horizontal,
+.dashboard-window .CodeMirror-simplescroll-vertical {
+    background: #fff;
+}
+.dashboard-window .CodeMirror-simplescroll-horizontal div,
+.dashboard-window .CodeMirror-simplescroll-vertical div {
+    background: #dfdfdf;
+    border-color: #dfdfdf;
+    border-radius: 0;
+}
+
 @media (min-width: 768px) {
     #dashpanel-container .report {
         display: none;
