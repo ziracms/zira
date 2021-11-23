@@ -679,7 +679,7 @@ class User {
         return Helper::tag_short('img', $attributes);
     }
 
-    public static function generateUserProfileThumbLink($id, $firstname, $secondname, $username, $rel = null, $image, $default_image = null, array $attributes = array()) {
+    public static function generateUserProfileThumbLink($id, $firstname, $secondname, $username, $rel = null, $image = null, $default_image = null, array $attributes = array()) {
         $name = $firstname && $secondname ? trim($firstname . ' ' . $secondname) : $username;
         if (!array_key_exists('alt', $attributes)) $attributes['alt'] = $name;
         $attr = array('href'=>Helper::url('user/'.$id),'title'=>$name);

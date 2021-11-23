@@ -267,6 +267,8 @@ try {
             $db_file = DB_FILE;
             if (substr($db_file, 0, 6) == '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) {
                 $db_file = substr($db_file, 3);
+            } else if (substr($db_file, 0, 5) == '..' . DIRECTORY_SEPARATOR . '.' . DIRECTORY_SEPARATOR) {
+                $db_file = substr($db_file, 3);
             }
             $config .= 'const DB_FILE = \'' . addslashes($db_file) . '\';' . "\r\n";
         }
@@ -320,6 +322,22 @@ try {
         $defaults .= ');'."\r\n";
 
         file_put_contents(ROOT_DIR . DIRECTORY_SEPARATOR . 'config.php', '<?php'."\r\n" . $head . "\r\n\r\n" . $info . $config . "\r\n" . $defaults, FILE_TEXT);
+
+        // clearing cache
+        try {
+            $d = @opendir(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR);
+            if ($d) {
+                while(($f=readdir($d))!==false) {
+                    if ($f=='.' || $f=='..' || !is_file(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f)) continue;
+                    if (substr($f,-6)!='.cache') continue;
+                    @chmod(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f, 0660);
+                    @unlink(ROOT_DIR . DIRECTORY_SEPARATOR . CACHE_DIR . DIRECTORY_SEPARATOR . $f);
+                }
+                closedir($d);
+            }
+        } catch(\Exception $e) {
+            // ignore
+        }
     }
 
     Zira\Db\Db::close();

@@ -98,6 +98,8 @@ if (!$error) {
         $const = strtoupper($field);
         if ($field == 'db_file' && !empty($data[$field]) && substr($data[$field], 0, 3) == '..' . DIRECTORY_SEPARATOR) {
             $data[$field] = '..' . DIRECTORY_SEPARATOR . $data[$field];
+        } else if ($field == 'db_file' && !empty($data[$field]) && substr($data[$field], 0, 2) == '.' . DIRECTORY_SEPARATOR) {
+            $data[$field] = '..' . DIRECTORY_SEPARATOR . $data[$field];
         }
         if (!defined($const)) define($const, $data[$field]);
     }
